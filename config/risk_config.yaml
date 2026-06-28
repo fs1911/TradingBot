@@ -1,0 +1,57 @@
+# ============================================================
+# TradingBot — Risk & Money Management Configuration
+# These limits are HARD STOPS — bot enforces them regardless
+# of signal strength.
+# ============================================================
+
+risk:
+  # Position sizing
+  risk_per_trade_pct: 1.0          # Max % of account equity per trade
+  max_position_size_pct: 5.0       # Max single position as % of equity
+  max_open_positions: 8            # Hard cap on simultaneous open trades
+  max_correlation_exposure: 0.6    # Max portfolio beta to any single sector
+
+  # Drawdown controls
+  max_daily_drawdown_pct: 3.0      # Pause all trading for the day
+  max_weekly_drawdown_pct: 6.0     # Trigger strategy review
+  max_monthly_drawdown_pct: 10.0   # Emergency stop + manual review required
+  max_total_drawdown_pct: 15.0     # Hard stop — requires manual restart
+
+  # Loss streak protection
+  max_consecutive_losses: 4        # After N losses, pause 4 hours
+  pause_after_loss_streak_hours: 4
+
+  # Leverage and margin (applies to CFD/Crypto brokers)
+  max_leverage: 3                  # Conservative: max 3x
+  min_free_margin_pct: 30.0        # Always keep 30% free margin
+
+  # Safe Mode: throttled trading when markets are stressed
+  safe_mode:
+    enabled: true
+    trigger_vix_above: 30          # VIX > 30 → safe mode
+    trigger_daily_range_pct: 3.0   # Index daily range > 3% → safe mode
+    reduce_position_size_pct: 50   # Cut position size in half
+    disable_new_entries: false      # Only reduce, not stop
+
+# Stop-loss defaults (overridden by strategy-specific ATR multipliers)
+stop_loss:
+  default_pct: 1.5               # % below/above entry
+  use_atr: true                  # Prefer ATR-based SL
+  hard_stop_pct: 3.0             # Absolute max SL regardless of ATR
+
+take_profit:
+  default_pct: 3.0
+  use_atr: true
+  min_risk_reward_ratio: 1.5     # Only enter if TP/SL ratio >= 1.5
+
+trailing_stop:
+  enabled: true
+  activate_after_profit_pct: 1.0 # Activate once trade is +1% in profit
+  trail_pct: 0.8                 # Trails 0.8% below highest price
+
+# Session filters
+session_filter:
+  enabled: true
+  avoid_news_minutes: 15         # No new entries 15 min before major news
+  avoid_open_minutes: 15         # No entries in first 15 min of US session
+  avoid_close_minutes: 30        # No entries in last 30 min of US session

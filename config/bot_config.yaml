@@ -1,0 +1,55 @@
+# ============================================================
+# TradingBot — Core Bot Configuration
+# ============================================================
+
+bot:
+  name: "TradingBot-CH"
+  version: "1.0.0"
+  environment: "paper"          # paper | live
+  trading_enabled: true
+  loop_interval_seconds: 60     # Main loop heartbeat
+
+# Active broker adapter: alpaca | binance | kraken
+broker: "alpaca"
+
+# Active strategies (can run multiple in parallel)
+active_strategies:
+  - "ema_crossover"
+  - "rsi_mean_reversion"
+  - "macd_momentum"
+  # - "congress_mirror"         # Uncomment when QuiverQuant key is set
+
+# Markets to trade
+markets:
+  alpaca:
+    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN"]
+    timeframe: "1Hour"          # 1Min | 5Min | 15Min | 1Hour | 1Day
+
+  binance:
+    symbols: ["BTC/USDT", "ETH/USDT", "SOL/USDT"]
+    timeframe: "1h"             # 1m | 5m | 15m | 1h | 4h | 1d
+
+  kraken:
+    symbols: ["XBT/USD", "ETH/USD"]
+    timeframe: "60"             # minutes
+
+# Trading sessions (UTC)
+sessions:
+  forex_london:
+    start: "07:00"
+    end: "16:00"
+  forex_new_york:
+    start: "13:00"
+    end: "22:00"
+  us_stocks:
+    start: "13:30"
+    end: "20:00"
+  crypto:
+    start: "00:00"
+    end: "23:59"
+
+# Watchdog: auto-disable bot on hard limits
+watchdog:
+  max_consecutive_losses: 5
+  safe_mode_on_daily_drawdown_pct: 3.0
+  resume_after_hours: 24

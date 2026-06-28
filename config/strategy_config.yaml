@@ -1,0 +1,58 @@
+# ============================================================
+# TradingBot — Strategy Parameters
+# Adjust per asset class and timeframe after backtesting.
+# ============================================================
+
+ema_crossover:
+  fast_ema: 9
+  slow_ema: 21
+  signal_ema: 5               # Optional 3-line confirmation
+  volume_filter: true         # Require volume > 20-bar avg to enter
+  volume_multiplier: 1.2
+  atr_period: 14
+  sl_atr_multiplier: 1.5      # Stop-loss = entry ± ATR × multiplier
+  tp_atr_multiplier: 2.5      # Take-profit = entry ± ATR × multiplier
+  trailing_stop: true
+  trailing_stop_atr: 1.2
+  confirmation_candles: 1     # Wait N closed candles before entry
+
+rsi_mean_reversion:
+  rsi_period: 14
+  oversold_threshold: 30
+  overbought_threshold: 70
+  extreme_oversold: 20        # Stronger signal for larger position
+  extreme_overbought: 80
+  ema_trend_filter: 50        # Only trade with trend (price > EMA50 = long only)
+  atr_period: 14
+  sl_atr_multiplier: 1.0
+  tp_atr_multiplier: 2.0
+
+macd_momentum:
+  fast_period: 12
+  slow_period: 26
+  signal_period: 9
+  histogram_threshold: 0.0    # Only trade when histogram crosses zero
+  ema_trend_filter: 200       # Macro trend filter (EMA200)
+  atr_period: 14
+  sl_atr_multiplier: 1.5
+  tp_atr_multiplier: 3.0
+  min_histogram_magnitude: 0.001  # Filter out weak signals
+
+congress_mirror:
+  lookback_days: 30           # How far back to look for trades
+  min_transaction_value: 15000   # Min USD value to consider
+  trend_confirmation_ema: 20  # Only mirror if price > EMA20 (uptrend)
+  max_age_hours: 72           # Discard signals older than X hours
+  position_type: "long_only"  # long_only | long_short
+  exit_after_days: 30         # Auto-close position after N days
+
+# Global signal scoring (multi-strategy agreement)
+signal_fusion:
+  enabled: true
+  require_agreement: 2        # Minimum strategies agreeing before trade
+  score_weights:
+    ema_crossover: 1.0
+    rsi_mean_reversion: 1.0
+    macd_momentum: 1.0
+    congress_mirror: 0.5
+  score_threshold: 1.5        # Minimum composite score to open position
