@@ -22,8 +22,8 @@ active_strategies:
 # Markets to trade
 markets:
   alpaca:
-    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN"]
-    timeframe: "1Hour"          # 1Min | 5Min | 15Min | 1Hour | 1Day
+    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "BTC/USD", "ETH/USD"]
+    timeframe: "15Min"          # 1Min | 5Min | 15Min | 1Hour | 1Day
 
   binance:
     symbols: ["BTC/USDT", "ETH/USDT", "SOL/USDT"]

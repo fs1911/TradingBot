@@ -142,14 +142,15 @@ class TradingBot:
             self._manage_open_positions(account)
             return
 
-        # Market open check (for stock brokers)
-        if not self.broker.is_market_open():
-            logger.debug("Market closed — skipping")
-            return
+        market_open = self.broker.is_market_open()
 
-        # Process each symbol
+        # Process each symbol — crypto runs 24/7, stocks only when market is open
         for symbol in self.symbols:
             try:
+                is_crypto = "/" in symbol
+                if not is_crypto and not market_open:
+                    logger.debug(f"{symbol}: market closed — skipping")
+                    continue
                 self._process_symbol(symbol, account)
             except Exception as e:
                 logger.error(f"Error processing {symbol}: {e}", exc_info=True)

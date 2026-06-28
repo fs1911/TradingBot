@@ -1,8 +1,11 @@
 """
-Alpaca Markets broker adapter — US Stocks & ETFs.
+Alpaca Markets broker adapter — US Stocks, ETFs, and Crypto (24/7).
 
 Supports paper trading and live trading.
 Requires ALPACA_API_KEY, ALPACA_SECRET_KEY, ALPACA_BASE_URL in .env
+
+Crypto symbols use the "BTC/USD" format in config; internally the trading
+API receives "BTCUSD" (no slash).
 """
 from __future__ import annotations
 import os
@@ -20,8 +23,8 @@ try:
     from alpaca.trading.client import TradingClient
     from alpaca.trading.requests import MarketOrderRequest, LimitOrderRequest
     from alpaca.trading.enums import OrderSide as AlpacaSide, TimeInForce
-    from alpaca.data.historical import StockHistoricalDataClient
-    from alpaca.data.requests import StockBarsRequest
+    from alpaca.data.historical import StockHistoricalDataClient, CryptoHistoricalDataClient
+    from alpaca.data.requests import StockBarsRequest, CryptoBarsRequest
     from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
     _ALPACA_AVAILABLE = True
 except ImportError:
@@ -41,6 +44,15 @@ class AlpacaBroker(BaseBroker):
         "1Day": TimeFrame(1, TimeFrameUnit.Day),
     } if _ALPACA_AVAILABLE else {}
 
+    @staticmethod
+    def _is_crypto(symbol: str) -> bool:
+        return "/" in symbol
+
+    @staticmethod
+    def _trading_symbol(symbol: str) -> str:
+        """BTC/USD → BTCUSD for the Alpaca trading API."""
+        return symbol.replace("/", "")
+
     def __init__(self):
         if not _ALPACA_AVAILABLE:
             raise ImportError("Install alpaca-py: pip install alpaca-py")
@@ -51,6 +63,7 @@ class AlpacaBroker(BaseBroker):
 
         self._trading = TradingClient(api_key, secret_key, paper=paper)
         self._data = StockHistoricalDataClient(api_key, secret_key)
+        self._crypto_data = CryptoHistoricalDataClient(api_key, secret_key)
         logger.info(f"AlpacaBroker initialised (paper={paper})")
 
     def get_account(self) -> AccountInfo:
@@ -79,15 +92,18 @@ class AlpacaBroker(BaseBroker):
     def get_ohlcv(self, symbol: str, timeframe: str = "1Hour", limit: int = 500) -> pd.DataFrame:
         tf = self.TIMEFRAME_MAP.get(timeframe, TimeFrame(1, TimeFrameUnit.Hour))
         end = datetime.now(timezone.utc)
-        # Estimate start based on limit and timeframe (rough)
         minutes_per_bar = {
             "1Min": 1, "5Min": 5, "15Min": 15,
             "1Hour": 60, "4Hour": 240, "1Day": 1440,
         }.get(timeframe, 60)
         start = end - timedelta(minutes=minutes_per_bar * limit * 1.5)
 
-        req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit)
-        bars = self._data.get_stock_bars(req).df
+        if self._is_crypto(symbol):
+            req = CryptoBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit)
+            bars = self._crypto_data.get_crypto_bars(req).df
+        else:
+            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit)
+            bars = self._data.get_stock_bars(req).df
 
         if bars.empty:
             return pd.DataFrame()
@@ -104,21 +120,25 @@ class AlpacaBroker(BaseBroker):
 
     def place_order(self, order: Order) -> Order:
         side = AlpacaSide.BUY if order.side == OrderSide.BUY else AlpacaSide.SELL
+        is_crypto = self._is_crypto(order.symbol)
+        trade_symbol = self._trading_symbol(order.symbol)
+        # Crypto uses GTC; stocks use DAY
+        tif = TimeInForce.GTC if is_crypto else TimeInForce.DAY
 
         if order.order_type == OrderType.MARKET:
             req = MarketOrderRequest(
-                symbol=order.symbol,
+                symbol=trade_symbol,
                 qty=order.qty,
                 side=side,
-                time_in_force=TimeInForce.DAY,
+                time_in_force=tif,
             )
         elif order.order_type == OrderType.LIMIT:
             req = LimitOrderRequest(
-                symbol=order.symbol,
+                symbol=trade_symbol,
                 qty=order.qty,
                 side=side,
                 limit_price=order.limit_price,
-                time_in_force=TimeInForce.DAY,
+                time_in_force=tif,
             )
         else:
             raise ValueError(f"Unsupported order type: {order.order_type}")
