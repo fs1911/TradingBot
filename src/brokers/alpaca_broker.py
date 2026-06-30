@@ -102,7 +102,8 @@ class AlpacaBroker(BaseBroker):
             req = CryptoBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit)
             bars = self._crypto_data.get_crypto_bars(req).df
         else:
-            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit)
+            # feed="iex" uses the free IEX data feed (SIP requires paid subscription)
+            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit, feed="iex")
             bars = self._data.get_stock_bars(req).df
 
         if bars.empty:

@@ -144,7 +144,11 @@ class TradingBot:
             self._manage_open_positions(account)
             return
 
-        market_open = self.broker.is_market_open()
+        try:
+            market_open = self.broker.is_market_open()
+        except Exception as e:
+            logger.warning(f"Market open check failed ({e}) — assuming open")
+            market_open = True
 
         # Process each symbol — crypto runs 24/7, stocks only when market is open
         for symbol in self.symbols:
@@ -155,10 +159,13 @@ class TradingBot:
                     continue
                 self._process_symbol(symbol, account)
             except Exception as e:
-                logger.error(f"Error processing {symbol}: {e}", exc_info=True)
+                logger.error("Error processing {}: {}", symbol, repr(e))
 
         # Manage exits on existing positions
-        self._manage_open_positions(account)
+        try:
+            self._manage_open_positions(account)
+        except Exception as e:
+            logger.error(f"Position management error: {e}")
 
     def _process_symbol(self, symbol: str, account) -> None:
         # Fetch OHLCV

@@ -23,10 +23,7 @@ active_strategies:
 # Markets to trade
 markets:
   alpaca:
-    symbols: [
-      "SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL",
-      "BTC/USD", "ETH/USD", "SOL/USD", "AVAX/USD", "DOGE/USD", "LINK/USD", "XRP/USD", "LTC/USD"
-    ]
+    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL", "BTC/USD", "ETH/USD"]
     timeframe: "15Min"          # 1Min | 5Min | 15Min | 1Hour | 1Day
 
   binance:
