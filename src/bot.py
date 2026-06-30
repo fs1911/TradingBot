@@ -32,6 +32,7 @@ from .strategies.base_strategy import Signal, SignalType
 from .strategies.ema_crossover import EMACrossoverStrategy
 from .strategies.rsi_mean_reversion import RSIMeanReversionStrategy
 from .strategies.macd_momentum import MACDMomentumStrategy
+from .strategies.bollinger_bounce import BollingerBounceStrategy
 from .strategies.congress_trades import CongressTradesStrategy
 from .risk.risk_manager import RiskManager
 from .data.news_sentiment import SentimentAnalyzer
@@ -43,6 +44,7 @@ STRATEGY_REGISTRY = {
     "ema_crossover": EMACrossoverStrategy,
     "rsi_mean_reversion": RSIMeanReversionStrategy,
     "macd_momentum": MACDMomentumStrategy,
+    "bollinger_bounce": BollingerBounceStrategy,
     "congress_mirror": CongressTradesStrategy,
 }
 

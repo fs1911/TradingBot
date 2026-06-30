@@ -39,16 +39,25 @@ class RSIMeanReversionStrategy(BaseStrategy):
         rsi = row.get("rsi")
         rsi_prev = prev.get("rsi")
         price = row["close"]
-        ema50 = row.get("ema_50", price)
         atr = row.get("atr", price * 0.01)
+
+        ema_filter = params.get("ema_trend_filter", 50)
+        if ema_filter and ema_filter > 0:
+            ema_col = f"ema_{ema_filter}"
+            ema_val = row.get(ema_col, price)
+            trend_long_ok = price > ema_val
+            trend_short_ok = price < ema_val
+        else:
+            trend_long_ok = True
+            trend_short_ok = True
 
         if rsi is None or rsi_prev is None:
             return []
 
         # RSI crosses up through oversold threshold (mean reversion long)
-        long_signal = (rsi_prev < oversold) and (rsi >= oversold) and (price > ema50)
+        long_signal = (rsi_prev < oversold) and (rsi >= oversold) and trend_long_ok
         # RSI crosses down through overbought threshold (mean reversion short)
-        short_signal = (rsi_prev > overbought) and (rsi <= overbought) and (price < ema50)
+        short_signal = (rsi_prev > overbought) and (rsi <= overbought) and trend_short_ok
 
         if long_signal:
             extreme = rsi <= extreme_oversold
