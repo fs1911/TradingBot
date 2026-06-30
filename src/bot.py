@@ -17,6 +17,7 @@ The Bot class:
 5. Runs weekly self-improvement hints
 """
 from __future__ import annotations
+import math
 import os
 import time
 import signal
@@ -222,6 +223,13 @@ class TradingBot:
 
         # Execute order
         side = OrderSide.BUY if entry.signal == SignalType.LONG else OrderSide.SELL
+
+        # Alpaca rejects fractional short orders for stocks — floor to whole shares
+        if side == OrderSide.SELL and "/" not in symbol:
+            qty = math.floor(qty)
+            if qty <= 0:
+                logger.debug(f"{symbol}: short qty rounds to 0 whole shares — skipping")
+                return
         order = Order(symbol=symbol, side=side, qty=qty, order_type=OrderType.MARKET)
         order = self.broker.place_order(order)
 

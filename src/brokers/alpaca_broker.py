@@ -8,6 +8,7 @@ Crypto symbols use the "BTC/USD" format in config; internally the trading
 API receives "BTCUSD" (no slash).
 """
 from __future__ import annotations
+import math
 import os
 from datetime import datetime, timezone, timedelta
 from typing import Optional
@@ -126,17 +127,24 @@ class AlpacaBroker(BaseBroker):
         # Crypto uses GTC; stocks use DAY
         tif = TimeInForce.GTC if is_crypto else TimeInForce.DAY
 
+        # Alpaca does not allow fractional short orders for stocks
+        qty = order.qty
+        if order.side == OrderSide.SELL and not is_crypto:
+            qty = math.floor(qty)
+            if qty <= 0:
+                raise ValueError(f"Short qty rounds to 0 whole shares for {order.symbol} (raw qty={order.qty:.4f})")
+
         if order.order_type == OrderType.MARKET:
             req = MarketOrderRequest(
                 symbol=trade_symbol,
-                qty=order.qty,
+                qty=qty,
                 side=side,
                 time_in_force=tif,
             )
         elif order.order_type == OrderType.LIMIT:
             req = LimitOrderRequest(
                 symbol=trade_symbol,
-                qty=order.qty,
+                qty=qty,
                 side=side,
                 limit_price=order.limit_price,
                 time_in_force=tif,
@@ -147,7 +155,7 @@ class AlpacaBroker(BaseBroker):
         resp = self._trading.submit_order(req)
         order.order_id = str(resp.id)
         order.status = OrderStatus.OPEN
-        logger.info(f"Order placed: {order.side.value} {order.qty} {order.symbol} → id={order.order_id}")
+        logger.info(f"Order placed: {order.side.value} {qty} {order.symbol} → id={order.order_id}")
         return order
 
     def cancel_order(self, order_id: str) -> bool:
