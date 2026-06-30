@@ -33,23 +33,31 @@ class EMACrossoverStrategy(BaseStrategy):
         confirm = params.get("confirmation_candles", 1)
         sl_mult = params.get("sl_atr_multiplier", 1.5)
         tp_mult = params.get("tp_atr_multiplier", 2.5)
+        lookback = params.get("crossover_lookback", 3)  # bars to look back for crossover
 
         signals: list[Signal] = []
         row = df.iloc[-1]
-        prev = df.iloc[-(confirm + 1)]
 
         atr = row.get("atr", row["close"] * 0.01)
         price = row["close"]
         volume_ok = (not use_volume) or (row["volume"] > row["vol_sma"] * vol_mult)
 
-        # Crossover detection across confirmation window
         fast_now = row[fast_col]
         slow_now = row[slow_col]
-        fast_prev = prev[fast_col]
-        slow_prev = prev[slow_col]
 
-        crossed_up = (fast_now > slow_now) and (fast_prev <= slow_prev)
-        crossed_down = (fast_now < slow_now) and (fast_prev >= slow_prev)
+        # Check if a crossover happened within the last N bars
+        crossed_up = False
+        crossed_down = False
+        for i in range(1, min(lookback + 1, len(df))):
+            prev = df.iloc[-(i + 1)]
+            fast_prev = prev[fast_col]
+            slow_prev = prev[slow_col]
+            if (fast_now > slow_now) and (fast_prev <= slow_prev):
+                crossed_up = True
+                break
+            if (fast_now < slow_now) and (fast_prev >= slow_prev):
+                crossed_down = True
+                break
 
         if crossed_up and volume_ok:
             signals.append(Signal(
