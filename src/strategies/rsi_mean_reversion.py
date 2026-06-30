@@ -69,7 +69,7 @@ class RSIMeanReversionStrategy(BaseStrategy):
                 score=score,
                 stop_loss=price - sl_mult * atr,
                 take_profit=price + tp_mult * atr,
-                metadata={"rsi": rsi, "extreme": extreme, "ema50": ema50},
+                metadata={"rsi": rsi, "extreme": extreme},
             ))
 
         elif short_signal:
@@ -82,7 +82,7 @@ class RSIMeanReversionStrategy(BaseStrategy):
                 score=score,
                 stop_loss=price + sl_mult * atr,
                 take_profit=price - tp_mult * atr,
-                metadata={"rsi": rsi, "extreme": extreme, "ema50": ema50},
+                metadata={"rsi": rsi, "extreme": extreme},
             ))
 
         return signals
