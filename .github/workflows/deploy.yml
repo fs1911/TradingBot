@@ -1,0 +1,23 @@
+name: Auto-Deploy to Oracle Cloud
+
+on:
+  push:
+    branches:
+      - claude/trading-bot-setup-qb6687
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 132.226.218.49
+          username: ubuntu
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          port: 22
+          script: |
+            cd ~/TradingBot
+            git pull origin claude/trading-bot-setup-qb6687
+            sudo systemctl restart tradingbot
+            echo "Deploy successful: $(date)"
