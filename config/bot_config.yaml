@@ -25,7 +25,7 @@ active_strategies:
 markets:
   alpaca:
     symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL",
-              "GLD", "IWM",
+              "GLD", "IWM", "SLV", "USO", "TLT", "XLE", "XLF",
               "BTC/USD", "ETH/USD"]
     timeframe: "15Min"          # 1Min | 5Min | 15Min | 1Hour | 1Day
 
