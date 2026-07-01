@@ -104,6 +104,9 @@ class TradingBot:
         signal.signal(signal.SIGINT, self._handle_shutdown)
         signal.signal(signal.SIGTERM, self._handle_shutdown)
 
+        # Sync any positions already open on the broker (survive restarts)
+        self._load_existing_positions()
+
         logger.info(f"TradingBot ready — symbols={self.symbols}, timeframe={self.timeframe}")
 
     # ── Public entry point ────────────────────────────────────────────────────
@@ -253,6 +256,29 @@ class TradingBot:
                 f"via {entry.strategy}"
             )
 
+    def _load_existing_positions(self) -> None:
+        """On restart, sync _open_trades with positions already open at the broker."""
+        try:
+            positions = self.broker.get_positions()
+            for pos in positions:
+                if pos.symbol not in self._open_trades:
+                    self._open_trades[pos.symbol] = {
+                        "order_id": "restored",
+                        "entry_price": pos.entry_price,
+                        "side": pos.side,
+                        "qty": abs(pos.qty),
+                        "sl": None,
+                        "tp": None,
+                        "strategy": "restored",
+                        "opened_at": datetime.now(timezone.utc),
+                    }
+                    logger.info(
+                        f"Restored position: {pos.symbol} {pos.side.value} "
+                        f"qty={pos.qty:.4f} @ {pos.entry_price:.4f}"
+                    )
+        except Exception as e:
+            logger.warning(f"Could not load existing positions on startup: {e}")
+
     def _manage_open_positions(self, account) -> None:
         """Check SL/TP/trailing and close positions as needed."""
         closed = []
@@ -287,7 +313,8 @@ class TradingBot:
             if should_close:
                 success = self.broker.close_position(symbol)
                 if success:
-                    pnl = pos.unrealized_pnl
+                    direction = 1 if side == OrderSide.BUY else -1
+                    pnl = (price - trade["entry_price"]) * trade["qty"] * direction
                     self.risk_manager.record_trade_result(pnl)
                     self.reporter.log_trade(
                         symbol=symbol,

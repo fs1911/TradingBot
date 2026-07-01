@@ -54,6 +54,16 @@ class AlpacaBroker(BaseBroker):
         """BTC/USD → BTCUSD for the Alpaca trading API."""
         return symbol.replace("/", "")
 
+    @staticmethod
+    def _normalize_symbol(symbol: str) -> str:
+        """BTCUSD → BTC/USD — reverse mapping for positions returned by Alpaca."""
+        for quote in ("USDT", "USDC", "USD"):  # longer suffixes first
+            if symbol.endswith(quote) and "/" not in symbol:
+                base = symbol[:-len(quote)]
+                if base.isalpha() and 2 <= len(base) <= 6:
+                    return f"{base}/{quote}"
+        return symbol
+
     def __init__(self):
         if not _ALPACA_AVAILABLE:
             raise ImportError("Install alpaca-py: pip install alpaca-py")
@@ -80,13 +90,16 @@ class AlpacaBroker(BaseBroker):
     def get_positions(self) -> list[Position]:
         positions = []
         for p in self._trading.get_all_positions():
+            # Alpaca returns crypto as "ETHUSD"; normalize back to "ETH/USD"
+            symbol = self._normalize_symbol(p.symbol)
+            qty = float(p.qty)
             positions.append(Position(
-                symbol=p.symbol,
-                qty=float(p.qty),
+                symbol=symbol,
+                qty=qty,
                 entry_price=float(p.avg_entry_price),
                 current_price=float(p.current_price),
                 unrealized_pnl=float(p.unrealized_pl),
-                side=OrderSide.BUY if float(p.qty) > 0 else OrderSide.SELL,
+                side=OrderSide.BUY if qty > 0 else OrderSide.SELL,
             ))
         return positions
 
@@ -168,7 +181,8 @@ class AlpacaBroker(BaseBroker):
 
     def close_position(self, symbol: str) -> bool:
         try:
-            self._trading.close_position(symbol)
+            trade_symbol = self._trading_symbol(symbol)  # ETH/USD → ETHUSD
+            self._trading.close_position(trade_symbol)
             logger.info(f"Closed position: {symbol}")
             return True
         except Exception as e:
