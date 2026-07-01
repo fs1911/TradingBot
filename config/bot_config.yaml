@@ -4,7 +4,7 @@
 
 bot:
   name: "TradingBot-CH"
-  version: "1.0.0"
+  version: "1.1.0"
   environment: "paper"          # paper | live
   trading_enabled: true
   loop_interval_seconds: 60     # Main loop heartbeat
