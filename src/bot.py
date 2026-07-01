@@ -39,6 +39,7 @@ from .strategies.congress_trades import CongressTradesStrategy
 from .risk.risk_manager import RiskManager
 from .data.news_sentiment import SentimentAnalyzer
 from .monitoring.reporter import PerformanceReporter
+from .monitoring.telegram_notifier import TelegramNotifier
 from .brokers.base_broker import BaseBroker, Order, OrderSide, OrderType
 
 
@@ -88,6 +89,7 @@ class TradingBot:
         # Auxiliary
         self.sentiment = SentimentAnalyzer()
         self.reporter = PerformanceReporter()
+        self.telegram = TelegramNotifier()
 
         # Config shortcuts
         broker_key = self.bot_cfg.get("broker", "alpaca")
@@ -99,6 +101,7 @@ class TradingBot:
         # State
         self._running = False
         self._open_trades: dict[str, dict] = {}   # symbol → trade info
+        self._last_daily_report: str = ""
 
         # Graceful shutdown
         signal.signal(signal.SIGINT, self._handle_shutdown)
@@ -106,6 +109,7 @@ class TradingBot:
 
         # Sync any positions already open on the broker (survive restarts)
         self._load_existing_positions()
+        self.telegram.startup(self.symbols, self.timeframe)
 
         logger.info(f"TradingBot ready — symbols={self.symbols}, timeframe={self.timeframe}")
 
@@ -172,6 +176,14 @@ class TradingBot:
             self._manage_open_positions(account)
         except Exception as e:
             logger.error(f"Position management error: {e}")
+
+        # Daily report at 21:00 UTC (23:00 Swiss time)
+        if now.hour == 21 and now.minute < 2:
+            today = now.strftime("%Y-%m-%d")
+            if self._last_daily_report != today:
+                self._last_daily_report = today
+                report = self.reporter.daily_report()
+                self.telegram.daily_report(report)
 
     def _process_symbol(self, symbol: str, account) -> None:
         # Fetch OHLCV
@@ -250,6 +262,10 @@ class TradingBot:
                 "opened_at": datetime.now(timezone.utc),
             }
             self.risk_manager.metrics.open_positions += 1
+            self.telegram.trade_entered(
+                symbol=symbol, side=side.value, qty=qty, price=current_price,
+                strategy=entry.strategy, sl=entry.stop_loss, tp=entry.take_profit,
+            )
             logger.info(
                 f"ENTERED {side.value.upper()} {symbol} @ {current_price:.4f} "
                 f"qty={qty:.4f} sl={entry.stop_loss} tp={entry.take_profit} "
@@ -316,6 +332,11 @@ class TradingBot:
                     direction = 1 if side == OrderSide.BUY else -1
                     pnl = (price - trade["entry_price"]) * trade["qty"] * direction
                     self.risk_manager.record_trade_result(pnl)
+                    self.telegram.trade_exited(
+                        symbol=symbol, side=side.value, qty=trade["qty"],
+                        entry=trade["entry_price"], exit_price=price,
+                        pnl=pnl, reason=reason,
+                    )
                     self.reporter.log_trade(
                         symbol=symbol,
                         strategy=trade.get("strategy", ""),
