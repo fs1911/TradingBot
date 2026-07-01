@@ -185,6 +185,10 @@ class TradingBot:
                 report = self.reporter.daily_report()
                 self.telegram.daily_report(report)
 
+        # Morning report at 03:30 UTC (05:30 Swiss time)
+        if now.hour == 3 and now.minute == 30:
+            self._send_morning_report()
+
     def _process_symbol(self, symbol: str, account) -> None:
         # Fetch OHLCV
         df = self.broker.get_ohlcv(symbol, self.timeframe, limit=300)
@@ -271,6 +275,37 @@ class TradingBot:
                 f"qty={qty:.4f} sl={entry.stop_loss} tp={entry.take_profit} "
                 f"via {entry.strategy}"
             )
+
+    def _send_morning_report(self) -> None:
+        """05:30 Swiss time — overnight summary sent to Telegram."""
+        try:
+            positions = self.broker.get_positions()
+            account = self.broker.get_account()
+
+            pos_lines = ""
+            total_unrealized = 0.0
+            for p in positions:
+                pnl = (p.current_price - p.entry_price) * abs(p.qty) * (1 if p.side.value == "buy" else -1)
+                total_unrealized += pnl
+                emoji = "🟢" if pnl >= 0 else "🔴"
+                pos_lines += f"{emoji} {p.symbol}: {p.side.value.upper()} ${pnl:+.2f}\n"
+
+            overnight = self.reporter.daily_report()
+            trades_today = overnight.get("total_trades", 0)
+            pnl_today = overnight.get("total_pnl_usd", 0.0)
+
+            self.telegram.send(
+                f"☀️ <b>Guten Morgen — Nachtbericht 05:30</b>\n\n"
+                f"<b>Konto:</b> ${account.equity:,.2f} (Cash: ${account.cash:,.2f})\n"
+                f"<b>Unrealisiert:</b> ${total_unrealized:+.2f}\n"
+                f"<b>Trades heute:</b> {trades_today} | P&L: ${pnl_today:+.2f}\n\n"
+                f"<b>Offene Positionen ({len(positions)}):</b>\n{pos_lines if pos_lines else '— keine —'}\n"
+                f"<b>Aktive Strategien:</b> {len(self.strategies)}\n"
+                f"<b>Status:</b> Bot läuft ✅"
+            )
+        except Exception as e:
+            logger.error(f"Morning report failed: {e}")
+            self.telegram.error_alert(f"Morgenbericht fehlgeschlagen: {e}")
 
     def _load_existing_positions(self) -> None:
         """On restart, sync _open_trades with positions already open at the broker."""
