@@ -109,6 +109,24 @@ def vwap(
     return (typical * volume).cumsum() / volume.cumsum()
 
 
+def daily_vwap(
+    high: pd.Series,
+    low: pd.Series,
+    close: pd.Series,
+    volume: pd.Series,
+) -> pd.Series:
+    """VWAP that resets each calendar day — correct for intraday bars."""
+    typical = (high + low + close) / 3
+    tp_vol = typical * volume
+    result = pd.Series(np.nan, index=close.index)
+    dates = pd.Series(close.index.date, index=close.index)
+    for d in dates.unique():
+        mask = dates == d
+        cum_vol = volume[mask].cumsum()
+        result[mask] = tp_vol[mask].cumsum() / cum_vol.replace(0, np.nan)
+    return result
+
+
 def obv(close: pd.Series, volume: pd.Series) -> pd.Series:
     direction = np.sign(close.diff()).fillna(0)
     return (direction * volume).cumsum()
@@ -177,5 +195,13 @@ def add_all_indicators(df: pd.DataFrame, params: dict) -> pd.DataFrame:
     stoch = stochastic(h, l, c)
     df["stoch_k"] = stoch["k"]
     df["stoch_d"] = stoch["d"]
+
+    df["vwap"] = daily_vwap(h, l, c, v)
+    df["obv"] = obv(c, v)
+
+    adx_df = adx(h, l, c)
+    df["adx"] = adx_df["adx"]
+    df["adx_plus_di"] = adx_df["plus_di"]
+    df["adx_minus_di"] = adx_df["minus_di"]
 
     return df

@@ -46,6 +46,15 @@ bollinger_bounce:
   rsi_long_max: 50            # Only long when RSI < 50
   rsi_short_min: 50           # Only short when RSI > 50
 
+vwap_reversion:
+  vwap_deviation_pct: 0.3     # Price must deviate ≥ 0.3% from VWAP to qualify
+  reentry_tolerance_pct: 0.1  # How close to VWAP the bar must close to trigger
+  atr_period: 14
+  sl_atr_multiplier: 1.0
+  tp_atr_multiplier: 2.0
+  rsi_long_max: 55            # Only long when RSI below this (not overbought)
+  rsi_short_min: 45           # Only short when RSI above this (not oversold)
+
 congress_mirror:
   lookback_days: 30           # How far back to look for trades
   min_transaction_value: 15000   # Min USD value to consider
@@ -63,5 +72,6 @@ signal_fusion:
     rsi_mean_reversion: 1.0
     macd_momentum: 1.0
     bollinger_bounce: 1.0
+    vwap_reversion: 1.0
     congress_mirror: 0.5
   score_threshold: 0.45       # Single strategy with score ≥ 0.45 trades

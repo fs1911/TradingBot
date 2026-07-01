@@ -18,12 +18,15 @@ active_strategies:
   - "rsi_mean_reversion"
   - "macd_momentum"
   - "bollinger_bounce"
+  - "vwap_reversion"
   # - "congress_mirror"         # Uncomment when QuiverQuant key is set
 
 # Markets to trade
 markets:
   alpaca:
-    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL", "BTC/USD", "ETH/USD"]
+    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL",
+              "GLD", "IWM",
+              "BTC/USD", "ETH/USD", "SOL/USD"]
     timeframe: "15Min"          # 1Min | 5Min | 15Min | 1Hour | 1Day
 
   binance:
