@@ -178,8 +178,8 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Position management error: {e}")
 
-        # Daily report at 21:00 UTC (23:00 Swiss time)
-        if now.hour == 21 and now.minute < 2:
+        # Daily report at 20:00 UTC (22:00 Swiss time) — after US market close
+        if now.hour == 20 and now.minute < 2:
             today = now.strftime("%Y-%m-%d")
             if self._last_daily_report != today:
                 self._last_daily_report = today
