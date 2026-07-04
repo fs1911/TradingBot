@@ -303,14 +303,10 @@ class TradingBot:
             if pause_until is None or now >= pause_until:
                 env = self.bot_cfg["bot"].get("environment", "paper")
                 if env == "paper":
-                    logger.warning("Paper mode: auto-recovering from STOPPED — resetting daily metrics")
+                    logger.warning("Paper mode: 1h drawdown pause expired — resuming automatically")
                     self.risk_manager.metrics.state = BotState.ACTIVE
                     self.risk_manager.metrics.consecutive_losses = 0
                     self.risk_manager.metrics.daily_pnl = 0.0
-                    self.telegram.send(
-                        "🔄 <b>Bot hat sich selbst erholt</b>\n"
-                        "Nach Drawdown-Stop automatisch wiedergestartet — trading weiter."
-                    )
 
     def _send_morning_report(self) -> None:
         """05:30 Swiss time — overnight summary sent to Telegram."""
@@ -445,7 +441,7 @@ class TradingBot:
                             if env == "paper":
                                 self.telegram.send(
                                     "🔄 <b>Drawdown-Limit erreicht</b>\n"
-                                    "Bot setzt sich in 24h automatisch zurück und handelt weiter."
+                                    "Bot pausiert 1h, setzt sich automatisch zurück und handelt weiter."
                                 )
                             else:
                                 self.telegram.error_alert(
