@@ -8,7 +8,7 @@ risk:
   # Position sizing
   risk_per_trade_pct: 1.0          # Max % of account equity per trade
   max_position_size_pct: 5.0       # Max single position as % of equity
-  max_open_positions: 8            # Hard cap on simultaneous open trades
+  max_open_positions: 15           # Hard cap on simultaneous open trades
   max_correlation_exposure: 0.6    # Max portfolio beta to any single sector
 
   # Drawdown controls

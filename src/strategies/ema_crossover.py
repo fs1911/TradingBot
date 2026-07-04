@@ -59,6 +59,11 @@ class EMACrossoverStrategy(BaseStrategy):
                 crossed_down = True
                 break
 
+        # ADX filter — EMA crossover works best in trending markets
+        adx_min = params.get("adx_min", 0)
+        if adx_min > 0 and row.get("adx", 100) < adx_min:
+            return []
+
         if crossed_up and volume_ok:
             signals.append(Signal(
                 symbol=symbol,

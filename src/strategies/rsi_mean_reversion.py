@@ -50,6 +50,13 @@ class RSIMeanReversionStrategy(BaseStrategy):
         if rsi is None or rsi_prev is None:
             return []
 
+        # ── ADX regime filter — mean reversion works best in ranging markets ─
+        adx_max = params.get("adx_max", 0)
+        if adx_max > 0:
+            adx_val = row.get("adx", 0)
+            if adx_val > adx_max:
+                return []
+
         # ── EMA trend filter ─────────────────────────────────────────────────
         ema_filter = params.get("ema_trend_filter", 50)
         if ema_filter and ema_filter > 0:

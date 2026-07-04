@@ -165,6 +165,49 @@ def adx(
     return pd.DataFrame({"adx": adx_val, "plus_di": plus_di, "minus_di": minus_di})
 
 
+# ── Supertrend ────────────────────────────────────────────────────────────────
+
+def supertrend(
+    high: pd.Series,
+    low: pd.Series,
+    close: pd.Series,
+    period: int = 10,
+    multiplier: float = 3.0,
+) -> pd.DataFrame:
+    """Supertrend indicator. Returns direction (+1 bullish, -1 bearish) and band value."""
+    atr_val = atr(high, low, close, period)
+    hl2 = (high + low) / 2
+
+    upper_basic = (hl2 + multiplier * atr_val).values
+    lower_basic = (hl2 - multiplier * atr_val).values
+    close_arr = close.values
+    n = len(close_arr)
+
+    upper_band = upper_basic.copy()
+    lower_band = lower_basic.copy()
+    direction = np.ones(n)
+
+    for i in range(1, n):
+        upper_band[i] = (upper_basic[i]
+                         if upper_basic[i] < upper_band[i - 1] or close_arr[i - 1] > upper_band[i - 1]
+                         else upper_band[i - 1])
+        lower_band[i] = (lower_basic[i]
+                         if lower_basic[i] > lower_band[i - 1] or close_arr[i - 1] < lower_band[i - 1]
+                         else lower_band[i - 1])
+        if direction[i - 1] == -1 and close_arr[i] > upper_band[i]:
+            direction[i] = 1.0
+        elif direction[i - 1] == 1 and close_arr[i] < lower_band[i]:
+            direction[i] = -1.0
+        else:
+            direction[i] = direction[i - 1]
+
+    st_val = np.where(direction == 1, lower_band, upper_band)
+    return pd.DataFrame(
+        {"st_direction": direction, "st_value": st_val},
+        index=close.index,
+    )
+
+
 # ── Composite signal helpers ──────────────────────────────────────────────────
 
 def add_all_indicators(df: pd.DataFrame, params: dict) -> pd.DataFrame:
@@ -203,5 +246,9 @@ def add_all_indicators(df: pd.DataFrame, params: dict) -> pd.DataFrame:
     df["adx"] = adx_df["adx"]
     df["adx_plus_di"] = adx_df["plus_di"]
     df["adx_minus_di"] = adx_df["minus_di"]
+
+    st = supertrend(h, l, c)
+    df["st_direction"] = st["st_direction"]
+    df["st_value"] = st["st_value"]
 
     return df

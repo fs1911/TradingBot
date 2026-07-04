@@ -35,6 +35,8 @@ from .strategies.rsi_mean_reversion import RSIMeanReversionStrategy
 from .strategies.macd_momentum import MACDMomentumStrategy
 from .strategies.bollinger_bounce import BollingerBounceStrategy
 from .strategies.vwap_reversion import VWAPReversionStrategy
+from .strategies.supertrend import SupertrendStrategy
+from .strategies.breakout_momentum import BreakoutMomentumStrategy
 from .strategies.congress_trades import CongressTradesStrategy
 from .risk.risk_manager import RiskManager
 from .data.news_sentiment import SentimentAnalyzer
@@ -49,6 +51,8 @@ STRATEGY_REGISTRY = {
     "macd_momentum": MACDMomentumStrategy,
     "bollinger_bounce": BollingerBounceStrategy,
     "vwap_reversion": VWAPReversionStrategy,
+    "supertrend": SupertrendStrategy,
+    "breakout_momentum": BreakoutMomentumStrategy,
     "congress_mirror": CongressTradesStrategy,
 }
 
@@ -103,6 +107,7 @@ class TradingBot:
         self._open_trades: dict[str, dict] = {}   # symbol → trade info
         self._last_daily_report: str = ""
         self._last_morning_report: str = ""
+        self._market_trend: str = "neutral"       # Updated each tick from SPY
 
         # Graceful shutdown
         signal.signal(signal.SIGINT, self._handle_shutdown)
@@ -209,6 +214,13 @@ class TradingBot:
             all_params.update(self.strategy_cfg.get(s.name, {}))
         df = add_all_indicators(df, all_params)
 
+        # Update market trend from SPY (processed first in the symbol list)
+        if symbol == "SPY":
+            row = df.iloc[-1]
+            ema50 = row.get("ema_50", row["close"])
+            self._market_trend = "bullish" if row["close"] > ema50 else "bearish"
+            logger.debug(f"Market trend: {self._market_trend} (SPY={row['close']:.2f} EMA50={ema50:.2f})")
+
         # Already in a position for this symbol — skip new entries
         if symbol in self._open_trades:
             return
@@ -233,6 +245,17 @@ class TradingBot:
         entry = self._fuse_signals(filtered, fusion_cfg)
         if entry is None:
             return
+
+        # Market breadth filter: don't fight SPY's macro direction for US stocks
+        is_crypto = "/" in symbol
+        is_etf_or_stock = not is_crypto
+        if is_etf_or_stock and symbol != "SPY" and self._market_trend != "neutral":
+            if self._market_trend == "bearish" and entry.signal == SignalType.LONG:
+                logger.debug(f"{symbol}: skipping LONG — SPY in bearish trend")
+                return
+            if self._market_trend == "bullish" and entry.signal == SignalType.SHORT:
+                logger.debug(f"{symbol}: skipping SHORT — SPY in bullish trend")
+                return
 
         # Risk gate
         if not self.risk_manager.approve_signal(entry, account):
@@ -418,6 +441,35 @@ class TradingBot:
                     should_close, reason = True, "sl"
                 elif tp and price <= tp:
                     should_close, reason = True, "tp"
+
+            # ── Trailing stop ─────────────────────────────────────────────────
+            if not should_close:
+                trailing_cfg = self.risk_cfg.get("trailing_stop", {})
+                if trailing_cfg.get("enabled"):
+                    activate_pct = trailing_cfg.get("activate_after_profit_pct", 1.0) / 100
+                    trail_pct = trailing_cfg.get("trail_pct", 0.8) / 100
+                    entry_price = trade["entry_price"]
+                    if side == OrderSide.BUY:
+                        profit_pct = (price - entry_price) / entry_price
+                        if profit_pct >= activate_pct:
+                            peak = max(trade.get("trail_peak", price), price)
+                            trade["trail_peak"] = peak
+                            if price <= peak * (1 - trail_pct):
+                                should_close, reason = True, "trailing_stop"
+                    else:
+                        profit_pct = (entry_price - price) / entry_price
+                        if profit_pct >= activate_pct:
+                            trough = min(trade.get("trail_trough", price), price)
+                            trade["trail_trough"] = trough
+                            if price >= trough * (1 + trail_pct):
+                                should_close, reason = True, "trailing_stop"
+
+            # ── Time-based exit ───────────────────────────────────────────────
+            if not should_close:
+                max_hold_h = self.bot_cfg.get("bot", {}).get("max_hold_hours", 6)
+                held_h = (datetime.now(timezone.utc) - trade["opened_at"]).total_seconds() / 3600
+                if held_h >= max_hold_h:
+                    should_close, reason = True, "time_limit"
 
             if should_close:
                 success = self.broker.close_position(symbol)

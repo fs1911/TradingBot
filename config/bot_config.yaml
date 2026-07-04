@@ -4,40 +4,45 @@
 
 bot:
   name: "TradingBot-CH"
-  version: "1.1.0"
-  environment: "paper"          # paper | live
+  version: "1.2.0"
+  environment: "paper"
   trading_enabled: true
-  loop_interval_seconds: 60     # Main loop heartbeat
+  loop_interval_seconds: 60
+  max_hold_hours: 6        # Auto-close any position after 6 hours (time-based exit)
 
-# Active broker adapter: alpaca | binance | kraken
 broker: "alpaca"
 
-# Active strategies (can run multiple in parallel)
 active_strategies:
   - "ema_crossover"
   - "rsi_mean_reversion"
   - "macd_momentum"
   - "bollinger_bounce"
   - "vwap_reversion"
-  # - "congress_mirror"         # Uncomment when QuiverQuant key is set
+  - "supertrend"
+  - "breakout_momentum"
 
-# Markets to trade
 markets:
   alpaca:
-    symbols: ["SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL",
-              "GLD", "IWM", "SLV", "USO", "TLT", "XLE", "XLF",
-              "BTC/USD", "ETH/USD"]
-    timeframe: "15Min"          # 1Min | 5Min | 15Min | 1Hour | 1Day
+    symbols: [
+      "SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL",
+      "NFLX", "INTC", "CRM", "DIS", "BABA",
+      "COIN", "PLTR", "UBER", "PYPL", "SOFI", "HOOD", "NIO", "RIVN",
+      "JPM", "V", "WMT", "JNJ",
+      "GLD", "IWM", "SLV", "USO", "TLT", "XLE", "XLF",
+      "XLK", "XLY", "XLV", "GDX", "ARKK", "EEM",
+      "BTC/USD", "ETH/USD", "SOL/USD", "DOGE/USD",
+      "LINK/USD", "AVAX/USD", "LTC/USD", "BCH/USD", "MATIC/USD"
+    ]
+    timeframe: "15Min"
 
   binance:
     symbols: ["BTC/USDT", "ETH/USDT", "SOL/USDT"]
-    timeframe: "1h"             # 1m | 5m | 15m | 1h | 4h | 1d
+    timeframe: "1h"
 
   kraken:
     symbols: ["XBT/USD", "ETH/USD"]
-    timeframe: "60"             # minutes
+    timeframe: "60"
 
-# Trading sessions (UTC)
 sessions:
   forex_london:
     start: "07:00"
@@ -52,7 +57,6 @@ sessions:
     start: "00:00"
     end: "23:59"
 
-# Watchdog: auto-disable bot on hard limits
 watchdog:
   max_consecutive_losses: 5
   safe_mode_on_daily_drawdown_pct: 3.0

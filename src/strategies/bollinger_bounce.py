@@ -39,6 +39,11 @@ class BollingerBounceStrategy(BaseStrategy):
         if bb_upper is None or bb_lower is None:
             return []
 
+        # ADX regime filter — Bollinger bounce works best in ranging markets
+        adx_max = params.get("adx_max", 0)
+        if adx_max > 0 and row.get("adx", 0) > adx_max:
+            return []
+
         prev_close = prev["close"]
         prev_lower = prev.get("bb_lower", bb_lower)
         prev_upper = prev.get("bb_upper", bb_upper)
