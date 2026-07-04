@@ -298,6 +298,11 @@ class TradingBot:
             trades_today = overnight.get("total_trades", 0)
             pnl_today = overnight.get("total_pnl_usd", 0.0)
 
+            status = self.risk_manager.status_summary()
+            state_emoji = {"active": "✅", "safe_mode": "⚠️", "paused": "⏸", "stopped": "🛑"}.get(
+                status["state"], "❓"
+            )
+            pause_info = f"\nPause bis: {status['paused_until']}" if status.get("paused_until") else ""
             self.telegram.send(
                 f"☀️ <b>Guten Morgen — Nachtbericht 05:30</b>\n\n"
                 f"<b>Konto:</b> ${account.equity:,.2f} (Cash: ${account.cash:,.2f})\n"
@@ -305,7 +310,8 @@ class TradingBot:
                 f"<b>Trades heute:</b> {trades_today} | P&L: ${pnl_today:+.2f}\n\n"
                 f"<b>Offene Positionen ({len(positions)}):</b>\n{pos_lines if pos_lines else '— keine —'}\n"
                 f"<b>Aktive Strategien:</b> {len(self.strategies)}\n"
-                f"<b>Status:</b> Bot läuft ✅"
+                f"<b>Bot-Status:</b> {state_emoji} {status['state'].upper()}{pause_info}\n"
+                f"<b>Verluste in Folge:</b> {status['consecutive_losses']}"
             )
         except Exception as e:
             logger.error(f"Morning report failed: {e}")
@@ -351,6 +357,20 @@ class TradingBot:
             sl = trade.get("sl")
             tp = trade.get("tp")
 
+            # Restored positions have no SL/TP — assign default % levels so they
+            # don't block the position cap forever
+            if sl is None and tp is None:
+                entry = trade["entry_price"]
+                if side == OrderSide.BUY:
+                    sl = entry * 0.985   # 1.5% stop-loss
+                    tp = entry * 1.030   # 3.0% take-profit
+                else:
+                    sl = entry * 1.015
+                    tp = entry * 0.970
+                trade["sl"] = sl
+                trade["tp"] = tp
+                logger.info(f"Assigned fallback SL/TP to {symbol}: SL={sl:.4f} TP={tp:.4f}")
+
             should_close = False
             reason = ""
 
@@ -370,12 +390,28 @@ class TradingBot:
                 if success:
                     direction = 1 if side == OrderSide.BUY else -1
                     pnl = (price - trade["entry_price"]) * trade["qty"] * direction
+                    prev_state = self.risk_manager.metrics.state
                     self.risk_manager.record_trade_result(pnl)
+                    new_state = self.risk_manager.metrics.state
                     self.telegram.trade_exited(
                         symbol=symbol, side=side.value, qty=trade["qty"],
                         entry=trade["entry_price"], exit_price=price,
                         pnl=pnl, reason=reason,
                     )
+                    # Alert when bot enters pause or hard stop
+                    if prev_state != new_state:
+                        streak = self.risk_manager.metrics.consecutive_losses
+                        pause_until = self.risk_manager.metrics.pause_until
+                        if new_state.value == "paused":
+                            self.telegram.error_alert(
+                                f"⏸ Bot pausiert nach {streak} Verlust-Trades in Folge.\n"
+                                f"Wiederaufnahme: {pause_until.strftime('%H:%M UTC') if pause_until else 'unbekannt'}"
+                            )
+                        elif new_state.value == "stopped":
+                            self.telegram.error_alert(
+                                "🛑 HARD STOP — maximaler Gesamtverlust erreicht.\n"
+                                "Manueller Neustart erforderlich."
+                            )
                     self.reporter.log_trade(
                         symbol=symbol,
                         strategy=trade.get("strategy", ""),
