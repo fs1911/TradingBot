@@ -19,14 +19,18 @@ ema_crossover:
 
 rsi_mean_reversion:
   rsi_period: 14
-  oversold_threshold: 35      # Loosened from 30 → more frequent signals
-  overbought_threshold: 65    # Loosened from 70 → more frequent signals
-  extreme_oversold: 25
-  extreme_overbought: 75
-  ema_trend_filter: 0         # Disabled: trend filter removed for more signals
+  oversold_threshold: 32      # Tightened: only real oversold readings
+  overbought_threshold: 68    # Tightened: only real overbought readings
+  extreme_oversold: 22        # Extreme reading → max conviction score
+  extreme_overbought: 78
+  ema_trend_filter: 50        # Re-enabled: long only above EMA50, short only below
+  stoch_confirmation: true    # Stochastic must also confirm extreme condition
+  stoch_oversold: 28          # Stoch K must be below this for longs
+  stoch_overbought: 72        # Stoch K must be above this for shorts
+  require_body_direction: true  # Entry candle must close in trade direction
   atr_period: 14
   sl_atr_multiplier: 1.8
-  tp_atr_multiplier: 3.0
+  tp_atr_multiplier: 3.5     # Slightly wider TP for mean reversion target
 
 macd_momentum:
   fast_period: 12
@@ -37,7 +41,7 @@ macd_momentum:
   atr_period: 14
   sl_atr_multiplier: 2.0
   tp_atr_multiplier: 4.0
-  min_histogram_magnitude: 0.0001  # Lowered to catch more crossovers
+  min_histogram_magnitude: 0.001   # Minimum histogram size to filter noise crossovers
 
 bollinger_bounce:
   atr_period: 14
@@ -47,7 +51,7 @@ bollinger_bounce:
   rsi_short_min: 50           # Only short when RSI > 50
 
 vwap_reversion:
-  vwap_deviation_pct: 0.3     # Price must deviate ≥ 0.3% from VWAP to qualify
+  vwap_deviation_pct: 0.5     # Price must deviate ≥ 0.5% from VWAP (tightened from 0.3%)
   reentry_tolerance_pct: 0.1  # How close to VWAP the bar must close to trigger
   atr_period: 14
   sl_atr_multiplier: 1.8

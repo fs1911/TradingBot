@@ -102,6 +102,7 @@ class TradingBot:
         self._running = False
         self._open_trades: dict[str, dict] = {}   # symbol → trade info
         self._last_daily_report: str = ""
+        self._last_morning_report: str = ""
 
         # Graceful shutdown
         signal.signal(signal.SIGINT, self._handle_shutdown)
@@ -185,9 +186,12 @@ class TradingBot:
                 report = self.reporter.daily_report()
                 self.telegram.daily_report(report)
 
-        # Morning report at 03:30 UTC (05:30 Swiss time)
-        if now.hour == 3 and now.minute == 30:
-            self._send_morning_report()
+        # Morning report at 03:30 UTC (05:30 Swiss time) — 4-minute window prevents misses
+        if now.hour == 3 and 28 <= now.minute <= 31:
+            today = now.strftime("%Y-%m-%d")
+            if self._last_morning_report != today:
+                self._last_morning_report = today
+                self._send_morning_report()
 
     def _process_symbol(self, symbol: str, account) -> None:
         # Fetch OHLCV

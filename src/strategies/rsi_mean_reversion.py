@@ -1,16 +1,21 @@
 """
 RSI Mean Reversion Strategy
 ────────────────────────────────────────────────────────────────────────────
-Entry:
-  LONG  when RSI < oversold threshold AND price > EMA50 (uptrend filter)
-  SHORT when RSI > overbought threshold AND price < EMA50 (downtrend filter)
+Entry (LONG):
+  1. RSI crosses up through oversold threshold (was below, now above)
+  2. Price > EMA50 (only buy dips in uptrends)
+  3. Stochastic K also in oversold zone (< stoch_oversold)
+  4. Entry candle is green (close > open)
 
-  Extreme readings (RSI < 20 / > 80) generate higher-conviction signals.
+Entry (SHORT):
+  1. RSI crosses down through overbought threshold
+  2. Price < EMA50 (only short rallies in downtrends)
+  3. Stochastic K also in overbought zone (> stoch_overbought)
+  4. Entry candle is red (close < open)
 
 Exit:
   Stop-loss  = entry ± ATR × sl_atr_multiplier
   Take-profit = entry ± ATR × tp_atr_multiplier
-  Also exit when RSI reverts to 50 (mean reversion complete).
 """
 from __future__ import annotations
 import pandas as pd
@@ -39,28 +44,62 @@ class RSIMeanReversionStrategy(BaseStrategy):
         rsi = row.get("rsi")
         rsi_prev = prev.get("rsi")
         price = row["close"]
+        open_price = row.get("open", price)
         atr = row.get("atr", price * 0.01)
 
+        if rsi is None or rsi_prev is None:
+            return []
+
+        # ── EMA trend filter ─────────────────────────────────────────────────
         ema_filter = params.get("ema_trend_filter", 50)
         if ema_filter and ema_filter > 0:
-            ema_col = f"ema_{ema_filter}"
-            ema_val = row.get(ema_col, price)
+            ema_val = row.get(f"ema_{ema_filter}", price)
             trend_long_ok = price > ema_val
             trend_short_ok = price < ema_val
         else:
             trend_long_ok = True
             trend_short_ok = True
 
-        if rsi is None or rsi_prev is None:
-            return []
+        # ── Stochastic confirmation ──────────────────────────────────────────
+        if params.get("stoch_confirmation", False):
+            stoch_k = row.get("stoch_k")
+            stoch_oversold = params.get("stoch_oversold", 25)
+            stoch_overbought = params.get("stoch_overbought", 75)
+            if stoch_k is not None:
+                stoch_long_ok = stoch_k < stoch_oversold
+                stoch_short_ok = stoch_k > stoch_overbought
+            else:
+                stoch_long_ok = True
+                stoch_short_ok = True
+        else:
+            stoch_long_ok = True
+            stoch_short_ok = True
 
-        # RSI crosses up through oversold threshold (mean reversion long)
-        long_signal = (rsi_prev < oversold) and (rsi >= oversold) and trend_long_ok
-        # RSI crosses down through overbought threshold (mean reversion short)
-        short_signal = (rsi_prev > overbought) and (rsi <= overbought) and trend_short_ok
+        # ── Candle body direction ────────────────────────────────────────────
+        if params.get("require_body_direction", False):
+            candle_long_ok = price > open_price   # green candle
+            candle_short_ok = price < open_price  # red candle
+        else:
+            candle_long_ok = True
+            candle_short_ok = True
+
+        # ── Signal logic ─────────────────────────────────────────────────────
+        # RSI crosses UP through oversold threshold → price recovering
+        long_signal = (
+            (rsi_prev < oversold) and (rsi >= oversold)
+            and trend_long_ok
+            and stoch_long_ok
+            and candle_long_ok
+        )
+        # RSI crosses DOWN through overbought threshold → price topping
+        short_signal = (
+            (rsi_prev > overbought) and (rsi <= overbought)
+            and trend_short_ok
+            and stoch_short_ok
+            and candle_short_ok
+        )
 
         if long_signal:
-            extreme = rsi <= extreme_oversold
             score = self._score(rsi, oversold, extreme_oversold, "long")
             signals.append(Signal(
                 symbol=symbol,
@@ -69,11 +108,10 @@ class RSIMeanReversionStrategy(BaseStrategy):
                 score=score,
                 stop_loss=price - sl_mult * atr,
                 take_profit=price + tp_mult * atr,
-                metadata={"rsi": rsi, "extreme": extreme},
+                metadata={"rsi": rsi, "stoch_k": row.get("stoch_k")},
             ))
 
         elif short_signal:
-            extreme = rsi >= extreme_overbought
             score = self._score(rsi, overbought, extreme_overbought, "short")
             signals.append(Signal(
                 symbol=symbol,
@@ -82,13 +120,13 @@ class RSIMeanReversionStrategy(BaseStrategy):
                 score=score,
                 stop_loss=price + sl_mult * atr,
                 take_profit=price - tp_mult * atr,
-                metadata={"rsi": rsi, "extreme": extreme},
+                metadata={"rsi": rsi, "stoch_k": row.get("stoch_k")},
             ))
 
         return signals
 
     def _score(self, rsi: float, threshold: float, extreme: float, direction: str) -> float:
-        """Score based on how extreme the RSI reading is."""
+        """Score 0–1 based on how far RSI penetrated the extreme zone."""
         if direction == "long":
             depth = max(threshold - rsi, 0)
             max_depth = threshold - extreme
