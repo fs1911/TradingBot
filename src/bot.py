@@ -149,6 +149,9 @@ class TradingBot:
         self.risk_manager.daily_reset(account)
         self.risk_manager.metrics.open_positions = len(self._open_trades)
 
+        # Auto-heal paused/stopped states — bot recovers without user intervention
+        self._auto_recover()
+
         status = self.risk_manager.status_summary()
         if status["state"] in ("stopped", "paused"):
             logger.warning(f"Bot state={status['state']} — skipping entries")
@@ -280,6 +283,35 @@ class TradingBot:
                 f"via {entry.strategy}"
             )
 
+    def _auto_recover(self) -> None:
+        """Autonomous self-healing — recovers from paused/stopped states without user action."""
+        from .brokers.base_broker import OrderSide as _OS
+        from .risk.risk_manager import BotState
+        state = self.risk_manager.metrics.state
+        now = datetime.now(timezone.utc)
+
+        if state == BotState.PAUSED:
+            pause_until = self.risk_manager.metrics.pause_until
+            if pause_until and now >= pause_until:
+                self.risk_manager.metrics.state = BotState.ACTIVE
+                self.risk_manager.metrics.consecutive_losses = 0
+                logger.info("Loss-streak pause expired — bot resumed automatically")
+
+        elif state == BotState.STOPPED:
+            # In paper trading: auto-reset after 24h with clean slate
+            pause_until = self.risk_manager.metrics.pause_until
+            if pause_until is None or now >= pause_until:
+                env = self.bot_cfg["bot"].get("environment", "paper")
+                if env == "paper":
+                    logger.warning("Paper mode: auto-recovering from STOPPED — resetting daily metrics")
+                    self.risk_manager.metrics.state = BotState.ACTIVE
+                    self.risk_manager.metrics.consecutive_losses = 0
+                    self.risk_manager.metrics.daily_pnl = 0.0
+                    self.telegram.send(
+                        "🔄 <b>Bot hat sich selbst erholt</b>\n"
+                        "Nach Drawdown-Stop automatisch wiedergestartet — trading weiter."
+                    )
+
     def _send_morning_report(self) -> None:
         """05:30 Swiss time — overnight summary sent to Telegram."""
         try:
@@ -398,20 +430,28 @@ class TradingBot:
                         entry=trade["entry_price"], exit_price=price,
                         pnl=pnl, reason=reason,
                     )
-                    # Alert when bot enters pause or hard stop
+                    # Inform user when bot changes state — bot handles recovery itself
                     if prev_state != new_state:
                         streak = self.risk_manager.metrics.consecutive_losses
                         pause_until = self.risk_manager.metrics.pause_until
+                        resume_str = pause_until.strftime('%H:%M UTC') if pause_until else '—'
                         if new_state.value == "paused":
-                            self.telegram.error_alert(
-                                f"⏸ Bot pausiert nach {streak} Verlust-Trades in Folge.\n"
-                                f"Wiederaufnahme: {pause_until.strftime('%H:%M UTC') if pause_until else 'unbekannt'}"
+                            self.telegram.send(
+                                f"⏸ <b>Bot kurz pausiert</b> ({streak} Verluste in Folge)\n"
+                                f"Automatische Wiederaufnahme um {resume_str} — kein Eingriff nötig."
                             )
                         elif new_state.value == "stopped":
-                            self.telegram.error_alert(
-                                "🛑 HARD STOP — maximaler Gesamtverlust erreicht.\n"
-                                "Manueller Neustart erforderlich."
-                            )
+                            env = self.bot_cfg["bot"].get("environment", "paper")
+                            if env == "paper":
+                                self.telegram.send(
+                                    "🔄 <b>Drawdown-Limit erreicht</b>\n"
+                                    "Bot setzt sich in 24h automatisch zurück und handelt weiter."
+                                )
+                            else:
+                                self.telegram.error_alert(
+                                    "🛑 HARD STOP — maximaler Verlust im Live-Modus.\n"
+                                    "Bitte manuell prüfen bevor Neustart."
+                                )
                     self.reporter.log_trade(
                         symbol=symbol,
                         strategy=trade.get("strategy", ""),

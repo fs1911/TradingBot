@@ -198,6 +198,8 @@ class RiskManager:
                 f"TOTAL DRAWDOWN {total_dd_pct:.2f}% ≥ {max_total}% — HARD STOP"
             )
             self.metrics.state = BotState.STOPPED
+            # Set recovery timer so auto_recover in bot.py knows when 24h are up
+            self.metrics.pause_until = datetime.now(timezone.utc) + timedelta(hours=24)
 
     # ── State report ──────────────────────────────────────────────────────────
 
