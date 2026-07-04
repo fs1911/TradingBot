@@ -290,18 +290,24 @@ class TradingBot:
         state = self.risk_manager.metrics.state
         now = datetime.now(timezone.utc)
 
+        env = self.bot_cfg["bot"].get("environment", "paper")
+
         if state == BotState.PAUSED:
-            pause_until = self.risk_manager.metrics.pause_until
-            if pause_until and now >= pause_until:
+            if env == "paper":
+                # Paper mode: no pause for loss streaks — keep learning from every trade
                 self.risk_manager.metrics.state = BotState.ACTIVE
                 self.risk_manager.metrics.consecutive_losses = 0
-                logger.info("Loss-streak pause expired — bot resumed automatically")
+                logger.info("Paper mode: loss-streak pause skipped — resuming immediately")
+            else:
+                pause_until = self.risk_manager.metrics.pause_until
+                if pause_until and now >= pause_until:
+                    self.risk_manager.metrics.state = BotState.ACTIVE
+                    self.risk_manager.metrics.consecutive_losses = 0
+                    logger.info("Loss-streak pause expired — bot resumed automatically")
 
         elif state == BotState.STOPPED:
-            # In paper trading: auto-reset after 24h with clean slate
             pause_until = self.risk_manager.metrics.pause_until
             if pause_until is None or now >= pause_until:
-                env = self.bot_cfg["bot"].get("environment", "paper")
                 if env == "paper":
                     logger.warning("Paper mode: 1h drawdown pause expired — resuming automatically")
                     self.risk_manager.metrics.state = BotState.ACTIVE
@@ -432,10 +438,13 @@ class TradingBot:
                         pause_until = self.risk_manager.metrics.pause_until
                         resume_str = pause_until.strftime('%H:%M UTC') if pause_until else '—'
                         if new_state.value == "paused":
-                            self.telegram.send(
-                                f"⏸ <b>Bot kurz pausiert</b> ({streak} Verluste in Folge)\n"
-                                f"Automatische Wiederaufnahme um {resume_str} — kein Eingriff nötig."
-                            )
+                            env = self.bot_cfg["bot"].get("environment", "paper")
+                            if env != "paper":
+                                self.telegram.send(
+                                    f"⏸ <b>Bot kurz pausiert</b> ({streak} Verluste in Folge)\n"
+                                    f"Automatische Wiederaufnahme um {resume_str}."
+                                )
+                            # Paper mode: no notification — bot resumes within 60s anyway
                         elif new_state.value == "stopped":
                             env = self.bot_cfg["bot"].get("environment", "paper")
                             if env == "paper":
