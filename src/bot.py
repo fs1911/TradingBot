@@ -192,6 +192,7 @@ class TradingBot:
             if self._last_daily_report != today:
                 self._last_daily_report = today
                 report = self.reporter.daily_report()
+                report["account_equity"] = account.equity
                 self.telegram.daily_report(report)
 
         # Morning report at 03:30 UTC (05:30 Swiss time) — 4-minute window prevents misses

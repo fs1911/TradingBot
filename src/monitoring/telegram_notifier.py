@@ -58,25 +58,56 @@ class TelegramNotifier:
 
     def daily_report(self, report: dict) -> None:
         if report.get("message"):
-            self.send(f"📊 <b>Daily Report</b>\n{report['message']}")
+            self.send(f"📊 <b>Tagesbericht</b>\n{report['message']}")
             return
+
+        pnl = report.get("total_pnl_usd", 0)
+        equity = report.get("account_equity", 0)
+        pnl_pct_total = (pnl / equity * 100) if equity > 0 else 0
+        emoji = "📈" if pnl >= 0 else "📉"
+
+        trade_lines = []
+        for t in report.get("trades", []):
+            t_emoji = "🟢" if t["pnl_usd"] > 0 else "🔴"
+            direction = "L" if t["direction"] == "long" else "S"
+            reason = (t.get("exit_reason", "") or "??")[:2].upper()
+            trade_lines.append(
+                f"{t_emoji} {t['symbol']:<10} {direction}  "
+                f"{t['pnl_usd']:>+7.2f}$  ({t['pnl_pct']:>+5.2f}%)  [{reason}]"
+            )
+        trades_block = "\n".join(trade_lines) if trade_lines else "— keine Trades —"
 
         strat_lines = "\n".join(
             f"  {k}: ${v:+.2f}"
             for k, v in report.get("strategy_breakdown", {}).items()
         )
-        pnl = report.get("total_pnl_usd", 0)
-        emoji = "📈" if pnl >= 0 else "📉"
-        self.send(
-            f"{emoji} <b>Daily Report — {report.get('label', '')}</b>\n\n"
-            f"Total P&L: <b>${pnl:+.2f}</b>\n"
-            f"Trades: {report.get('total_trades', 0)}\n"
+
+        summary = (
+            f"<b>Gesamt:  {pnl:+.2f}$  ({pnl_pct_total:+.2f}%)</b>\n"
+            f"Trades: {report.get('total_trades', 0)} | "
             f"Win Rate: {report.get('win_rate_%', 0):.1f}%\n"
             f"Profit Factor: {report.get('profit_factor', 0):.2f}\n"
             f"Best: ${report.get('best_trade', 0):+.2f} | "
             f"Worst: ${report.get('worst_trade', 0):+.2f}\n\n"
-            f"<b>By Strategy:</b>\n{strat_lines}"
+            f"<b>Pro Strategie:</b>\n{strat_lines}"
         )
+
+        full_msg = (
+            f"{emoji} <b>Tagesbericht — {report.get('label', '')}</b>\n\n"
+            f"<b>Einzelne Trades:</b>\n"
+            f"<code>{trades_block}</code>\n\n"
+            f"{'─' * 32}\n"
+            f"{summary}"
+        )
+
+        if len(full_msg) <= 4096:
+            self.send(full_msg)
+        else:
+            self.send(
+                f"{emoji} <b>Tagesbericht — {report.get('label', '')} (Trades)</b>\n\n"
+                f"<code>{trades_block}</code>"
+            )
+            self.send(f"{summary}")
 
     def error_alert(self, message: str) -> None:
         self.send(f"⚠️ <b>BOT ALERT</b>\n{message}")

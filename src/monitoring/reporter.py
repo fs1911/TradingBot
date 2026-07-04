@@ -131,6 +131,17 @@ class PerformanceReporter:
             "strategy_breakdown": {k: round(v, 2) for k, v in strat_pnl.items()},
             "best_trade": round(max(pnl_values), 2) if pnl_values else 0,
             "worst_trade": round(min(pnl_values), 2) if pnl_values else 0,
+            "trades": [
+                {
+                    "symbol": t.get("symbol", ""),
+                    "direction": t.get("direction", "long"),
+                    "pnl_usd": round(t.get("pnl_usd", 0), 2),
+                    "pnl_pct": round(t.get("pnl_pct", 0), 2),
+                    "exit_reason": t.get("exit_reason", ""),
+                    "strategy": t.get("strategy", ""),
+                }
+                for t in trades
+            ],
         }
         self._print_report(report)
         return report
