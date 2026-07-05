@@ -21,6 +21,11 @@ active_strategies:
   - "supertrend"
   - "breakout_momentum"
 
+# Crypto-only: mean reversion creates too many false signals on 24/7 volatile markets
+crypto_strategies:
+  - "supertrend"
+  - "breakout_momentum"
+
 markets:
   alpaca:
     symbols: [

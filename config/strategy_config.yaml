@@ -65,13 +65,13 @@ supertrend:
   multiplier: 3.0
   sl_atr_multiplier: 2.0
   tp_atr_multiplier: 5.0  # Let winners run — trend trades need room
-  adx_min: 20             # Only enter when there's confirmed trend strength
+  adx_min: 25             # Stricter: only confirmed strong trends (better for crypto volatility)
 
 breakout_momentum:
   breakout_lookback: 20   # Break above/below the 20-bar high/low
   volume_multiplier: 1.4  # Volume must be 1.4x the average
   ema_trend_filter: 50    # Only long above EMA50, only short below
-  adx_min: 0              # No ADX filter — breakouts create their own trend
+  adx_min: 20             # Avoid choppy fakeout breakouts — require some trend momentum
   atr_period: 14
   sl_atr_multiplier: 2.0
   tp_atr_multiplier: 5.0  # Breakouts can run far

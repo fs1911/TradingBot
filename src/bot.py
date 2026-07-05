@@ -226,6 +226,8 @@ class TradingBot:
         if symbol in self._open_trades:
             return
 
+        is_crypto = "/" in symbol
+
         # Collect signals from all strategies
         raw_signals: list[Signal] = []
         for strategy in self.strategies:
@@ -233,6 +235,12 @@ class TradingBot:
                 raw_signals.extend(strategy.generate_signals(df, symbol))
             except Exception as e:
                 logger.error(f"Strategy {strategy.name} failed for {symbol}: {e}")
+
+        # Crypto: only trend-following strategies (supertrend + breakout_momentum)
+        # Mean reversion strategies produce too many false signals on 24/7 volatile crypto
+        if is_crypto:
+            crypto_strats = set(self.bot_cfg.get("crypto_strategies", ["supertrend", "breakout_momentum"]))
+            raw_signals = [s for s in raw_signals if s.strategy in crypto_strats]
 
         if not raw_signals:
             return
@@ -248,7 +256,6 @@ class TradingBot:
             return
 
         # Market breadth filter: don't fight SPY's macro direction for US stocks
-        is_crypto = "/" in symbol
         is_etf_or_stock = not is_crypto
         if is_etf_or_stock and symbol != "SPY" and self._market_trend != "neutral":
             if self._market_trend == "bearish" and entry.signal == SignalType.LONG:
