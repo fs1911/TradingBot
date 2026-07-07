@@ -19,5 +19,15 @@ jobs:
           script: |
             cd ~/TradingBot
             git pull origin claude/trading-bot-setup-qb6687
+
+            # Inject GITHUB_TOKEN into .env if secret is configured
+            if [ -n "${{ secrets.BOT_GITHUB_TOKEN }}" ]; then
+              if grep -q "^GITHUB_TOKEN=" .env 2>/dev/null; then
+                sed -i "s|^GITHUB_TOKEN=.*|GITHUB_TOKEN=${{ secrets.BOT_GITHUB_TOKEN }}|" .env
+              else
+                echo "GITHUB_TOKEN=${{ secrets.BOT_GITHUB_TOKEN }}" >> .env
+              fi
+            fi
+
             sudo systemctl restart tradingbot
             echo "Deploy successful: $(date)"
