@@ -23,6 +23,7 @@ import time
 import signal
 import sys
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional
 from loguru import logger
 
@@ -42,6 +43,8 @@ from .risk.risk_manager import RiskManager
 from .data.news_sentiment import SentimentAnalyzer
 from .monitoring.reporter import PerformanceReporter
 from .monitoring.telegram_notifier import TelegramNotifier
+from .monitoring.auto_tuner import AutoTuner
+from .monitoring.journal_sync import JournalSyncer
 from .brokers.base_broker import BaseBroker, Order, OrderSide, OrderType
 
 
@@ -67,6 +70,18 @@ class TradingBot:
         self.risk_cfg = load_config("risk_config")
         if config_override:
             self._merge(self.bot_cfg, config_override)
+
+        # Apply auto-tuned parameter overrides (written nightly by AutoTuner)
+        _root = Path(__file__).parent.parent
+        _tuned_path = _root / "config" / "strategy_config_tuned.yaml"
+        if _tuned_path.exists():
+            import yaml as _yaml
+            with open(_tuned_path) as _f:
+                _tuned = _yaml.safe_load(_f) or {}
+            for _strat, _params in _tuned.items():
+                if _strat in self.strategy_cfg and isinstance(_params, dict):
+                    self.strategy_cfg[_strat].update(_params)
+            logger.info(f"Loaded auto-tuned overrides for: {list(_tuned.keys())}")
 
         env = self.bot_cfg["bot"].get("environment", "paper")
         log_level = os.environ.get("LOG_LEVEL", "INFO")
@@ -94,6 +109,20 @@ class TradingBot:
         self.sentiment = SentimentAnalyzer()
         self.reporter = PerformanceReporter()
         self.telegram = TelegramNotifier()
+
+        # Self-learning components (initialised after strategies are built)
+        _cfg_root = Path(__file__).parent.parent / "config"
+        _log_root = Path(__file__).parent.parent / "logs"
+        self.auto_tuner = AutoTuner(
+            base_config_path=_cfg_root / "strategy_config.yaml",
+            tuned_config_path=_cfg_root / "strategy_config_tuned.yaml",
+            journal_path=_log_root / "trading_journal.csv",
+            strategies=self.strategies,
+            telegram=self.telegram,
+        )
+        self.journal_syncer = JournalSyncer(
+            journal_path=_log_root / "trading_journal.csv",
+        )
 
         # Config shortcuts
         broker_key = self.bot_cfg.get("broker", "alpaca")
@@ -194,6 +223,18 @@ class TradingBot:
                 report = self.reporter.daily_report()
                 report["account_equity"] = account.equity
                 self.telegram.daily_report(report)
+
+                # Self-learning: analyse journal + auto-adjust params
+                try:
+                    self.auto_tuner.run()
+                except Exception as e:
+                    logger.error(f"AutoTuner failed: {e}")
+
+                # Sync journal to GitHub so it's accessible for external review
+                try:
+                    self.journal_syncer.push()
+                except Exception as e:
+                    logger.error(f"JournalSync failed: {e}")
 
         # Morning report at 03:30 UTC (05:30 Swiss time) — 4-minute window prevents misses
         if now.hour == 3 and 28 <= now.minute <= 31:
