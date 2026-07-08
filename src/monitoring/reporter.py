@@ -44,10 +44,13 @@ class PerformanceReporter:
         exit_reason: str = "",
         notes: str = "",
     ) -> None:
+        hold_secs = round((exit_time - entry_time).total_seconds(), 1)
         record = {
             "date": exit_time.strftime("%Y-%m-%d"),
             "time_entry": entry_time.strftime("%H:%M:%S"),
             "time_exit": exit_time.strftime("%H:%M:%S"),
+            "entry_time": entry_time.isoformat(),   # full ISO datetime for AutoTuner analysis
+            "hold_seconds": hold_secs,
             "symbol": symbol,
             "strategy": strategy,
             "direction": direction,

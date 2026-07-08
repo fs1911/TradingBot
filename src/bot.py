@@ -17,12 +17,13 @@ The Bot class:
 5. Runs weekly self-improvement hints
 """
 from __future__ import annotations
+import json
 import math
 import os
 import time
 import signal
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from loguru import logger
@@ -277,6 +278,28 @@ class TradingBot:
 
         is_crypto = "/" in symbol
 
+        # Session filter: avoid first N min of open and last N min before close for stocks
+        if not is_crypto:
+            sf = self.risk_cfg.get("session_filter", {})
+            if sf.get("enabled"):
+                avoid_open = sf.get("avoid_open_minutes", 15)
+                avoid_close = sf.get("avoid_close_minutes", 30)
+                us = self.bot_cfg.get("sessions", {}).get("us_stocks", {})
+                now_utc = datetime.now(timezone.utc)
+                try:
+                    oh, om = map(int, us.get("start", "13:30").split(":"))
+                    ch, cm = map(int, us.get("end", "20:00").split(":"))
+                    open_ts = now_utc.replace(hour=oh, minute=om, second=0, microsecond=0)
+                    close_ts = now_utc.replace(hour=ch, minute=cm, second=0, microsecond=0)
+                    if now_utc < open_ts + timedelta(minutes=avoid_open):
+                        logger.debug(f"{symbol}: within first {avoid_open} min of session — skip entry")
+                        return
+                    if now_utc > close_ts - timedelta(minutes=avoid_close):
+                        logger.debug(f"{symbol}: within last {avoid_close} min before close — skip entry")
+                        return
+                except Exception:
+                    pass  # Don't block trading if session parse fails
+
         # Collect signals from all strategies
         raw_signals: list[Signal] = []
         for strategy in self.strategies:
@@ -365,7 +388,6 @@ class TradingBot:
 
     def _load_sl_cooldowns(self) -> dict[str, datetime]:
         """Restore SL cooldowns from disk so restarts don't bypass them."""
-        import json
         result: dict[str, datetime] = {}
         if not self._cooldown_path.exists():
             return result
@@ -384,7 +406,6 @@ class TradingBot:
 
     def _save_sl_cooldowns(self) -> None:
         """Persist current SL cooldowns to disk."""
-        import json
         now = datetime.now(timezone.utc)
         active = {sym: ts.isoformat() for sym, ts in self._sl_cooldown.items() if ts > now}
         try:
@@ -612,7 +633,6 @@ class TradingBot:
                     # SL cooldown: block re-entry for 30 min to prevent chasing losses
                     if reason == "sl":
                         cooldown_minutes = self.bot_cfg.get("bot", {}).get("sl_cooldown_minutes", 30)
-                        from datetime import timedelta
                         self._sl_cooldown[symbol] = datetime.now(timezone.utc) + timedelta(minutes=cooldown_minutes)
                         self._save_sl_cooldowns()
                         logger.info(f"{symbol}: SL cooldown set — no re-entry for {cooldown_minutes} min")

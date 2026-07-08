@@ -63,6 +63,17 @@ class RiskManager:
             logger.info(f"Daily reset — equity: {account.equity:.2f}")
             self.metrics.daily_pnl = 0.0
             self.metrics.trades_today = 0
+
+            # Weekly reset on Monday
+            if today.weekday() == 0:
+                logger.info("Weekly reset — clearing weekly P&L")
+                self.metrics.weekly_pnl = 0.0
+
+            # Monthly reset on 1st of month
+            if today.day == 1:
+                logger.info("Monthly reset — clearing monthly P&L")
+                self.metrics.monthly_pnl = 0.0
+
             self.metrics.last_reset_date = today
             if self.metrics.state == BotState.PAUSED and self.metrics.pause_until:
                 if datetime.now(timezone.utc) > self.metrics.pause_until:
@@ -103,10 +114,27 @@ class RiskManager:
 
         # Daily drawdown
         if self.metrics.equity_high_water > 0:
-            daily_dd = -self.metrics.daily_pnl / self.metrics.equity_high_water * 100
+            hwm = self.metrics.equity_high_water
+            daily_dd = -self.metrics.daily_pnl / hwm * 100
             max_daily = self.risk.get("max_daily_drawdown_pct", 3.0)
             if daily_dd >= max_daily:
-                logger.warning(f"Daily drawdown limit {max_daily}% reached ({daily_dd:.2f}%) — halting")
+                logger.warning(f"Daily drawdown {daily_dd:.2f}% ≥ {max_daily}% — pausing for today")
+                self.metrics.state = BotState.PAUSED
+                self.metrics.pause_until = datetime.now(timezone.utc) + timedelta(hours=24)
+                return False
+
+            weekly_dd = -self.metrics.weekly_pnl / hwm * 100
+            max_weekly = self.risk.get("max_weekly_drawdown_pct", 6.0)
+            if weekly_dd >= max_weekly:
+                logger.warning(f"Weekly drawdown {weekly_dd:.2f}% ≥ {max_weekly}% — pausing until Monday")
+                self.metrics.state = BotState.PAUSED
+                self.metrics.pause_until = datetime.now(timezone.utc) + timedelta(hours=24)
+                return False
+
+            monthly_dd = -self.metrics.monthly_pnl / hwm * 100
+            max_monthly = self.risk.get("max_monthly_drawdown_pct", 10.0)
+            if monthly_dd >= max_monthly:
+                logger.warning(f"Monthly drawdown {monthly_dd:.2f}% ≥ {max_monthly}% — pausing until next reset")
                 self.metrics.state = BotState.PAUSED
                 self.metrics.pause_until = datetime.now(timezone.utc) + timedelta(hours=24)
                 return False
