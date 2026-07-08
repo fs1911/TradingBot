@@ -34,6 +34,7 @@ class VWAPReversionStrategy(BaseStrategy):
         tp_mult = params.get("tp_atr_multiplier", 2.0)
         rsi_long_max = params.get("rsi_long_max", 55)
         rsi_short_min = params.get("rsi_short_min", 45)
+        adx_max = params.get("adx_max", 100)
 
         row = df.iloc[-1]
         prev = df.iloc[-2]
@@ -43,6 +44,11 @@ class VWAPReversionStrategy(BaseStrategy):
         vwap_now = row.get("vwap")
         vwap_prev = prev.get("vwap")
         rsi = row.get("rsi", 50)
+        adx_val = row.get("adx", 0)
+
+        # ADX cap: mean-reversion only works in ranging (low-ADX) markets
+        if adx_max < 100 and adx_val > adx_max:
+            return []
 
         if (
             vwap_now is None

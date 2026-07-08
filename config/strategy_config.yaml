@@ -38,6 +38,7 @@ macd_momentum:
   signal_period: 9
   histogram_threshold: 0.0
   ema_trend_filter: 50
+  adx_min: 18             # Skip flat-market crossovers — some trend momentum required
   atr_period: 14
   sl_atr_multiplier: 2.0
   tp_atr_multiplier: 4.0
@@ -54,6 +55,7 @@ bollinger_bounce:
 vwap_reversion:
   vwap_deviation_pct: 0.5
   reentry_tolerance_pct: 0.1
+  adx_max: 28             # Mean-reversion: only trade in ranging markets, never fight a strong trend
   atr_period: 14
   sl_atr_multiplier: 1.8
   tp_atr_multiplier: 3.0
@@ -85,9 +87,11 @@ congress_mirror:
   exit_after_days: 30
 
 # Global signal scoring
+# score_threshold: composite weighted score required to enter.
+# With weights ~1.0-1.2, a single strategy maxes out around 1.0-1.2.
+# Threshold 1.2 = needs either ONE very confident signal OR TWO moderate signals agreeing.
 signal_fusion:
   enabled: true
-  require_agreement: 1
   score_weights:
     ema_crossover: 1.0
     rsi_mean_reversion: 1.0
@@ -97,4 +101,4 @@ signal_fusion:
     supertrend: 1.2        # Slightly higher weight — reliable trend indicator
     breakout_momentum: 1.1
     congress_mirror: 0.5
-  score_threshold: 0.45
+  score_threshold: 1.2

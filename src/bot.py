@@ -137,7 +137,8 @@ class TradingBot:
         self._last_daily_report: str = ""
         self._last_morning_report: str = ""
         self._market_trend: str = "neutral"       # Updated each tick from SPY
-        self._sl_cooldown: dict[str, datetime] = {}  # symbol → earliest re-entry time after SL
+        self._cooldown_path = Path(__file__).parent.parent / "logs" / "sl_cooldowns.json"
+        self._sl_cooldown: dict[str, datetime] = self._load_sl_cooldowns()
 
         # Graceful shutdown
         signal.signal(signal.SIGINT, self._handle_shutdown)
@@ -362,6 +363,37 @@ class TradingBot:
                 f"via {entry.strategy}"
             )
 
+    def _load_sl_cooldowns(self) -> dict[str, datetime]:
+        """Restore SL cooldowns from disk so restarts don't bypass them."""
+        import json
+        result: dict[str, datetime] = {}
+        if not self._cooldown_path.exists():
+            return result
+        try:
+            with open(self._cooldown_path) as f:
+                raw = json.load(f)
+            now = datetime.now(timezone.utc)
+            for sym, ts in raw.items():
+                until = datetime.fromisoformat(ts)
+                if until > now:
+                    result[sym] = until
+            logger.info(f"Restored {len(result)} active SL cooldowns from disk")
+        except Exception as e:
+            logger.warning(f"Could not load SL cooldowns: {e}")
+        return result
+
+    def _save_sl_cooldowns(self) -> None:
+        """Persist current SL cooldowns to disk."""
+        import json
+        now = datetime.now(timezone.utc)
+        active = {sym: ts.isoformat() for sym, ts in self._sl_cooldown.items() if ts > now}
+        try:
+            self._cooldown_path.parent.mkdir(exist_ok=True)
+            with open(self._cooldown_path, "w") as f:
+                json.dump(active, f)
+        except Exception as e:
+            logger.warning(f"Could not save SL cooldowns: {e}")
+
     def _auto_recover(self) -> None:
         """Autonomous self-healing — recovers from paused/stopped states without user action."""
         from .brokers.base_broker import OrderSide as _OS
@@ -582,6 +614,7 @@ class TradingBot:
                         cooldown_minutes = self.bot_cfg.get("bot", {}).get("sl_cooldown_minutes", 30)
                         from datetime import timedelta
                         self._sl_cooldown[symbol] = datetime.now(timezone.utc) + timedelta(minutes=cooldown_minutes)
+                        self._save_sl_cooldowns()
                         logger.info(f"{symbol}: SL cooldown set — no re-entry for {cooldown_minutes} min")
                     closed.append(symbol)
 

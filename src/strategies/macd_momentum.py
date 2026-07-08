@@ -31,6 +31,7 @@ class MACDMomentumStrategy(BaseStrategy):
         min_hist = params.get("min_histogram_magnitude", 0.001)
         ema_filter_period = params.get("ema_trend_filter", 50)
         ema_col = f"ema_{ema_filter_period}"
+        adx_min = params.get("adx_min", 0)
 
         signals: list[Signal] = []
         row = df.iloc[-1]
@@ -41,6 +42,11 @@ class MACDMomentumStrategy(BaseStrategy):
         price = row["close"]
         ema_trend = row.get(ema_col, price)
         atr = row.get("atr", price * 0.01)
+        adx_val = row.get("adx", 100)
+
+        # ADX floor: skip MACD crossovers in flat/choppy markets
+        if adx_min > 0 and adx_val < adx_min:
+            return []
 
         if hist is None or hist_prev is None:
             return []
