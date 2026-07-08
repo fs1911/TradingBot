@@ -9,17 +9,17 @@ bot:
   trading_enabled: true
   loop_interval_seconds: 60
   max_hold_hours: 6        # Auto-close any position after 6 hours (time-based exit)
+  sl_cooldown_minutes: 30  # No re-entry on same symbol for 30 min after stop-loss
 
 broker: "alpaca"
 
 active_strategies:
-  - "ema_crossover"
-  - "rsi_mean_reversion"
   - "macd_momentum"
-  - "bollinger_bounce"
   - "vwap_reversion"
   - "supertrend"
   - "breakout_momentum"
+  # Disabled: ema_crossover (15% WR, -$241) and bollinger_bounce (33% WR, -$649)
+  # Re-enable after AutoTuner has optimised their parameters
 
 # Crypto-only: mean reversion creates too many false signals on 24/7 volatile markets
 crypto_strategies:

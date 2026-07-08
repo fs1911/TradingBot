@@ -137,6 +137,7 @@ class TradingBot:
         self._last_daily_report: str = ""
         self._last_morning_report: str = ""
         self._market_trend: str = "neutral"       # Updated each tick from SPY
+        self._sl_cooldown: dict[str, datetime] = {}  # symbol → earliest re-entry time after SL
 
         # Graceful shutdown
         signal.signal(signal.SIGINT, self._handle_shutdown)
@@ -265,6 +266,12 @@ class TradingBot:
 
         # Already in a position for this symbol — skip new entries
         if symbol in self._open_trades:
+            return
+
+        # SL cooldown: skip re-entry if symbol was stopped out recently
+        cooldown_until = self._sl_cooldown.get(symbol)
+        if cooldown_until and datetime.now(timezone.utc) < cooldown_until:
+            logger.debug(f"{symbol}: SL cooldown active until {cooldown_until.strftime('%H:%M UTC')} — skipping")
             return
 
         is_crypto = "/" in symbol
@@ -570,6 +577,12 @@ class TradingBot:
                         exit_time=datetime.now(timezone.utc),
                         exit_reason=reason,
                     )
+                    # SL cooldown: block re-entry for 30 min to prevent chasing losses
+                    if reason == "sl":
+                        cooldown_minutes = self.bot_cfg.get("bot", {}).get("sl_cooldown_minutes", 30)
+                        from datetime import timedelta
+                        self._sl_cooldown[symbol] = datetime.now(timezone.utc) + timedelta(minutes=cooldown_minutes)
+                        logger.info(f"{symbol}: SL cooldown set — no re-entry for {cooldown_minutes} min")
                     closed.append(symbol)
 
         for symbol in closed:
