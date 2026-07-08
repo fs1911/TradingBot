@@ -4,6 +4,9 @@ AutoTuner — reads trading_journal.csv nightly and auto-adjusts strategy params
 Writes deltas to strategy_config_tuned.yaml (overlay over the base config).
 Hot-reloads running strategy params without a restart.
 Changes are conservative: small steps, hard clamps, min-trade guards.
+
+Also runs behavioral pattern detection: rapid re-entry, ghost trades,
+losing streaks — things pure win-rate metrics would never catch.
 """
 from __future__ import annotations
 import yaml
@@ -57,6 +60,74 @@ class AutoTuner:
             if strategy.name in tuned:
                 strategy.params.update(tuned[strategy.name])
                 logger.info(f"AutoTuner: hot-reloaded {strategy.name}")
+
+    def _detect_behavioral_patterns(self, df: pd.DataFrame) -> list[str]:
+        """Detect temporal/behavioral anomalies not captured by per-strategy metrics."""
+        warnings: list[str] = []
+
+        if "entry_time" not in df.columns:
+            return warnings
+
+        try:
+            df = df.copy()
+            df["entry_ts"] = pd.to_datetime(df["entry_time"], utc=True, errors="coerce")
+            df = df.dropna(subset=["entry_ts"])
+        except Exception:
+            return warnings
+
+        # 1. Ghost trades: position closed in ≤2 seconds (immediate SL / bad fill)
+        if "hold_seconds" in df.columns:
+            ghost = df[df["hold_seconds"] <= 2]
+            if len(ghost) > 10:
+                pct = len(ghost) / len(df) * 100
+                warnings.append(
+                    f"⚠️ <b>Ghost-Trades</b>: {len(ghost)} Trades ({pct:.0f}%) "
+                    f"geschlossen in ≤2 Sek — SL möglicherweise zu eng"
+                )
+                logger.warning(f"AutoTuner: {len(ghost)} ghost trades detected ({pct:.0f}%)")
+
+        # 2. Rapid re-entry: same symbol traded ≥3 times within 30 minutes
+        if "symbol" in df.columns:
+            rapid_symbols: list[str] = []
+            for sym, grp in df.groupby("symbol"):
+                grp_sorted = grp.sort_values("entry_ts")
+                times = grp_sorted["entry_ts"].tolist()
+                for i in range(len(times) - 2):
+                    window_min = (times[i + 2] - times[i]).total_seconds() / 60
+                    if window_min <= 30:
+                        rapid_symbols.append(str(sym))
+                        break
+            if rapid_symbols:
+                preview = ", ".join(rapid_symbols[:5]) + (" …" if len(rapid_symbols) > 5 else "")
+                warnings.append(
+                    f"⚠️ <b>Rapid Re-Entry</b>: {len(rapid_symbols)} Symbole "
+                    f"≥3× in 30 Min gehandelt: {preview}"
+                )
+                logger.warning(f"AutoTuner: rapid re-entry on {rapid_symbols}")
+
+        # 3. Losing streak per symbol: ≥4 consecutive losses
+        if "symbol" in df.columns and "pnl_usd" in df.columns:
+            streak_symbols: list[str] = []
+            for sym, grp in df.groupby("symbol"):
+                grp_sorted = grp.sort_values("entry_ts")
+                streak = 0
+                for pnl in grp_sorted["pnl_usd"]:
+                    if pnl <= 0:
+                        streak += 1
+                        if streak >= 4:
+                            streak_symbols.append(str(sym))
+                            break
+                    else:
+                        streak = 0
+            if streak_symbols:
+                preview = ", ".join(streak_symbols[:5]) + (" …" if len(streak_symbols) > 5 else "")
+                warnings.append(
+                    f"⚠️ <b>Verlust-Serien</b>: {len(streak_symbols)} Symbole "
+                    f"mit ≥4 aufeinanderfolgenden Verlusten: {preview}"
+                )
+                logger.warning(f"AutoTuner: losing streaks on {streak_symbols}")
+
+        return warnings
 
     def run(self) -> None:
         if not self.journal_path.exists():
@@ -151,14 +222,20 @@ class AutoTuner:
                 )
                 logger.info(f"AutoTuner [{strat}] WR={win_rate:.0%}: {strat_changes}")
 
+        # Behavioral pattern detection (runs regardless of param changes)
+        pattern_warnings = self._detect_behavioral_patterns(df)
+
         if changes:
             self._save_tuned(new_tuned)
             self._hot_reload(new_tuned)
-            if self.telegram:
-                self.telegram.send(
-                    f"🤖 <b>Auto-Tuner — {date.today()}</b>\n\n"
-                    f"Parameter angepasst:\n\n"
-                    + "\n".join(f"• {c}" for c in changes)
-                )
-        else:
-            logger.info("AutoTuner: keine Anpassungen nötig")
+
+        if self.telegram and (changes or pattern_warnings):
+            parts: list[str] = [f"🤖 <b>Auto-Tuner — {date.today()}</b>"]
+            if changes:
+                parts.append("\n<b>Parameter angepasst:</b>\n" + "\n".join(f"• {c}" for c in changes))
+            if pattern_warnings:
+                parts.append("\n<b>Muster erkannt:</b>\n" + "\n".join(f"• {w}" for w in pattern_warnings))
+            self.telegram.send("\n".join(parts))
+
+        if not changes and not pattern_warnings:
+            logger.info("AutoTuner: keine Anpassungen oder Anomalien erkannt")
