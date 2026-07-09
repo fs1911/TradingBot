@@ -101,4 +101,4 @@ signal_fusion:
     supertrend: 1.2        # Slightly higher weight — reliable trend indicator
     breakout_momentum: 1.1
     congress_mirror: 0.5
-  score_threshold: 1.2
+  score_threshold: 1.0

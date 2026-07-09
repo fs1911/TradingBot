@@ -68,9 +68,23 @@ class PerformanceReporter:
         logger.info(f"Trade logged: {direction} {symbol} PnL={pnl:.2f} ({exit_reason})")
 
     def _append_to_csv(self, record: dict) -> None:
-        df = pd.DataFrame([record])
-        header = not self._journal_path.exists()
-        df.to_csv(self._journal_path, mode="a", header=header, index=False)
+        df_new = pd.DataFrame([record])
+        if not self._journal_path.exists():
+            df_new.to_csv(self._journal_path, index=False)
+            return
+        # Read existing column order so new rows always align with the header,
+        # even after new columns are added to the record dict.
+        existing_cols = pd.read_csv(self._journal_path, nrows=0).columns.tolist()
+        new_cols = [c for c in df_new.columns if c not in existing_cols]
+        if new_cols:
+            # Schema migration: rewrite file once with new columns appended
+            df_all = pd.read_csv(self._journal_path)
+            for col in new_cols:
+                df_all[col] = None
+            df_all.to_csv(self._journal_path, index=False)
+            existing_cols = existing_cols + new_cols
+        df_new = df_new.reindex(columns=existing_cols)
+        df_new.to_csv(self._journal_path, mode="a", header=False, index=False)
 
     def _load_existing(self) -> None:
         if self._journal_path.exists():
