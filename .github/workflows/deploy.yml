@@ -6,7 +6,31 @@ on:
       - claude/trading-bot-setup-qb6687
 
 jobs:
+  # ── Gate 1: tests must pass before anything touches the server ──────────────
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run test suite
+        run: python -m pytest tests/ -v
+
+  # ── Gate 2: deploy only runs if the test job succeeded ──────────────────────
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to server
