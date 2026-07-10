@@ -1,0 +1,13 @@
+# Minimal dependency set for running the test suite in CI.
+# The full requirements.txt contains heavy/broker libraries (alpaca-py, ccxt,
+# pandas-ta, ...) that the unit tests never import — and pandas-ta has no
+# installable distribution on Python 3.11, which broke the CI install.
+# The tests only exercise pure logic (journal, signal fusion, risk, tuner),
+# so we install just what src/ and tests/ actually import.
+pandas>=2.0.0
+numpy>=1.24.0
+pyyaml>=6.0
+loguru>=0.7.0
+requests>=2.31.0
+pytz>=2023.3
+pytest>=7.4.0
