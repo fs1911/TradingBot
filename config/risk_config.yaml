@@ -46,8 +46,8 @@ take_profit:
 
 trailing_stop:
   enabled: true
-  activate_after_profit_pct: 1.0 # Activate once trade is +1% in profit
-  trail_pct: 0.8                 # Trails 0.8% below highest price
+  activate_after_profit_pct: 3.0 # Only lock in after a real move — +1% cut winners at the first wobble
+  trail_pct: 2.5                 # Give the trend room to breathe (was 0.8% = exited on any pullback)
 
 # Session filters
 session_filter:

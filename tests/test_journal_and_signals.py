@@ -292,3 +292,54 @@ class TestSLCooldownPersistence:
     def test_missing_file_returns_empty(self, tmp_path):
         bot = self._bot(tmp_path)
         assert bot._load_sl_cooldowns() == {}
+
+
+# ── 5. Heartbeat / liveness ─────────────────────────────────────────────────
+
+class TestHeartbeat:
+    def test_status_has_liveness_fields(self):
+        """The status snapshot must carry everything needed to answer
+        'is the bot alive and trading?' at a glance."""
+        from src.monitoring.heartbeat import Heartbeat
+        hb = Heartbeat()
+        status = hb.build_status(
+            state="active", open_positions=3, trades_today=5,
+            equity=10123.45, market_trend="bullish", daily_pnl=-42.5,
+        )
+        for key in ("updated_utc", "alive", "state", "uptime_hours",
+                    "open_positions", "trades_today", "daily_pnl_usd",
+                    "equity_usd", "market_trend"):
+            assert key in status
+        assert status["alive"] is True
+        assert status["open_positions"] == 3
+        assert status["daily_pnl_usd"] == -42.5
+
+    def test_push_skips_without_token(self, monkeypatch):
+        """No token configured → push is a silent no-op, never raises."""
+        from src.monitoring.heartbeat import Heartbeat
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+        hb = Heartbeat()
+        assert hb.push({"updated_utc": "x"}) is False
+
+
+# ── 6. "Let winners run" config invariants ──────────────────────────────────
+
+class TestLetWinnersRun:
+    """The results analysis showed the only profitable trades were long-held
+    trend moves; tight trailing + a 6h cap cut winners short. These guard the
+    pivot so a future edit can't silently revert to strangling winners."""
+
+    def test_max_hold_gives_trends_room(self):
+        with open(CONFIG_DIR / "bot_config.yaml") as f:
+            cfg = yaml.safe_load(f)
+        assert cfg["bot"]["max_hold_hours"] >= 12, (
+            "max_hold_hours too short — trend winners get cut by the time exit"
+        )
+
+    def test_trailing_stop_not_hair_trigger(self):
+        with open(CONFIG_DIR / "risk_config.yaml") as f:
+            cfg = yaml.safe_load(f)
+        ts = cfg["trailing_stop"]
+        assert ts["trail_pct"] >= 1.5, (
+            "trail_pct too tight — exits winners on the first small pullback"
+        )

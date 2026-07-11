@@ -46,6 +46,7 @@ from .monitoring.reporter import PerformanceReporter
 from .monitoring.telegram_notifier import TelegramNotifier
 from .monitoring.auto_tuner import AutoTuner
 from .monitoring.journal_sync import JournalSyncer
+from .monitoring.heartbeat import Heartbeat
 from .brokers.base_broker import BaseBroker, Order, OrderSide, OrderType
 
 
@@ -124,6 +125,8 @@ class TradingBot:
         self.journal_syncer = JournalSyncer(
             journal_path=_log_root / "trading_journal.csv",
         )
+        self.heartbeat = Heartbeat()
+        self._last_heartbeat: Optional[datetime] = None
 
         # Config shortcuts
         broker_key = self.bot_cfg.get("broker", "alpaca")
@@ -185,6 +188,9 @@ class TradingBot:
         # Daily reset & drawdown checks
         self.risk_manager.daily_reset(account)
         self.risk_manager.metrics.open_positions = len(self._open_trades)
+
+        # Hourly heartbeat — makes "is the bot alive & trading?" observable anytime
+        self._maybe_heartbeat(now, account)
 
         # Auto-heal paused/stopped states — bot recovers without user intervention
         self._auto_recover()
@@ -414,6 +420,25 @@ class TradingBot:
                 json.dump(active, f)
         except Exception as e:
             logger.warning(f"Could not save SL cooldowns: {e}")
+
+    def _maybe_heartbeat(self, now: datetime, account) -> None:
+        """Push a status snapshot to GitHub at most once per hour."""
+        if self._last_heartbeat and (now - self._last_heartbeat).total_seconds() < 3600:
+            return
+        self._last_heartbeat = now
+        try:
+            m = self.risk_manager.metrics
+            status = self.heartbeat.build_status(
+                state=m.state.value,
+                open_positions=len(self._open_trades),
+                trades_today=m.trades_today,
+                equity=account.equity,
+                market_trend=self._market_trend,
+                daily_pnl=m.daily_pnl,
+            )
+            self.heartbeat.push(status)
+        except Exception as e:
+            logger.error(f"Heartbeat failed: {e}")
 
     def _auto_recover(self) -> None:
         """Autonomous self-healing — recovers from paused/stopped states without user action."""
