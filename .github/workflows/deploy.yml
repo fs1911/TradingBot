@@ -44,9 +44,20 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_DEPLOY_KEY }}
           port: 22
+          script_stop: true   # fail the step loudly if ANY command errors
           script: |
+            set -e
             cd ~/TradingBot
-            git pull origin claude/trading-bot-setup-qb6687
+
+            # Force the working tree to exactly match the remote branch.
+            # A plain `git pull` aborts because the bot constantly writes to the
+            # tracked logs/trading_journal.csv ("local changes would be
+            # overwritten") — which silently stranded the server on old code.
+            # reset --hard is conflict-proof; the journal is re-synced hourly
+            # anyway and the bot reloads positions from the broker, not the log.
+            git fetch origin claude/trading-bot-setup-qb6687
+            git reset --hard origin/claude/trading-bot-setup-qb6687
+            echo "Now on commit: $(git rev-parse --short HEAD)"
 
             # Inject GITHUB_TOKEN into .env if secret is configured
             if [ -n "${{ secrets.BOT_GITHUB_TOKEN }}" ]; then
