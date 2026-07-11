@@ -88,8 +88,13 @@ congress_mirror:
 
 # Global signal scoring
 # score_threshold: composite weighted score required to enter.
-# With weights ~1.0-1.2, a single strategy maxes out around 1.0-1.2.
-# Threshold 1.2 = needs either ONE very confident signal OR TWO moderate signals agreeing.
+# Strategy scores start at ~0.5 (base) and rise to 1.0 with conviction.
+# - 1.0 was too strict: crypto (only supertrend+breakout eligible) made ~0
+#   trades because a single strategy rarely reaches 1.0 alone.
+# - 0.45 was too loose: fired on almost any base signal (hundreds of bad trades).
+# - 0.7 is the middle: a pure base-level signal (0.5*weight ~ 0.55-0.66) is
+#   rejected, but a signal with real conviction (score >= ~0.65) fires, and two
+#   moderate signals agreeing always clear it.
 signal_fusion:
   enabled: true
   score_weights:
@@ -101,4 +106,4 @@ signal_fusion:
     supertrend: 1.2        # Slightly higher weight — reliable trend indicator
     breakout_momentum: 1.1
     congress_mirror: 0.5
-  score_threshold: 1.0
+  score_threshold: 0.7

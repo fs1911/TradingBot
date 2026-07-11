@@ -79,6 +79,43 @@ class TestJournalIntegrity:
         assert "hold_seconds" in df.columns
         assert df.iloc[0]["hold_seconds"] == 5.0
 
+    def test_self_heals_already_corrupted_file(self, tmp_path):
+        """REGRESSION: a journal ALREADY corrupted by the old writer (rows with
+        more fields than the header) must be repaired on startup, not crash the
+        reporter. This is the failure the first fix missed."""
+        journal = tmp_path / "trading_journal.csv"
+        # 13-col header, one good row, two corrupted 15-field rows (real shape)
+        journal.write_text(
+            "date,time_entry,time_exit,symbol,strategy,direction,entry_price,"
+            "exit_price,qty,pnl_usd,pnl_pct,exit_reason,notes\n"
+            "2026-07-08,10:41:28,10:41:30,DOGE/USD,breakout_momentum,long,"
+            "0.0716,0.0713,64117.6,-18.79,-0.409,sl,\n"
+            "2026-07-08,15:27:29,16:18:16,2026-07-08T15:27:29+00:00,3047.1,QQQ,"
+            "breakout_momentum,short,701.25,705.86,6,-27.63,-0.657,sl,\n"
+            "2026-07-10,13:54:09,19:54:53,2026-07-10T13:54:09+00:00,21644.5,NVDA,"
+            "breakout_momentum,long,206.3,210.2,22.15,86.28,1.888,time_limit,\n"
+        )
+        # Instantiating must repair, not raise
+        r = PerformanceReporter(log_dir=str(tmp_path))
+        df = pd.read_csv(journal)
+        assert list(df.columns) == PerformanceReporter.COLUMNS
+        # The good row survived; corrupted rows were dropped; no timestamps leaked
+        # into the symbol column
+        assert "DOGE/USD" in set(df["symbol"])
+        assert not any(str(s).startswith("2026-") for s in df["symbol"].dropna())
+
+        # And the reporter can still append cleanly afterwards
+        entry = datetime(2026, 7, 11, 2, 0, 0, tzinfo=timezone.utc)
+        r.log_trade(symbol="BTC/USD", strategy="supertrend", direction="long",
+                    entry_price=64000, exit_price=64500, qty=0.01, pnl=5.0,
+                    entry_time=entry, exit_time=entry + timedelta(minutes=45),
+                    exit_reason="tp")
+        df2 = pd.read_csv(journal)
+        new = df2[df2["symbol"] == "BTC/USD"].iloc[0]
+        assert new["strategy"] == "supertrend"
+        assert float(new["pnl_usd"]) == 5.0
+        assert float(new["hold_seconds"]) == 2700.0
+
 
 # ── 2. Signal fusion threshold ──────────────────────────────────────────────
 
@@ -128,14 +165,34 @@ class TestSignalFusionThreshold:
                     score=0.7, stop_loss=100, take_profit=110)
         assert self._fuse([s1, s2], cfg) is not None
 
-    def test_opposing_signals_do_not_sum(self):
-        """A LONG and a SHORT must not add up into a phantom entry."""
+    def test_threshold_not_over_tightened(self):
+        """REGRESSION: threshold 1.0 caused ~0 crypto trades. A crypto trend
+        signal with genuine (not maximal) conviction must still be able to fire
+        alone, or crypto — where only supertrend+breakout are eligible — goes
+        silent. Guards against setting the threshold too high again."""
         cfg = self._cfg()
+        assert cfg["score_threshold"] <= 0.8, (
+            f"score_threshold {cfg['score_threshold']} is too high — a single "
+            "conviction crypto signal can't fire and the bot stops trading crypto"
+        )
+        # A breakout with real (0.7) conviction, weighted 0.77, must fire alone
+        sig = Signal(symbol="ETH/USD", signal=SignalType.LONG,
+                     strategy="breakout_momentum", score=0.7,
+                     stop_loss=100, take_profit=110)
+        assert self._fuse([sig], cfg) is not None
+
+    def test_opposing_signals_do_not_sum(self):
+        """A LONG and a SHORT must not add up into a phantom entry.
+        Scores are chosen below threshold individually but above it if summed,
+        so this holds regardless of the exact configured threshold."""
+        cfg = self._cfg()
+        thr = cfg["score_threshold"]
+        each = thr * 0.6   # individually below thr, but 2x is above thr
         s1 = Signal(symbol="AAPL", signal=SignalType.LONG, strategy="macd_momentum",
-                    score=0.7, stop_loss=100, take_profit=110)
+                    score=each, stop_loss=100, take_profit=110)
         s2 = Signal(symbol="AAPL", signal=SignalType.SHORT, strategy="vwap_reversion",
-                    score=0.7, stop_loss=110, take_profit=100)
-        # Neither direction alone clears threshold → no trade
+                    score=each, stop_loss=110, take_profit=100)
+        # Correct per-direction fusion evaluates each side alone → neither clears
         assert self._fuse([s1, s2], cfg) is None
 
 

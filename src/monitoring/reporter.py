@@ -21,12 +21,46 @@ from loguru import logger
 class PerformanceReporter:
     """Tracks all trades, computes metrics, and writes reports."""
 
+    # Canonical journal schema. Every row is written in exactly this order and
+    # the file is normalised to this header on startup, so a change to the
+    # record dict can never again shift existing rows out of alignment.
+    COLUMNS = [
+        "date", "time_entry", "time_exit", "entry_time", "hold_seconds",
+        "symbol", "strategy", "direction", "entry_price", "exit_price",
+        "qty", "pnl_usd", "pnl_pct", "exit_reason", "notes",
+    ]
+
     def __init__(self, log_dir: str = "logs"):
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(exist_ok=True)
         self._journal_path = self.log_dir / "trading_journal.csv"
         self._trades: list[dict] = []
+        self._ensure_schema()   # repair/normalise BEFORE reading
         self._load_existing()
+
+    def _ensure_schema(self) -> None:
+        """Guarantee the journal has the canonical header, repairing a file
+        that an older/buggy writer left corrupted (rows with too many fields).
+        Corrupted rows are dropped; all readable rows are kept and re-aligned."""
+        if not self._journal_path.exists():
+            return
+        try:
+            df = pd.read_csv(self._journal_path)
+            if list(df.columns) == self.COLUMNS:
+                return  # already canonical — nothing to do
+        except Exception:
+            # Corrupted: read tolerantly with the python engine, skip bad rows
+            try:
+                df = pd.read_csv(self._journal_path, engine="python", on_bad_lines="skip")
+            except Exception as e:
+                backup = self._journal_path.with_suffix(".corrupt.csv")
+                self._journal_path.rename(backup)
+                logger.error(f"Journal unreadable ({e}); moved to {backup.name}, starting fresh")
+                return
+            logger.warning("Journal was corrupted — repaired by dropping malformed rows")
+        df = df.reindex(columns=self.COLUMNS)
+        df.to_csv(self._journal_path, index=False)
+        logger.info("Journal schema normalised to canonical columns")
 
     # ── Trade logging ─────────────────────────────────────────────────────────
 
@@ -68,23 +102,11 @@ class PerformanceReporter:
         logger.info(f"Trade logged: {direction} {symbol} PnL={pnl:.2f} ({exit_reason})")
 
     def _append_to_csv(self, record: dict) -> None:
-        df_new = pd.DataFrame([record])
-        if not self._journal_path.exists():
-            df_new.to_csv(self._journal_path, index=False)
-            return
-        # Read existing column order so new rows always align with the header,
-        # even after new columns are added to the record dict.
-        existing_cols = pd.read_csv(self._journal_path, nrows=0).columns.tolist()
-        new_cols = [c for c in df_new.columns if c not in existing_cols]
-        if new_cols:
-            # Schema migration: rewrite file once with new columns appended
-            df_all = pd.read_csv(self._journal_path)
-            for col in new_cols:
-                df_all[col] = None
-            df_all.to_csv(self._journal_path, index=False)
-            existing_cols = existing_cols + new_cols
-        df_new = df_new.reindex(columns=existing_cols)
-        df_new.to_csv(self._journal_path, mode="a", header=False, index=False)
+        # Always write in canonical column order. Never reads the whole file,
+        # so a pre-existing corrupted row can't crash the append.
+        df_new = pd.DataFrame([record]).reindex(columns=self.COLUMNS)
+        header = not self._journal_path.exists()
+        df_new.to_csv(self._journal_path, mode="a", header=header, index=False)
 
     def _load_existing(self) -> None:
         if self._journal_path.exists():
