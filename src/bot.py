@@ -40,6 +40,9 @@ from .strategies.vwap_reversion import VWAPReversionStrategy
 from .strategies.supertrend import SupertrendStrategy
 from .strategies.breakout_momentum import BreakoutMomentumStrategy
 from .strategies.congress_trades import CongressTradesStrategy
+from .strategies.opening_range_breakout import LondonORBStrategy, NewYorkORBStrategy
+from .strategies.judas_swing import JudasSwingStrategy
+from .strategies.silver_bullet import SilverBulletStrategy
 from .risk.risk_manager import RiskManager
 from .data.news_sentiment import SentimentAnalyzer
 from .monitoring.reporter import PerformanceReporter
@@ -59,6 +62,10 @@ STRATEGY_REGISTRY = {
     "supertrend": SupertrendStrategy,
     "breakout_momentum": BreakoutMomentumStrategy,
     "congress_mirror": CongressTradesStrategy,
+    "london_orb": LondonORBStrategy,
+    "newyork_orb": NewYorkORBStrategy,
+    "judas_swing": JudasSwingStrategy,
+    "silver_bullet": SilverBulletStrategy,
 }
 
 

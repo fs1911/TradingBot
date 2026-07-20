@@ -86,6 +86,40 @@ congress_mirror:
   position_type: "long_only"
   exit_after_days: 30
 
+# ── ICT / session day-trading experiment (5-minute bars) ────────────────────
+# session_open / window times are UTC minutes-of-day (hour*60 + minute).
+london_orb:
+  session_open: 420        # 07:00 UTC — London open
+  or_minutes: 30           # opening range = first 30 min
+  trade_window_minutes: 180
+  atr_period: 14
+  sl_atr_multiplier: 1.5
+  tp_atr_multiplier: 3.0
+
+newyork_orb:
+  session_open: 810        # 13:30 UTC — NY / US equities open
+  or_minutes: 30
+  trade_window_minutes: 180
+  atr_period: 14
+  sl_atr_multiplier: 1.5
+  tp_atr_multiplier: 3.0
+
+judas_swing:
+  session_open: 810        # 13:30 UTC — hunt the NY-open liquidity sweep
+  range_minutes: 15
+  judas_window_minutes: 90
+  atr_period: 14
+  sl_atr_multiplier: 1.5
+  tp_atr_multiplier: 3.0
+
+silver_bullet:
+  window_start: 540        # 09:00 UTC
+  window_end: 600          # 10:00 UTC
+  momentum_lookback: 6     # ~30 min on 5m bars
+  atr_period: 14
+  sl_atr_multiplier: 1.5
+  tp_atr_multiplier: 3.0
+
 # Global signal scoring
 # score_threshold: composite weighted score required to enter.
 # Strategy scores start at ~0.5 (base) and rise to 1.0 with conviction.
@@ -106,4 +140,8 @@ signal_fusion:
     supertrend: 1.2        # Slightly higher weight — reliable trend indicator
     breakout_momentum: 1.1
     congress_mirror: 0.5
+    london_orb: 1.0
+    newyork_orb: 1.0
+    judas_swing: 1.0
+    silver_bullet: 1.0
   score_threshold: 0.7
