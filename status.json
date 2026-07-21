@@ -1,11 +1,11 @@
 {
-  "updated_utc": "2026-07-21 18:06:37",
+  "updated_utc": "2026-07-21 19:07:02",
   "alive": true,
   "state": "active",
-  "uptime_hours": 25.2,
-  "open_positions": 7,
+  "uptime_hours": 26.2,
+  "open_positions": 8,
   "trades_today": 79,
   "daily_pnl_usd": -218.76,
-  "equity_usd": 81881.39,
+  "equity_usd": 81851.83,
   "market_trend": "bullish"
 }
