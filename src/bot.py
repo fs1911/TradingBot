@@ -435,13 +435,34 @@ class TradingBot:
         self._last_heartbeat = now
         try:
             m = self.risk_manager.metrics
+            # Mark-to-market on open positions — reveals losses the trade journal
+            # (which only records closed trades) never shows.
+            unrealized = 0.0
+            pos_detail: list[dict] = []
+            try:
+                for p in self.broker.get_positions():
+                    direction = 1 if p.side.value == "buy" else -1
+                    u = (p.current_price - p.entry_price) * abs(p.qty) * direction
+                    unrealized += u
+                    pos_detail.append({
+                        "symbol": p.symbol,
+                        "side": p.side.value,
+                        "qty": round(abs(p.qty), 4),
+                        "unrealized_usd": round(u, 2),
+                    })
+            except Exception as e:
+                logger.warning(f"Heartbeat: could not read positions: {e}")
+
             status = self.heartbeat.build_status(
                 state=m.state.value,
-                open_positions=len(self._open_trades),
+                open_positions=len(pos_detail) or len(self._open_trades),
                 trades_today=m.trades_today,
                 equity=account.equity,
                 market_trend=self._market_trend,
                 daily_pnl=m.daily_pnl,
+                realized_pnl=m.total_pnl,
+                unrealized_pnl=unrealized,
+                positions=pos_detail,
             )
             self.heartbeat.push(status)
         except Exception as e:

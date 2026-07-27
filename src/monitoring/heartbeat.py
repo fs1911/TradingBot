@@ -25,7 +25,9 @@ class Heartbeat:
         self.started_at = datetime.now(timezone.utc)
 
     def build_status(self, *, state: str, open_positions: int, trades_today: int,
-                     equity: float, market_trend: str, daily_pnl: float) -> dict:
+                     equity: float, market_trend: str, daily_pnl: float,
+                     realized_pnl: float = 0.0, unrealized_pnl: float = 0.0,
+                     positions: list | None = None) -> dict:
         now = datetime.now(timezone.utc)
         uptime_h = round((now - self.started_at).total_seconds() / 3600, 1)
         return {
@@ -36,8 +38,13 @@ class Heartbeat:
             "open_positions": open_positions,
             "trades_today": trades_today,
             "daily_pnl_usd": round(daily_pnl, 2),
+            # Diagnostics: separates booked losses from open-position mark-to-market,
+            # so an equity drop the trade journal can't explain becomes visible.
+            "realized_pnl_usd": round(realized_pnl, 2),
+            "unrealized_pnl_usd": round(unrealized_pnl, 2),
             "equity_usd": round(equity, 2),
             "market_trend": market_trend,
+            "positions": positions or [],
         }
 
     def push(self, status: dict) -> bool:

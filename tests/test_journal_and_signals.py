@@ -305,14 +305,21 @@ class TestHeartbeat:
         status = hb.build_status(
             state="active", open_positions=3, trades_today=5,
             equity=10123.45, market_trend="bullish", daily_pnl=-42.5,
+            realized_pnl=-120.0, unrealized_pnl=-333.3,
+            positions=[{"symbol": "BTC/USD", "side": "buy", "qty": 0.1,
+                        "unrealized_usd": -333.3}],
         )
         for key in ("updated_utc", "alive", "state", "uptime_hours",
                     "open_positions", "trades_today", "daily_pnl_usd",
-                    "equity_usd", "market_trend"):
+                    "realized_pnl_usd", "unrealized_pnl_usd",
+                    "equity_usd", "market_trend", "positions"):
             assert key in status
         assert status["alive"] is True
         assert status["open_positions"] == 3
         assert status["daily_pnl_usd"] == -42.5
+        # The diagnostic that would have exposed the experiment's hidden drawdown
+        assert status["unrealized_pnl_usd"] == -333.3
+        assert status["positions"][0]["symbol"] == "BTC/USD"
 
     def test_push_skips_without_token(self, monkeypatch):
         """No token configured → push is a silent no-op, never raises."""

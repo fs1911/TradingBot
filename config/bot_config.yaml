@@ -18,44 +18,29 @@ active_strategies:
   - "vwap_reversion"
   - "supertrend"
   - "breakout_momentum"
-  # --- Experiment: ICT / session day-trading setups (paper only, learning) ---
-  - "london_orb"
-  - "newyork_orb"
-  - "judas_swing"
-  - "silver_bullet"
+  # ROLLED BACK 2026-07-27: the ICT/session experiment (london_orb, newyork_orb,
+  # judas_swing, silver_bullet) on 5-min bars lost ~21% in a week with a large
+  # unexplained (likely unrealized) drawdown. Code kept but deactivated.
   # Disabled: ema_crossover (15% WR, -$241) and bollinger_bounce (33% WR, -$649)
 
-# Which strategies may fire on crypto (24/7). The session setups are included
-# for the experiment even though crypto has no true London/NY open.
+# Crypto-only: mean reversion creates too many false signals on 24/7 volatile markets
 crypto_strategies:
   - "supertrend"
   - "breakout_momentum"
-  - "london_orb"
-  - "newyork_orb"
-  - "judas_swing"
-  - "silver_bullet"
 
 markets:
   alpaca:
     symbols: [
-      # US large-cap / tech
       "SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "META", "AMD", "GOOGL",
-      "NFLX", "INTC", "CRM", "DIS", "BABA", "ORCL", "ADBE", "AVGO", "QCOM", "TXN",
-      "CSCO", "PEP", "KO", "MCD", "NKE", "SBUX", "COST", "TMUS", "CMCSA", "PYPL",
-      # High-beta / retail favourites
-      "COIN", "PLTR", "UBER", "SOFI", "HOOD", "NIO", "RIVN", "LCID", "MARA", "RIOT",
-      "SNAP", "SHOP", "SQ", "ROKU", "DKNG", "AFRM", "PINS", "F", "GM", "T",
-      # Financials / healthcare / staples
-      "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "WMT", "JNJ", "PFE", "UNH", "XOM", "CVX",
-      # ETFs / sectors / commodities
-      "GLD", "IWM", "SLV", "USO", "TLT", "XLE", "XLF", "XLK", "XLY", "XLV",
-      "GDX", "ARKK", "EEM", "DIA", "SMH", "XBI", "XLI", "XLP",
-      # Crypto (24/7)
-      "BTC/USD", "ETH/USD", "SOL/USD", "DOGE/USD", "LINK/USD", "AVAX/USD",
-      "LTC/USD", "BCH/USD", "UNI/USD", "AAVE/USD", "XRP/USD", "DOT/USD",
-      "SHIB/USD", "XTZ/USD", "GRT/USD"
+      "NFLX", "INTC", "CRM", "DIS", "BABA",
+      "COIN", "PLTR", "UBER", "PYPL", "SOFI", "HOOD", "NIO", "RIVN",
+      "JPM", "V", "WMT", "JNJ",
+      "GLD", "IWM", "SLV", "USO", "TLT", "XLE", "XLF",
+      "XLK", "XLY", "XLV", "GDX", "ARKK", "EEM",
+      "BTC/USD", "ETH/USD", "SOL/USD", "DOGE/USD",
+      "LINK/USD", "AVAX/USD", "LTC/USD", "BCH/USD", "MATIC/USD"
     ]
-    timeframe: "5Min"   # finer bars for the intraday/ORB experiment (was 15Min)
+    timeframe: "15Min"   # rolled back from 5Min (2026-07-27 experiment)
 
   binance:
     symbols: ["BTC/USDT", "ETH/USDT", "SOL/USDT"]
