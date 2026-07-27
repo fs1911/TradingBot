@@ -1,51 +1,33 @@
 {
-  "updated_utc": "2026-07-27 13:01:12",
+  "updated_utc": "2026-07-27 14:02:09",
   "alive": true,
   "state": "active",
-  "uptime_hours": 5.0,
-  "open_positions": 6,
+  "uptime_hours": 6.1,
+  "open_positions": 3,
   "trades_today": 4,
   "daily_pnl_usd": -279.88,
   "realized_pnl_usd": -279.88,
-  "unrealized_pnl_usd": -140.87,
-  "equity_usd": 68133.63,
-  "market_trend": "neutral",
+  "unrealized_pnl_usd": -30.37,
+  "equity_usd": 68253.06,
+  "market_trend": "bullish",
   "positions": [
     {
-      "symbol": "AMD",
-      "side": "sell",
-      "qty": 7.0,
-      "unrealized_usd": -71.12
+      "symbol": "CRM",
+      "side": "buy",
+      "qty": 19.9075,
+      "unrealized_usd": -17.52
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7428,
-      "unrealized_usd": -20.74
+      "unrealized_usd": -14.37
     },
     {
-      "symbol": "MSFT",
+      "symbol": "META",
       "side": "buy",
-      "qty": 9.8986,
-      "unrealized_usd": 63.62
-    },
-    {
-      "symbol": "QQQ",
-      "side": "sell",
-      "qty": 5.0,
-      "unrealized_usd": -31.68
-    },
-    {
-      "symbol": "SPY",
-      "side": "sell",
-      "qty": 5.0,
-      "unrealized_usd": -34.16
-    },
-    {
-      "symbol": "TXN",
-      "side": "sell",
-      "qty": 13.0,
-      "unrealized_usd": -46.8
+      "qty": 5.6426,
+      "unrealized_usd": 1.52
     }
   ]
 }
