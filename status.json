@@ -1,27 +1,27 @@
 {
-  "updated_utc": "2026-07-27 09:59:59",
+  "updated_utc": "2026-07-27 11:00:28",
   "alive": true,
   "state": "active",
-  "uptime_hours": 2.0,
+  "uptime_hours": 3.0,
   "open_positions": 8,
   "trades_today": 1,
   "daily_pnl_usd": -161.69,
   "realized_pnl_usd": -161.69,
-  "unrealized_pnl_usd": -243.19,
-  "equity_usd": 68200.93,
+  "unrealized_pnl_usd": -243.44,
+  "equity_usd": 68200.67,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": -98.84
+      "unrealized_usd": -87.88
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7428,
-      "unrealized_usd": -6.93
+      "unrealized_usd": -6.94
     },
     {
       "symbol": "LINK/USD",
@@ -33,31 +33,31 @@
       "symbol": "MSFT",
       "side": "buy",
       "qty": 9.8986,
-      "unrealized_usd": 41.78
+      "unrealized_usd": 50.59
     },
     {
       "symbol": "QQQ",
       "side": "sell",
       "qty": 5.0,
-      "unrealized_usd": -40.08
+      "unrealized_usd": -38.68
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 5.0,
-      "unrealized_usd": -39.4
+      "unrealized_usd": -38.56
     },
     {
       "symbol": "TXN",
       "side": "sell",
       "qty": 13.0,
-      "unrealized_usd": -66.3
+      "unrealized_usd": -76.72
     },
     {
       "symbol": "UNI/USD",
       "side": "buy",
       "qty": 896.8926,
-      "unrealized_usd": -7.26
+      "unrealized_usd": -19.1
     }
   ]
 }
