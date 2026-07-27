@@ -1,33 +1,63 @@
 {
-  "updated_utc": "2026-07-27 14:02:09",
+  "updated_utc": "2026-07-27 15:02:40",
   "alive": true,
   "state": "active",
-  "uptime_hours": 6.1,
-  "open_positions": 3,
-  "trades_today": 4,
-  "daily_pnl_usd": -279.88,
-  "realized_pnl_usd": -279.88,
-  "unrealized_pnl_usd": -30.37,
-  "equity_usd": 68253.06,
-  "market_trend": "bullish",
+  "uptime_hours": 7.1,
+  "open_positions": 8,
+  "trades_today": 5,
+  "daily_pnl_usd": -336.94,
+  "realized_pnl_usd": -336.94,
+  "unrealized_pnl_usd": 79.11,
+  "equity_usd": 68292.96,
+  "market_trend": "bearish",
   "positions": [
+    {
+      "symbol": "AMD",
+      "side": "sell",
+      "qty": 6.0,
+      "unrealized_usd": 13.77
+    },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 19.9075,
-      "unrealized_usd": -17.52
+      "unrealized_usd": 15.53
     },
     {
-      "symbol": "ETH/USD",
+      "symbol": "GOOGL",
       "side": "buy",
-      "qty": 1.7428,
-      "unrealized_usd": -14.37
+      "qty": 10.3564,
+      "unrealized_usd": -10.74
+    },
+    {
+      "symbol": "HOOD",
+      "side": "sell",
+      "qty": 36.0,
+      "unrealized_usd": 16.2
     },
     {
       "symbol": "META",
       "side": "buy",
       "qty": 5.6426,
-      "unrealized_usd": 1.52
+      "unrealized_usd": -5.87
+    },
+    {
+      "symbol": "SOFI",
+      "side": "sell",
+      "qty": 202.0,
+      "unrealized_usd": 4.04
+    },
+    {
+      "symbol": "WMT",
+      "side": "buy",
+      "qty": 30.8164,
+      "unrealized_usd": 37.44
+    },
+    {
+      "symbol": "XLV",
+      "side": "buy",
+      "qty": 20.8313,
+      "unrealized_usd": 8.74
     }
   ]
 }
