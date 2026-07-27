@@ -111,6 +111,19 @@ def test_position_size_uncapped(rm):
     assert abs(qty - 100.0) < 0.1
 
 
+def test_position_size_capped_for_cheap_asset(rm, account):
+    """A very low-priced, low-stop-distance asset (memecoin) must still not
+    produce a position worth more than max_position_size_pct of equity — the
+    invariant the experiment appeared to violate (SHIB oversized)."""
+    rm.daily_reset(account)  # equity = 10_000
+    sig = Signal(symbol="SHIB/USD", signal=SignalType.LONG, strategy="test",
+                 score=0.9, stop_loss=0.0000199, take_profit=0.000025)
+    qty = rm.calculate_position_size(account, sig, current_price=0.00002)
+    position_value = qty * 0.00002
+    cap = account.equity * 0.05  # max_position_size_pct = 5%
+    assert position_value <= cap + 1e-6, f"position ${position_value:.2f} exceeds ${cap:.2f} cap"
+
+
 def test_position_size_safe_mode(rm, account, long_signal):
     rm.daily_reset(account)
     rm.metrics.state = BotState.SAFE_MODE

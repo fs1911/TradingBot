@@ -328,6 +328,25 @@ class TestHeartbeat:
         hb = Heartbeat()
         assert hb.push({"updated_utc": "x"}) is False
 
+    def test_equity_history_appends_rows(self, tmp_path, monkeypatch):
+        """Each snapshot appends one row (header written once) so the equity
+        curve is reconstructable — the diagnostic that would locate a drawdown."""
+        from src.monitoring.heartbeat import Heartbeat
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)  # no network push, just local append
+        hb = Heartbeat()
+        hist = tmp_path / "equity_history.csv"
+        for eq in (10000.0, 9800.5):
+            status = hb.build_status(
+                state="active", open_positions=2, trades_today=1, equity=eq,
+                market_trend="neutral", daily_pnl=-1.0,
+                realized_pnl=-5.0, unrealized_pnl=-3.0, positions=[],
+            )
+            hb.append_history(hist, status)
+        lines = hist.read_text().strip().splitlines()
+        assert lines[0].startswith("utc,equity_usd")   # header once
+        assert len(lines) == 3                          # header + 2 rows
+        assert "9800.5" in lines[2]
+
 
 # ── 6. "Let winners run" config invariants ──────────────────────────────────
 

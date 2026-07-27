@@ -49,15 +49,21 @@ jobs:
             set -e
             cd ~/TradingBot
 
-            # Force the working tree to exactly match the remote branch.
-            # A plain `git pull` aborts because the bot constantly writes to the
-            # tracked logs/trading_journal.csv ("local changes would be
-            # overwritten") — which silently stranded the server on old code.
-            # reset --hard is conflict-proof; the journal is re-synced hourly
-            # anyway and the bot reloads positions from the broker, not the log.
+            # The bot's live logs (journal, equity history) are the source of
+            # truth. They are tracked on the branch via API sync, so a plain
+            # `git reset --hard` would overwrite the server's newer copies with
+            # the last-synced version and lose intraday data. Back them up and
+            # restore the server's versions after the reset.
+            mkdir -p /tmp/tb_logs && cp logs/*.csv /tmp/tb_logs/ 2>/dev/null || true
+
+            # Force the working tree to exactly match the remote branch
+            # (conflict-proof; a plain pull aborts on the locally-modified logs).
             git fetch origin claude/trading-bot-setup-qb6687
             git reset --hard origin/claude/trading-bot-setup-qb6687
             echo "Now on commit: $(git rev-parse --short HEAD)"
+
+            # Restore the server's live logs (they win over the reset version)
+            cp /tmp/tb_logs/*.csv logs/ 2>/dev/null || true
 
             # Inject GITHUB_TOKEN into .env if secret is configured
             if [ -n "${{ secrets.BOT_GITHUB_TOKEN }}" ]; then

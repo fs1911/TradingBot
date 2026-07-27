@@ -134,6 +134,7 @@ class TradingBot:
         )
         self.heartbeat = Heartbeat()
         self._last_heartbeat: Optional[datetime] = None
+        self._equity_history_path = _log_root / "equity_history.csv"
 
         # Config shortcuts
         broker_key = self.bot_cfg.get("broker", "alpaca")
@@ -365,6 +366,21 @@ class TradingBot:
         if qty <= 0:
             return
 
+        # Hard safety cap right before execution: no single position may exceed
+        # max_position_size_pct of equity, regardless of how cheap the asset is.
+        # Belt-and-suspenders on top of the risk manager's own cap.
+        max_pos_pct = self.risk_cfg.get("risk", {}).get("max_position_size_pct", 5.0) / 100
+        if current_price > 0 and max_pos_pct > 0:
+            cap_qty = (account.equity * max_pos_pct) / current_price
+            if qty > cap_qty:
+                logger.warning(
+                    f"{symbol}: qty {qty:.4f} exceeds {max_pos_pct:.0%}-of-equity cap "
+                    f"(${account.equity * max_pos_pct:.0f}) — clamping to {cap_qty:.4f}"
+                )
+                qty = cap_qty
+        if qty <= 0:
+            return
+
         # Execute order
         side = OrderSide.BUY if entry.signal == SignalType.LONG else OrderSide.SELL
 
@@ -465,6 +481,13 @@ class TradingBot:
                 positions=pos_detail,
             )
             self.heartbeat.push(status)
+            self.heartbeat.append_history(self._equity_history_path, status)
+            # Sync the journal hourly (not only at 20:00) so the branch copy is
+            # at most ~1h stale and a redeploy can't lose much.
+            try:
+                self.journal_syncer.push()
+            except Exception as e:
+                logger.warning(f"Hourly journal sync failed: {e}")
         except Exception as e:
             logger.error(f"Heartbeat failed: {e}")
 
@@ -671,18 +694,24 @@ class TradingBot:
                                     "🛑 HARD STOP — maximaler Verlust im Live-Modus.\n"
                                     "Bitte manuell prüfen bevor Neustart."
                                 )
-                    self.reporter.log_trade(
-                        symbol=symbol,
-                        strategy=trade.get("strategy", ""),
-                        direction="long" if side == OrderSide.BUY else "short",
-                        entry_price=trade["entry_price"],
-                        exit_price=price,
-                        qty=trade["qty"],
-                        pnl=pnl,
-                        entry_time=trade["opened_at"],
-                        exit_time=datetime.now(timezone.utc),
-                        exit_reason=reason,
-                    )
+                    # Log every close. A logging failure must be loud, never a
+                    # silently-dropped trade (that is how the P&L accounting
+                    # diverged from reality during the experiment).
+                    try:
+                        self.reporter.log_trade(
+                            symbol=symbol,
+                            strategy=trade.get("strategy", ""),
+                            direction="long" if side == OrderSide.BUY else "short",
+                            entry_price=trade["entry_price"],
+                            exit_price=price,
+                            qty=trade["qty"],
+                            pnl=pnl,
+                            entry_time=trade["opened_at"],
+                            exit_time=datetime.now(timezone.utc),
+                            exit_reason=reason,
+                        )
+                    except Exception as e:
+                        logger.error(f"CRITICAL: failed to journal closed trade {symbol} pnl={pnl:.2f}: {e}")
                     # SL cooldown: block re-entry for 30 min to prevent chasing losses
                     if reason == "sl":
                         cooldown_minutes = self.bot_cfg.get("bot", {}).get("sl_cooldown_minutes", 30)

@@ -11,6 +11,7 @@ import os
 import json
 import base64
 from datetime import datetime, timezone
+from pathlib import Path
 import requests
 from loguru import logger
 
@@ -19,6 +20,7 @@ class Heartbeat:
     REPO = "fs1911/TradingBot"
     BRANCH = "claude/trading-bot-setup-qb6687"
     REMOTE_PATH = "status.json"
+    REMOTE_HISTORY_PATH = "logs/equity_history.csv"
 
     def __init__(self):
         self.token = os.environ.get("GITHUB_TOKEN", "")
@@ -47,34 +49,61 @@ class Heartbeat:
             "positions": positions or [],
         }
 
-    def push(self, status: dict) -> bool:
+    def _put_file(self, remote_path: str, content_bytes: bytes, message: str) -> bool:
+        """Create/update a file on the branch via the GitHub Contents API."""
         if not self.token:
             logger.debug("Heartbeat: no GITHUB_TOKEN — skipping")
             return False
         try:
-            content = base64.b64encode(
-                json.dumps(status, indent=2).encode()
-            ).decode()
-            url = f"https://api.github.com/repos/{self.REPO}/contents/{self.REMOTE_PATH}"
+            content = base64.b64encode(content_bytes).decode()
+            url = f"https://api.github.com/repos/{self.REPO}/contents/{remote_path}"
             headers = {
                 "Authorization": f"token {self.token}",
                 "Accept": "application/vnd.github.v3+json",
             }
             r = requests.get(url, headers=headers, params={"ref": self.BRANCH}, timeout=10)
             sha = r.json().get("sha") if r.ok else None
-            payload: dict = {
-                "message": f"heartbeat {status['updated_utc']}",
-                "content": content,
-                "branch": self.BRANCH,
-            }
+            payload: dict = {"message": message, "content": content, "branch": self.BRANCH}
             if sha:
                 payload["sha"] = sha
-            resp = requests.put(url, json=payload, headers=headers, timeout=15)
+            resp = requests.put(url, json=payload, headers=headers, timeout=20)
             if resp.ok:
-                logger.debug("Heartbeat: status pushed")
                 return True
-            logger.warning(f"Heartbeat: push failed {resp.status_code}")
+            logger.warning(f"Heartbeat: push {remote_path} failed {resp.status_code}")
             return False
         except Exception as e:
-            logger.error(f"Heartbeat error: {e}")
+            logger.error(f"Heartbeat error ({remote_path}): {e}")
             return False
+
+    def push(self, status: dict) -> bool:
+        return self._put_file(
+            self.REMOTE_PATH,
+            json.dumps(status, indent=2).encode(),
+            f"heartbeat {status['updated_utc']}",
+        )
+
+    HISTORY_HEADER = "utc,equity_usd,realized_pnl_usd,unrealized_pnl_usd,open_positions,daily_pnl_usd\n"
+
+    def append_history(self, history_path: Path, status: dict) -> None:
+        """Append one hourly equity snapshot to a local CSV and push it, so the
+        equity curve is reconstructable — this is what would have let us pinpoint
+        WHEN an unexplained drawdown happened."""
+        try:
+            history_path.parent.mkdir(exist_ok=True)
+            row = (
+                f"{status['updated_utc']},{status['equity_usd']},"
+                f"{status['realized_pnl_usd']},{status['unrealized_pnl_usd']},"
+                f"{status['open_positions']},{status['daily_pnl_usd']}\n"
+            )
+            new = not history_path.exists()
+            with open(history_path, "a") as f:
+                if new:
+                    f.write(self.HISTORY_HEADER)
+                f.write(row)
+            self._put_file(
+                self.REMOTE_HISTORY_PATH,
+                history_path.read_bytes(),
+                f"equity history {status['updated_utc']}",
+            )
+        except Exception as e:
+            logger.error(f"Heartbeat history error: {e}")
