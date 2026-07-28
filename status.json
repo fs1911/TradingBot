@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-07-28 14:10:09",
+  "updated_utc": "2026-07-28 15:10:24",
   "alive": true,
   "state": "active",
-  "uptime_hours": 30.2,
+  "uptime_hours": 31.2,
   "open_positions": 8,
-  "trades_today": 18,
-  "daily_pnl_usd": 404.69,
-  "realized_pnl_usd": -12.67,
-  "unrealized_pnl_usd": 174.2,
-  "equity_usd": 68628.29,
+  "trades_today": 19,
+  "daily_pnl_usd": 545.09,
+  "realized_pnl_usd": 127.73,
+  "unrealized_pnl_usd": -269.27,
+  "equity_usd": 68325.97,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 10.0,
-      "unrealized_usd": -4.4
+      "unrealized_usd": -31.1
     },
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": 17.59
+      "unrealized_usd": 14.19
+    },
+    {
+      "symbol": "AMZN",
+      "side": "sell",
+      "qty": 15.0,
+      "unrealized_usd": -14.16
     },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 21.0,
-      "unrealized_usd": -67.2
-    },
-    {
-      "symbol": "HOOD",
-      "side": "sell",
-      "qty": 36.0,
-      "unrealized_usd": 187.07
+      "unrealized_usd": -87.99
     },
     {
       "symbol": "INTC",
       "side": "sell",
       "qty": 39.0,
-      "unrealized_usd": 44.35
+      "unrealized_usd": -0.31
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 17.0,
-      "unrealized_usd": -0.16
+      "unrealized_usd": -40.79
     },
     {
       "symbol": "PLTR",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": 6.44
+      "unrealized_usd": -62.72
     },
     {
       "symbol": "SOFI",
       "side": "sell",
       "qty": 211.0,
-      "unrealized_usd": -9.49
+      "unrealized_usd": -46.4
     }
   ]
 }
