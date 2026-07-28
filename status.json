@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-07-28 12:09:49",
+  "updated_utc": "2026-07-28 13:10:02",
   "alive": true,
   "state": "active",
-  "uptime_hours": 28.2,
+  "uptime_hours": 29.2,
   "open_positions": 8,
   "trades_today": 14,
   "daily_pnl_usd": 77.73,
   "realized_pnl_usd": -339.62,
-  "unrealized_pnl_usd": 353.89,
-  "equity_usd": 68220.6,
+  "unrealized_pnl_usd": 318.13,
+  "equity_usd": 68184.56,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": 94.8
+      "unrealized_usd": 81.48
     },
     {
       "symbol": "BCH/USD",
@@ -27,37 +27,37 @@
       "symbol": "CRM",
       "side": "buy",
       "qty": 19.9075,
-      "unrealized_usd": 98.94
+      "unrealized_usd": 107.1
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 10.3564,
-      "unrealized_usd": -21.58
+      "unrealized_usd": -29.28
     },
     {
       "symbol": "HOOD",
       "side": "sell",
       "qty": 36.0,
-      "unrealized_usd": 29.18
+      "unrealized_usd": 12.24
     },
     {
       "symbol": "SOFI",
       "side": "sell",
       "qty": 202.0,
-      "unrealized_usd": 32.32
+      "unrealized_usd": 24.54
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 30.8164,
-      "unrealized_usd": 100.53
+      "unrealized_usd": 102.93
     },
     {
       "symbol": "XLV",
       "side": "buy",
       "qty": 20.8313,
-      "unrealized_usd": 34.02
+      "unrealized_usd": 33.43
     }
   ]
 }
