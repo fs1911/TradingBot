@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-07-28 15:10:24",
+  "updated_utc": "2026-07-28 16:10:27",
   "alive": true,
   "state": "active",
-  "uptime_hours": 31.2,
+  "uptime_hours": 32.2,
   "open_positions": 8,
-  "trades_today": 19,
-  "daily_pnl_usd": 545.09,
-  "realized_pnl_usd": 127.73,
-  "unrealized_pnl_usd": -269.27,
-  "equity_usd": 68325.97,
-  "market_trend": "bearish",
+  "trades_today": 23,
+  "daily_pnl_usd": 244.69,
+  "realized_pnl_usd": -172.66,
+  "unrealized_pnl_usd": -221.24,
+  "equity_usd": 68048.45,
+  "market_trend": "bullish",
   "positions": [
-    {
-      "symbol": "AAPL",
-      "side": "sell",
-      "qty": 10.0,
-      "unrealized_usd": -31.1
-    },
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": 14.19
+      "unrealized_usd": -51.61
     },
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 15.0,
-      "unrealized_usd": -14.16
+      "unrealized_usd": -46.42
     },
     {
-      "symbol": "COIN",
-      "side": "sell",
-      "qty": 21.0,
-      "unrealized_usd": -87.99
+      "symbol": "ARKK",
+      "side": "buy",
+      "qty": 47.2957,
+      "unrealized_usd": 6.38
     },
     {
       "symbol": "INTC",
       "side": "sell",
       "qty": 39.0,
-      "unrealized_usd": -0.31
+      "unrealized_usd": -32.09
     },
     {
-      "symbol": "NVDA",
-      "side": "sell",
-      "qty": 17.0,
-      "unrealized_usd": -40.79
+      "symbol": "JPM",
+      "side": "buy",
+      "qty": 9.5527,
+      "unrealized_usd": -8.41
     },
     {
       "symbol": "PLTR",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": -62.72
+      "unrealized_usd": -99.4
     },
     {
-      "symbol": "SOFI",
-      "side": "sell",
-      "qty": 211.0,
-      "unrealized_usd": -46.4
+      "symbol": "QQQ",
+      "side": "buy",
+      "qty": 5.0327,
+      "unrealized_usd": 5.84
+    },
+    {
+      "symbol": "TLT",
+      "side": "buy",
+      "qty": 40.6103,
+      "unrealized_usd": 4.47
     }
   ]
 }
