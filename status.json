@@ -1,45 +1,57 @@
 {
-  "updated_utc": "2026-07-29 14:16:57",
+  "updated_utc": "2026-07-29 15:17:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 54.3,
-  "open_positions": 5,
-  "trades_today": 6,
-  "daily_pnl_usd": -178.35,
-  "realized_pnl_usd": -299.02,
-  "unrealized_pnl_usd": -17.93,
-  "equity_usd": 68150.48,
+  "uptime_hours": 55.3,
+  "open_positions": 7,
+  "trades_today": 10,
+  "daily_pnl_usd": -224.31,
+  "realized_pnl_usd": -344.98,
+  "unrealized_pnl_usd": 8.39,
+  "equity_usd": 68073.72,
   "market_trend": "bearish",
   "positions": [
     {
-      "symbol": "ARKK",
-      "side": "buy",
-      "qty": 47.2957,
-      "unrealized_usd": -24.35
+      "symbol": "AMD",
+      "side": "sell",
+      "qty": 7.0,
+      "unrealized_usd": 19.67
     },
     {
-      "symbol": "GOOGL",
+      "symbol": "HOOD",
       "side": "sell",
-      "qty": 10.0,
-      "unrealized_usd": 3.16
+      "qty": 38.0,
+      "unrealized_usd": -19.0
+    },
+    {
+      "symbol": "NIO",
+      "side": "sell",
+      "qty": 710.0,
+      "unrealized_usd": 7.1
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 9.0
+      "unrealized_usd": 10.92
     },
     {
-      "symbol": "TLT",
-      "side": "buy",
-      "qty": 40.6103,
-      "unrealized_usd": -4.26
+      "symbol": "TSLA",
+      "side": "sell",
+      "qty": 11.0,
+      "unrealized_usd": 4.13
+    },
+    {
+      "symbol": "UBER",
+      "side": "sell",
+      "qty": 48.0,
+      "unrealized_usd": -5.28
     },
     {
       "symbol": "XLF",
       "side": "sell",
       "qty": 59.0,
-      "unrealized_usd": -1.47
+      "unrealized_usd": -9.15
     }
   ]
 }
