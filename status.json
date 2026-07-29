@@ -1,63 +1,45 @@
 {
-  "updated_utc": "2026-07-29 19:19:18",
+  "updated_utc": "2026-07-29 20:19:36",
   "alive": true,
   "state": "active",
-  "uptime_hours": 59.3,
-  "open_positions": 8,
-  "trades_today": 15,
-  "daily_pnl_usd": -541.66,
-  "realized_pnl_usd": -662.33,
-  "unrealized_pnl_usd": -197.83,
-  "equity_usd": 67549.41,
-  "market_trend": "bullish",
+  "uptime_hours": 60.3,
+  "open_positions": 5,
+  "trades_today": 19,
+  "daily_pnl_usd": -700.43,
+  "realized_pnl_usd": -821.1,
+  "unrealized_pnl_usd": 109.05,
+  "equity_usd": 67695.02,
+  "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": -64.82
-    },
-    {
-      "symbol": "META",
-      "side": "buy",
-      "qty": 5.6708,
-      "unrealized_usd": -28.24
-    },
-    {
-      "symbol": "MSFT",
-      "side": "buy",
-      "qty": 8.425,
-      "unrealized_usd": -28.14
+      "unrealized_usd": 60.98
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 710.0,
-      "unrealized_usd": -21.3
+      "unrealized_usd": 21.3
     },
     {
-      "symbol": "SPY",
-      "side": "buy",
-      "qty": 4.5852,
-      "unrealized_usd": -7.43
+      "symbol": "TLT",
+      "side": "sell",
+      "qty": 40.0,
+      "unrealized_usd": 17.6
     },
     {
       "symbol": "V",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": -16.79
+      "unrealized_usd": -10.89
     },
     {
       "symbol": "XLF",
       "side": "sell",
       "qty": 59.0,
-      "unrealized_usd": 5.31
-    },
-    {
-      "symbol": "XLK",
-      "side": "buy",
-      "qty": 19.6346,
-      "unrealized_usd": -36.42
+      "unrealized_usd": 20.06
     }
   ]
 }
