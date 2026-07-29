@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-07-29 10:15:28",
+  "updated_utc": "2026-07-29 11:15:41",
   "alive": true,
   "state": "active",
-  "uptime_hours": 50.3,
+  "uptime_hours": 51.3,
   "open_positions": 8,
   "trades_today": 2,
   "daily_pnl_usd": -6.37,
   "realized_pnl_usd": -127.04,
-  "unrealized_pnl_usd": -51.68,
-  "equity_usd": 68139.42,
+  "unrealized_pnl_usd": -14.71,
+  "equity_usd": 68176.38,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": -43.52
+      "unrealized_usd": -25.25
     },
     {
       "symbol": "ARKK",
@@ -27,37 +27,37 @@
       "symbol": "INTC",
       "side": "sell",
       "qty": 39.0,
-      "unrealized_usd": -97.22
+      "unrealized_usd": -83.57
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 9.5527,
-      "unrealized_usd": 19.3
+      "unrealized_usd": 14.52
     },
     {
       "symbol": "PLTR",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": -86.8
+      "unrealized_usd": -93.24
     },
     {
       "symbol": "QQQ",
       "side": "buy",
       "qty": 5.0327,
-      "unrealized_usd": 5.59
+      "unrealized_usd": 3.42
     },
     {
       "symbol": "TLT",
       "side": "buy",
       "qty": 40.6103,
-      "unrealized_usd": -2.03
+      "unrealized_usd": -3.25
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 28.0705,
-      "unrealized_usd": 133.62
+      "unrealized_usd": 153.26
     }
   ]
 }
