@@ -1,39 +1,57 @@
 {
-  "updated_utc": "2026-07-30 04:21:54",
+  "updated_utc": "2026-07-30 05:22:11",
   "alive": true,
   "state": "active",
-  "uptime_hours": 68.4,
-  "open_positions": 6,
+  "uptime_hours": 69.4,
+  "open_positions": 9,
   "trades_today": 2,
   "daily_pnl_usd": -47.57,
   "realized_pnl_usd": -868.66,
-  "unrealized_pnl_usd": 99.42,
-  "equity_usd": 67659.57,
+  "unrealized_pnl_usd": 103.13,
+  "equity_usd": 67644.99,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": 32.9
+      "unrealized_usd": 30.1
+    },
+    {
+      "symbol": "DOGE/USD",
+      "side": "buy",
+      "qty": 48245.6011,
+      "unrealized_usd": -1.11
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7701,
-      "unrealized_usd": -1.78
+      "unrealized_usd": -9.38
+    },
+    {
+      "symbol": "LINK/USD",
+      "side": "buy",
+      "qty": 406.8002,
+      "unrealized_usd": 1.48
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 710.0,
-      "unrealized_usd": 35.5
+      "unrealized_usd": 42.6
+    },
+    {
+      "symbol": "SOL/USD",
+      "side": "buy",
+      "qty": 45.9879,
+      "unrealized_usd": 4.25
     },
     {
       "symbol": "TLT",
       "side": "sell",
       "qty": 40.0,
-      "unrealized_usd": 17.2
+      "unrealized_usd": 19.6
     },
     {
       "symbol": "V",
