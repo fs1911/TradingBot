@@ -1,39 +1,39 @@
 {
-  "updated_utc": "2026-07-30 00:20:42",
+  "updated_utc": "2026-07-30 01:20:57",
   "alive": true,
   "state": "active",
-  "uptime_hours": 64.4,
+  "uptime_hours": 65.4,
   "open_positions": 5,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -821.1,
-  "unrealized_pnl_usd": 21.49,
-  "equity_usd": 67607.47,
+  "unrealized_pnl_usd": 17.48,
+  "equity_usd": 67603.46,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": -1.54
+      "unrealized_usd": -4.9
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 710.0,
-      "unrealized_usd": 21.3
+      "unrealized_usd": -0.0
     },
     {
       "symbol": "TLT",
       "side": "sell",
       "qty": 40.0,
-      "unrealized_usd": 1.6
+      "unrealized_usd": 5.6
     },
     {
       "symbol": "V",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": -20.52
+      "unrealized_usd": -3.87
     },
     {
       "symbol": "XLF",
