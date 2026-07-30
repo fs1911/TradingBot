@@ -1,27 +1,27 @@
 {
-  "updated_utc": "2026-07-30 03:21:35",
+  "updated_utc": "2026-07-30 04:21:54",
   "alive": true,
   "state": "active",
-  "uptime_hours": 67.4,
+  "uptime_hours": 68.4,
   "open_positions": 6,
-  "trades_today": 1,
-  "daily_pnl_usd": -56.8,
-  "realized_pnl_usd": -877.9,
-  "unrealized_pnl_usd": 95.84,
-  "equity_usd": 67675.74,
+  "trades_today": 2,
+  "daily_pnl_usd": -47.57,
+  "realized_pnl_usd": -868.66,
+  "unrealized_pnl_usd": 99.42,
+  "equity_usd": 67659.57,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 7.0,
-      "unrealized_usd": 24.85
+      "unrealized_usd": 32.9
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7701,
-      "unrealized_usd": 3.89
+      "unrealized_usd": -1.78
     },
     {
       "symbol": "NIO",
@@ -33,7 +33,7 @@
       "symbol": "TLT",
       "side": "sell",
       "qty": 40.0,
-      "unrealized_usd": 16.0
+      "unrealized_usd": 17.2
     },
     {
       "symbol": "V",
