@@ -1,51 +1,45 @@
 {
-  "updated_utc": "2026-07-31 03:29:23",
+  "updated_utc": "2026-07-31 04:29:37",
   "alive": true,
   "state": "active",
-  "uptime_hours": 91.5,
-  "open_positions": 7,
-  "trades_today": 3,
-  "daily_pnl_usd": 48.88,
-  "realized_pnl_usd": -882.58,
-  "unrealized_pnl_usd": 267.33,
-  "equity_usd": 67589.49,
+  "uptime_hours": 92.5,
+  "open_positions": 6,
+  "trades_today": 4,
+  "daily_pnl_usd": 61.06,
+  "realized_pnl_usd": -870.4,
+  "unrealized_pnl_usd": 258.61,
+  "equity_usd": 67581.55,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 46.7033,
-      "unrealized_usd": 38.52
+      "unrealized_usd": 39.45
     },
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 29.1443,
-      "unrealized_usd": 136.17
+      "unrealized_usd": 130.92
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 48245.6011,
-      "unrealized_usd": -4.04
+      "unrealized_usd": -1.69
     },
     {
       "symbol": "NIO",
       "side": "buy",
       "qty": 704.9927,
-      "unrealized_usd": 84.6
+      "unrealized_usd": 91.65
     },
     {
       "symbol": "SLV",
       "side": "buy",
       "qty": 63.0825,
-      "unrealized_usd": -49.2
-    },
-    {
-      "symbol": "SOL/USD",
-      "side": "buy",
-      "qty": 45.9879,
-      "unrealized_usd": 22.64
+      "unrealized_usd": -40.37
     },
     {
       "symbol": "XLK",
