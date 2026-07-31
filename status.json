@@ -1,51 +1,51 @@
 {
-  "updated_utc": "2026-07-31 16:34:13",
+  "updated_utc": "2026-07-31 17:35:01",
   "alive": true,
   "state": "active",
-  "uptime_hours": 104.6,
+  "uptime_hours": 105.6,
   "open_positions": 6,
   "trades_today": 15,
   "daily_pnl_usd": 62.41,
   "realized_pnl_usd": -869.05,
-  "unrealized_pnl_usd": -60.95,
-  "equity_usd": 67129.59,
+  "unrealized_pnl_usd": -193.56,
+  "equity_usd": 66998.57,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 6.7366,
-      "unrealized_usd": -65.84
+      "unrealized_usd": -68.77
     },
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 28.1232,
-      "unrealized_usd": 55.68
+      "unrealized_usd": 56.67
     },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 23.0,
-      "unrealized_usd": -88.81
+      "unrealized_usd": -167.35
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 74.8093,
-      "unrealized_usd": 23.19
+      "unrealized_usd": -8.04
     },
     {
       "symbol": "META",
       "side": "buy",
       "qty": 6.1368,
-      "unrealized_usd": 8.44
+      "unrealized_usd": 2.06
     },
     {
       "symbol": "PYPL",
       "side": "sell",
       "qty": 58.0,
-      "unrealized_usd": 6.38
+      "unrealized_usd": -8.12
     }
   ]
 }
