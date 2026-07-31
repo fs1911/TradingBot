@@ -1,51 +1,63 @@
 {
-  "updated_utc": "2026-07-31 13:32:05",
+  "updated_utc": "2026-07-31 14:32:17",
   "alive": true,
   "state": "active",
-  "uptime_hours": 101.5,
-  "open_positions": 6,
-  "trades_today": 9,
-  "daily_pnl_usd": 10.84,
-  "realized_pnl_usd": -920.63,
-  "unrealized_pnl_usd": 47.87,
-  "equity_usd": 67372.61,
+  "uptime_hours": 102.6,
+  "open_positions": 8,
+  "trades_today": 12,
+  "daily_pnl_usd": 134.79,
+  "realized_pnl_usd": -796.67,
+  "unrealized_pnl_usd": -36.59,
+  "equity_usd": 67245.65,
   "market_trend": "bullish",
   "positions": [
     {
-      "symbol": "ARKK",
+      "symbol": "AMD",
       "side": "buy",
-      "qty": 46.7033,
-      "unrealized_usd": 15.17
+      "qty": 6.7366,
+      "unrealized_usd": -65.24
     },
     {
       "symbol": "BABA",
       "side": "buy",
-      "qty": 12.1443,
-      "unrealized_usd": 44.23
+      "qty": 28.1232,
+      "unrealized_usd": 24.75
     },
     {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 1.94,
-      "unrealized_usd": -0.0
+      "symbol": "COIN",
+      "side": "sell",
+      "qty": 23.0,
+      "unrealized_usd": -0.14
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 74.8093,
-      "unrealized_usd": -0.69
+      "unrealized_usd": 23.19
     },
     {
-      "symbol": "SLV",
+      "symbol": "META",
       "side": "buy",
-      "qty": 52.0825,
-      "unrealized_usd": -87.76
+      "qty": 6.1368,
+      "unrealized_usd": -10.43
     },
     {
-      "symbol": "XLK",
-      "side": "buy",
-      "qty": 19.4244,
-      "unrealized_usd": 76.92
+      "symbol": "PYPL",
+      "side": "sell",
+      "qty": 58.0,
+      "unrealized_usd": 19.71
+    },
+    {
+      "symbol": "SOFI",
+      "side": "sell",
+      "qty": 211.0,
+      "unrealized_usd": -28.94
+    },
+    {
+      "symbol": "SPY",
+      "side": "sell",
+      "qty": 4.0,
+      "unrealized_usd": 0.5
     }
   ]
 }
