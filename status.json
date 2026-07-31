@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-07-31 11:31:22",
+  "updated_utc": "2026-07-31 12:31:38",
   "alive": true,
   "state": "active",
-  "uptime_hours": 99.5,
-  "open_positions": 8,
-  "trades_today": 7,
-  "daily_pnl_usd": 62.14,
-  "realized_pnl_usd": -869.33,
-  "unrealized_pnl_usd": 162.52,
-  "equity_usd": 67399.97,
+  "uptime_hours": 100.5,
+  "open_positions": 7,
+  "trades_today": 8,
+  "daily_pnl_usd": 17.61,
+  "realized_pnl_usd": -913.85,
+  "unrealized_pnl_usd": 199.2,
+  "equity_usd": 67403.29,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 46.7033,
-      "unrealized_usd": 43.66
+      "unrealized_usd": 34.32
     },
     {
       "symbol": "AVAX/USD",
@@ -27,37 +27,31 @@
       "symbol": "BABA",
       "side": "buy",
       "qty": 29.1443,
-      "unrealized_usd": 98.28
+      "unrealized_usd": 99.15
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 1.94,
-      "unrealized_usd": -0.02
+      "unrealized_usd": -0.0
     },
     {
       "symbol": "NIO",
       "side": "buy",
       "qty": 704.9927,
-      "unrealized_usd": 74.22
+      "unrealized_usd": 93.46
     },
     {
       "symbol": "SLV",
       "side": "buy",
       "qty": 63.0825,
-      "unrealized_usd": -72.55
-    },
-    {
-      "symbol": "SOL/USD",
-      "side": "buy",
-      "qty": 45.4948,
-      "unrealized_usd": -44.48
+      "unrealized_usd": -85.16
     },
     {
       "symbol": "XLK",
       "side": "buy",
       "qty": 19.4244,
-      "unrealized_usd": 57.11
+      "unrealized_usd": 51.12
     }
   ]
 }
