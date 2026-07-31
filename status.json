@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-07-31 20:36:13",
+  "updated_utc": "2026-07-31 21:36:29",
   "alive": true,
   "state": "active",
-  "uptime_hours": 108.6,
+  "uptime_hours": 109.6,
   "open_positions": 6,
   "trades_today": 18,
   "daily_pnl_usd": -296.63,
   "realized_pnl_usd": -1228.09,
-  "unrealized_pnl_usd": 68.86,
-  "equity_usd": 66871.11,
+  "unrealized_pnl_usd": 50.24,
+  "equity_usd": 66852.5,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 28.1232,
-      "unrealized_usd": 46.85
+      "unrealized_usd": 44.72
     },
     {
       "symbol": "LTC/USD",
@@ -27,25 +27,25 @@
       "symbol": "META",
       "side": "buy",
       "qty": 6.1368,
-      "unrealized_usd": 52.16
+      "unrealized_usd": 36.27
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 27.2319,
-      "unrealized_usd": 3.54
+      "unrealized_usd": -7.62
     },
     {
       "symbol": "PYPL",
       "side": "sell",
       "qty": 58.0,
-      "unrealized_usd": -11.6
+      "unrealized_usd": 1.74
     },
     {
       "symbol": "TSLA",
       "side": "buy",
       "qty": 10.7311,
-      "unrealized_usd": -20.23
+      "unrealized_usd": -22.99
     }
   ]
 }
