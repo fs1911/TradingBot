@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-07-31 02:29:09",
+  "updated_utc": "2026-07-31 03:29:23",
   "alive": true,
   "state": "active",
-  "uptime_hours": 90.5,
+  "uptime_hours": 91.5,
   "open_positions": 7,
   "trades_today": 3,
   "daily_pnl_usd": 48.88,
   "realized_pnl_usd": -882.58,
-  "unrealized_pnl_usd": 302.45,
-  "equity_usd": 67624.61,
+  "unrealized_pnl_usd": 267.33,
+  "equity_usd": 67589.49,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,31 +21,31 @@
       "symbol": "BABA",
       "side": "buy",
       "qty": 29.1443,
-      "unrealized_usd": 90.12
+      "unrealized_usd": 136.17
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 48245.6011,
-      "unrealized_usd": 31.35
+      "unrealized_usd": -4.04
     },
     {
       "symbol": "NIO",
       "side": "buy",
       "qty": 704.9927,
-      "unrealized_usd": 91.65
+      "unrealized_usd": 84.6
     },
     {
       "symbol": "SLV",
       "side": "buy",
       "qty": 63.0825,
-      "unrealized_usd": -33.43
+      "unrealized_usd": -49.2
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 45.9879,
-      "unrealized_usd": 45.59
+      "unrealized_usd": 22.64
     },
     {
       "symbol": "XLK",
