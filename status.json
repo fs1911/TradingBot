@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-02 19:47:52",
+  "updated_utc": "2026-08-02 20:48:08",
   "alive": true,
   "state": "active",
-  "uptime_hours": 155.8,
-  "open_positions": 7,
-  "trades_today": 9,
-  "daily_pnl_usd": -134.48,
-  "realized_pnl_usd": -1308.0,
-  "unrealized_pnl_usd": 82.6,
-  "equity_usd": 66531.93,
+  "uptime_hours": 156.8,
+  "open_positions": 6,
+  "trades_today": 10,
+  "daily_pnl_usd": -107.24,
+  "realized_pnl_usd": -1280.76,
+  "unrealized_pnl_usd": 80.1,
+  "equity_usd": 66541.27,
   "market_trend": "bullish",
   "positions": [
     {
@@ -16,12 +16,6 @@
       "side": "buy",
       "qty": 28.1232,
       "unrealized_usd": 59.06
-    },
-    {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 402.8344,
-      "unrealized_usd": 2.51
     },
     {
       "symbol": "LTC/USD",
