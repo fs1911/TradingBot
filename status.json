@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-02 11:45:50",
+  "updated_utc": "2026-08-02 12:46:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 147.8,
+  "uptime_hours": 148.8,
   "open_positions": 6,
   "trades_today": 1,
   "daily_pnl_usd": -57.49,
   "realized_pnl_usd": -1231.01,
-  "unrealized_pnl_usd": 88.15,
-  "equity_usd": 66747.6,
+  "unrealized_pnl_usd": 98.11,
+  "equity_usd": 66757.55,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,7 +21,7 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.7253,
-      "unrealized_usd": -8.96
+      "unrealized_usd": 0.99
     },
     {
       "symbol": "META",
