@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-02 21:48:24",
+  "updated_utc": "2026-08-02 22:48:38",
   "alive": true,
   "state": "active",
-  "uptime_hours": 157.8,
+  "uptime_hours": 158.8,
   "open_positions": 6,
   "trades_today": 10,
   "daily_pnl_usd": -107.24,
   "realized_pnl_usd": -1280.76,
-  "unrealized_pnl_usd": 80.1,
-  "equity_usd": 66541.27,
+  "unrealized_pnl_usd": 94.94,
+  "equity_usd": 66556.11,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,7 +21,7 @@
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 74.2118,
-      "unrealized_usd": -17.02
+      "unrealized_usd": -2.17
     },
     {
       "symbol": "META",
