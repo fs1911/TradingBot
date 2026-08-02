@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-02 16:47:07",
+  "updated_utc": "2026-08-02 17:47:22",
   "alive": true,
   "state": "active",
-  "uptime_hours": 152.8,
+  "uptime_hours": 153.8,
   "open_positions": 7,
-  "trades_today": 1,
-  "daily_pnl_usd": -57.49,
-  "realized_pnl_usd": -1231.01,
-  "unrealized_pnl_usd": 102.52,
-  "equity_usd": 66755.93,
+  "trades_today": 2,
+  "daily_pnl_usd": -30.0,
+  "realized_pnl_usd": -1203.52,
+  "unrealized_pnl_usd": 87.36,
+  "equity_usd": 66736.27,
   "market_trend": "bullish",
   "positions": [
     {
@@ -18,16 +18,16 @@
       "unrealized_usd": 59.06
     },
     {
-      "symbol": "BCH/USD",
-      "side": "buy",
-      "qty": 15.7253,
-      "unrealized_usd": 12.58
-    },
-    {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 402.8344,
       "unrealized_usd": -7.18
+    },
+    {
+      "symbol": "LTC/USD",
+      "side": "buy",
+      "qty": 74.2118,
+      "unrealized_usd": -2.58
     },
     {
       "symbol": "META",
