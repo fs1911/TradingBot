@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-08-03 14:53:57",
+  "updated_utc": "2026-08-03 15:54:03",
   "alive": true,
   "state": "active",
-  "uptime_hours": 174.9,
+  "uptime_hours": 175.9,
   "open_positions": 8,
-  "trades_today": 9,
-  "daily_pnl_usd": -108.73,
-  "realized_pnl_usd": -1389.49,
-  "unrealized_pnl_usd": -100.75,
-  "equity_usd": 66453.02,
+  "trades_today": 10,
+  "daily_pnl_usd": -184.49,
+  "realized_pnl_usd": -1465.24,
+  "unrealized_pnl_usd": 58.25,
+  "equity_usd": 66521.74,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 25.96,
-      "unrealized_usd": 2.45
+      "unrealized_usd": 13.87
     },
     {
       "symbol": "BCH/USD",
@@ -27,19 +27,19 @@
       "symbol": "COIN",
       "side": "buy",
       "qty": 22.3815,
-      "unrealized_usd": 9.52
-    },
-    {
-      "symbol": "CRM",
-      "side": "buy",
-      "qty": 17.3346,
-      "unrealized_usd": -83.13
+      "unrealized_usd": 18.81
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 8.9438,
-      "unrealized_usd": -41.85
+      "unrealized_usd": 20.49
+    },
+    {
+      "symbol": "INTC",
+      "side": "buy",
+      "qty": 36.6258,
+      "unrealized_usd": -18.0
     },
     {
       "symbol": "LTC/USD",
@@ -51,13 +51,13 @@
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.4029,
-      "unrealized_usd": 2.16
+      "unrealized_usd": 7.22
     },
     {
       "symbol": "XLY",
       "side": "buy",
       "qty": 28.0633,
-      "unrealized_usd": -14.21
+      "unrealized_usd": -8.46
     }
   ]
 }
