@@ -1,45 +1,51 @@
 {
-  "updated_utc": "2026-08-03 03:49:56",
+  "updated_utc": "2026-08-03 04:50:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 163.8,
-  "open_positions": 5,
+  "uptime_hours": 164.9,
+  "open_positions": 6,
   "trades_today": 2,
   "daily_pnl_usd": -37.83,
   "realized_pnl_usd": -1318.59,
-  "unrealized_pnl_usd": 384.73,
-  "equity_usd": 66791.34,
+  "unrealized_pnl_usd": 375.09,
+  "equity_usd": 66775.68,
   "market_trend": "bullish",
   "positions": [
+    {
+      "symbol": "AVAX/USD",
+      "side": "buy",
+      "qty": 518.8171,
+      "unrealized_usd": 4.61
+    },
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 28.1232,
-      "unrealized_usd": 208.96
+      "unrealized_usd": 201.92
     },
     {
       "symbol": "META",
       "side": "buy",
       "qty": 6.1368,
-      "unrealized_usd": 99.78
+      "unrealized_usd": 95.18
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 27.2319,
-      "unrealized_usd": 60.73
+      "unrealized_usd": 55.55
     },
     {
       "symbol": "PYPL",
       "side": "sell",
       "qty": 58.0,
-      "unrealized_usd": -13.34
+      "unrealized_usd": -15.08
     },
     {
       "symbol": "TSLA",
       "side": "buy",
       "qty": 10.7311,
-      "unrealized_usd": 28.61
+      "unrealized_usd": 32.9
     }
   ]
 }
