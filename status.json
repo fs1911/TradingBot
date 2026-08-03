@@ -1,39 +1,39 @@
 {
-  "updated_utc": "2026-08-03 18:56:27",
+  "updated_utc": "2026-08-03 19:56:38",
   "alive": true,
   "state": "active",
-  "uptime_hours": 179.0,
+  "uptime_hours": 180.0,
   "open_positions": 8,
   "trades_today": 11,
   "daily_pnl_usd": -148.13,
   "realized_pnl_usd": -1428.89,
-  "unrealized_pnl_usd": 71.19,
-  "equity_usd": 66572.41,
+  "unrealized_pnl_usd": -37.5,
+  "equity_usd": 66463.19,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 25.96,
-      "unrealized_usd": -17.02
+      "unrealized_usd": -26.63
     },
     {
       "symbol": "COIN",
       "side": "buy",
       "qty": 22.3815,
-      "unrealized_usd": 60.89
+      "unrealized_usd": -26.85
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 8.9438,
-      "unrealized_usd": 22.01
+      "unrealized_usd": 9.67
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 36.6258,
-      "unrealized_usd": -12.14
+      "unrealized_usd": 0.68
     },
     {
       "symbol": "LTC/USD",
@@ -45,19 +45,19 @@
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.4029,
-      "unrealized_usd": 15.63
+      "unrealized_usd": 13.89
     },
     {
       "symbol": "XLK",
       "side": "buy",
       "qty": 18.6557,
-      "unrealized_usd": -3.83
+      "unrealized_usd": -11.39
     },
     {
       "symbol": "XLY",
       "side": "buy",
       "qty": 28.0633,
-      "unrealized_usd": -10.56
+      "unrealized_usd": -13.09
     }
   ]
 }
