@@ -1,51 +1,51 @@
 {
-  "updated_utc": "2026-08-04 03:59:24",
+  "updated_utc": "2026-08-04 04:59:37",
   "alive": true,
   "state": "active",
-  "uptime_hours": 188.0,
+  "uptime_hours": 189.0,
   "open_positions": 8,
   "trades_today": 1,
   "daily_pnl_usd": -17.11,
   "realized_pnl_usd": -1445.99,
-  "unrealized_pnl_usd": 64.18,
-  "equity_usd": 66539.77,
+  "unrealized_pnl_usd": 73.12,
+  "equity_usd": 66548.71,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 25.96,
-      "unrealized_usd": 25.29
+      "unrealized_usd": 23.99
     },
     {
       "symbol": "COIN",
       "side": "buy",
       "qty": 22.3815,
-      "unrealized_usd": -0.44
+      "unrealized_usd": 13.22
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 47184.7914,
-      "unrealized_usd": -1.56
+      "unrealized_usd": -8.83
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 8.9438,
-      "unrealized_usd": 15.39
+      "unrealized_usd": 14.41
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 36.6258,
-      "unrealized_usd": 27.05
+      "unrealized_usd": 31.45
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.4029,
-      "unrealized_usd": 21.35
+      "unrealized_usd": 21.79
     },
     {
       "symbol": "XLK",
