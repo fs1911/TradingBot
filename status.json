@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-04 18:05:29",
+  "updated_utc": "2026-08-04 19:06:07",
   "alive": true,
   "state": "active",
-  "uptime_hours": 202.1,
+  "uptime_hours": 203.1,
   "open_positions": 8,
   "trades_today": 15,
   "daily_pnl_usd": 107.07,
   "realized_pnl_usd": -1321.82,
-  "unrealized_pnl_usd": 403.02,
-  "equity_usd": 66958.64,
+  "unrealized_pnl_usd": 411.3,
+  "equity_usd": 66967.03,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 44.2988,
-      "unrealized_usd": 60.25
+      "unrealized_usd": 77.08
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 8.8675,
-      "unrealized_usd": -1.77
+      "unrealized_usd": -8.38
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 8.9281,
-      "unrealized_usd": 48.57
+      "unrealized_usd": 57.85
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 9.2472,
-      "unrealized_usd": -10.45
+      "unrealized_usd": -11.1
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.8492,
-      "unrealized_usd": 68.56
+      "unrealized_usd": 69.65
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 21.5265,
-      "unrealized_usd": 189.65
+      "unrealized_usd": 176.95
     },
     {
       "symbol": "QQQ",
       "side": "buy",
       "qty": 4.648,
-      "unrealized_usd": 19.06
+      "unrealized_usd": 28.17
     },
     {
       "symbol": "V",
       "side": "buy",
       "qty": 9.0853,
-      "unrealized_usd": 29.16
+      "unrealized_usd": 21.08
     }
   ]
 }
