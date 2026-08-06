@@ -1,51 +1,57 @@
 {
-  "updated_utc": "2026-08-06 22:46:57",
+  "updated_utc": "2026-08-06 23:47:19",
   "alive": true,
   "state": "active",
-  "uptime_hours": 8.1,
-  "open_positions": 6,
+  "uptime_hours": 9.1,
+  "open_positions": 7,
   "trades_today": 4,
   "daily_pnl_usd": -147.25,
   "realized_pnl_usd": -147.25,
-  "unrealized_pnl_usd": 166.26,
-  "equity_usd": 66334.31,
+  "unrealized_pnl_usd": 179.3,
+  "equity_usd": 66341.38,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 6.7698,
-      "unrealized_usd": 17.6
+      "unrealized_usd": 18.28
+    },
+    {
+      "symbol": "BCH/USD",
+      "side": "buy",
+      "qty": 15.5868,
+      "unrealized_usd": 15.59
     },
     {
       "symbol": "GLD",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": -3.88
+      "unrealized_usd": -8.56
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.7315,
-      "unrealized_usd": 38.57
+      "unrealized_usd": 39.31
     },
     {
       "symbol": "PYPL",
       "side": "buy",
       "qty": 56.5939,
-      "unrealized_usd": 41.09
+      "unrealized_usd": 47.31
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 14.01
+      "unrealized_usd": 12.97
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 48.0591,
-      "unrealized_usd": 58.87
+      "unrealized_usd": 54.4
     }
   ]
 }
