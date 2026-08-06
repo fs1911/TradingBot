@@ -155,10 +155,36 @@ class TradingBot:
 
     # ── Public entry point ────────────────────────────────────────────────────
 
+    def _run_startup_backtest(self) -> None:
+        """One-off out-of-sample backtest of the active strategies on real Alpaca
+        history, pushed to GitHub as backtest_results.md. Runs in a background
+        thread so it never blocks trading. The honest edge test."""
+        try:
+            from .backtest.oos_runner import run_and_report
+            crypto = [s for s in self.symbols if "/" in s]
+            logger.info(f"Startup backtest: running OOS test on {len(crypto)} crypto symbols…")
+            report = run_and_report(
+                get_ohlcv=self.broker.get_ohlcv,
+                active_strategies=self.bot_cfg.get("active_strategies", []),
+                registry=STRATEGY_REGISTRY,
+                strategy_cfg=self.strategy_cfg,
+                symbols=crypto,
+                timeframe=self.timeframe,
+            )
+            self.heartbeat._put_file("backtest_results.md", report.encode(),
+                                     "OOS backtest results")
+            logger.info("Startup backtest: report pushed to backtest_results.md")
+        except Exception as e:
+            logger.error(f"Startup backtest failed: {e}")
+
     def run(self) -> None:
         """Start the main trading loop (blocking)."""
         logger.info("Bot started — entering main loop")
         self._running = True
+
+        if self.bot_cfg.get("bot", {}).get("run_backtest_on_start", False):
+            import threading
+            threading.Thread(target=self._run_startup_backtest, daemon=True).start()
 
         while self._running:
             try:
