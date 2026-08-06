@@ -1,33 +1,33 @@
 {
-  "updated_utc": "2026-08-06 11:19:53",
+  "updated_utc": "2026-08-06 12:20:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 243.3,
+  "uptime_hours": 244.4,
   "open_positions": 3,
   "trades_today": 1,
   "daily_pnl_usd": 3.38,
   "realized_pnl_usd": -1171.07,
-  "unrealized_pnl_usd": 51.1,
-  "equity_usd": 66332.72,
+  "unrealized_pnl_usd": 78.54,
+  "equity_usd": 66360.16,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "JNJ",
       "side": "buy",
       "qty": 13.0443,
-      "unrealized_usd": 43.46
+      "unrealized_usd": 57.81
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 15.167,
-      "unrealized_usd": 3.03
+      "unrealized_usd": 13.44
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 4.61
+      "unrealized_usd": 7.29
     }
   ]
 }
