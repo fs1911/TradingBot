@@ -1,63 +1,57 @@
 {
-  "updated_utc": "2026-08-06 14:23:34",
+  "updated_utc": "2026-08-06 14:29:11",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
-  "open_positions": 8,
+  "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": 0.0,
-  "unrealized_pnl_usd": -36.31,
-  "equity_usd": 66364.74,
+  "unrealized_pnl_usd": -33.86,
+  "equity_usd": 66316.24,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.5495,
-      "unrealized_usd": -25.11
+      "unrealized_usd": -24.0
     },
     {
       "symbol": "GDX",
       "side": "buy",
       "qty": 39.5395,
-      "unrealized_usd": -3.37
+      "unrealized_usd": -15.23
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.7315,
-      "unrealized_usd": 27.26
-    },
-    {
-      "symbol": "NVDA",
-      "side": "buy",
-      "qty": 14.8833,
-      "unrealized_usd": -39.0
+      "unrealized_usd": 24.37
     },
     {
       "symbol": "PYPL",
       "side": "buy",
       "qty": 56.5939,
-      "unrealized_usd": -0.51
+      "unrealized_usd": -4.19
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 2.61
+      "unrealized_usd": 7.69
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 48.0591,
-      "unrealized_usd": 19.22
+      "unrealized_usd": -2.88
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 29.3085,
-      "unrealized_usd": -17.42
+      "unrealized_usd": -19.62
     }
   ]
 }
