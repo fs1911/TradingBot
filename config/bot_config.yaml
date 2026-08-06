@@ -4,12 +4,13 @@
 
 bot:
   name: "TradingBot-CH"
-  version: "1.4.0"
+  version: "1.5.0"
   environment: "paper"
   trading_enabled: true
   loop_interval_seconds: 60
   max_hold_hours: 24       # Let trends develop — 6h cut winners short (see results analysis)
   sl_cooldown_minutes: 30  # No re-entry on same symbol for 30 min after stop-loss
+  min_hold_seconds: 120    # Ghost-trade guard: a position can't be closed for 120s after opening
 
 broker: "alpaca"
 

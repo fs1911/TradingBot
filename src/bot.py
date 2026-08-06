@@ -80,17 +80,8 @@ class TradingBot:
         if config_override:
             self._merge(self.bot_cfg, config_override)
 
-        # Apply auto-tuned parameter overrides (written nightly by AutoTuner)
-        _root = Path(__file__).parent.parent
-        _tuned_path = _root / "config" / "strategy_config_tuned.yaml"
-        if _tuned_path.exists():
-            import yaml as _yaml
-            with open(_tuned_path) as _f:
-                _tuned = _yaml.safe_load(_f) or {}
-            for _strat, _params in _tuned.items():
-                if _strat in self.strategy_cfg and isinstance(_params, dict):
-                    self.strategy_cfg[_strat].update(_params)
-            logger.info(f"Loaded auto-tuned overrides for: {list(_tuned.keys())}")
+        # (Auto-tuned parameter overlay removed 2026-08-06 — tuning is gone,
+        #  the AutoTuner is detection-only now.)
 
         env = self.bot_cfg["bot"].get("environment", "paper")
         log_level = os.environ.get("LOG_LEVEL", "INFO")
@@ -612,6 +603,16 @@ class TradingBot:
                 trade["sl"] = sl
                 trade["tp"] = tp
                 logger.info(f"Assigned fallback SL/TP to {symbol}: SL={sl:.4f} TP={tp:.4f}")
+
+            # Ghost-trade guard: never evaluate an exit on a freshly-opened
+            # position. A trade that closes within seconds is a spread/mark
+            # artifact (open and immediate re-check in the same tick), not a
+            # real signal — this is what produced the "tp with a loss" trades.
+            # A minimum hold time makes sub-minute exits impossible by design.
+            min_hold = self.bot_cfg.get("bot", {}).get("min_hold_seconds", 120)
+            held_s = (datetime.now(timezone.utc) - trade["opened_at"]).total_seconds()
+            if held_s < min_hold:
+                continue
 
             should_close = False
             reason = ""
