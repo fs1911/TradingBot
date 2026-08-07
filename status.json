@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-08-07 18:54:16",
+  "updated_utc": "2026-08-07 19:54:50",
   "alive": true,
   "state": "active",
-  "uptime_hours": 28.2,
+  "uptime_hours": 29.2,
   "open_positions": 8,
-  "trades_today": 11,
-  "daily_pnl_usd": 239.88,
-  "realized_pnl_usd": 92.63,
-  "unrealized_pnl_usd": 16.79,
-  "equity_usd": 66284.45,
+  "trades_today": 12,
+  "daily_pnl_usd": 207.46,
+  "realized_pnl_usd": 60.21,
+  "unrealized_pnl_usd": 137.38,
+  "equity_usd": 66375.18,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 42.4972,
-      "unrealized_usd": 27.62
+      "unrealized_usd": 57.58
     },
     {
       "symbol": "BCH/USD",
@@ -27,37 +27,37 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0511,
-      "unrealized_usd": -5.31
+      "unrealized_usd": 8.74
+    },
+    {
+      "symbol": "JPM",
+      "side": "buy",
+      "qty": 9.2459,
+      "unrealized_usd": -12.57
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 403.8493,
-      "unrealized_usd": -17.53
+      "unrealized_usd": -0.73
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.9342,
-      "unrealized_usd": 2.39
+      "unrealized_usd": 19.12
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 19.5383,
-      "unrealized_usd": -1.03
-    },
-    {
-      "symbol": "USO",
-      "side": "buy",
-      "qty": 27.7091,
-      "unrealized_usd": 2.25
+      "unrealized_usd": 51.04
     },
     {
       "symbol": "XLY",
       "side": "buy",
       "qty": 27.7423,
-      "unrealized_usd": -3.47
+      "unrealized_usd": 2.36
     }
   ]
 }
