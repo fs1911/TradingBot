@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-07 01:47:54",
+  "updated_utc": "2026-08-07 02:48:11",
   "alive": true,
   "state": "active",
-  "uptime_hours": 11.1,
+  "uptime_hours": 12.1,
   "open_positions": 7,
-  "trades_today": 1,
-  "daily_pnl_usd": -9.09,
-  "realized_pnl_usd": -156.34,
-  "unrealized_pnl_usd": 186.68,
-  "equity_usd": 66329.32,
+  "trades_today": 2,
+  "daily_pnl_usd": -27.61,
+  "realized_pnl_usd": -174.86,
+  "unrealized_pnl_usd": 204.1,
+  "equity_usd": 66346.74,
   "market_trend": "bearish",
   "positions": [
     {
@@ -21,19 +21,19 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.5868,
-      "unrealized_usd": 15.59
+      "unrealized_usd": 31.17
     },
     {
       "symbol": "GLD",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": -13.88
+      "unrealized_usd": -11.96
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.7315,
-      "unrealized_usd": 34.13
+      "unrealized_usd": 35.21
     },
     {
       "symbol": "PYPL",
@@ -45,13 +45,13 @@
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 15.13
+      "unrealized_usd": 14.45
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 48.0591,
-      "unrealized_usd": 73.05
+      "unrealized_usd": 72.57
     }
   ]
 }
