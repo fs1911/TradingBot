@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-08 14:00:03",
+  "updated_utc": "2026-08-08 15:00:17",
   "alive": true,
   "state": "active",
-  "uptime_hours": 47.3,
+  "uptime_hours": 48.3,
   "open_positions": 7,
-  "trades_today": 5,
-  "daily_pnl_usd": 117.51,
-  "realized_pnl_usd": 165.19,
-  "unrealized_pnl_usd": 74265.24,
-  "equity_usd": 66389.11,
+  "trades_today": 6,
+  "daily_pnl_usd": 160.01,
+  "realized_pnl_usd": 207.69,
+  "unrealized_pnl_usd": 74263.59,
+  "equity_usd": 66387.46,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,19 +21,19 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.3884,
-      "unrealized_usd": 32.78
+      "unrealized_usd": 18.47
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0511,
-      "unrealized_usd": 74099.13
+      "unrealized_usd": 74102.32
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7281,
-      "unrealized_usd": -1.21
+      "unrealized_usd": 8.26
     },
     {
       "symbol": "NVDA",
