@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-08 21:01:45",
+  "updated_utc": "2026-08-08 22:01:58",
   "alive": true,
   "state": "active",
-  "uptime_hours": 54.3,
+  "uptime_hours": 55.3,
   "open_positions": 7,
   "trades_today": 8,
   "daily_pnl_usd": 191.61,
   "realized_pnl_usd": 239.29,
-  "unrealized_pnl_usd": 107.35,
-  "equity_usd": 66330.29,
+  "unrealized_pnl_usd": 105.76,
+  "equity_usd": 66328.7,
   "market_trend": "bullish",
   "positions": [
     {
@@ -27,7 +27,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7281,
-      "unrealized_usd": 4.29
+      "unrealized_usd": 2.7
     },
     {
       "symbol": "LTC/USD",
