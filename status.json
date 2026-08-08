@@ -1,33 +1,33 @@
 {
-  "updated_utc": "2026-08-07 23:56:10",
+  "updated_utc": "2026-08-08 00:56:23",
   "alive": true,
   "state": "active",
-  "uptime_hours": 33.2,
+  "uptime_hours": 34.2,
   "open_positions": 7,
-  "trades_today": 13,
-  "daily_pnl_usd": 194.93,
+  "trades_today": 0,
+  "daily_pnl_usd": 0.0,
   "realized_pnl_usd": 47.68,
-  "unrealized_pnl_usd": 115.69,
-  "equity_usd": 66338.95,
+  "unrealized_pnl_usd": 101.33,
+  "equity_usd": 66324.59,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 42.4972,
-      "unrealized_usd": 53.55
+      "unrealized_usd": 54.82
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.3884,
-      "unrealized_usd": -5.14
+      "unrealized_usd": -20.0
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0511,
-      "unrealized_usd": 7.55
+      "unrealized_usd": 6.99
     },
     {
       "symbol": "LINK/USD",
@@ -39,13 +39,13 @@
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.9342,
-      "unrealized_usd": 25.99
+      "unrealized_usd": 25.24
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 19.5383,
-      "unrealized_usd": 45.42
+      "unrealized_usd": 45.96
     },
     {
       "symbol": "XLY",
