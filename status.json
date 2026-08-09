@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-09 12:05:08",
+  "updated_utc": "2026-08-09 13:05:20",
   "alive": true,
   "state": "active",
-  "uptime_hours": 69.4,
+  "uptime_hours": 70.4,
   "open_positions": 7,
   "trades_today": 7,
   "daily_pnl_usd": 18.93,
   "realized_pnl_usd": 258.21,
-  "unrealized_pnl_usd": 86.16,
-  "equity_usd": 66174.52,
+  "unrealized_pnl_usd": 71.17,
+  "equity_usd": 66159.52,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,7 +21,7 @@
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 510.4405,
-      "unrealized_usd": -5.14
+      "unrealized_usd": -20.14
     },
     {
       "symbol": "BCH/USD",
