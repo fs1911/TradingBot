@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-09 10:04:43",
+  "updated_utc": "2026-08-09 11:04:57",
   "alive": true,
   "state": "active",
-  "uptime_hours": 67.4,
+  "uptime_hours": 68.4,
   "open_positions": 7,
   "trades_today": 7,
   "daily_pnl_usd": 18.93,
   "realized_pnl_usd": 258.21,
-  "unrealized_pnl_usd": 97.27,
-  "equity_usd": 66185.63,
+  "unrealized_pnl_usd": 75.9,
+  "equity_usd": 66164.26,
   "market_trend": "bullish",
   "positions": [
     {
@@ -33,7 +33,7 @@
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 397.1588,
-      "unrealized_usd": -5.71
+      "unrealized_usd": -27.08
     },
     {
       "symbol": "NVDA",
