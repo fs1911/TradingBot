@@ -1,27 +1,27 @@
 {
-  "updated_utc": "2026-08-10 20:15:44",
+  "updated_utc": "2026-08-10 21:16:04",
   "alive": true,
   "state": "active",
-  "uptime_hours": 101.6,
+  "uptime_hours": 102.6,
   "open_positions": 7,
-  "trades_today": 9,
-  "daily_pnl_usd": -95.48,
-  "realized_pnl_usd": 209.15,
-  "unrealized_pnl_usd": 212.43,
-  "equity_usd": 66295.07,
+  "trades_today": 10,
+  "daily_pnl_usd": -161.05,
+  "realized_pnl_usd": 143.58,
+  "unrealized_pnl_usd": 161.61,
+  "equity_usd": 66244.24,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 17.0481,
-      "unrealized_usd": 52.63
+      "unrealized_usd": 37.26
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.5447,
-      "unrealized_usd": 0.52
+      "unrealized_usd": 5.1
     },
     {
       "symbol": "NFLX",
@@ -33,25 +33,25 @@
       "symbol": "PLTR",
       "side": "buy",
       "qty": 18.6806,
-      "unrealized_usd": -35.78
+      "unrealized_usd": -67.25
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 42.6665,
-      "unrealized_usd": 22.19
+      "unrealized_usd": 15.79
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 26.9272,
-      "unrealized_usd": 84.24
+      "unrealized_usd": 83.2
     },
     {
       "symbol": "XLE",
       "side": "buy",
       "qty": 55.8629,
-      "unrealized_usd": 55.3
+      "unrealized_usd": 54.19
     }
   ]
 }
