@@ -1,45 +1,63 @@
 {
-  "updated_utc": "2026-08-10 13:11:04",
+  "updated_utc": "2026-08-10 14:11:24",
   "alive": true,
   "state": "active",
-  "uptime_hours": 94.5,
-  "open_positions": 5,
-  "trades_today": 3,
-  "daily_pnl_usd": -35.51,
-  "realized_pnl_usd": 269.12,
-  "unrealized_pnl_usd": 76.32,
-  "equity_usd": 66066.47,
+  "uptime_hours": 95.5,
+  "open_positions": 8,
+  "trades_today": 5,
+  "daily_pnl_usd": -61.9,
+  "realized_pnl_usd": 242.73,
+  "unrealized_pnl_usd": 11.38,
+  "equity_usd": 66144.36,
   "market_trend": "bullish",
   "positions": [
     {
-      "symbol": "ARKK",
+      "symbol": "CRM",
       "side": "buy",
-      "qty": 42.4972,
-      "unrealized_usd": 64.6
+      "qty": 17.0481,
+      "unrealized_usd": -12.15
     },
     {
-      "symbol": "NVDA",
+      "symbol": "MSFT",
       "side": "buy",
-      "qty": 14.9342,
-      "unrealized_usd": 12.54
+      "qty": 6.5447,
+      "unrealized_usd": 20.22
     },
     {
       "symbol": "PLTR",
       "side": "buy",
-      "qty": 19.5383,
-      "unrealized_usd": -2.49
+      "qty": 18.6806,
+      "unrealized_usd": -4.74
+    },
+    {
+      "symbol": "SLV",
+      "side": "buy",
+      "qty": 57.1443,
+      "unrealized_usd": -4.29
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 43.0764,
-      "unrealized_usd": 2.78
+      "unrealized_usd": -3.38
     },
     {
-      "symbol": "XLY",
+      "symbol": "UBER",
       "side": "buy",
-      "qty": 27.7423,
-      "unrealized_usd": -1.11
+      "qty": 42.6665,
+      "unrealized_usd": -17.49
+    },
+    {
+      "symbol": "USO",
+      "side": "buy",
+      "qty": 26.9272,
+      "unrealized_usd": 22.31
+    },
+    {
+      "symbol": "XLE",
+      "side": "buy",
+      "qty": 55.8629,
+      "unrealized_usd": 10.89
     }
   ]
 }
