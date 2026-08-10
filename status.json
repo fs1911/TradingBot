@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-10 11:10:32",
+  "updated_utc": "2026-08-10 12:10:48",
   "alive": true,
   "state": "active",
-  "uptime_hours": 92.5,
+  "uptime_hours": 93.5,
   "open_positions": 5,
   "trades_today": 3,
   "daily_pnl_usd": -35.51,
   "realized_pnl_usd": 269.12,
-  "unrealized_pnl_usd": 117.68,
-  "equity_usd": 66107.44,
+  "unrealized_pnl_usd": 86.23,
+  "equity_usd": 66075.99,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,19 +21,19 @@
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.9342,
-      "unrealized_usd": 39.13
+      "unrealized_usd": 29.42
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 19.5383,
-      "unrealized_usd": 14.5
+      "unrealized_usd": -14.8
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 43.0764,
-      "unrealized_usd": -1.99
+      "unrealized_usd": 5.58
     },
     {
       "symbol": "XLY",
