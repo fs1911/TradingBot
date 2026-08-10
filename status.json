@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-10 01:08:08",
+  "updated_utc": "2026-08-10 02:08:22",
   "alive": true,
   "state": "active",
-  "uptime_hours": 82.4,
+  "uptime_hours": 83.4,
   "open_positions": 4,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": 304.62,
-  "unrealized_pnl_usd": 134.9,
-  "equity_usd": 66191.01,
+  "unrealized_pnl_usd": 142.22,
+  "equity_usd": 66198.33,
   "market_trend": "bullish",
   "positions": [
     {
@@ -21,19 +21,19 @@
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.9342,
-      "unrealized_usd": 34.05
+      "unrealized_usd": 38.68
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 19.5383,
-      "unrealized_usd": 43.81
+      "unrealized_usd": 52.6
     },
     {
       "symbol": "XLY",
       "side": "buy",
       "qty": 27.7423,
-      "unrealized_usd": 2.22
+      "unrealized_usd": -3.88
     }
   ]
 }
