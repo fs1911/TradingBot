@@ -1,45 +1,45 @@
 {
-  "updated_utc": "2026-08-12 05:26:09",
+  "updated_utc": "2026-08-12 06:26:27",
   "alive": true,
   "state": "active",
-  "uptime_hours": 134.7,
+  "uptime_hours": 135.7,
   "open_positions": 7,
   "trades_today": 6,
   "daily_pnl_usd": 57.91,
   "realized_pnl_usd": 247.21,
-  "unrealized_pnl_usd": 72.31,
-  "equity_usd": 65827.49,
+  "unrealized_pnl_usd": 81.55,
+  "equity_usd": 65836.73,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 12.0,
-      "unrealized_usd": 2.64
+      "unrealized_usd": -0.96
     },
     {
       "symbol": "GLD",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": -18.03
+      "unrealized_usd": -13.07
     },
     {
       "symbol": "GOOGL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 15.03
+      "unrealized_usd": 15.93
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9821,
-      "unrealized_usd": 1.1
+      "unrealized_usd": 1.54
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 26.1727,
-      "unrealized_usd": 43.34
+      "unrealized_usd": 49.89
     },
     {
       "symbol": "XLE",
