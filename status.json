@@ -1,51 +1,57 @@
 {
-  "updated_utc": "2026-08-12 18:31:23",
+  "updated_utc": "2026-08-12 19:31:41",
   "alive": true,
-  "state": "active",
-  "uptime_hours": 147.8,
-  "open_positions": 6,
-  "trades_today": 31,
-  "daily_pnl_usd": 238.61,
-  "realized_pnl_usd": 427.91,
-  "unrealized_pnl_usd": 50.05,
-  "equity_usd": 65311.57,
+  "state": "paused",
+  "uptime_hours": 148.8,
+  "open_positions": 7,
+  "trades_today": 32,
+  "daily_pnl_usd": 198.91,
+  "realized_pnl_usd": 388.21,
+  "unrealized_pnl_usd": 54.22,
+  "equity_usd": 65272.5,
   "market_trend": "bullish",
   "positions": [
-    {
-      "symbol": "AMD",
-      "side": "buy",
-      "qty": 6.6889,
-      "unrealized_usd": -21.17
-    },
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 12.0,
-      "unrealized_usd": 2.46
+      "unrealized_usd": -5.04
+    },
+    {
+      "symbol": "IWM",
+      "side": "buy",
+      "qty": 10.7799,
+      "unrealized_usd": 1.83
     },
     {
       "symbol": "JNJ",
       "side": "buy",
       "qty": 12.5679,
-      "unrealized_usd": 8.23
+      "unrealized_usd": 10.75
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 8.9856,
-      "unrealized_usd": 7.28
+      "unrealized_usd": 10.51
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.7007,
-      "unrealized_usd": 22.71
+      "unrealized_usd": -0.22
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 28.6725,
-      "unrealized_usd": 30.54
+      "unrealized_usd": 34.98
+    },
+    {
+      "symbol": "XLF",
+      "side": "buy",
+      "qty": 56.3678,
+      "unrealized_usd": 1.41
     }
   ]
 }
