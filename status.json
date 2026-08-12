@@ -1,63 +1,57 @@
 {
-  "updated_utc": "2026-08-12 13:28:23",
+  "updated_utc": "2026-08-12 14:28:26",
   "alive": true,
   "state": "active",
-  "uptime_hours": 142.8,
-  "open_positions": 8,
-  "trades_today": 15,
-  "daily_pnl_usd": 71.39,
-  "realized_pnl_usd": 260.69,
-  "unrealized_pnl_usd": -35.18,
-  "equity_usd": 65541.83,
-  "market_trend": "bearish",
+  "uptime_hours": 143.8,
+  "open_positions": 7,
+  "trades_today": 26,
+  "daily_pnl_usd": 257.1,
+  "realized_pnl_usd": 446.4,
+  "unrealized_pnl_usd": 65.72,
+  "equity_usd": 65452.37,
+  "market_trend": "bullish",
   "positions": [
     {
-      "symbol": "AMZN",
-      "side": "sell",
-      "qty": 12.0,
-      "unrealized_usd": -16.44
-    },
-    {
-      "symbol": "BCH/USD",
+      "symbol": "AMD",
       "side": "buy",
-      "qty": 15.1857,
-      "unrealized_usd": -21.78
+      "qty": 6.6889,
+      "unrealized_usd": 9.73
     },
     {
       "symbol": "GLD",
-      "side": "sell",
-      "qty": 8.0,
-      "unrealized_usd": -33.55
-    },
-    {
-      "symbol": "GOOGL",
-      "side": "sell",
-      "qty": 9.0,
-      "unrealized_usd": 18.75
-    },
-    {
-      "symbol": "IWM",
       "side": "buy",
-      "qty": 10.9821,
-      "unrealized_usd": 16.69
+      "qty": 8.0585,
+      "unrealized_usd": 4.27
     },
     {
-      "symbol": "USO",
+      "symbol": "JPM",
       "side": "buy",
-      "qty": 26.1727,
-      "unrealized_usd": 5.39
+      "qty": 8.9856,
+      "unrealized_usd": 9.04
     },
     {
-      "symbol": "XLE",
+      "symbol": "LINK/USD",
       "side": "buy",
-      "qty": 54.8021,
-      "unrealized_usd": 4.38
+      "qty": 373.6383,
+      "unrealized_usd": 15.16
     },
     {
-      "symbol": "XLY",
-      "side": "sell",
-      "qty": 27.0,
-      "unrealized_usd": -8.64
+      "symbol": "NVDA",
+      "side": "buy",
+      "qty": 14.7007,
+      "unrealized_usd": 26.61
+    },
+    {
+      "symbol": "PLTR",
+      "side": "buy",
+      "qty": 19.1485,
+      "unrealized_usd": -15.15
+    },
+    {
+      "symbol": "WMT",
+      "side": "buy",
+      "qty": 28.6725,
+      "unrealized_usd": 16.06
     }
   ]
 }
