@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-13 19:42:01",
+  "updated_utc": "2026-08-13 20:42:11",
   "alive": true,
   "state": "active",
-  "uptime_hours": 173.0,
+  "uptime_hours": 174.0,
   "open_positions": 8,
-  "trades_today": 16,
-  "daily_pnl_usd": 65.58,
-  "realized_pnl_usd": 474.89,
-  "unrealized_pnl_usd": 257.06,
-  "equity_usd": 65289.95,
+  "trades_today": 17,
+  "daily_pnl_usd": 48.39,
+  "realized_pnl_usd": 457.71,
+  "unrealized_pnl_usd": 152.89,
+  "equity_usd": 65185.05,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.7234,
-      "unrealized_usd": 6.33
+      "unrealized_usd": 10.83
     },
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 39.4953,
-      "unrealized_usd": 14.61
+      "unrealized_usd": -4.7
     },
     {
       "symbol": "COIN",
       "side": "buy",
       "qty": 21.5514,
-      "unrealized_usd": 52.15
+      "unrealized_usd": 45.47
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 16.4127,
-      "unrealized_usd": 52.37
+      "unrealized_usd": 35.71
     },
     {
       "symbol": "NFLX",
       "side": "buy",
       "qty": 42.1342,
-      "unrealized_usd": 36.02
+      "unrealized_usd": 36.47
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 18.3152,
-      "unrealized_usd": 32.73
+      "unrealized_usd": 2.33
     },
     {
       "symbol": "SOFI",
       "side": "buy",
       "qty": 177.8807,
-      "unrealized_usd": 53.36
+      "unrealized_usd": 17.79
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1951,
-      "unrealized_usd": 9.47
+      "unrealized_usd": 8.99
     }
   ]
 }
