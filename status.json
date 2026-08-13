@@ -1,33 +1,39 @@
 {
-  "updated_utc": "2026-08-13 05:35:03",
+  "updated_utc": "2026-08-13 06:35:21",
   "alive": true,
   "state": "active",
-  "uptime_hours": 158.9,
-  "open_positions": 7,
+  "uptime_hours": 159.9,
+  "open_positions": 8,
   "trades_today": 2,
   "daily_pnl_usd": 11.74,
   "realized_pnl_usd": 421.05,
-  "unrealized_pnl_usd": 109.81,
-  "equity_usd": 65219.91,
+  "unrealized_pnl_usd": 109.46,
+  "equity_usd": 65213.68,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 12.0,
-      "unrealized_usd": 7.92
+      "unrealized_usd": 11.4
+    },
+    {
+      "symbol": "ETH/USD",
+      "side": "buy",
+      "qty": 1.7198,
+      "unrealized_usd": -2.46
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.7799,
-      "unrealized_usd": 3.13
+      "unrealized_usd": 3.88
     },
     {
       "symbol": "JNJ",
       "side": "buy",
       "qty": 12.5679,
-      "unrealized_usd": 9.21
+      "unrealized_usd": 8.17
     },
     {
       "symbol": "JPM",
@@ -39,13 +45,13 @@
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.7007,
-      "unrealized_usd": 28.52
+      "unrealized_usd": 25.14
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 28.6725,
-      "unrealized_usd": 50.18
+      "unrealized_usd": 52.47
     },
     {
       "symbol": "XLF",
