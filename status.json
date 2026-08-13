@@ -1,45 +1,39 @@
 {
-  "updated_utc": "2026-08-13 15:38:57",
+  "updated_utc": "2026-08-13 16:39:44",
   "alive": true,
   "state": "active",
-  "uptime_hours": 169.0,
-  "open_positions": 5,
-  "trades_today": 14,
-  "daily_pnl_usd": 127.79,
-  "realized_pnl_usd": 537.11,
-  "unrealized_pnl_usd": -41.26,
-  "equity_usd": 65072.89,
+  "uptime_hours": 170.0,
+  "open_positions": 4,
+  "trades_today": 15,
+  "daily_pnl_usd": 107.95,
+  "realized_pnl_usd": 517.27,
+  "unrealized_pnl_usd": -38.69,
+  "equity_usd": 65045.06,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.7234,
-      "unrealized_usd": -2.84
-    },
-    {
-      "symbol": "BTC/USD",
-      "side": "buy",
-      "qty": 0.0509,
-      "unrealized_usd": -12.08
+      "unrealized_usd": -2.47
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7198,
-      "unrealized_usd": -12.32
+      "unrealized_usd": -43.47
     },
     {
       "symbol": "NFLX",
       "side": "buy",
       "qty": 42.1342,
-      "unrealized_usd": -14.11
+      "unrealized_usd": 5.06
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1951,
-      "unrealized_usd": 0.1
+      "unrealized_usd": 2.19
     }
   ]
 }
