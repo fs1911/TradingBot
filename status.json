@@ -1,51 +1,45 @@
 {
-  "updated_utc": "2026-08-13 14:38:15",
+  "updated_utc": "2026-08-13 15:38:57",
   "alive": true,
   "state": "active",
-  "uptime_hours": 167.9,
-  "open_positions": 6,
-  "trades_today": 12,
-  "daily_pnl_usd": 110.96,
-  "realized_pnl_usd": 520.27,
-  "unrealized_pnl_usd": 37.32,
-  "equity_usd": 65141.48,
+  "uptime_hours": 169.0,
+  "open_positions": 5,
+  "trades_today": 14,
+  "daily_pnl_usd": 127.79,
+  "realized_pnl_usd": 537.11,
+  "unrealized_pnl_usd": -41.26,
+  "equity_usd": 65072.89,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.7234,
-      "unrealized_usd": 18.66
+      "unrealized_usd": -2.84
     },
     {
-      "symbol": "AMZN",
-      "side": "sell",
-      "qty": 12.0,
-      "unrealized_usd": 0.36
+      "symbol": "BTC/USD",
+      "side": "buy",
+      "qty": 0.0509,
+      "unrealized_usd": -12.08
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7198,
-      "unrealized_usd": -7.1
-    },
-    {
-      "symbol": "JNJ",
-      "side": "buy",
-      "qty": 12.5679,
-      "unrealized_usd": 6.98
+      "unrealized_usd": -12.32
     },
     {
       "symbol": "NFLX",
       "side": "buy",
       "qty": 42.1342,
-      "unrealized_usd": 4.21
+      "unrealized_usd": -14.11
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1951,
-      "unrealized_usd": 14.21
+      "unrealized_usd": 0.1
     }
   ]
 }
