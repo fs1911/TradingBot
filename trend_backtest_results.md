@@ -1,4 +1,4 @@
-# Daily Trend-Following Edge Test — 2026-08-14 13:01 UTC
+# Daily Trend-Following Edge Test — 2026-08-14 13:03 UTC
 
 Timeframe 1Day · long/flat · net of 0.05% commission + 0.03% slippage. IS = first half of history, OOS = unseen second half. A real trend edge survives OOS (PF > 1.15, positive expectancy).
 
