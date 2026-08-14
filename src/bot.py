@@ -215,6 +215,23 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Trend backtest failed: {e}")
 
+    def _run_benchmark(self) -> None:
+        """The decisive test: daily trend systems vs simple Buy&Hold per asset
+        class, on return AND drawdown, pushed to benchmark_results.md. Separates a
+        real (risk-adjusted) edge from market beta on a hindsight-selected universe."""
+        try:
+            from .backtest.trend_follow import run_benchmark_report
+            universes = self.bot_cfg.get("backtest_universes")
+            if not universes:
+                universes = {"crypto": [s for s in self.symbols if "/" in s]}
+            logger.info(f"Benchmark: Trend vs Buy&Hold on {len(universes)} asset classes…")
+            report = run_benchmark_report(get_ohlcv=self.broker.get_ohlcv, universes=universes)
+            self.heartbeat._put_file("benchmark_results.md", report.encode(),
+                                     "Trend vs Buy&Hold benchmark (equities/metals/energy/crypto)")
+            logger.info("Benchmark: report pushed to benchmark_results.md")
+        except Exception as e:
+            logger.error(f"Benchmark failed: {e}")
+
     def run(self) -> None:
         """Start the main trading loop (blocking)."""
         logger.info("Bot started — entering main loop")
@@ -227,6 +244,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_trend_backtest_on_start", False):
             import threading
             threading.Thread(target=self._run_trend_backtest, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_benchmark_on_start", False):
+            import threading
+            threading.Thread(target=self._run_benchmark, daemon=True).start()
 
         while self._running:
             try:

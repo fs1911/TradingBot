@@ -107,6 +107,151 @@ def run_trend_backtest(df: pd.DataFrame, *, fast: int, slow: int, atr_mult: floa
     return trades
 
 
+def trend_daily_returns(df: pd.DataFrame, *, fast: int, slow: int, atr_mult: float,
+                        atr_period: int, commission_pct: float = 0.05,
+                        slippage_pct: float = 0.03) -> pd.DataFrame:
+    """Return a daily DataFrame with columns 'ret' (net strategy return that day)
+    and 'held' (1 if in a long position during the day, else 0). Position for day
+    i is decided at the prior close (no look-ahead); costs are charged on the days
+    the position switches on/off. Enables equity-curve and drawdown analysis."""
+    empty = pd.DataFrame(columns=["ret", "held"])
+    if len(df) < slow + 60:
+        return empty
+    df = df.sort_index().copy()
+    df["sma_fast"] = df["close"].rolling(fast).mean() if fast > 1 else df["close"]
+    df["sma_slow"] = df["close"].rolling(slow).mean()
+    df["atr"] = _atr(df, atr_period) if atr_mult > 0 else 0.0
+    df = df.dropna()
+    if len(df) < 30:
+        return empty
+
+    close = df["close"].to_numpy()
+    fast_a = df["sma_fast"].to_numpy()
+    slow_a = df["sma_slow"].to_numpy()
+    atr_a = df["atr"].to_numpy() if atr_mult > 0 else np.zeros(len(df))
+    asset_ret = df["close"].pct_change().fillna(0).to_numpy()
+    cost = (commission_pct + slippage_pct) / 100
+
+    n = len(df)
+    state = np.zeros(n)          # position state AT close i (after that day's decision)
+    in_pos = False
+    peak = 0.0
+    for i in range(n):
+        if not in_pos:
+            if close[i] > slow_a[i] and fast_a[i] > slow_a[i]:
+                in_pos, peak = True, close[i]
+        else:
+            peak = max(peak, close[i])
+            if fast_a[i] < slow_a[i] or (atr_mult > 0 and close[i] < peak - atr_mult * atr_a[i]):
+                in_pos = False
+        state[i] = 1.0 if in_pos else 0.0
+
+    held = np.concatenate([[0.0], state[:-1]])           # position DURING day i = state at close i-1
+    turn = np.abs(np.diff(np.concatenate([[0.0], held])))  # 1 on days the position switches
+    strat = held * asset_ret - turn * cost
+    return pd.DataFrame({"ret": strat, "held": held}, index=df.index)
+
+
+def _curve_stats(returns: pd.Series) -> dict:
+    """Total return %, max drawdown %, and MAR (return / |maxDD|) from a daily
+    return series."""
+    returns = returns.dropna()
+    if len(returns) < 5:
+        return {"ret": 0.0, "dd": 0.0, "mar": 0.0}
+    eq = (1 + returns).cumprod()
+    total = float(eq.iloc[-1] - 1)
+    dd = float((eq / eq.cummax() - 1).min())
+    mar = (total / abs(dd)) if dd < 0 else float("inf")
+    return {"ret": total * 100, "dd": dd * 100, "mar": round(mar, 2)}
+
+
+def run_benchmark_report(
+    get_ohlcv: Callable[[str, str, int], pd.DataFrame],
+    universes: dict[str, list[str]],
+    limit: int = 1500,
+    commission_pct: float = 0.05,
+    slippage_pct: float = 0.03,
+) -> str:
+    """The decisive test: does the trend system beat simply buying and holding?
+    Builds an equal-weight (daily-rebalanced) portfolio per asset class over the
+    unseen OOS half and compares Trend vs Buy&Hold on return AND max drawdown.
+    Trend's real value is risk-adjusted (MAR = return/|maxDD|), not raw return."""
+    from datetime import datetime, timezone
+
+    lines = [f"# Trend vs Buy&Hold Benchmark — {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC", ""]
+    lines.append("Equal-weight, daily-rebalanced portfolio per asset class, on the "
+                 "unseen OOS half only, net of costs. MAR = total return / |max drawdown| "
+                 "(higher = better risk-adjusted). A trend edge should beat Buy&Hold on "
+                 "MAR — same/greater return for much smaller drawdown.")
+    lines.append("")
+
+    for group, syms in universes.items():
+        data: dict[str, pd.DataFrame] = {}
+        for sym in syms:
+            try:
+                d = get_ohlcv(sym, "1Day", limit)
+                if d is not None and len(d) >= 400:
+                    data[sym] = d
+            except Exception as e:
+                logger.warning(f"Benchmark: could not fetch {sym}: {e}")
+
+        lines.append(f"## {group.upper()}")
+        lines.append(f"{len(data)} symbols, OOS half: {', '.join(data.keys()) or '—'}")
+        lines.append("")
+        lines.append("| System | Trend ret% | Trend maxDD% | Trend MAR | B&H ret% | B&H maxDD% | B&H MAR | %inMkt | Verdict |")
+        lines.append("|---|--:|--:|--:|--:|--:|--:|--:|---|")
+        if not data:
+            lines.append("| — | | | | | | | | no data |")
+            lines.append("")
+            continue
+
+        # Buy&Hold portfolio (always invested) over OOS
+        bh_cols = {}
+        oos_cache = {}
+        for sym, d in data.items():
+            _, oos = split_is_oos(d)
+            oos_cache[sym] = oos
+            bh_cols[sym] = oos["close"].pct_change().fillna(0)
+        bh_port = pd.DataFrame(bh_cols).mean(axis=1)
+        bh = _curve_stats(bh_port)
+
+        for sysdef in SYSTEMS:
+            ret_cols, held_cols = {}, {}
+            for sym, oos in oos_cache.items():
+                r = trend_daily_returns(oos, fast=sysdef["fast"], slow=sysdef["slow"],
+                                        atr_mult=sysdef["atr_mult"], atr_period=sysdef["atr_period"],
+                                        commission_pct=commission_pct, slippage_pct=slippage_pct)
+                if not r.empty:
+                    ret_cols[sym] = r["ret"]
+                    held_cols[sym] = r["held"]
+            if not ret_cols:
+                continue
+            port = pd.DataFrame(ret_cols).mean(axis=1)
+            st = _curve_stats(port)
+            in_mkt = float(pd.DataFrame(held_cols).mean(axis=1).mean() * 100)
+
+            # Verdict: trend earns its keep only if risk-adjusted return (MAR) beats
+            # holding. Raw return alone doesn't count — that can be pure market beta.
+            if st["ret"] <= 0:
+                verdict = "❌ loses money"
+            elif st["mar"] >= bh["mar"] * 1.1:
+                verdict = "✅ beats hold (risk-adj)"
+            elif abs(st["dd"]) < abs(bh["dd"]) * 0.6 and st["ret"] > bh["ret"] * 0.6:
+                verdict = "⚠️ less return, less risk"
+            else:
+                verdict = "❌ no better than holding"
+            lines.append(
+                f"| {sysdef['name']} | {st['ret']:+.0f} | {st['dd']:.0f} | {st['mar']} | "
+                f"{bh['ret']:+.0f} | {bh['dd']:.0f} | {bh['mar']} | {in_mkt:.0f}% | {verdict} |"
+            )
+        lines.append("")
+
+    lines.append("Trend-following's documented benefit is smaller drawdowns, not higher "
+                 "returns. If Trend doesn't beat Buy&Hold on MAR, the profit was market beta "
+                 "(the assets rose), not an edge — and the universe here is hindsight-selected.")
+    return "\n".join(lines)
+
+
 def run_trend_report(
     get_ohlcv: Callable[[str, str, int], pd.DataFrame],
     universes: dict[str, list[str]],

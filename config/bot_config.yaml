@@ -13,6 +13,7 @@ bot:
   min_hold_seconds: 120    # Ghost-trade guard: a position can't be closed for 120s after opening
   run_backtest_on_start: false  # Grouped edge test done (2026-08-14): no edge in any asset class
   run_trend_backtest_on_start: false  # Daily trend test done (2026-08-14); see trend_backtest_results.md
+  run_benchmark_on_start: true   # Trend vs Buy&Hold benchmark → benchmark_results.md
 
 broker: "alpaca"
 
