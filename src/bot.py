@@ -249,7 +249,16 @@ class TradingBot:
                                      "Metals walk-forward robustness test")
             logger.info("Walk-forward: report pushed to walkforward_results.md")
         except Exception as e:
-            logger.error(f"Walk-forward failed: {e}")
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Walk-forward failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file(
+                    "walkforward_results.md",
+                    f"# Metals Walk-Forward — FAILED\n\n```\n{tb}\n```\n".encode(),
+                    "Walk-forward failure traceback")
+            except Exception:
+                pass
 
     def run(self) -> None:
         """Start the main trading loop (blocking)."""
