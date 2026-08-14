@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-14 20:37:32",
+  "updated_utc": "2026-08-14 21:38:18",
   "alive": true,
   "state": "active",
-  "uptime_hours": 7.1,
+  "uptime_hours": 8.1,
   "open_positions": 8,
   "trades_today": 5,
   "daily_pnl_usd": -158.28,
   "realized_pnl_usd": -158.28,
-  "unrealized_pnl_usd": 86.79,
-  "equity_usd": 64861.95,
+  "unrealized_pnl_usd": 78.73,
+  "equity_usd": 64853.89,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.7234,
-      "unrealized_usd": 24.45
+      "unrealized_usd": 22.63
     },
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 6.4905,
-      "unrealized_usd": 89.28
+      "unrealized_usd": 88.57
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0514,
-      "unrealized_usd": -3.16
+      "unrealized_usd": -5.45
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 16.4127,
-      "unrealized_usd": -32.32
+      "unrealized_usd": -31.07
     },
     {
       "symbol": "SOFI",
       "side": "buy",
       "qty": 177.8807,
-      "unrealized_usd": -1.78
+      "unrealized_usd": 0.0
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1951,
-      "unrealized_usd": 1.4
+      "unrealized_usd": 1.1
     },
     {
       "symbol": "UNG",
       "side": "sell",
       "qty": 325.0,
-      "unrealized_usd": 16.25
+      "unrealized_usd": 9.75
     },
     {
       "symbol": "XLE",
       "side": "buy",
       "qty": 52.3594,
-      "unrealized_usd": -7.33
+      "unrealized_usd": -6.81
     }
   ]
 }
