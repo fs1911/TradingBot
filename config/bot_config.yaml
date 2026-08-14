@@ -11,7 +11,7 @@ bot:
   max_hold_hours: 24       # Let trends develop — 6h cut winners short (see results analysis)
   sl_cooldown_minutes: 30  # No re-entry on same symbol for 30 min after stop-loss
   min_hold_seconds: 120    # Ghost-trade guard: a position can't be closed for 120s after opening
-  run_backtest_on_start: true   # RE-RUN: grouped edge test across equities/metals/energy/crypto
+  run_backtest_on_start: false  # Grouped edge test done (2026-08-14): no edge in any asset class
 
 broker: "alpaca"
 
