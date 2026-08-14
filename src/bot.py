@@ -411,13 +411,33 @@ class TradingBot:
         order = self.broker.place_order(order)
 
         if order.order_id:
+            # Sanitise SL/TP: a level on the wrong side of entry is a broken
+            # signal (e.g. a long with tp <= entry). Left in place it produces a
+            # guaranteed instant loss that closes the moment the min-hold gate
+            # releases and gets mislabelled "tp". Drop the bad level instead of
+            # trading it; the position then relies on the valid levels + time.
+            sl, tp = entry.stop_loss, entry.take_profit
+            if entry.signal == SignalType.LONG:
+                if sl is not None and sl >= current_price:
+                    logger.warning(f"{symbol}: dropping invalid long SL {sl} >= entry {current_price:.4f}")
+                    sl = None
+                if tp is not None and tp <= current_price:
+                    logger.warning(f"{symbol}: dropping invalid long TP {tp} <= entry {current_price:.4f}")
+                    tp = None
+            else:
+                if sl is not None and sl <= current_price:
+                    logger.warning(f"{symbol}: dropping invalid short SL {sl} <= entry {current_price:.4f}")
+                    sl = None
+                if tp is not None and tp >= current_price:
+                    logger.warning(f"{symbol}: dropping invalid short TP {tp} >= entry {current_price:.4f}")
+                    tp = None
             self._open_trades[symbol] = {
                 "order_id": order.order_id,
                 "entry_price": current_price,
                 "side": side,
                 "qty": qty,
-                "sl": entry.stop_loss,
-                "tp": entry.take_profit,
+                "sl": sl,
+                "tp": tp,
                 "strategy": entry.strategy,
                 "opened_at": datetime.now(timezone.utc),
             }
@@ -688,6 +708,11 @@ class TradingBot:
                 if success:
                     direction = 1 if side == OrderSide.BUY else -1
                     pnl = (price - trade["entry_price"]) * trade["qty"] * direction
+                    # Label honesty: a "tp"/"trailing_stop" that closes at a loss
+                    # wasn't really a profit-taking exit (spread/late fill). Record
+                    # what actually happened so the journal stats stay truthful.
+                    if reason in ("tp", "trailing_stop") and pnl < 0:
+                        reason = "spread_loss"
                     prev_state = self.risk_manager.metrics.state
                     self.risk_manager.record_trade_result(pnl)
                     new_state = self.risk_manager.metrics.state
