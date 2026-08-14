@@ -1,4 +1,4 @@
-# Trend vs Buy&Hold Benchmark — 2026-08-14 13:08 UTC
+# Trend vs Buy&Hold Benchmark — 2026-08-14 13:09 UTC
 
 Equal-weight, daily-rebalanced portfolio per asset class, on the unseen OOS half only, net of costs. MAR = total return / |max drawdown| (higher = better risk-adjusted). A trend edge should beat Buy&Hold on MAR — same/greater return for much smaller drawdown.
 
