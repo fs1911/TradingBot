@@ -197,6 +197,24 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Startup backtest failed: {e}")
 
+    def _run_trend_backtest(self) -> None:
+        """Daily-bar trend-following edge test on real Alpaca history, pushed to
+        GitHub as trend_backtest_results.md. Background thread. Tests whether the
+        one retail hypothesis with documented merit — long-horizon trend/momentum
+        — survives out-of-sample on equities/metals/energy/crypto."""
+        try:
+            from .backtest.trend_follow import run_trend_report
+            universes = self.bot_cfg.get("backtest_universes")
+            if not universes:
+                universes = {"crypto": [s for s in self.symbols if "/" in s]}
+            logger.info(f"Trend backtest: daily OOS on {len(universes)} asset classes…")
+            report = run_trend_report(get_ohlcv=self.broker.get_ohlcv, universes=universes)
+            self.heartbeat._put_file("trend_backtest_results.md", report.encode(),
+                                     "Daily trend-following edge test (equities/metals/energy/crypto)")
+            logger.info("Trend backtest: report pushed to trend_backtest_results.md")
+        except Exception as e:
+            logger.error(f"Trend backtest failed: {e}")
+
     def run(self) -> None:
         """Start the main trading loop (blocking)."""
         logger.info("Bot started — entering main loop")
@@ -205,6 +223,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_backtest_on_start", False):
             import threading
             threading.Thread(target=self._run_startup_backtest, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_trend_backtest_on_start", False):
+            import threading
+            threading.Thread(target=self._run_trend_backtest, daemon=True).start()
 
         while self._running:
             try:
