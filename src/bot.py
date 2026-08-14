@@ -232,6 +232,25 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_walkforward(self) -> None:
+        """Metals walk-forward robustness test: rolling windows across full daily
+        history, Trend vs Buy&Hold per window, pushed to walkforward_results.md.
+        Separates a robust all-regime edge from one lucky recent window."""
+        try:
+            from .backtest.trend_follow import run_walkforward_report
+            universes = self.bot_cfg.get("backtest_universes", {})
+            metals = universes.get("metals", [])
+            if not metals:
+                logger.warning("Walk-forward: no metals universe configured")
+                return
+            logger.info(f"Walk-forward: rolling windows on {len(metals)} metals symbols…")
+            report = run_walkforward_report(get_ohlcv=self.broker.get_ohlcv, symbols=metals)
+            self.heartbeat._put_file("walkforward_results.md", report.encode(),
+                                     "Metals walk-forward robustness test")
+            logger.info("Walk-forward: report pushed to walkforward_results.md")
+        except Exception as e:
+            logger.error(f"Walk-forward failed: {e}")
+
     def run(self) -> None:
         """Start the main trading loop (blocking)."""
         logger.info("Bot started — entering main loop")
@@ -248,6 +267,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_benchmark_on_start", False):
             import threading
             threading.Thread(target=self._run_benchmark, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_walkforward_on_start", False):
+            import threading
+            threading.Thread(target=self._run_walkforward, daemon=True).start()
 
         while self._running:
             try:

@@ -9,7 +9,7 @@ import pandas as pd
 
 from src.backtest.trend_follow import (
     run_trend_backtest, run_trend_report, run_benchmark_report,
-    trend_daily_returns, _curve_stats, SYSTEMS,
+    run_walkforward_report, trend_daily_returns, _curve_stats, SYSTEMS,
 )
 
 
@@ -68,6 +68,21 @@ def test_benchmark_report_wellformed():
     assert "METALS" in report
     for s in SYSTEMS:
         assert s["name"] in report
+
+
+def test_walkforward_report_wellformed():
+    up = _series(100 + np.arange(1200) * 0.2)
+    report = run_walkforward_report(
+        get_ohlcv=lambda sym, tf, limit: up,
+        symbols=["GLD", "SLV", "GDX"],
+        window=252, step=126, limit=1200,
+    )
+    assert "Metals Walk-Forward" in report
+    assert "windows" in report
+    for s in SYSTEMS:
+        assert s["name"] in report
+    # at least one window row rendered (arrow between start/end months)
+    assert "→" in report
 
 
 def test_report_wellformed():

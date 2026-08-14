@@ -252,6 +252,97 @@ def run_benchmark_report(
     return "\n".join(lines)
 
 
+def run_walkforward_report(
+    get_ohlcv: Callable[[str, str, int], pd.DataFrame],
+    symbols: list[str],
+    window: int = 252,
+    step: int = 63,
+    limit: int = 2500,
+    commission_pct: float = 0.05,
+    slippage_pct: float = 0.03,
+) -> str:
+    """Robustness test: slide a `window`-day window (stepped by `step` days) across
+    the full daily history and, in each window, compare the trend portfolio vs
+    Buy&Hold on MAR. A robust edge beats B&H in MOST windows — not just the latest
+    one. Systems are fixed (no per-window optimisation), so this measures how the
+    live system would have held up across many regimes."""
+    from datetime import datetime, timezone
+
+    data: dict[str, pd.DataFrame] = {}
+    for sym in symbols:
+        try:
+            d = get_ohlcv(sym, "1Day", limit)
+            if d is not None and len(d) >= 400:
+                data[sym] = d
+        except Exception as e:
+            logger.warning(f"Walk-forward: could not fetch {sym}: {e}")
+
+    lines = [f"# Metals Walk-Forward — {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC", ""]
+    lines.append(f"{len(data)} symbols · {window}-day rolling windows stepped {step} days · "
+                 "equal-weight portfolio · net of costs. Each window: Trend vs Buy&Hold MAR "
+                 "(return/|maxDD|). A robust edge beats B&H in most windows, not just recently.")
+    lines.append(f"Symbols: {', '.join(data.keys()) or '—'}")
+    lines.append("")
+    if not data:
+        lines.append("_no data_")
+        return "\n".join(lines)
+
+    bh_port = pd.DataFrame({s: d["close"].pct_change().fillna(0) for s, d in data.items()}).mean(axis=1)
+
+    for sysdef in SYSTEMS:
+        tr_cols = {}
+        for sym, d in data.items():
+            r = trend_daily_returns(d, fast=sysdef["fast"], slow=sysdef["slow"],
+                                    atr_mult=sysdef["atr_mult"], atr_period=sysdef["atr_period"],
+                                    commission_pct=commission_pct, slippage_pct=slippage_pct)
+            if not r.empty:
+                tr_cols[sym] = r["ret"]
+        if not tr_cols:
+            continue
+        tr_port = pd.DataFrame(tr_cols).mean(axis=1)
+        common = tr_port.index.intersection(bh_port.index)
+        tr, bh = tr_port.loc[common], bh_port.loc[common]
+
+        rows = []
+        i = 0
+        while i + window <= len(common):
+            ts = _curve_stats(tr.iloc[i:i + window])
+            bs = _curve_stats(bh.iloc[i:i + window])
+            beat = ts["mar"] > bs["mar"] and ts["ret"] > 0
+            rows.append((common[i], common[i + window - 1], ts, bs, beat))
+            i += step
+
+        n = len(rows)
+        n_beat = sum(1 for r in rows if r[4])
+        n_pos = sum(1 for r in rows if r[2]["ret"] > 0)
+        if n == 0:
+            lines.append(f"## {sysdef['name']}\n_history too short for {window}-day windows_\n")
+            continue
+        pct_beat = round(100 * n_beat / n)
+        pct_pos = round(100 * n_pos / n)
+        if pct_beat >= 60 and pct_pos >= 60:
+            verdict = "✅ robust edge (beats hold in most windows)"
+        elif pct_beat >= 40:
+            verdict = "⚠️ regime-dependent"
+        else:
+            verdict = "❌ not robust — recent luck"
+
+        lines.append(f"## {sysdef['name']} — {verdict}")
+        lines.append(f"Beat Buy&Hold in **{n_beat}/{n} windows ({pct_beat}%)** · "
+                     f"positive in {n_pos}/{n} ({pct_pos}%)")
+        lines.append("")
+        lines.append("| Window | Trend ret% | Trend MAR | B&H ret% | B&H MAR | Trend wins? |")
+        lines.append("|---|--:|--:|--:|--:|:--:|")
+        for start, end, ts, bs, beat in rows:
+            lines.append(f"| {start:%Y-%m} → {end:%Y-%m} | {ts['ret']:+.0f} | {ts['mar']} | "
+                         f"{bs['ret']:+.0f} | {bs['mar']} | {'✅' if beat else '—'} |")
+        lines.append("")
+
+    lines.append("A single favourable window is luck; an edge that survives most windows across "
+                 "different regimes is real. MAR = return / |max drawdown|.")
+    return "\n".join(lines)
+
+
 def run_trend_report(
     get_ohlcv: Callable[[str, str, int], pd.DataFrame],
     universes: dict[str, list[str]],
