@@ -1,4 +1,4 @@
-# Metals Walk-Forward — 2026-08-14 13:30 UTC
+# Metals Walk-Forward — 2026-08-14 13:31 UTC
 
 7 symbols · 252-day rolling windows stepped 63 days · equal-weight portfolio · net of costs. Each window: Trend vs Buy&Hold MAR (return/|maxDD|). A robust edge beats B&H in most windows, not just recently.
 Symbols: GLD, SLV, GDX, PPLT, PALL, CPER, LIT
