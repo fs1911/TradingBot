@@ -158,22 +158,42 @@ class TradingBot:
     def _run_startup_backtest(self) -> None:
         """One-off out-of-sample backtest of the active strategies on real Alpaca
         history, pushed to GitHub as backtest_results.md. Runs in a background
-        thread so it never blocks trading. The honest edge test."""
+        thread so it never blocks trading. The honest edge test.
+
+        Runs the OOS test PER ASSET CLASS (equities / metals / energy / crypto)
+        so we can see whether an edge exists in a specific market — not just the
+        crypto-pooled result. An asset class only earns live trading if a
+        strategy survives OOS here."""
         try:
             from .backtest.oos_runner import run_and_report
-            crypto = [s for s in self.symbols if "/" in s]
-            logger.info(f"Startup backtest: running OOS test on {len(crypto)} crypto symbols…")
-            report = run_and_report(
-                get_ohlcv=self.broker.get_ohlcv,
-                active_strategies=self.bot_cfg.get("active_strategies", []),
-                registry=STRATEGY_REGISTRY,
-                strategy_cfg=self.strategy_cfg,
-                symbols=crypto,
-                timeframe=self.timeframe,
-            )
-            self.heartbeat._put_file("backtest_results.md", report.encode(),
-                                     "OOS backtest results")
-            logger.info("Startup backtest: report pushed to backtest_results.md")
+            active = self.bot_cfg.get("active_strategies", [])
+            universes = self.bot_cfg.get("backtest_universes")
+            # Fallback to the old crypto-only behaviour if no universes configured
+            if not universes:
+                universes = {"crypto": [s for s in self.symbols if "/" in s]}
+
+            sections = [f"# Grouped OOS Edge Test — {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC",
+                        "",
+                        "Same honest out-of-sample test, run separately per asset class. "
+                        "A strategy earns live trading only if its edge survives OOS "
+                        "(PF > 1.15, positive expectancy) net of costs.", ""]
+            for group, syms in universes.items():
+                logger.info(f"Startup backtest: OOS on '{group}' ({len(syms)} symbols)…")
+                report = run_and_report(
+                    get_ohlcv=self.broker.get_ohlcv,
+                    active_strategies=active,
+                    registry=STRATEGY_REGISTRY,
+                    strategy_cfg=self.strategy_cfg,
+                    symbols=syms,
+                    timeframe=self.timeframe,
+                )
+                sections.append(f"## {group.upper()}")
+                sections.append(report)
+                sections.append("")
+            full = "\n".join(sections)
+            self.heartbeat._put_file("backtest_results.md", full.encode(),
+                                     "Grouped OOS edge test (equities/metals/energy/crypto)")
+            logger.info("Startup backtest: grouped report pushed to backtest_results.md")
         except Exception as e:
             logger.error(f"Startup backtest failed: {e}")
 
