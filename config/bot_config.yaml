@@ -39,6 +39,7 @@ markets:
       "JPM", "V", "WMT", "JNJ",
       "GLD", "IWM", "SLV", "USO", "TLT", "XLE", "XLF",
       "XLK", "XLY", "XLV", "GDX", "ARKK", "EEM",
+      "PPLT", "PALL", "CPER", "LIT", "UNG", "DBC",  # Platin, Palladium, Kupfer, Lithium, Erdgas, breite Rohstoffe
       "BTC/USD", "ETH/USD", "SOL/USD", "DOGE/USD",
       "LINK/USD", "AVAX/USD", "LTC/USD", "BCH/USD", "MATIC/USD"
     ]
