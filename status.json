@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-15 17:44:14",
+  "updated_utc": "2026-08-15 18:44:27",
   "alive": true,
   "state": "active",
-  "uptime_hours": 28.2,
-  "open_positions": 8,
-  "trades_today": 6,
-  "daily_pnl_usd": 85.46,
-  "realized_pnl_usd": -72.82,
-  "unrealized_pnl_usd": 74258.68,
-  "equity_usd": 64872.99,
+  "uptime_hours": 29.2,
+  "open_positions": 7,
+  "trades_today": 8,
+  "daily_pnl_usd": 101.57,
+  "realized_pnl_usd": -56.71,
+  "unrealized_pnl_usd": 93.37,
+  "equity_usd": 64862.77,
   "market_trend": "bearish",
   "positions": [
     {
@@ -22,12 +22,6 @@
       "side": "buy",
       "qty": 6.4905,
       "unrealized_usd": 88.57
-    },
-    {
-      "symbol": "BTC/USD",
-      "side": "buy",
-      "qty": 0.0514,
-      "unrealized_usd": 74165.31
     },
     {
       "symbol": "CRM",
