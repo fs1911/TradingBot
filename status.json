@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-16 16:49:49",
+  "updated_utc": "2026-08-16 17:50:01",
   "alive": true,
   "state": "active",
-  "uptime_hours": 51.3,
+  "uptime_hours": 52.3,
   "open_positions": 13,
   "trades_today": 1,
   "daily_pnl_usd": -15.07,
   "realized_pnl_usd": -71.78,
-  "unrealized_pnl_usd": 97.48,
-  "equity_usd": 64800.64,
+  "unrealized_pnl_usd": 78.69,
+  "equity_usd": 64781.85,
   "market_trend": "bearish",
   "positions": [
     {
@@ -33,13 +33,13 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.9256,
-      "unrealized_usd": 9.56
+      "unrealized_usd": 4.78
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0513,
-      "unrealized_usd": 10.81
+      "unrealized_usd": 4.74
     },
     {
       "symbol": "CRM",
@@ -51,7 +51,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7192,
-      "unrealized_usd": 11.06
+      "unrealized_usd": 3.11
     },
     {
       "symbol": "LINK/USD",
