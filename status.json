@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-16 15:49:38",
+  "updated_utc": "2026-08-16 16:49:49",
   "alive": true,
   "state": "active",
-  "uptime_hours": 50.3,
+  "uptime_hours": 51.3,
   "open_positions": 13,
   "trades_today": 1,
   "daily_pnl_usd": -15.07,
   "realized_pnl_usd": -71.78,
-  "unrealized_pnl_usd": 99.22,
-  "equity_usd": 64802.38,
+  "unrealized_pnl_usd": 97.48,
+  "equity_usd": 64800.64,
   "market_trend": "bearish",
   "positions": [
     {
@@ -27,7 +27,7 @@
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 510.6659,
-      "unrealized_usd": 40.07
+      "unrealized_usd": 8.6
     },
     {
       "symbol": "BCH/USD",
@@ -39,7 +39,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0513,
-      "unrealized_usd": 3.27
+      "unrealized_usd": 10.81
     },
     {
       "symbol": "CRM",
@@ -51,13 +51,13 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.7192,
-      "unrealized_usd": -0.24
+      "unrealized_usd": 11.06
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 342.1883,
-      "unrealized_usd": -41.87
+      "unrealized_usd": -32.56
     },
     {
       "symbol": "SOFI",
@@ -69,7 +69,7 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 42.8485,
-      "unrealized_usd": -4.95
+      "unrealized_usd": -3.35
     },
     {
       "symbol": "SPY",
