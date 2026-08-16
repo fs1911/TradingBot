@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-16 20:50:37",
+  "updated_utc": "2026-08-16 21:50:51",
   "alive": true,
   "state": "active",
-  "uptime_hours": 55.3,
-  "open_positions": 12,
-  "trades_today": 2,
-  "daily_pnl_usd": -34.19,
-  "realized_pnl_usd": -90.9,
-  "unrealized_pnl_usd": 87.77,
-  "equity_usd": 64767.67,
+  "uptime_hours": 56.3,
+  "open_positions": 11,
+  "trades_today": 3,
+  "daily_pnl_usd": -52.64,
+  "realized_pnl_usd": -109.35,
+  "unrealized_pnl_usd": 44.2,
+  "equity_usd": 64698.55,
   "market_trend": "bearish",
   "positions": [
     {
@@ -39,7 +39,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0513,
-      "unrealized_usd": 0.82
+      "unrealized_usd": -9.65
     },
     {
       "symbol": "CRM",
@@ -48,16 +48,10 @@
       "unrealized_usd": -28.87
     },
     {
-      "symbol": "ETH/USD",
-      "side": "buy",
-      "qty": 1.7192,
-      "unrealized_usd": 0.93
-    },
-    {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 342.1883,
-      "unrealized_usd": -10.22
+      "unrealized_usd": -42.4
     },
     {
       "symbol": "SOFI",
