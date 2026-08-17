@@ -1,33 +1,33 @@
 {
-  "updated_utc": "2026-08-17 00:51:31",
+  "updated_utc": "2026-08-17 01:51:45",
   "alive": true,
   "state": "active",
-  "uptime_hours": 59.3,
-  "open_positions": 10,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -152.71,
-  "unrealized_pnl_usd": 200.76,
-  "equity_usd": 64782.8,
+  "uptime_hours": 60.3,
+  "open_positions": 9,
+  "trades_today": 1,
+  "daily_pnl_usd": 31.84,
+  "realized_pnl_usd": -120.87,
+  "unrealized_pnl_usd": 218.05,
+  "equity_usd": 64824.75,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.7234,
-      "unrealized_usd": 19.73
+      "unrealized_usd": 20.16
     },
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 6.4905,
-      "unrealized_usd": 115.05
+      "unrealized_usd": 113.82
     },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 510.6659,
-      "unrealized_usd": -9.56
+      "unrealized_usd": -1.8
     },
     {
       "symbol": "BCH/USD",
@@ -42,34 +42,28 @@
       "unrealized_usd": -32.32
     },
     {
-      "symbol": "ETH/USD",
-      "side": "buy",
-      "qty": 1.7258,
-      "unrealized_usd": -2.76
-    },
-    {
       "symbol": "SOFI",
       "side": "buy",
       "qty": 177.8807,
-      "unrealized_usd": 1.78
+      "unrealized_usd": 5.34
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1951,
-      "unrealized_usd": 4.67
+      "unrealized_usd": 4.17
     },
     {
       "symbol": "UNG",
       "side": "sell",
       "qty": 325.0,
-      "unrealized_usd": 71.5
+      "unrealized_usd": 81.25
     },
     {
       "symbol": "XLE",
       "side": "buy",
       "qty": 52.3594,
-      "unrealized_usd": 5.76
+      "unrealized_usd": 0.52
     }
   ]
 }
