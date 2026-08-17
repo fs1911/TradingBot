@@ -1,27 +1,27 @@
 {
-  "updated_utc": "2026-08-17 02:51:58",
+  "updated_utc": "2026-08-17 03:52:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 61.3,
+  "uptime_hours": 62.3,
   "open_positions": 9,
   "trades_today": 2,
   "daily_pnl_usd": 40.26,
   "realized_pnl_usd": -112.45,
-  "unrealized_pnl_usd": 200.89,
-  "equity_usd": 64788.36,
+  "unrealized_pnl_usd": 213.89,
+  "equity_usd": 64801.36,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.7234,
-      "unrealized_usd": 18.66
+      "unrealized_usd": 21.45
     },
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 6.4905,
-      "unrealized_usd": 117.71
+      "unrealized_usd": 126.6
     },
     {
       "symbol": "BCH/USD",
@@ -33,31 +33,31 @@
       "symbol": "CRM",
       "side": "buy",
       "qty": 16.4127,
-      "unrealized_usd": -36.42
+      "unrealized_usd": -39.05
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 340.7452,
-      "unrealized_usd": -5.47
+      "unrealized_usd": -4.21
     },
     {
       "symbol": "SOFI",
       "side": "buy",
       "qty": 177.8807,
-      "unrealized_usd": 1.78
+      "unrealized_usd": 7.12
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1951,
-      "unrealized_usd": 4.54
+      "unrealized_usd": 5.13
     },
     {
       "symbol": "UNG",
       "side": "sell",
       "qty": 325.0,
-      "unrealized_usd": 74.75
+      "unrealized_usd": 71.5
     },
     {
       "symbol": "XLE",
