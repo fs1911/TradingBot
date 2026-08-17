@@ -1,22 +1,16 @@
 {
-  "updated_utc": "2026-08-17 13:55:24",
+  "updated_utc": "2026-08-17 14:55:50",
   "alive": true,
   "state": "active",
-  "uptime_hours": 72.4,
-  "open_positions": 5,
-  "trades_today": 3,
-  "daily_pnl_usd": 78.26,
-  "realized_pnl_usd": -74.45,
-  "unrealized_pnl_usd": 32.41,
-  "equity_usd": 64795.91,
+  "uptime_hours": 73.4,
+  "open_positions": 8,
+  "trades_today": 4,
+  "daily_pnl_usd": 43.86,
+  "realized_pnl_usd": -108.85,
+  "unrealized_pnl_usd": 40.64,
+  "equity_usd": 64766.5,
   "market_trend": "bearish",
   "positions": [
-    {
-      "symbol": "CRM",
-      "side": "sell",
-      "qty": 16.0,
-      "unrealized_usd": -0.88
-    },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
@@ -27,19 +21,43 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.71,
-      "unrealized_usd": 18.9
+      "unrealized_usd": 22.28
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 340.7452,
-      "unrealized_usd": -4.05
+      "unrealized_usd": 11.56
+    },
+    {
+      "symbol": "MSFT",
+      "side": "sell",
+      "qty": 6.0,
+      "unrealized_usd": 10.32
     },
     {
       "symbol": "RIVN",
       "side": "sell",
       "qty": 217.0,
-      "unrealized_usd": 16.27
+      "unrealized_usd": -14.1
+    },
+    {
+      "symbol": "SOFI",
+      "side": "sell",
+      "qty": 176.0,
+      "unrealized_usd": 0.88
+    },
+    {
+      "symbol": "SPY",
+      "side": "sell",
+      "qty": 4.0,
+      "unrealized_usd": 0.7
+    },
+    {
+      "symbol": "XLF",
+      "side": "sell",
+      "qty": 55.0,
+      "unrealized_usd": 6.83
     }
   ]
 }
