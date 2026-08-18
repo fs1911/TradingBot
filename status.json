@@ -1,33 +1,33 @@
 {
-  "updated_utc": "2026-08-18 03:01:34",
+  "updated_utc": "2026-08-18 04:01:51",
   "alive": true,
   "state": "active",
-  "uptime_hours": 85.5,
+  "uptime_hours": 86.5,
   "open_positions": 7,
   "trades_today": 2,
   "daily_pnl_usd": -7.58,
   "realized_pnl_usd": -51.11,
-  "unrealized_pnl_usd": 131.87,
-  "equity_usd": 64787.95,
+  "unrealized_pnl_usd": 130.56,
+  "equity_usd": 64786.64,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.71,
-      "unrealized_usd": -2.24
+      "unrealized_usd": -2.17
     },
     {
       "symbol": "META",
       "side": "sell",
       "qty": 5.0,
-      "unrealized_usd": 27.05
+      "unrealized_usd": 22.75
     },
     {
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": 23.58
+      "unrealized_usd": 28.98
     },
     {
       "symbol": "RIVN",
@@ -39,13 +39,13 @@
       "symbol": "SOFI",
       "side": "sell",
       "qty": 176.0,
-      "unrealized_usd": 28.16
+      "unrealized_usd": 22.88
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 17.32
+      "unrealized_usd": 20.12
     },
     {
       "symbol": "XLF",
