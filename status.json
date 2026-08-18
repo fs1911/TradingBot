@@ -1,33 +1,39 @@
 {
-  "updated_utc": "2026-08-18 14:04:21",
+  "updated_utc": "2026-08-18 15:05:33",
   "alive": true,
   "state": "active",
-  "uptime_hours": 96.5,
+  "uptime_hours": 97.5,
   "open_positions": 8,
-  "trades_today": 6,
-  "daily_pnl_usd": 191.25,
-  "realized_pnl_usd": 147.72,
-  "unrealized_pnl_usd": 57.61,
-  "equity_usd": 64922.73,
+  "trades_today": 8,
+  "daily_pnl_usd": 205.33,
+  "realized_pnl_usd": 161.8,
+  "unrealized_pnl_usd": -5.2,
+  "equity_usd": 64887.32,
   "market_trend": "bearish",
   "positions": [
     {
-      "symbol": "AMZN",
-      "side": "sell",
-      "qty": 12.0,
-      "unrealized_usd": -3.36
+      "symbol": "AVAX/USD",
+      "side": "buy",
+      "qty": 508.1877,
+      "unrealized_usd": -43.52
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.9493,
-      "unrealized_usd": 4.86
+      "unrealized_usd": -2.62
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0504,
-      "unrealized_usd": 5.43
+      "unrealized_usd": 23.76
+    },
+    {
+      "symbol": "EEM",
+      "side": "sell",
+      "qty": 49.0,
+      "unrealized_usd": 13.23
     },
     {
       "symbol": "LTC/USD",
@@ -39,25 +45,19 @@
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -1.68
+      "unrealized_usd": -4.5
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": -0.27
-    },
-    {
-      "symbol": "SOFI",
-      "side": "sell",
-      "qty": 176.0,
-      "unrealized_usd": 66.6
+      "unrealized_usd": 18.91
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": -1.48
+      "unrealized_usd": 2.02
     }
   ]
 }
