@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-18 20:08:33",
+  "updated_utc": "2026-08-18 21:08:56",
   "alive": true,
   "state": "active",
-  "uptime_hours": 102.6,
+  "uptime_hours": 103.6,
   "open_positions": 8,
   "trades_today": 10,
   "daily_pnl_usd": 154.45,
   "realized_pnl_usd": 110.92,
-  "unrealized_pnl_usd": 75.79,
-  "equity_usd": 64912.53,
+  "unrealized_pnl_usd": 66.4,
+  "equity_usd": 64903.14,
   "market_trend": "bearish",
   "positions": [
     {
@@ -27,37 +27,37 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0504,
-      "unrealized_usd": 17.52
+      "unrealized_usd": 15.51
     },
     {
       "symbol": "EEM",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": 19.11
+      "unrealized_usd": 20.09
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": 8.97
+      "unrealized_usd": 14.67
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 42.0121,
-      "unrealized_usd": 1.58
+      "unrealized_usd": -2.77
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 4.96
+      "unrealized_usd": 5.32
     },
     {
       "symbol": "UBER",
       "side": "sell",
       "qty": 42.0,
-      "unrealized_usd": 30.66
+      "unrealized_usd": 20.58
     }
   ]
 }
