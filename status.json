@@ -1,39 +1,39 @@
 {
-  "updated_utc": "2026-08-18 16:06:24",
+  "updated_utc": "2026-08-18 17:06:44",
   "alive": true,
   "state": "active",
-  "uptime_hours": 98.6,
+  "uptime_hours": 99.6,
   "open_positions": 8,
   "trades_today": 8,
   "daily_pnl_usd": 205.33,
   "realized_pnl_usd": 161.8,
-  "unrealized_pnl_usd": 0.11,
-  "equity_usd": 64892.98,
+  "unrealized_pnl_usd": 8.81,
+  "equity_usd": 64902.54,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 508.1877,
-      "unrealized_usd": -24.71
+      "unrealized_usd": -20.85
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 15.9493,
-      "unrealized_usd": -2.62
+      "unrealized_usd": 2.97
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0504,
-      "unrealized_usd": 28.61
+      "unrealized_usd": 24.27
     },
     {
       "symbol": "EEM",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": 11.02
+      "unrealized_usd": 10.29
     },
     {
       "symbol": "LTC/USD",
@@ -45,19 +45,19 @@
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -9.15
+      "unrealized_usd": -4.62
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": 6.31
+      "unrealized_usd": 6.59
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 0.32
+      "unrealized_usd": -0.16
     }
   ]
 }
