@@ -1,57 +1,63 @@
 {
-  "updated_utc": "2026-08-19 13:13:18",
+  "updated_utc": "2026-08-19 14:13:41",
   "alive": true,
   "state": "active",
-  "uptime_hours": 119.7,
-  "open_positions": 7,
-  "trades_today": 5,
-  "daily_pnl_usd": -70.94,
-  "realized_pnl_usd": -4.74,
-  "unrealized_pnl_usd": 4914.0,
-  "equity_usd": 64710.49,
+  "uptime_hours": 120.7,
+  "open_positions": 8,
+  "trades_today": 9,
+  "daily_pnl_usd": -93.19,
+  "realized_pnl_usd": -27.0,
+  "unrealized_pnl_usd": 4985.46,
+  "equity_usd": 64712.7,
   "market_trend": "bearish",
   "positions": [
     {
-      "symbol": "BCH/USD",
+      "symbol": "AAPL",
       "side": "buy",
-      "qty": 15.9493,
-      "unrealized_usd": 8.39
+      "qty": 10.2554,
+      "unrealized_usd": 16.46
+    },
+    {
+      "symbol": "AMD",
+      "side": "sell",
+      "qty": 6.0,
+      "unrealized_usd": 6.39
+    },
+    {
+      "symbol": "AMZN",
+      "side": "sell",
+      "qty": 12.0,
+      "unrealized_usd": -21.14
     },
     {
       "symbol": "EEM",
       "side": "sell",
-      "qty": 49.0,
-      "unrealized_usd": -44.28
+      "qty": 48.0,
+      "unrealized_usd": 7.01
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.6769,
-      "unrealized_usd": 10.49
+      "unrealized_usd": 16.57
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": -12.31
+      "unrealized_usd": 12.54
+    },
+    {
+      "symbol": "PLTR",
+      "side": "sell",
+      "qty": 18.0,
+      "unrealized_usd": 2.75
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 42.0121,
-      "unrealized_usd": 4946.71
-    },
-    {
-      "symbol": "SPY",
-      "side": "sell",
-      "qty": 4.0,
-      "unrealized_usd": -9.28
-    },
-    {
-      "symbol": "UBER",
-      "side": "sell",
-      "qty": 42.0,
-      "unrealized_usd": 14.28
+      "unrealized_usd": 4944.88
     }
   ]
 }
