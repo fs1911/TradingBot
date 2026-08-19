@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-19 06:11:22",
+  "updated_utc": "2026-08-19 07:11:47",
   "alive": true,
   "state": "active",
-  "uptime_hours": 112.6,
+  "uptime_hours": 113.6,
   "open_positions": 6,
   "trades_today": 2,
   "daily_pnl_usd": -4.39,
   "realized_pnl_usd": 61.8,
-  "unrealized_pnl_usd": 78.08,
-  "equity_usd": 64831.86,
+  "unrealized_pnl_usd": 66.51,
+  "equity_usd": 64820.28,
   "market_trend": "bearish",
   "positions": [
     {
@@ -27,25 +27,25 @@
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": 27.03
+      "unrealized_usd": 17.23
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 42.0121,
-      "unrealized_usd": -8.05
+      "unrealized_usd": -5.37
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 10.6
+      "unrealized_usd": 4.88
     },
     {
       "symbol": "UBER",
       "side": "sell",
       "qty": 42.0,
-      "unrealized_usd": 20.16
+      "unrealized_usd": 21.42
     }
   ]
 }
