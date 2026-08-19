@@ -1,21 +1,21 @@
 {
-  "updated_utc": "2026-08-19 09:12:18",
+  "updated_utc": "2026-08-19 10:12:30",
   "alive": true,
   "state": "active",
-  "uptime_hours": 115.7,
+  "uptime_hours": 116.7,
   "open_positions": 7,
   "trades_today": 2,
   "daily_pnl_usd": -4.39,
   "realized_pnl_usd": 61.8,
-  "unrealized_pnl_usd": 4859.47,
-  "equity_usd": 64713.76,
+  "unrealized_pnl_usd": 4882.05,
+  "equity_usd": 64736.34,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 506.6599,
-      "unrealized_usd": -32.95
+      "unrealized_usd": -18.74
     },
     {
       "symbol": "BCH/USD",
@@ -27,31 +27,31 @@
       "symbol": "EEM",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": -15.68
+      "unrealized_usd": -0.98
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": 3.09
+      "unrealized_usd": 6.59
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 42.0121,
-      "unrealized_usd": 4896.58
+      "unrealized_usd": 4886.57
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 3.12
+      "unrealized_usd": 5.4
     },
     {
       "symbol": "UBER",
       "side": "sell",
       "qty": 42.0,
-      "unrealized_usd": 11.76
+      "unrealized_usd": 9.66
     }
   ]
 }
