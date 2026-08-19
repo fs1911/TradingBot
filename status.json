@@ -1,57 +1,51 @@
 {
-  "updated_utc": "2026-08-19 16:15:33",
+  "updated_utc": "2026-08-19 17:15:53",
   "alive": true,
   "state": "active",
-  "uptime_hours": 122.7,
-  "open_positions": 7,
-  "trades_today": 12,
-  "daily_pnl_usd": -196.2,
-  "realized_pnl_usd": -130.0,
-  "unrealized_pnl_usd": 5302.71,
-  "equity_usd": 64932.33,
-  "market_trend": "bullish",
+  "uptime_hours": 123.7,
+  "open_positions": 6,
+  "trades_today": 13,
+  "daily_pnl_usd": -265.5,
+  "realized_pnl_usd": -199.3,
+  "unrealized_pnl_usd": 5295.87,
+  "equity_usd": 64853.56,
+  "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.2554,
-      "unrealized_usd": 16.72
+      "unrealized_usd": -9.13
     },
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -17.91
+      "unrealized_usd": -14.04
     },
     {
       "symbol": "AMZN",
       "side": "buy",
       "qty": 12.2587,
-      "unrealized_usd": 12.39
+      "unrealized_usd": 3.44
     },
     {
       "symbol": "EEM",
       "side": "sell",
       "qty": 48.0,
-      "unrealized_usd": -10.27
+      "unrealized_usd": -1.39
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.6769,
-      "unrealized_usd": 275.97
-    },
-    {
-      "symbol": "INTC",
-      "side": "sell",
-      "qty": 35.0,
-      "unrealized_usd": -59.15
+      "unrealized_usd": 255.71
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 42.0121,
-      "unrealized_usd": 5084.97
+      "unrealized_usd": 5061.27
     }
   ]
 }
