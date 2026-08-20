@@ -1,69 +1,63 @@
 {
-  "updated_utc": "2026-08-20 13:21:29",
+  "updated_utc": "2026-08-20 14:21:54",
   "alive": true,
   "state": "active",
-  "uptime_hours": 143.8,
-  "open_positions": 9,
-  "trades_today": 3,
-  "daily_pnl_usd": -102.27,
-  "realized_pnl_usd": 465.02,
-  "unrealized_pnl_usd": 5747.08,
-  "equity_usd": 65511.52,
+  "uptime_hours": 144.8,
+  "open_positions": 8,
+  "trades_today": 5,
+  "daily_pnl_usd": -109.22,
+  "realized_pnl_usd": 458.07,
+  "unrealized_pnl_usd": 5747.71,
+  "equity_usd": 65489.12,
   "market_trend": "bearish",
   "positions": [
-    {
-      "symbol": "AAPL",
-      "side": "buy",
-      "qty": 10.2554,
-      "unrealized_usd": 10.97
-    },
-    {
-      "symbol": "AMD",
-      "side": "sell",
-      "qty": 6.0,
-      "unrealized_usd": 7.22
-    },
-    {
-      "symbol": "AMZN",
-      "side": "buy",
-      "qty": 12.2587,
-      "unrealized_usd": 8.05
-    },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0471,
-      "unrealized_usd": 126.89
+      "unrealized_usd": 112.48
     },
     {
-      "symbol": "EEM",
+      "symbol": "GOOGL",
       "side": "sell",
-      "qty": 48.0,
-      "unrealized_usd": -5.95
+      "qty": 9.0,
+      "unrealized_usd": 3.85
+    },
+    {
+      "symbol": "IWM",
+      "side": "sell",
+      "qty": 10.0,
+      "unrealized_usd": 4.16
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 311.6586,
-      "unrealized_usd": 40.97
+      "unrealized_usd": 41.22
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 70.7723,
-      "unrealized_usd": 104.53
+      "unrealized_usd": 128.81
     },
     {
-      "symbol": "MSFT",
+      "symbol": "NIO",
       "side": "sell",
-      "qty": 6.0,
-      "unrealized_usd": 0.99
+      "qty": 721.0,
+      "unrealized_usd": -10.81
+    },
+    {
+      "symbol": "SOFI",
+      "side": "sell",
+      "qty": 180.0,
+      "unrealized_usd": 39.6
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 38.0006,
-      "unrealized_usd": 5453.4
+      "unrealized_usd": 5428.4
     }
   ]
 }
