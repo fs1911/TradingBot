@@ -1,39 +1,39 @@
 {
-  "updated_utc": "2026-08-21 06:27:34",
+  "updated_utc": "2026-08-21 07:27:52",
   "alive": true,
   "state": "active",
-  "uptime_hours": 160.9,
+  "uptime_hours": 161.9,
   "open_positions": 9,
   "trades_today": 3,
   "daily_pnl_usd": 388.41,
   "realized_pnl_usd": 1102.56,
-  "unrealized_pnl_usd": 445.68,
-  "equity_usd": 66163.07,
+  "unrealized_pnl_usd": 601.89,
+  "equity_usd": 66319.29,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 14.4388,
-      "unrealized_usd": 314.04
+      "unrealized_usd": 447.75
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.4143,
-      "unrealized_usd": 60.21
+      "unrealized_usd": 85.62
     },
     {
       "symbol": "GOOGL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 7.32
+      "unrealized_usd": 3.36
     },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 10.0,
-      "unrealized_usd": -2.44
+      "unrealized_usd": -5.54
     },
     {
       "symbol": "LTC/USD",
@@ -51,19 +51,19 @@
       "symbol": "SOFI",
       "side": "sell",
       "qty": 180.0,
-      "unrealized_usd": 18.0
+      "unrealized_usd": 10.8
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 36.7879,
-      "unrealized_usd": 32.4
+      "unrealized_usd": 40.19
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 51.0,
-      "unrealized_usd": 8.16
+      "unrealized_usd": 11.73
     }
   ]
 }
