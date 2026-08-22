@@ -1322,3 +1322,4 @@ date,time_entry,time_exit,entry_time,hold_seconds,symbol,strategy,direction,entr
 2026-08-21,20:15:18,23:35:06,2026-08-21T20:15:18.585734+00:00,11987.8,LINK/USD,breakout_momentum,long,11.6815,12.06,285.219749,107.96,3.24,trailing_stop,
 2026-08-22,18:03:26,00:08:20,2026-08-21T18:03:26.150904+00:00,21894.0,DOGE/USD,breakout_momentum,long,0.08455,0.090376,39450.66233,229.84,6.891,trailing_stop,
 2026-08-22,02:45:24,02:46:25,2026-08-21T02:45:24.646204+00:00,86461.0,LTC/USD,breakout_momentum,long,48.2605,53.8,68.195688,377.77,11.478,time_limit,
+2026-08-22,03:56:01,03:57:02,2026-08-21T03:56:01.760086+00:00,86460.7,SOL/USD,breakout_momentum,long,89.27,97.2236,36.854218,293.12,8.91,time_limit,
