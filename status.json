@@ -1,45 +1,45 @@
 {
-  "updated_utc": "2026-08-23 22:44:51",
+  "updated_utc": "2026-08-23 23:45:05",
   "alive": true,
   "state": "active",
-  "uptime_hours": 225.2,
+  "uptime_hours": 226.2,
   "open_positions": 8,
   "trades_today": 8,
   "daily_pnl_usd": -705.84,
   "realized_pnl_usd": 2289.46,
-  "unrealized_pnl_usd": 321.51,
-  "equity_usd": 66929.64,
+  "unrealized_pnl_usd": 276.33,
+  "equity_usd": 66884.46,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 446.1693,
-      "unrealized_usd": 101.1
+      "unrealized_usd": 65.18
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 12.2672,
-      "unrealized_usd": 51.03
+      "unrealized_usd": 68.21
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36460.5456,
-      "unrealized_usd": 63.77
+      "unrealized_usd": 61.02
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3751,
-      "unrealized_usd": 57.96
+      "unrealized_usd": 70.93
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 290.8951,
-      "unrealized_usd": 54.04
+      "unrealized_usd": 17.39
     },
     {
       "symbol": "NVDA",
