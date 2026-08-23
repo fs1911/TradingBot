@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-23 21:44:36",
+  "updated_utc": "2026-08-23 22:44:51",
   "alive": true,
   "state": "active",
-  "uptime_hours": 224.2,
+  "uptime_hours": 225.2,
   "open_positions": 8,
   "trades_today": 8,
   "daily_pnl_usd": -705.84,
   "realized_pnl_usd": 2289.46,
-  "unrealized_pnl_usd": 344.42,
-  "equity_usd": 66952.56,
+  "unrealized_pnl_usd": 321.51,
+  "equity_usd": 66929.64,
   "market_trend": "bearish",
   "positions": [
     {
@@ -21,19 +21,19 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 12.2672,
-      "unrealized_usd": 58.39
+      "unrealized_usd": 51.03
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36460.5456,
-      "unrealized_usd": 73.49
+      "unrealized_usd": 63.77
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3751,
-      "unrealized_usd": 63.79
+      "unrealized_usd": 57.96
     },
     {
       "symbol": "LINK/USD",
