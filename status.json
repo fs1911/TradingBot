@@ -1,63 +1,57 @@
 {
-  "updated_utc": "2026-08-24 19:52:09",
+  "updated_utc": "2026-08-24 20:52:36",
   "alive": true,
   "state": "active",
-  "uptime_hours": 246.3,
-  "open_positions": 8,
-  "trades_today": 10,
-  "daily_pnl_usd": 98.61,
-  "realized_pnl_usd": 2388.07,
-  "unrealized_pnl_usd": -70.27,
-  "equity_usd": 66388.83,
+  "uptime_hours": 247.3,
+  "open_positions": 7,
+  "trades_today": 12,
+  "daily_pnl_usd": 51.5,
+  "realized_pnl_usd": 2340.96,
+  "unrealized_pnl_usd": -56.72,
+  "equity_usd": 66386.71,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 12.0855,
-      "unrealized_usd": -70.51
+      "unrealized_usd": -61.88
     },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 18.0,
-      "unrealized_usd": 66.82
+      "unrealized_usd": 56.92
     },
     {
       "symbol": "DIS",
       "side": "sell",
       "qty": 30.0,
-      "unrealized_usd": -17.1
+      "unrealized_usd": -17.94
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36304.7485,
-      "unrealized_usd": -107.9
+      "unrealized_usd": -83.8
     },
     {
       "symbol": "HOOD",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": 38.84
+      "unrealized_usd": 20.86
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 15.0,
-      "unrealized_usd": 16.65
+      "unrealized_usd": 13.12
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 52.0,
-      "unrealized_usd": 17.38
-    },
-    {
-      "symbol": "XLV",
-      "side": "sell",
-      "qty": 19.0,
-      "unrealized_usd": -14.44
+      "unrealized_usd": 16.0
     }
   ]
 }
