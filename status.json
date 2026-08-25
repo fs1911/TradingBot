@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-25 02:54:03",
+  "updated_utc": "2026-08-25 03:54:18",
   "alive": true,
   "state": "active",
-  "uptime_hours": 253.4,
+  "uptime_hours": 254.4,
   "open_positions": 9,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": 2340.96,
-  "unrealized_pnl_usd": 130.88,
-  "equity_usd": 66562.35,
+  "unrealized_pnl_usd": 97.87,
+  "equity_usd": 66529.34,
   "market_trend": "bearish",
   "positions": [
     {
@@ -21,13 +21,13 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.042,
-      "unrealized_usd": 65.76
+      "unrealized_usd": 66.15
     },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 18.0,
-      "unrealized_usd": -26.6
+      "unrealized_usd": -23.72
     },
     {
       "symbol": "DIS",
@@ -45,25 +45,25 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3344,
-      "unrealized_usd": 33.28
+      "unrealized_usd": 12.49
     },
     {
       "symbol": "HOOD",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": -15.41
+      "unrealized_usd": -31.53
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 15.0,
-      "unrealized_usd": 0.52
+      "unrealized_usd": -2.48
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 52.0,
-      "unrealized_usd": 5.68
+      "unrealized_usd": 9.32
     }
   ]
 }
