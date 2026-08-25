@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-25 14:57:27",
+  "updated_utc": "2026-08-25 15:58:31",
   "alive": true,
   "state": "active",
-  "uptime_hours": 265.4,
+  "uptime_hours": 266.4,
   "open_positions": 8,
-  "trades_today": 7,
-  "daily_pnl_usd": -353.47,
-  "realized_pnl_usd": 1987.49,
-  "unrealized_pnl_usd": 76.9,
-  "equity_usd": 66198.71,
+  "trades_today": 8,
+  "daily_pnl_usd": -388.66,
+  "realized_pnl_usd": 1952.3,
+  "unrealized_pnl_usd": 187.1,
+  "equity_usd": 66273.93,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.042,
-      "unrealized_usd": 12.06
+      "unrealized_usd": 15.92
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3344,
-      "unrealized_usd": -10.33
+      "unrealized_usd": -9.53
     },
     {
       "symbol": "GDX",
       "side": "buy",
       "qty": 32.004,
-      "unrealized_usd": 15.34
+      "unrealized_usd": 52.17
     },
     {
       "symbol": "HOOD",
       "side": "buy",
       "qty": 30.4586,
-      "unrealized_usd": 44.59
+      "unrealized_usd": 79.16
     },
     {
       "symbol": "NIO",
       "side": "buy",
       "qty": 749.4645,
-      "unrealized_usd": 7.49
-    },
-    {
-      "symbol": "NVDA",
-      "side": "buy",
-      "qty": 15.5688,
-      "unrealized_usd": -27.21
+      "unrealized_usd": 22.48
     },
     {
       "symbol": "PLTR",
       "side": "sell",
       "qty": 19.0,
-      "unrealized_usd": -12.73
+      "unrealized_usd": -34.96
+    },
+    {
+      "symbol": "SLV",
+      "side": "buy",
+      "qty": 53.4988,
+      "unrealized_usd": 16.85
     },
     {
       "symbol": "SOFI",
       "side": "buy",
       "qty": 178.1357,
-      "unrealized_usd": 47.68
+      "unrealized_usd": 45.0
     }
   ]
 }
