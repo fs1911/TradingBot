@@ -1,63 +1,57 @@
 {
-  "updated_utc": "2026-08-25 21:01:43",
+  "updated_utc": "2026-08-25 22:02:00",
   "alive": true,
   "state": "active",
-  "uptime_hours": 271.5,
-  "open_positions": 8,
-  "trades_today": 8,
-  "daily_pnl_usd": -388.66,
-  "realized_pnl_usd": 1952.3,
-  "unrealized_pnl_usd": 196.25,
-  "equity_usd": 66282.6,
+  "uptime_hours": 272.5,
+  "open_positions": 7,
+  "trades_today": 9,
+  "daily_pnl_usd": -441.11,
+  "realized_pnl_usd": 1899.85,
+  "unrealized_pnl_usd": 282.07,
+  "equity_usd": 66310.97,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.042,
-      "unrealized_usd": -35.09
-    },
-    {
-      "symbol": "ETH/USD",
-      "side": "buy",
-      "qty": 1.3344,
-      "unrealized_usd": -60.13
+      "unrealized_usd": -14.9
     },
     {
       "symbol": "GDX",
       "side": "buy",
       "qty": 32.004,
-      "unrealized_usd": 64.97
+      "unrealized_usd": 64.33
     },
     {
       "symbol": "HOOD",
       "side": "buy",
       "qty": 30.4586,
-      "unrealized_usd": 84.65
+      "unrealized_usd": 87.69
     },
     {
       "symbol": "NIO",
       "side": "buy",
       "qty": 749.4645,
-      "unrealized_usd": 22.48
+      "unrealized_usd": 29.53
     },
     {
       "symbol": "PLTR",
       "side": "sell",
       "qty": 19.0,
-      "unrealized_usd": 24.7
+      "unrealized_usd": 23.75
     },
     {
       "symbol": "SLV",
       "side": "buy",
       "qty": 53.4988,
-      "unrealized_usd": 18.51
+      "unrealized_usd": 13.71
     },
     {
       "symbol": "SOFI",
       "side": "buy",
       "qty": 178.1357,
-      "unrealized_usd": 76.18
+      "unrealized_usd": 77.96
     }
   ]
 }
