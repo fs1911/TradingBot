@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-08-25 10:55:53",
+  "updated_utc": "2026-08-25 11:56:06",
   "alive": true,
   "state": "active",
-  "uptime_hours": 261.4,
-  "open_positions": 9,
+  "uptime_hours": 262.4,
+  "open_positions": 10,
   "trades_today": 3,
   "daily_pnl_usd": -39.93,
   "realized_pnl_usd": 2301.03,
-  "unrealized_pnl_usd": -59.3,
-  "equity_usd": 66371.11,
+  "unrealized_pnl_usd": -48.19,
+  "equity_usd": 66376.23,
   "market_trend": "bearish",
   "positions": [
     {
@@ -21,49 +21,55 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.042,
-      "unrealized_usd": 15.62
+      "unrealized_usd": 2.68
     },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 18.0,
-      "unrealized_usd": 31.0
+      "unrealized_usd": 54.4
     },
     {
       "symbol": "DIS",
       "side": "sell",
       "qty": 30.0,
-      "unrealized_usd": -20.4
+      "unrealized_usd": -30.0
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36304.7485,
-      "unrealized_usd": -43.86
+      "unrealized_usd": -45.32
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3344,
-      "unrealized_usd": 3.66
+      "unrealized_usd": -2.0
     },
     {
       "symbol": "HOOD",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": -5.8
+      "unrealized_usd": 3.5
+    },
+    {
+      "symbol": "LINK/USD",
+      "side": "buy",
+      "qty": 285.9968,
+      "unrealized_usd": -0.67
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 15.0,
-      "unrealized_usd": -26.48
+      "unrealized_usd": -22.43
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 52.0,
-      "unrealized_usd": 45.2
+      "unrealized_usd": 49.88
     }
   ]
 }
