@@ -1,21 +1,27 @@
 {
-  "updated_utc": "2026-08-26 14:06:48",
+  "updated_utc": "2026-08-26 15:06:49",
   "alive": true,
   "state": "active",
-  "uptime_hours": 288.6,
-  "open_positions": 8,
-  "trades_today": 4,
-  "daily_pnl_usd": 152.66,
-  "realized_pnl_usd": 2052.51,
-  "unrealized_pnl_usd": 87.23,
-  "equity_usd": 66100.73,
+  "uptime_hours": 289.6,
+  "open_positions": 7,
+  "trades_today": 9,
+  "daily_pnl_usd": 102.65,
+  "realized_pnl_usd": 2002.5,
+  "unrealized_pnl_usd": -147.61,
+  "equity_usd": 65873.18,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.6174,
-      "unrealized_usd": 10.88
+      "unrealized_usd": 16.03
+    },
+    {
+      "symbol": "AMZN",
+      "side": "sell",
+      "qty": 12.0,
+      "unrealized_usd": -15.18
     },
     {
       "symbol": "BCH/USD",
@@ -24,40 +30,28 @@
       "unrealized_usd": -36.66
     },
     {
-      "symbol": "GDX",
-      "side": "buy",
-      "qty": 32.004,
-      "unrealized_usd": 12.64
-    },
-    {
-      "symbol": "HOOD",
-      "side": "buy",
-      "qty": 30.4586,
-      "unrealized_usd": 135.08
-    },
-    {
-      "symbol": "PLTR",
+      "symbol": "INTC",
       "side": "sell",
-      "qty": 19.0,
-      "unrealized_usd": -9.88
+      "qty": 38.0,
+      "unrealized_usd": -40.28
     },
     {
-      "symbol": "SLV",
+      "symbol": "LTC/USD",
       "side": "buy",
-      "qty": 53.4988,
-      "unrealized_usd": -3.74
+      "qty": 66.1806,
+      "unrealized_usd": -13.55
     },
     {
-      "symbol": "SOFI",
-      "side": "buy",
-      "qty": 171.6955,
-      "unrealized_usd": -18.03
+      "symbol": "NVDA",
+      "side": "sell",
+      "qty": 15.0,
+      "unrealized_usd": -14.85
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 34.3922,
-      "unrealized_usd": -3.06
+      "unrealized_usd": -43.13
     }
   ]
 }
