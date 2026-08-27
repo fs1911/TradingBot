@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-27 14:15:09",
+  "updated_utc": "2026-08-27 15:15:57",
   "alive": true,
   "state": "active",
-  "uptime_hours": 312.7,
+  "uptime_hours": 313.7,
   "open_positions": 8,
-  "trades_today": 4,
-  "daily_pnl_usd": 262.47,
-  "realized_pnl_usd": 2282.14,
-  "unrealized_pnl_usd": 77206.14,
-  "equity_usd": 66281.68,
+  "trades_today": 5,
+  "daily_pnl_usd": 316.25,
+  "realized_pnl_usd": 2335.92,
+  "unrealized_pnl_usd": 77406.86,
+  "equity_usd": 66506.0,
   "market_trend": "bullish",
   "positions": [
+    {
+      "symbol": "AAPL",
+      "side": "buy",
+      "qty": 10.6004,
+      "unrealized_usd": 16.96
+    },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0421,
-      "unrealized_usd": 76908.83
+      "unrealized_usd": 76961.84
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 13.5723,
-      "unrealized_usd": 51.14
+      "unrealized_usd": 80.11
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 38810.0424,
-      "unrealized_usd": 109.64
+      "unrealized_usd": 179.69
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.341,
-      "unrealized_usd": 52.97
-    },
-    {
-      "symbol": "LTC/USD",
-      "side": "buy",
-      "qty": 66.1806,
-      "unrealized_usd": 15.68
+      "unrealized_usd": 97.55
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.6433,
-      "unrealized_usd": 46.33
+      "unrealized_usd": 36.02
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.7194,
-      "unrealized_usd": 11.11
+      "unrealized_usd": 13.39
     },
     {
       "symbol": "TSLA",
       "side": "buy",
       "qty": 9.4417,
-      "unrealized_usd": 10.43
+      "unrealized_usd": 21.29
     }
   ]
 }
