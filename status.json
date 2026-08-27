@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-27 00:11:47",
+  "updated_utc": "2026-08-27 01:12:00",
   "alive": true,
   "state": "active",
-  "uptime_hours": 298.6,
+  "uptime_hours": 299.6,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": 2019.66,
-  "unrealized_pnl_usd": 268.92,
-  "equity_usd": 66205.96,
+  "unrealized_pnl_usd": 136.86,
+  "equity_usd": 66073.9,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.6174,
-      "unrealized_usd": 5.31
+      "unrealized_usd": -4.67
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 12.3437,
-      "unrealized_usd": -29.75
+      "unrealized_usd": -19.75
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0421,
-      "unrealized_usd": 33.45
+      "unrealized_usd": 27.29
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 38810.0424,
-      "unrealized_usd": 113.52
+      "unrealized_usd": 61.36
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.341,
-      "unrealized_usd": 79.74
+      "unrealized_usd": 53.0
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 66.1806,
-      "unrealized_usd": 35.64
+      "unrealized_usd": 9.3
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 15.0,
-      "unrealized_usd": -130.5
+      "unrealized_usd": -134.25
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 34.3922,
-      "unrealized_usd": 161.5
+      "unrealized_usd": 144.58
     }
   ]
 }
