@@ -1,63 +1,63 @@
 {
-  "updated_utc": "2026-08-28 16:24:36",
+  "updated_utc": "2026-08-28 17:25:17",
   "alive": true,
   "state": "active",
-  "uptime_hours": 338.9,
+  "uptime_hours": 339.9,
   "open_positions": 8,
-  "trades_today": 11,
-  "daily_pnl_usd": 340.48,
-  "realized_pnl_usd": 3063.14,
-  "unrealized_pnl_usd": -219.68,
-  "equity_usd": 66366.31,
+  "trades_today": 12,
+  "daily_pnl_usd": 235.88,
+  "realized_pnl_usd": 2958.54,
+  "unrealized_pnl_usd": -139.7,
+  "equity_usd": 66362.78,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.4099,
-      "unrealized_usd": 4.37
+      "unrealized_usd": -5.93
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 12.8269,
-      "unrealized_usd": 0.82
+      "unrealized_usd": -10.41
     },
     {
-      "symbol": "DOGE/USD",
-      "side": "buy",
-      "qty": 37770.5814,
-      "unrealized_usd": -63.76
+      "symbol": "GDX",
+      "side": "sell",
+      "qty": 33.0,
+      "unrealized_usd": -6.0
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 9.338,
-      "unrealized_usd": 15.31
+      "unrealized_usd": 14.38
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 30.4269,
-      "unrealized_usd": -176.13
+      "unrealized_usd": -128.18
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 5.03
+      "unrealized_usd": 6.65
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 32.2321,
-      "unrealized_usd": -7.9
+      "unrealized_usd": -11.93
     },
     {
       "symbol": "XLF",
       "side": "buy",
       "qty": 57.2887,
-      "unrealized_usd": 2.58
+      "unrealized_usd": 1.72
     }
   ]
 }
