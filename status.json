@@ -1,75 +1,75 @@
 {
-  "updated_utc": "2026-08-28 11:22:40",
+  "updated_utc": "2026-08-28 12:22:55",
   "alive": true,
   "state": "active",
-  "uptime_hours": 333.8,
+  "uptime_hours": 334.8,
   "open_positions": 10,
   "trades_today": 1,
   "daily_pnl_usd": -13.82,
   "realized_pnl_usd": 2708.84,
-  "unrealized_pnl_usd": 210.83,
-  "equity_usd": 66449.85,
+  "unrealized_pnl_usd": 164.15,
+  "equity_usd": 66403.18,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.6004,
-      "unrealized_usd": 22.37
+      "unrealized_usd": 33.18
     },
     {
       "symbol": "CPER",
       "side": "buy",
       "qty": 83.1077,
-      "unrealized_usd": 14.96
+      "unrealized_usd": 18.28
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 13.5723,
-      "unrealized_usd": 102.17
+      "unrealized_usd": 81.13
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 37770.5814,
-      "unrealized_usd": 33.99
+      "unrealized_usd": 18.62
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3124,
-      "unrealized_usd": -19.49
+      "unrealized_usd": -25.95
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 7.8502,
-      "unrealized_usd": -6.04
+      "unrealized_usd": -6.36
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.6433,
-      "unrealized_usd": 40.74
+      "unrealized_usd": 54.82
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.7194,
-      "unrealized_usd": 45.63
+      "unrealized_usd": 44.94
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 30.4269,
-      "unrealized_usd": -78.79
+      "unrealized_usd": -104.84
     },
     {
       "symbol": "TSLA",
       "side": "buy",
       "qty": 9.4417,
-      "unrealized_usd": 55.31
+      "unrealized_usd": 50.33
     }
   ]
 }
