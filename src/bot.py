@@ -233,6 +233,31 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_rotation(self) -> None:
+        """Small-basket rotation edge test (e.g. Bitcoin/Gold/Dollar) vs holding
+        each asset alone, OOS + walk-forward, pushed to rotation_results.md."""
+        try:
+            from .backtest.basket_rotation import run_rotation_report
+            baskets = self.bot_cfg.get("rotation_baskets")
+            if not baskets:
+                logger.warning("Rotation: no baskets configured")
+                return
+            logger.info(f"Rotation: testing {len(baskets)} basket(s)…")
+            report = run_rotation_report(get_ohlcv=self.broker.get_ohlcv, baskets=baskets)
+            self.heartbeat._put_file("rotation_results.md", report.encode(),
+                                     "Basket rotation edge test (BTC/Gold/Dollar)")
+            logger.info("Rotation: report pushed to rotation_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Rotation failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("rotation_results.md",
+                                         f"# Basket Rotation — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Rotation failure traceback")
+            except Exception:
+                pass
+
     def _run_xsec(self) -> None:
         """Cross-sectional momentum edge test (relative-strength rotation) vs
         equal-weight Buy&Hold, per asset class with enough names, OOS +
@@ -310,6 +335,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_xsec_on_start", False):
             import threading
             threading.Thread(target=self._run_xsec, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_rotation_on_start", False):
+            import threading
+            threading.Thread(target=self._run_rotation, daemon=True).start()
 
         while self._running:
             try:

@@ -16,6 +16,13 @@ bot:
   run_benchmark_on_start: false  # Benchmark done (2026-08-14); see benchmark_results.md
   run_walkforward_on_start: false  # Walk-forward done (2026-08-14): metals edge NOT robust (beat hold 1/19 windows)
   run_xsec_on_start: false  # XSec momentum done (2026-08-29): not robust (equities 6/18, crypto 3/17 windows)
+  run_rotation_on_start: true   # BTC/Gold/Dollar basket rotation edge test → rotation_results.md
+
+# Small deliberate baskets for the rotation edge test (backtest only, not auto-traded).
+rotation_baskets:
+  BTC_Gold_Dollar:
+    symbols: ["BTC/USD", "GLD", "UUP"]   # bitcoin, gold, US-dollar index ETF
+    cash: "UUP"                           # defensive leg for dual-momentum
 
 broker: "alpaca"
 
