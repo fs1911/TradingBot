@@ -1,4 +1,4 @@
-# Volatility Risk-Premium Edge Test — 2026-08-29 10:30 UTC
+# Volatility Risk-Premium Edge Test — 2026-08-29 10:31 UTC
 
 Harvest the vol premium via a short-VIX ETF. The premium is REAL but is compensation for crash risk — watch 'worst day' and maxDD. MAR = return/|maxDD|. The trend-filtered variant tries to step aside before blow-ups.
 
