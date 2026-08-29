@@ -1,4 +1,4 @@
-# Basket Rotation Edge Test — 2026-08-29 05:28 UTC
+# Basket Rotation Edge Test — 2026-08-29 05:29 UTC
 
 Monthly rotation of a tiny basket vs holding each asset alone and equal-weight. Net of costs. MAR = return/|maxDD|. The rotation must beat EVERY hold on MAR, out-of-sample AND in most walk-forward windows, to count as an edge.
 
