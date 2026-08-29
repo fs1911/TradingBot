@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-08-29 04:44:25",
+  "updated_utc": "2026-08-29 05:28:12",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
@@ -7,9 +7,9 @@
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -2142.89,
-  "unrealized_pnl_usd": -58.14,
-  "total_pnl_usd": -2201.03,
-  "equity_usd": 66283.96,
+  "unrealized_pnl_usd": -36.46,
+  "total_pnl_usd": -2179.35,
+  "equity_usd": 66305.64,
   "market_trend": "neutral",
   "positions": [
     {
@@ -40,7 +40,7 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.878,
-      "unrealized_usd": -6.85
+      "unrealized_usd": 14.83
     },
     {
       "symbol": "SPY",
