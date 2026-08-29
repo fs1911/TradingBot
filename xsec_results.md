@@ -1,4 +1,4 @@
-# Cross-Sectional Momentum Edge Test — 2026-08-29 04:18 UTC
+# Cross-Sectional Momentum Edge Test — 2026-08-29 04:19 UTC
 
 Monthly rank by 12-1 return, hold the top 30% equal-weight vs equal-weight Buy&Hold of the same universe. Net of costs. MAR = return/|maxDD|. A real edge beats hold OOS and in most walk-forward windows.
 
