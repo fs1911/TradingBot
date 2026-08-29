@@ -44,6 +44,9 @@ class Heartbeat:
             # so an equity drop the trade journal can't explain becomes visible.
             "realized_pnl_usd": round(realized_pnl, 2),
             "unrealized_pnl_usd": round(unrealized_pnl, 2),
+            # The real bottom line since tracking began: realized + unrealized.
+            # Always consistent with equity − baseline.
+            "total_pnl_usd": round(realized_pnl + unrealized_pnl, 2),
             "equity_usd": round(equity, 2),
             "market_trend": market_trend,
             "positions": positions or [],

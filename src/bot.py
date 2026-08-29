@@ -126,6 +126,7 @@ class TradingBot:
         self.heartbeat = Heartbeat()
         self._last_heartbeat: Optional[datetime] = None
         self._equity_history_path = _log_root / "equity_history.csv"
+        self._pnl_baseline: Optional[float] = None  # equity when tracking began
 
         # Config shortcuts
         broker_key = self.bot_cfg.get("broker", "alpaca")
@@ -576,6 +577,22 @@ class TradingBot:
         except Exception as e:
             logger.warning(f"Could not save SL cooldowns: {e}")
 
+    def _get_pnl_baseline(self, current_equity: float) -> float:
+        """Equity at the moment P&L tracking began — the honest baseline. Read
+        from the first row of equity_history.csv (durable, survives restarts) so
+        realized P&L is always consistent with the account value, not an in-memory
+        counter that resets on restart. Falls back to current equity on first run."""
+        if self._pnl_baseline is not None:
+            return self._pnl_baseline
+        try:
+            with open(self._equity_history_path) as f:
+                next(f)  # header
+                first = next(f)
+                self._pnl_baseline = float(first.split(",")[1])
+        except (StopIteration, FileNotFoundError, ValueError, IndexError):
+            self._pnl_baseline = current_equity
+        return self._pnl_baseline
+
     def _maybe_heartbeat(self, now: datetime, account) -> None:
         """Push a status snapshot to GitHub at most once per hour."""
         if self._last_heartbeat and (now - self._last_heartbeat).total_seconds() < 3600:
@@ -601,6 +618,13 @@ class TradingBot:
             except Exception as e:
                 logger.warning(f"Heartbeat: could not read positions: {e}")
 
+            # Realized P&L derived from the account itself, not an in-memory
+            # counter: total P&L = equity - baseline; realized = total - unrealized.
+            # This can never diverge from the account value (the old m.total_pnl
+            # counter reset on every restart and understated closed losses).
+            baseline = self._get_pnl_baseline(account.equity)
+            realized_true = (account.equity - baseline) - unrealized
+
             status = self.heartbeat.build_status(
                 state=m.state.value,
                 open_positions=len(pos_detail) or len(self._open_trades),
@@ -608,7 +632,7 @@ class TradingBot:
                 equity=account.equity,
                 market_trend=self._market_trend,
                 daily_pnl=m.daily_pnl,
-                realized_pnl=m.total_pnl,
+                realized_pnl=realized_true,
                 unrealized_pnl=unrealized,
                 positions=pos_detail,
             )
