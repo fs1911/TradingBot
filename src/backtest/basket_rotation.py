@@ -103,6 +103,9 @@ def run_rotation_report(
             lines.append(f"_only {len(data)} symbols with data — skipped_\n")
             continue
         panel = _price_panel(data)
+        if len(panel) < lookback + hold + window:
+            lines.append(f"_common aligned window too short ({len(panel)} days) — skipped_\n")
+            continue
         lines.append(f"{panel.shape[1]} assets: {', '.join(panel.columns)} · common window "
                      f"{panel.index[0]:%Y-%m} → {panel.index[-1]:%Y-%m} ({len(panel)} days)")
         lines.append("")

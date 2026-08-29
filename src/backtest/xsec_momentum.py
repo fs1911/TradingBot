@@ -20,8 +20,17 @@ from .oos_runner import split_is_oos
 
 def _price_panel(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Align per-symbol daily closes into one panel over the window where ALL
-    symbols have data (no look-ahead survivorship within the window)."""
-    cols = {s: d["close"].sort_index() for s, d in data.items()}
+    symbols have data (no look-ahead survivorship within the window).
+
+    Timestamps are normalised to the calendar date first: crypto bars are stamped
+    00:00 UTC while stock/ETF bars carry a market-hours time, so without this the
+    index intersection of a mixed basket (e.g. BTC + GLD) is empty."""
+    cols = {}
+    for s, d in data.items():
+        ser = d["close"].sort_index()
+        ser.index = ser.index.normalize()          # drop time-of-day → align calendars
+        ser = ser[~ser.index.duplicated(keep="last")]
+        cols[s] = ser
     panel = pd.concat(cols, axis=1)
     panel.columns = list(cols.keys())
     return panel.dropna()

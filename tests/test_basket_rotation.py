@@ -43,6 +43,22 @@ def test_dual_goes_to_cash_when_risk_weak():
     assert (1 + r).prod() > 0.9
 
 
+def test_panel_aligns_mixed_timestamps():
+    """Crypto bars stamped 00:00 UTC and stock bars stamped at a market hour must
+    still align by calendar date — the real bug that returned an empty panel."""
+    from src.backtest.xsec_momentum import _price_panel
+    n = 300
+    crypto_idx = pd.date_range("2020-01-01 00:00", periods=n, freq="1D", tz="UTC")
+    stock_idx = pd.date_range("2020-01-01 05:00", periods=n, freq="1D", tz="UTC")
+    btc = pd.DataFrame({"open": 1, "high": 1, "low": 1, "close": np.arange(n) + 100.0,
+                        "volume": 1}, index=crypto_idx)
+    gld = pd.DataFrame({"open": 1, "high": 1, "low": 1, "close": np.arange(n) + 50.0,
+                        "volume": 1}, index=stock_idx)
+    panel = _price_panel({"BTC/USD": btc, "GLD": gld})
+    assert len(panel) == n           # aligned, not empty
+    assert list(panel.columns) == ["BTC/USD", "GLD"]
+
+
 def test_report_wellformed():
     n = 700
     rng = np.random.default_rng(5)
