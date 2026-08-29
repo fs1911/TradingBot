@@ -9,6 +9,7 @@ as JournalSync). Silently skips when no GITHUB_TOKEN is configured.
 from __future__ import annotations
 import os
 import json
+import time
 import base64
 from datetime import datetime, timezone
 from pathlib import Path
@@ -52,31 +53,46 @@ class Heartbeat:
             "positions": positions or [],
         }
 
-    def _put_file(self, remote_path: str, content_bytes: bytes, message: str) -> bool:
-        """Create/update a file on the branch via the GitHub Contents API."""
+    def _put_file(self, remote_path: str, content_bytes: bytes, message: str,
+                  attempts: int = 4) -> bool:
+        """Create/update a file on the branch via the GitHub Contents API.
+
+        Re-reads the file SHA and retries on conflict: the bot pushes several
+        files (status, equity history, journal, backtest reports) around the same
+        time, so a stale SHA yields HTTP 409/422 and — without a retry — the write
+        is silently dropped (this is how a finished backtest report went missing)."""
         if not self.token:
             logger.debug("Heartbeat: no GITHUB_TOKEN — skipping")
             return False
-        try:
-            content = base64.b64encode(content_bytes).decode()
-            url = f"https://api.github.com/repos/{self.REPO}/contents/{remote_path}"
-            headers = {
-                "Authorization": f"token {self.token}",
-                "Accept": "application/vnd.github.v3+json",
-            }
-            r = requests.get(url, headers=headers, params={"ref": self.BRANCH}, timeout=10)
-            sha = r.json().get("sha") if r.ok else None
-            payload: dict = {"message": message, "content": content, "branch": self.BRANCH}
-            if sha:
-                payload["sha"] = sha
-            resp = requests.put(url, json=payload, headers=headers, timeout=20)
-            if resp.ok:
-                return True
-            logger.warning(f"Heartbeat: push {remote_path} failed {resp.status_code}")
-            return False
-        except Exception as e:
-            logger.error(f"Heartbeat error ({remote_path}): {e}")
-            return False
+        content = base64.b64encode(content_bytes).decode()
+        url = f"https://api.github.com/repos/{self.REPO}/contents/{remote_path}"
+        headers = {
+            "Authorization": f"token {self.token}",
+            "Accept": "application/vnd.github.v3+json",
+        }
+        for attempt in range(attempts):
+            try:
+                r = requests.get(url, headers=headers, params={"ref": self.BRANCH}, timeout=10)
+                sha = r.json().get("sha") if r.ok else None
+                payload: dict = {"message": message, "content": content, "branch": self.BRANCH}
+                if sha:
+                    payload["sha"] = sha
+                resp = requests.put(url, json=payload, headers=headers, timeout=20)
+                if resp.ok:
+                    return True
+                # 409 (conflict) / 422 (stale sha) → re-fetch sha and retry
+                if resp.status_code in (409, 422) and attempt < attempts - 1:
+                    time.sleep(1.5 * (attempt + 1))
+                    continue
+                logger.warning(f"Heartbeat: push {remote_path} failed {resp.status_code}")
+                return False
+            except Exception as e:
+                logger.error(f"Heartbeat error ({remote_path}, attempt {attempt+1}): {e}")
+                if attempt < attempts - 1:
+                    time.sleep(1.5 * (attempt + 1))
+                    continue
+                return False
+        return False
 
     def push(self, status: dict) -> bool:
         return self._put_file(
