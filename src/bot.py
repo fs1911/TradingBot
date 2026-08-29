@@ -233,6 +233,31 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_xsec(self) -> None:
+        """Cross-sectional momentum edge test (relative-strength rotation) vs
+        equal-weight Buy&Hold, per asset class with enough names, OOS +
+        walk-forward, pushed to xsec_results.md."""
+        try:
+            from .backtest.xsec_momentum import run_xsec_report
+            universes = self.bot_cfg.get("backtest_universes")
+            if not universes:
+                universes = {"crypto": [s for s in self.symbols if "/" in s]}
+            logger.info(f"XSec momentum: testing {len(universes)} asset classes…")
+            report = run_xsec_report(get_ohlcv=self.broker.get_ohlcv, universes=universes)
+            self.heartbeat._put_file("xsec_results.md", report.encode(),
+                                     "Cross-sectional momentum edge test")
+            logger.info("XSec momentum: report pushed to xsec_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"XSec momentum failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("xsec_results.md",
+                                         f"# Cross-Sectional Momentum — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "XSec failure traceback")
+            except Exception:
+                pass
+
     def _run_walkforward(self) -> None:
         """Metals walk-forward robustness test: rolling windows across full daily
         history, Trend vs Buy&Hold per window, pushed to walkforward_results.md.
@@ -281,6 +306,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_walkforward_on_start", False):
             import threading
             threading.Thread(target=self._run_walkforward, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_xsec_on_start", False):
+            import threading
+            threading.Thread(target=self._run_xsec, daemon=True).start()
 
         while self._running:
             try:
