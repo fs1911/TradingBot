@@ -17,6 +17,11 @@ bot:
   run_walkforward_on_start: false  # Walk-forward done (2026-08-14): metals edge NOT robust (beat hold 1/19 windows)
   run_xsec_on_start: false  # XSec momentum done (2026-08-29): not robust (equities 6/18, crypto 3/17 windows)
   run_rotation_on_start: false  # BTC/Gold/Dollar done (2026-08-29): not robust (beat holds 3/19 windows)
+  run_vol_premium_on_start: true  # Volatility risk-premium edge test → vol_premium_results.md
+
+vol_premium:
+  short_vol_candidates: ["SVXY", "VIXY", "VXX"]  # first available; VXX/VIXY are long-vol → shorted
+  benchmark: "SPY"
 
 # Small deliberate baskets for the rotation edge test (backtest only, not auto-traded).
 rotation_baskets:

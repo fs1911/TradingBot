@@ -233,6 +233,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_vol_premium(self) -> None:
+        """Volatility risk-premium edge test via a short-VIX ETF (SVXY), naive and
+        trend-filtered, vs holding SPY, with tail metrics + walk-forward. Pushed to
+        vol_premium_results.md."""
+        try:
+            from .backtest.vol_premium import run_vol_report
+            cfg = self.bot_cfg.get("vol_premium", {})
+            candidates = cfg.get("short_vol_candidates", ["SVXY", "VXX", "VIXY"])
+            benchmark = cfg.get("benchmark", "SPY")
+            logger.info(f"Vol premium: testing {candidates} vs {benchmark}…")
+            report = run_vol_report(get_ohlcv=self.broker.get_ohlcv,
+                                    short_vol_candidates=candidates, benchmark=benchmark)
+            self.heartbeat._put_file("vol_premium_results.md", report.encode(),
+                                     "Volatility risk-premium edge test")
+            logger.info("Vol premium: report pushed to vol_premium_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Vol premium failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("vol_premium_results.md",
+                                         f"# Volatility Risk-Premium — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Vol premium failure traceback")
+            except Exception:
+                pass
+
     def _run_rotation(self) -> None:
         """Small-basket rotation edge test (e.g. Bitcoin/Gold/Dollar) vs holding
         each asset alone, OOS + walk-forward, pushed to rotation_results.md."""
@@ -339,6 +365,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_rotation_on_start", False):
             import threading
             threading.Thread(target=self._run_rotation, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_vol_premium_on_start", False):
+            import threading
+            threading.Thread(target=self._run_vol_premium, daemon=True).start()
 
         while self._running:
             try:
