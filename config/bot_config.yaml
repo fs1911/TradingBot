@@ -15,7 +15,7 @@ bot:
   run_trend_backtest_on_start: false  # Daily trend test done (2026-08-14); see trend_backtest_results.md
   run_benchmark_on_start: false  # Benchmark done (2026-08-14); see benchmark_results.md
   run_walkforward_on_start: false  # Walk-forward done (2026-08-14): metals edge NOT robust (beat hold 1/19 windows)
-  run_xsec_on_start: true   # Cross-sectional momentum edge test → xsec_results.md
+  run_xsec_on_start: false  # XSec momentum done (2026-08-29): not robust (equities 6/18, crypto 3/17 windows)
 
 broker: "alpaca"
 
