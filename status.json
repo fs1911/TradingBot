@@ -1,15 +1,16 @@
 {
-  "updated_utc": "2026-08-29 03:29:37",
+  "updated_utc": "2026-08-29 04:17:31",
   "alive": true,
   "state": "active",
-  "uptime_hours": 349.9,
-  "open_positions": 7,
-  "trades_today": 1,
-  "daily_pnl_usd": -152.29,
-  "realized_pnl_usd": 2806.25,
-  "unrealized_pnl_usd": -51.29,
-  "equity_usd": 66296.77,
-  "market_trend": "bearish",
+  "uptime_hours": 0.0,
+  "open_positions": 8,
+  "trades_today": 0,
+  "daily_pnl_usd": 0.0,
+  "realized_pnl_usd": -2142.89,
+  "unrealized_pnl_usd": -49.53,
+  "total_pnl_usd": -2192.42,
+  "equity_usd": 66292.57,
+  "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
@@ -34,6 +35,12 @@
       "side": "buy",
       "qty": 9.338,
       "unrealized_usd": 21.48
+    },
+    {
+      "symbol": "SOL/USD",
+      "side": "buy",
+      "qty": 31.878,
+      "unrealized_usd": 1.76
     },
     {
       "symbol": "SPY",
