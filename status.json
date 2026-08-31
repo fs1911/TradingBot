@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-08-31 18:53:22",
+  "updated_utc": "2026-08-31 19:53:55",
   "alive": true,
   "state": "active",
-  "uptime_hours": 56.3,
-  "open_positions": 8,
-  "trades_today": 5,
-  "daily_pnl_usd": -109.18,
-  "realized_pnl_usd": -2429.75,
-  "unrealized_pnl_usd": 198.62,
-  "total_pnl_usd": -2231.13,
-  "equity_usd": 66253.86,
+  "uptime_hours": 57.4,
+  "open_positions": 7,
+  "trades_today": 6,
+  "daily_pnl_usd": -134.66,
+  "realized_pnl_usd": -2457.52,
+  "unrealized_pnl_usd": 177.88,
+  "total_pnl_usd": -2279.64,
+  "equity_usd": 66205.35,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 463.3922,
-      "unrealized_usd": 32.6
+      "unrealized_usd": 10.82
     },
     {
       "symbol": "LINK/USD",
@@ -34,31 +34,25 @@
       "symbol": "NIO",
       "side": "sell",
       "qty": 769.0,
-      "unrealized_usd": -7.69
+      "unrealized_usd": -0.0
     },
     {
       "symbol": "PALL",
       "side": "sell",
       "qty": 133.0,
-      "unrealized_usd": -3.99
+      "unrealized_usd": -10.64
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.4982,
-      "unrealized_usd": 86.98
+      "unrealized_usd": 63.22
     },
     {
       "symbol": "UBER",
       "side": "sell",
       "qty": 43.0,
-      "unrealized_usd": -8.21
-    },
-    {
-      "symbol": "XLE",
-      "side": "sell",
-      "qty": 52.0,
-      "unrealized_usd": -13.26
+      "unrealized_usd": 2.28
     }
   ]
 }
