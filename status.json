@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-08-31 11:49:21",
+  "updated_utc": "2026-08-31 12:49:40",
   "alive": true,
   "state": "active",
-  "uptime_hours": 49.3,
-  "open_positions": 12,
-  "trades_today": 1,
-  "daily_pnl_usd": -7.46,
-  "realized_pnl_usd": -2275.57,
-  "unrealized_pnl_usd": -21.75,
-  "total_pnl_usd": -2297.32,
-  "equity_usd": 66187.67,
+  "uptime_hours": 50.3,
+  "open_positions": 11,
+  "trades_today": 2,
+  "daily_pnl_usd": -17.69,
+  "realized_pnl_usd": -2288.94,
+  "unrealized_pnl_usd": -38.21,
+  "total_pnl_usd": -2327.15,
+  "equity_usd": 66157.84,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,37 +22,31 @@
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 463.3922,
-      "unrealized_usd": 15.85
-    },
-    {
-      "symbol": "BTC/USD",
-      "side": "buy",
-      "qty": 0.0423,
-      "unrealized_usd": 6.1
+      "unrealized_usd": 16.19
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 12.8269,
-      "unrealized_usd": -82.94
+      "unrealized_usd": -95.02
     },
     {
       "symbol": "GDX",
       "side": "sell",
       "qty": 33.0,
-      "unrealized_usd": -36.7
+      "unrealized_usd": -0.39
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 9.338,
-      "unrealized_usd": 8.22
+      "unrealized_usd": 13.26
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 296.2184,
-      "unrealized_usd": 27.58
+      "unrealized_usd": 25.39
     },
     {
       "symbol": "LTC/USD",
@@ -64,25 +58,25 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.4982,
-      "unrealized_usd": 65.53
+      "unrealized_usd": 26.24
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 12.65
+      "unrealized_usd": 15.85
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 32.2321,
-      "unrealized_usd": -0.97
+      "unrealized_usd": -3.22
     },
     {
       "symbol": "XLF",
       "side": "buy",
       "qty": 57.2887,
-      "unrealized_usd": -10.88
+      "unrealized_usd": -10.31
     }
   ]
 }
