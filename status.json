@@ -1,52 +1,58 @@
 {
-  "updated_utc": "2026-08-31 07:48:09",
+  "updated_utc": "2026-08-31 08:48:29",
   "alive": true,
   "state": "active",
-  "uptime_hours": 45.3,
-  "open_positions": 11,
+  "uptime_hours": 46.3,
+  "open_positions": 12,
   "trades_today": 1,
   "daily_pnl_usd": -7.46,
-  "realized_pnl_usd": -2269.61,
-  "unrealized_pnl_usd": 2.87,
-  "total_pnl_usd": -2266.74,
-  "equity_usd": 66218.25,
+  "realized_pnl_usd": -2275.57,
+  "unrealized_pnl_usd": 29.54,
+  "total_pnl_usd": -2246.03,
+  "equity_usd": 66238.96,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.4099,
-      "unrealized_usd": -16.97
+      "unrealized_usd": -7.91
     },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 463.3922,
-      "unrealized_usd": 22.4
+      "unrealized_usd": 39.92
+    },
+    {
+      "symbol": "BTC/USD",
+      "side": "buy",
+      "qty": 0.0423,
+      "unrealized_usd": 6.15
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 12.8269,
-      "unrealized_usd": -72.3
+      "unrealized_usd": -77.3
     },
     {
       "symbol": "GDX",
       "side": "sell",
       "qty": 33.0,
-      "unrealized_usd": -5.01
+      "unrealized_usd": 0.93
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 9.338,
-      "unrealized_usd": 9.06
+      "unrealized_usd": 2.89
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 296.2184,
-      "unrealized_usd": 40.2
+      "unrealized_usd": 16.5
     },
     {
       "symbol": "LTC/USD",
@@ -58,25 +64,25 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.4982,
-      "unrealized_usd": 34.53
+      "unrealized_usd": 49.28
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 9.69
+      "unrealized_usd": 8.53
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 32.2321,
-      "unrealized_usd": -4.19
+      "unrealized_usd": -0.64
     },
     {
       "symbol": "XLF",
       "side": "buy",
       "qty": 57.2887,
-      "unrealized_usd": -13.75
+      "unrealized_usd": -8.02
     }
   ]
 }
