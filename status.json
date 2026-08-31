@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-08-31 21:55:10",
+  "updated_utc": "2026-08-31 22:55:23",
   "alive": true,
   "state": "active",
-  "uptime_hours": 59.4,
+  "uptime_hours": 60.4,
   "open_positions": 7,
-  "trades_today": 6,
-  "daily_pnl_usd": -134.66,
+  "trades_today": 7,
+  "daily_pnl_usd": -161.57,
   "realized_pnl_usd": -2456.27,
-  "unrealized_pnl_usd": 175.64,
-  "total_pnl_usd": -2280.63,
-  "equity_usd": 66204.36,
+  "unrealized_pnl_usd": 151.65,
+  "total_pnl_usd": -2304.62,
+  "equity_usd": 66180.37,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 463.3922,
-      "unrealized_usd": 40.64
+      "unrealized_usd": 46.58
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 296.2184,
-      "unrealized_usd": 71.3
+      "unrealized_usd": 74.26
     },
     {
       "symbol": "LTC/USD",
@@ -40,19 +40,19 @@
       "symbol": "PALL",
       "side": "sell",
       "qty": 133.0,
-      "unrealized_usd": -3.99
+      "unrealized_usd": -10.64
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.4982,
-      "unrealized_usd": 71.38
+      "unrealized_usd": 46.36
     },
     {
       "symbol": "UBER",
       "side": "sell",
       "qty": 43.0,
-      "unrealized_usd": 7.66
+      "unrealized_usd": 6.45
     }
   ]
 }
