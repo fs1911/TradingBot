@@ -1,82 +1,46 @@
 {
-  "updated_utc": "2026-08-31 12:49:40",
+  "updated_utc": "2026-08-31 13:50:30",
   "alive": true,
   "state": "active",
-  "uptime_hours": 50.3,
-  "open_positions": 11,
+  "uptime_hours": 51.3,
+  "open_positions": 5,
   "trades_today": 2,
   "daily_pnl_usd": -17.69,
-  "realized_pnl_usd": -2288.94,
-  "unrealized_pnl_usd": -38.21,
-  "total_pnl_usd": -2327.15,
-  "equity_usd": 66157.84,
-  "market_trend": "neutral",
+  "realized_pnl_usd": -2333.27,
+  "unrealized_pnl_usd": -7.0,
+  "total_pnl_usd": -2340.27,
+  "equity_usd": 66144.72,
+  "market_trend": "bearish",
   "positions": [
-    {
-      "symbol": "AAPL",
-      "side": "buy",
-      "qty": 10.4099,
-      "unrealized_usd": -15.61
-    },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 463.3922,
-      "unrealized_usd": 16.19
+      "unrealized_usd": -15.97
     },
     {
-      "symbol": "CRM",
-      "side": "buy",
-      "qty": 12.8269,
-      "unrealized_usd": -95.02
-    },
-    {
-      "symbol": "GDX",
+      "symbol": "DIS",
       "side": "sell",
-      "qty": 33.0,
-      "unrealized_usd": -0.39
-    },
-    {
-      "symbol": "JPM",
-      "side": "buy",
-      "qty": 9.338,
-      "unrealized_usd": 13.26
+      "qty": 30.0,
+      "unrealized_usd": 0.9
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 296.2184,
-      "unrealized_usd": 25.39
+      "unrealized_usd": 12.92
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 68.2313,
-      "unrealized_usd": -10.58
+      "unrealized_usd": -21.63
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.4982,
-      "unrealized_usd": 26.24
-    },
-    {
-      "symbol": "SPY",
-      "side": "sell",
-      "qty": 4.0,
-      "unrealized_usd": 15.85
-    },
-    {
-      "symbol": "WMT",
-      "side": "buy",
-      "qty": 32.2321,
-      "unrealized_usd": -3.22
-    },
-    {
-      "symbol": "XLF",
-      "side": "buy",
-      "qty": 57.2887,
-      "unrealized_usd": -10.31
+      "unrealized_usd": 16.78
     }
   ]
 }
