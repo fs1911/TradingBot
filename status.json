@@ -1,52 +1,52 @@
 {
-  "updated_utc": "2026-08-31 04:47:04",
+  "updated_utc": "2026-08-31 05:47:27",
   "alive": true,
   "state": "active",
-  "uptime_hours": 42.2,
+  "uptime_hours": 43.2,
   "open_positions": 11,
   "trades_today": 1,
   "daily_pnl_usd": -7.46,
   "realized_pnl_usd": -2269.61,
-  "unrealized_pnl_usd": -93.93,
-  "total_pnl_usd": -2363.54,
-  "equity_usd": 66121.45,
+  "unrealized_pnl_usd": -16.4,
+  "total_pnl_usd": -2286.01,
+  "equity_usd": 66198.98,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "buy",
       "qty": 10.4099,
-      "unrealized_usd": -8.02
+      "unrealized_usd": -6.66
     },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 463.3922,
-      "unrealized_usd": 2.01
+      "unrealized_usd": 34.59
     },
     {
       "symbol": "CRM",
       "side": "buy",
       "qty": 12.8269,
-      "unrealized_usd": -64.47
+      "unrealized_usd": -68.32
     },
     {
       "symbol": "GDX",
       "side": "sell",
       "qty": 33.0,
-      "unrealized_usd": 26.34
+      "unrealized_usd": 10.5
     },
     {
       "symbol": "JPM",
       "side": "buy",
       "qty": 9.338,
-      "unrealized_usd": 13.63
+      "unrealized_usd": 6.54
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 296.2184,
-      "unrealized_usd": -19.58
+      "unrealized_usd": 15.17
     },
     {
       "symbol": "LTC/USD",
@@ -58,25 +58,25 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.4982,
-      "unrealized_usd": -22.22
+      "unrealized_usd": 19.84
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 15.01
+      "unrealized_usd": 11.93
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 32.2321,
-      "unrealized_usd": -3.55
+      "unrealized_usd": -5.16
     },
     {
       "symbol": "XLF",
       "side": "buy",
       "qty": 57.2887,
-      "unrealized_usd": -12.03
+      "unrealized_usd": -13.75
     }
   ]
 }
