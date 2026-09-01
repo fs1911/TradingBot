@@ -1,40 +1,40 @@
 {
-  "updated_utc": "2026-09-01 08:57:55",
+  "updated_utc": "2026-09-01 09:58:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 70.4,
+  "uptime_hours": 71.4,
   "open_positions": 8,
   "trades_today": 5,
   "daily_pnl_usd": 235.57,
-  "realized_pnl_usd": -2335.14,
-  "unrealized_pnl_usd": 145.49,
-  "total_pnl_usd": -2189.65,
-  "equity_usd": 66295.34,
+  "realized_pnl_usd": -2327.44,
+  "unrealized_pnl_usd": 108.2,
+  "total_pnl_usd": -2219.24,
+  "equity_usd": 66265.75,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 13.3986,
-      "unrealized_usd": -22.91
+      "unrealized_usd": -33.3
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 39788.8613,
-      "unrealized_usd": -2.35
+      "unrealized_usd": -31.63
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3418,
-      "unrealized_usd": -30.83
+      "unrealized_usd": -29.0
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 289.8799,
-      "unrealized_usd": -42.94
+      "unrealized_usd": -45.87
     },
     {
       "symbol": "LTC/USD",
@@ -46,19 +46,19 @@
       "symbol": "NIO",
       "side": "sell",
       "qty": 769.0,
-      "unrealized_usd": 154.18
+      "unrealized_usd": 153.8
     },
     {
       "symbol": "PALL",
       "side": "sell",
       "qty": 133.0,
-      "unrealized_usd": 95.76
+      "unrealized_usd": 93.1
     },
     {
       "symbol": "UBER",
       "side": "sell",
       "qty": 43.0,
-      "unrealized_usd": 24.86
+      "unrealized_usd": 31.38
     }
   ]
 }
