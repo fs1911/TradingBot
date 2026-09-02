@@ -1,34 +1,28 @@
 {
-  "updated_utc": "2026-09-02 06:05:12",
+  "updated_utc": "2026-09-02 07:05:29",
   "alive": true,
   "state": "active",
-  "uptime_hours": 91.5,
-  "open_positions": 4,
-  "trades_today": 4,
-  "daily_pnl_usd": -126.46,
-  "realized_pnl_usd": -2205.26,
-  "unrealized_pnl_usd": -27.09,
-  "total_pnl_usd": -2232.35,
-  "equity_usd": 66252.64,
+  "uptime_hours": 92.5,
+  "open_positions": 3,
+  "trades_today": 5,
+  "daily_pnl_usd": -186.69,
+  "realized_pnl_usd": -2289.44,
+  "unrealized_pnl_usd": 45.66,
+  "total_pnl_usd": -2243.78,
+  "equity_usd": 66241.21,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "HOOD",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": 9.3
-    },
-    {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 289.8799,
-      "unrealized_usd": -68.16
+      "unrealized_usd": 15.81
     },
     {
       "symbol": "SOFI",
       "side": "sell",
       "qty": 192.0,
-      "unrealized_usd": 40.32
+      "unrealized_usd": 38.4
     },
     {
       "symbol": "XLV",
