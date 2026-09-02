@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-02 10:06:17",
+  "updated_utc": "2026-09-02 11:06:31",
   "alive": true,
   "state": "active",
-  "uptime_hours": 95.6,
+  "uptime_hours": 96.6,
   "open_positions": 6,
-  "trades_today": 6,
-  "daily_pnl_usd": -190.18,
+  "trades_today": 7,
+  "daily_pnl_usd": -217.16,
   "realized_pnl_usd": -2326.43,
-  "unrealized_pnl_usd": 5.5,
-  "total_pnl_usd": -2320.93,
-  "equity_usd": 66164.06,
+  "unrealized_pnl_usd": 3.04,
+  "total_pnl_usd": -2323.39,
+  "equity_usd": 66161.6,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0427,
-      "unrealized_usd": -39.29
+      "unrealized_usd": -43.07
     },
     {
       "symbol": "HOOD",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": 70.99
+      "unrealized_usd": 95.48
     },
     {
       "symbol": "LTC/USD",
@@ -34,19 +34,19 @@
       "symbol": "SOFI",
       "side": "sell",
       "qty": 192.0,
-      "unrealized_usd": 63.36
+      "unrealized_usd": 67.05
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 33.0485,
-      "unrealized_usd": -55.99
+      "unrealized_usd": -66.89
     },
     {
       "symbol": "XLV",
       "side": "sell",
       "qty": 19.0,
-      "unrealized_usd": -14.06
+      "unrealized_usd": -30.02
     }
   ]
 }
