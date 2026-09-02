@@ -1,58 +1,64 @@
 {
-  "updated_utc": "2026-09-02 14:07:35",
+  "updated_utc": "2026-09-02 15:07:34",
   "alive": true,
   "state": "active",
-  "uptime_hours": 99.6,
-  "open_positions": 7,
-  "trades_today": 8,
-  "daily_pnl_usd": -262.28,
-  "realized_pnl_usd": -2401.76,
-  "unrealized_pnl_usd": -83.75,
-  "total_pnl_usd": -2485.51,
-  "equity_usd": 65999.48,
+  "uptime_hours": 100.6,
+  "open_positions": 8,
+  "trades_today": 10,
+  "daily_pnl_usd": -372.53,
+  "realized_pnl_usd": -2520.21,
+  "unrealized_pnl_usd": -33.22,
+  "total_pnl_usd": -2553.43,
+  "equity_usd": 65931.56,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0427,
-      "unrealized_usd": -13.28
-    },
-    {
-      "symbol": "HOOD",
-      "side": "sell",
-      "qty": 31.0,
-      "unrealized_usd": -16.74
+      "unrealized_usd": -20.95
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 67.2812,
-      "unrealized_usd": -30.95
+      "unrealized_usd": -10.76
+    },
+    {
+      "symbol": "META",
+      "side": "buy",
+      "qty": 5.5134,
+      "unrealized_usd": -22.81
     },
     {
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -8.27
+      "unrealized_usd": -7.01
     },
     {
       "symbol": "PLTR",
       "side": "sell",
       "qty": 18.0,
-      "unrealized_usd": 14.18
+      "unrealized_usd": 64.58
+    },
+    {
+      "symbol": "QQQ",
+      "side": "buy",
+      "qty": 4.65,
+      "unrealized_usd": -4.15
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 33.0485,
-      "unrealized_usd": -20.79
+      "unrealized_usd": -37.18
     },
     {
-      "symbol": "TSLA",
-      "side": "sell",
-      "qty": 9.0,
-      "unrealized_usd": -7.91
+      "symbol": "SPY",
+      "side": "buy",
+      "qty": 4.3169,
+      "unrealized_usd": 5.05
     }
   ]
 }
