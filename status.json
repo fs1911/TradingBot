@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-03 15:16:24",
+  "updated_utc": "2026-09-03 16:17:05",
   "alive": true,
   "state": "active",
-  "uptime_hours": 124.7,
+  "uptime_hours": 125.7,
   "open_positions": 8,
-  "trades_today": 10,
-  "daily_pnl_usd": 243.92,
-  "realized_pnl_usd": -2342.84,
-  "unrealized_pnl_usd": 218.68,
-  "total_pnl_usd": -2124.16,
-  "equity_usd": 66360.83,
+  "trades_today": 12,
+  "daily_pnl_usd": 422.68,
+  "realized_pnl_usd": -2173.26,
+  "unrealized_pnl_usd": 113.07,
+  "total_pnl_usd": -2060.19,
+  "equity_usd": 66424.8,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 38.4799,
-      "unrealized_usd": 10.55
+      "unrealized_usd": 34.22
     },
     {
-      "symbol": "ETH/USD",
+      "symbol": "COIN",
       "side": "buy",
-      "qty": 1.3768,
-      "unrealized_usd": 125.28
+      "qty": 17.0159,
+      "unrealized_usd": -28.76
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.4696,
-      "unrealized_usd": 7.82
+      "unrealized_usd": 12.7
+    },
+    {
+      "symbol": "NIO",
+      "side": "buy",
+      "qty": 868.9281,
+      "unrealized_usd": 13.03
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 18.0667,
-      "unrealized_usd": -0.51
+      "unrealized_usd": 17.46
     },
     {
       "symbol": "QQQ",
       "side": "buy",
       "qty": 4.637,
-      "unrealized_usd": 3.85
+      "unrealized_usd": 9.46
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 30.6349,
-      "unrealized_usd": 31.55
-    },
-    {
-      "symbol": "XLE",
-      "side": "buy",
-      "qty": 50.7766,
-      "unrealized_usd": 23.36
+      "unrealized_usd": 28.03
     },
     {
       "symbol": "XLK",
       "side": "buy",
       "qty": 17.9462,
-      "unrealized_usd": 16.78
+      "unrealized_usd": 26.92
     }
   ]
 }
