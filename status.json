@@ -1,52 +1,52 @@
 {
-  "updated_utc": "2026-09-03 09:14:33",
+  "updated_utc": "2026-09-03 10:14:48",
   "alive": true,
   "state": "active",
-  "uptime_hours": 118.7,
+  "uptime_hours": 119.7,
   "open_positions": 6,
   "trades_today": 6,
   "daily_pnl_usd": 68.77,
-  "realized_pnl_usd": -2464.03,
-  "unrealized_pnl_usd": 84.51,
-  "total_pnl_usd": -2379.52,
-  "equity_usd": 66105.47,
+  "realized_pnl_usd": -2464.31,
+  "unrealized_pnl_usd": 106.51,
+  "total_pnl_usd": -2357.8,
+  "equity_usd": 66127.19,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 13.5498,
-      "unrealized_usd": 77.72
+      "unrealized_usd": 111.15
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3768,
-      "unrealized_usd": 12.57
+      "unrealized_usd": -2.49
     },
     {
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -17.51
+      "unrealized_usd": -9.89
     },
     {
       "symbol": "QQQ",
       "side": "buy",
       "qty": 4.65,
-      "unrealized_usd": 4.64
+      "unrealized_usd": -6.43
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.3169,
-      "unrealized_usd": 7.6
+      "unrealized_usd": 1.99
     },
     {
       "symbol": "XLE",
       "side": "buy",
       "qty": 50.7766,
-      "unrealized_usd": -0.51
+      "unrealized_usd": 12.19
     }
   ]
 }
