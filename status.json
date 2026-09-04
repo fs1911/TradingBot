@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-04 17:27:59",
+  "updated_utc": "2026-09-04 18:28:54",
   "alive": true,
   "state": "active",
-  "uptime_hours": 150.9,
+  "uptime_hours": 151.9,
   "open_positions": 8,
   "trades_today": 9,
   "daily_pnl_usd": -198.79,
-  "realized_pnl_usd": -2525.33,
-  "unrealized_pnl_usd": -139.51,
-  "total_pnl_usd": -2664.84,
-  "equity_usd": 65820.15,
+  "realized_pnl_usd": -2525.44,
+  "unrealized_pnl_usd": -197.71,
+  "total_pnl_usd": -2723.15,
+  "equity_usd": 65761.84,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 29.2201,
-      "unrealized_usd": 8.42
+      "unrealized_usd": 4.47
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0413,
-      "unrealized_usd": 0.97
+      "unrealized_usd": 0.88
     },
     {
       "symbol": "DOGE/USD",
@@ -34,31 +34,31 @@
       "symbol": "GLD",
       "side": "buy",
       "qty": 8.0848,
-      "unrealized_usd": -4.32
+      "unrealized_usd": -9.42
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 35.3795,
-      "unrealized_usd": 55.72
+      "unrealized_usd": 50.59
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 276.9171,
-      "unrealized_usd": -66.32
+      "unrealized_usd": -106.19
     },
     {
       "symbol": "NFLX",
       "side": "sell",
       "qty": 41.0,
-      "unrealized_usd": 37.11
+      "unrealized_usd": 35.88
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.3711,
-      "unrealized_usd": 3.47
+      "unrealized_usd": 0.65
     }
   ]
 }
