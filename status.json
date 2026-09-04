@@ -1,64 +1,58 @@
 {
-  "updated_utc": "2026-09-04 14:25:11",
+  "updated_utc": "2026-09-04 15:26:23",
   "alive": true,
   "state": "active",
-  "uptime_hours": 147.9,
-  "open_positions": 8,
-  "trades_today": 4,
-  "daily_pnl_usd": -114.17,
-  "realized_pnl_usd": -2426.55,
-  "unrealized_pnl_usd": -195.83,
-  "total_pnl_usd": -2622.38,
-  "equity_usd": 65862.61,
-  "market_trend": "bullish",
+  "uptime_hours": 148.9,
+  "open_positions": 7,
+  "trades_today": 8,
+  "daily_pnl_usd": -165.02,
+  "realized_pnl_usd": -2481.57,
+  "unrealized_pnl_usd": -194.43,
+  "total_pnl_usd": -2676.0,
+  "equity_usd": 65808.99,
+  "market_trend": "bearish",
   "positions": [
-    {
-      "symbol": "ARKK",
-      "side": "buy",
-      "qty": 38.4799,
-      "unrealized_usd": 10.94
-    },
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 29.2201,
-      "unrealized_usd": -14.08
+      "unrealized_usd": 18.92
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 37154.4145,
-      "unrealized_usd": -176.42
+      "unrealized_usd": -192.29
+    },
+    {
+      "symbol": "GLD",
+      "side": "buy",
+      "qty": 8.0848,
+      "unrealized_usd": 5.42
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 35.3795,
-      "unrealized_usd": 68.28
+      "unrealized_usd": 61.91
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 276.9171,
-      "unrealized_usd": -105.31
+      "unrealized_usd": -89.58
+    },
+    {
+      "symbol": "NFLX",
+      "side": "sell",
+      "qty": 41.0,
+      "unrealized_usd": 13.12
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.126,
-      "unrealized_usd": 20.62
-    },
-    {
-      "symbol": "TLT",
-      "side": "buy",
-      "qty": 39.9581,
-      "unrealized_usd": 3.2
-    },
-    {
-      "symbol": "WMT",
-      "side": "buy",
-      "qty": 30.6349,
-      "unrealized_usd": -3.06
+      "unrealized_usd": -11.94
     }
   ]
 }
