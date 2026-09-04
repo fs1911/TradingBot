@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-04 07:22:24",
+  "updated_utc": "2026-09-04 08:22:37",
   "alive": true,
   "state": "active",
-  "uptime_hours": 140.8,
+  "uptime_hours": 141.8,
   "open_positions": 9,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -2151.46,
-  "unrealized_pnl_usd": -117.77,
-  "total_pnl_usd": -2269.23,
-  "equity_usd": 66215.76,
+  "realized_pnl_usd": -2151.85,
+  "unrealized_pnl_usd": -159.02,
+  "total_pnl_usd": -2310.87,
+  "equity_usd": 66174.12,
   "market_trend": "bullish",
   "positions": [
     {
@@ -22,49 +22,49 @@
       "symbol": "COIN",
       "side": "buy",
       "qty": 17.0159,
-      "unrealized_usd": -82.7
+      "unrealized_usd": -77.93
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 37154.4145,
-      "unrealized_usd": -63.77
+      "unrealized_usd": -93.53
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 276.9171,
-      "unrealized_usd": -5.56
+      "unrealized_usd": -7.36
     },
     {
       "symbol": "MSFT",
       "side": "buy",
       "qty": 6.4696,
-      "unrealized_usd": -11.82
+      "unrealized_usd": -21.78
     },
     {
       "symbol": "NIO",
       "side": "buy",
       "qty": 868.9281,
-      "unrealized_usd": -17.38
+      "unrealized_usd": -26.07
     },
     {
       "symbol": "PLTR",
       "side": "buy",
       "qty": 18.0667,
-      "unrealized_usd": -13.7
+      "unrealized_usd": -18.4
     },
     {
       "symbol": "QQQ",
       "side": "buy",
       "qty": 4.637,
-      "unrealized_usd": 23.0
+      "unrealized_usd": 26.99
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 30.6349,
-      "unrealized_usd": 7.05
+      "unrealized_usd": 11.95
     }
   ]
 }
