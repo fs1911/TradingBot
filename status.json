@@ -1,70 +1,64 @@
 {
-  "updated_utc": "2026-09-04 13:24:14",
+  "updated_utc": "2026-09-04 14:25:11",
   "alive": true,
   "state": "active",
-  "uptime_hours": 146.9,
-  "open_positions": 9,
-  "trades_today": 2,
-  "daily_pnl_usd": -11.98,
-  "realized_pnl_usd": -2147.75,
-  "unrealized_pnl_usd": -556.02,
-  "total_pnl_usd": -2703.77,
-  "equity_usd": 65781.22,
+  "uptime_hours": 147.9,
+  "open_positions": 8,
+  "trades_today": 4,
+  "daily_pnl_usd": -114.17,
+  "realized_pnl_usd": -2426.55,
+  "unrealized_pnl_usd": -195.83,
+  "total_pnl_usd": -2622.38,
+  "equity_usd": 65862.61,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 38.4799,
-      "unrealized_usd": 4.01
+      "unrealized_usd": 10.94
     },
     {
-      "symbol": "COIN",
+      "symbol": "BABA",
       "side": "buy",
-      "qty": 17.0159,
-      "unrealized_usd": -179.52
+      "qty": 29.2201,
+      "unrealized_usd": -14.08
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 37154.4145,
-      "unrealized_usd": -165.87
+      "unrealized_usd": -176.42
+    },
+    {
+      "symbol": "INTC",
+      "side": "buy",
+      "qty": 35.3795,
+      "unrealized_usd": 68.28
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 276.9171,
-      "unrealized_usd": -104.25
+      "unrealized_usd": -105.31
     },
     {
-      "symbol": "MSFT",
+      "symbol": "NVDA",
       "side": "buy",
-      "qty": 6.4696,
-      "unrealized_usd": -24.63
+      "qty": 14.126,
+      "unrealized_usd": 20.62
     },
     {
-      "symbol": "NIO",
+      "symbol": "TLT",
       "side": "buy",
-      "qty": 868.9281,
-      "unrealized_usd": -52.14
-    },
-    {
-      "symbol": "PLTR",
-      "side": "buy",
-      "qty": 18.0667,
-      "unrealized_usd": -59.95
-    },
-    {
-      "symbol": "QQQ",
-      "side": "buy",
-      "qty": 4.637,
-      "unrealized_usd": 18.36
+      "qty": 39.9581,
+      "unrealized_usd": 3.2
     },
     {
       "symbol": "WMT",
       "side": "buy",
       "qty": 30.6349,
-      "unrealized_usd": 7.97
+      "unrealized_usd": -3.06
     }
   ]
 }
