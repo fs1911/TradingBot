@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-05 12:33:56",
+  "updated_utc": "2026-09-05 13:34:11",
   "alive": true,
   "state": "active",
-  "uptime_hours": 170.0,
-  "open_positions": 7,
-  "trades_today": 2,
-  "daily_pnl_usd": -63.3,
-  "realized_pnl_usd": -89299.44,
-  "unrealized_pnl_usd": 86663.09,
-  "total_pnl_usd": -2636.35,
-  "equity_usd": 65848.64,
+  "uptime_hours": 171.0,
+  "open_positions": 5,
+  "trades_today": 4,
+  "daily_pnl_usd": -3.41,
+  "realized_pnl_usd": -82785.8,
+  "unrealized_pnl_usd": 80159.15,
+  "total_pnl_usd": -2626.65,
+  "equity_usd": 65858.34,
   "market_trend": "bearish",
   "positions": [
     {
@@ -22,13 +22,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0413,
-      "unrealized_usd": 79984.37
-    },
-    {
-      "symbol": "ETH/USD",
-      "side": "buy",
-      "qty": 1.3394,
-      "unrealized_usd": 4.32
+      "unrealized_usd": 79987.11
     },
     {
       "symbol": "GLD",
@@ -47,12 +41,6 @@
       "side": "sell",
       "qty": 41.0,
       "unrealized_usd": 67.65
-    },
-    {
-      "symbol": "SOL/USD",
-      "side": "buy",
-      "qty": 32.3711,
-      "unrealized_usd": 6502.36
     }
   ]
 }
