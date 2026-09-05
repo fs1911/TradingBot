@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-05 17:35:10",
+  "updated_utc": "2026-09-05 18:35:26",
   "alive": true,
   "state": "active",
-  "uptime_hours": 175.0,
-  "open_positions": 4,
+  "uptime_hours": 176.0,
+  "open_positions": 5,
   "trades_today": 9,
   "daily_pnl_usd": 187.03,
-  "realized_pnl_usd": -2805.54,
-  "unrealized_pnl_usd": 172.04,
-  "total_pnl_usd": -2633.5,
-  "equity_usd": 65851.49,
+  "realized_pnl_usd": -2811.47,
+  "unrealized_pnl_usd": 167.32,
+  "total_pnl_usd": -2644.15,
+  "equity_usd": 65840.84,
   "market_trend": "bearish",
   "positions": [
     {
@@ -17,6 +17,12 @@
       "side": "buy",
       "qty": 29.2201,
       "unrealized_usd": 15.14
+    },
+    {
+      "symbol": "ETH/USD",
+      "side": "buy",
+      "qty": 1.3248,
+      "unrealized_usd": -4.72
     },
     {
       "symbol": "GLD",
