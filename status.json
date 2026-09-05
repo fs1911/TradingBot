@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-05 03:31:42",
+  "updated_utc": "2026-09-05 04:31:57",
   "alive": true,
   "state": "active",
-  "uptime_hours": 161.0,
+  "uptime_hours": 162.0,
   "open_positions": 8,
   "trades_today": 1,
   "daily_pnl_usd": -79.92,
-  "realized_pnl_usd": -2844.56,
-  "unrealized_pnl_usd": 181.2,
-  "total_pnl_usd": -2663.36,
-  "equity_usd": 65821.63,
+  "realized_pnl_usd": -2844.57,
+  "unrealized_pnl_usd": 187.8,
+  "total_pnl_usd": -2656.77,
+  "equity_usd": 65828.22,
   "market_trend": "bearish",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0413,
-      "unrealized_usd": 1.57
+      "unrealized_usd": 0.58
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3394,
-      "unrealized_usd": -0.25
+      "unrealized_usd": -1.72
     },
     {
       "symbol": "GLD",
@@ -46,7 +46,7 @@
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 281.267,
-      "unrealized_usd": -1.42
+      "unrealized_usd": 3.39
     },
     {
       "symbol": "NFLX",
@@ -58,7 +58,7 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.3711,
-      "unrealized_usd": 9.26
+      "unrealized_usd": 13.5
     }
   ]
 }
