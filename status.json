@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-06 14:40:33",
+  "updated_utc": "2026-09-06 15:40:47",
   "alive": true,
   "state": "active",
-  "uptime_hours": 196.1,
+  "uptime_hours": 197.1,
   "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -2823.34,
-  "unrealized_pnl_usd": 70.94,
-  "total_pnl_usd": -2752.4,
-  "equity_usd": 65732.59,
+  "realized_pnl_usd": -2823.33,
+  "unrealized_pnl_usd": 86.69,
+  "total_pnl_usd": -2736.64,
+  "equity_usd": 65748.35,
   "market_trend": "bearish",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36419.9223,
-      "unrealized_usd": -67.38
+      "unrealized_usd": -52.34
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3248,
-      "unrealized_usd": -2.33
+      "unrealized_usd": -1.62
     },
     {
       "symbol": "GLD",
