@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-06 18:41:28",
+  "updated_utc": "2026-09-06 19:41:42",
   "alive": true,
   "state": "active",
-  "uptime_hours": 200.1,
+  "uptime_hours": 201.2,
   "open_positions": 6,
   "trades_today": 1,
   "daily_pnl_usd": 17.57,
   "realized_pnl_usd": -2816.59,
-  "unrealized_pnl_usd": 152.42,
-  "total_pnl_usd": -2664.17,
-  "equity_usd": 65820.82,
+  "unrealized_pnl_usd": 133.98,
+  "total_pnl_usd": -2682.61,
+  "equity_usd": 65802.38,
   "market_trend": "bearish",
   "positions": [
     {
@@ -40,7 +40,7 @@
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 60.538,
-      "unrealized_usd": 14.62
+      "unrealized_usd": -3.82
     },
     {
       "symbol": "NFLX",
