@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-06 10:39:31",
+  "updated_utc": "2026-09-06 11:39:45",
   "alive": true,
   "state": "active",
-  "uptime_hours": 192.1,
-  "open_positions": 6,
+  "uptime_hours": 193.1,
+  "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -2817.4,
-  "unrealized_pnl_usd": 176.62,
-  "total_pnl_usd": -2640.78,
-  "equity_usd": 65844.21,
+  "realized_pnl_usd": -2823.33,
+  "unrealized_pnl_usd": 165.91,
+  "total_pnl_usd": -2657.42,
+  "equity_usd": 65827.57,
   "market_trend": "bearish",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36419.9223,
-      "unrealized_usd": -19.23
+      "unrealized_usd": -7.65
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3248,
-      "unrealized_usd": 23.81
+      "unrealized_usd": 26.68
     },
     {
       "symbol": "GLD",
@@ -41,6 +41,12 @@
       "side": "buy",
       "qty": 35.3795,
       "unrealized_usd": 90.22
+    },
+    {
+      "symbol": "LTC/USD",
+      "side": "buy",
+      "qty": 60.538,
+      "unrealized_usd": -25.15
     },
     {
       "symbol": "NFLX",
