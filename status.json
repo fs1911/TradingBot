@@ -1,76 +1,46 @@
 {
-  "updated_utc": "2026-09-08 12:51:23",
+  "updated_utc": "2026-09-08 13:51:31",
   "alive": true,
   "state": "active",
-  "uptime_hours": 242.3,
-  "open_positions": 10,
-  "trades_today": 2,
-  "daily_pnl_usd": -73.79,
-  "realized_pnl_usd": -2844.07,
-  "unrealized_pnl_usd": 82.6,
-  "total_pnl_usd": -2761.47,
-  "equity_usd": 65723.52,
+  "uptime_hours": 243.3,
+  "open_positions": 5,
+  "trades_today": 3,
+  "daily_pnl_usd": -106.62,
+  "realized_pnl_usd": -2497.35,
+  "unrealized_pnl_usd": -406.78,
+  "total_pnl_usd": -2904.13,
+  "equity_usd": 65580.86,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 408.9477,
-      "unrealized_usd": -30.88
-    },
-    {
-      "symbol": "BABA",
-      "side": "buy",
-      "qty": 29.2201,
-      "unrealized_usd": -15.25
-    },
-    {
-      "symbol": "BCH/USD",
-      "side": "buy",
-      "qty": 12.7508,
-      "unrealized_usd": -2.54
+      "unrealized_usd": -105.18
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0417,
-      "unrealized_usd": -30.67
-    },
-    {
-      "symbol": "GLD",
-      "side": "buy",
-      "qty": 8.0848,
-      "unrealized_usd": -26.44
-    },
-    {
-      "symbol": "INTC",
-      "side": "buy",
-      "qty": 35.3795,
-      "unrealized_usd": 259.69
+      "unrealized_usd": -56.42
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 253.5004,
-      "unrealized_usd": -111.03
+      "unrealized_usd": -154.86
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 59.3112,
-      "unrealized_usd": -32.03
-    },
-    {
-      "symbol": "NFLX",
-      "side": "sell",
-      "qty": 41.0,
-      "unrealized_usd": 81.8
+      "unrealized_usd": -46.56
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.7875,
-      "unrealized_usd": -10.06
+      "unrealized_usd": -43.75
     }
   ]
 }
