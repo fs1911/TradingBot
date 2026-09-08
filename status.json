@@ -1,76 +1,70 @@
 {
-  "updated_utc": "2026-09-08 06:50:02",
+  "updated_utc": "2026-09-08 07:50:18",
   "alive": true,
   "state": "active",
-  "uptime_hours": 236.3,
-  "open_positions": 10,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -2726.75,
-  "unrealized_pnl_usd": 38.48,
-  "total_pnl_usd": -2688.27,
-  "equity_usd": 65796.72,
+  "uptime_hours": 237.3,
+  "open_positions": 9,
+  "trades_today": 1,
+  "daily_pnl_usd": -25.55,
+  "realized_pnl_usd": -2773.37,
+  "unrealized_pnl_usd": 38.73,
+  "total_pnl_usd": -2734.64,
+  "equity_usd": 65750.35,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 408.9477,
-      "unrealized_usd": -13.25
+      "unrealized_usd": 2.45
     },
     {
       "symbol": "BABA",
       "side": "buy",
       "qty": 29.2201,
-      "unrealized_usd": -21.1
+      "unrealized_usd": -25.48
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0417,
-      "unrealized_usd": -30.19
-    },
-    {
-      "symbol": "DOGE/USD",
-      "side": "buy",
-      "qty": 36564.6552,
-      "unrealized_usd": 2.61
+      "unrealized_usd": -32.99
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 8.0848,
-      "unrealized_usd": -22.8
+      "unrealized_usd": -30.8
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 35.3795,
-      "unrealized_usd": 200.25
+      "unrealized_usd": 196.36
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 253.5004,
-      "unrealized_usd": -98.87
+      "unrealized_usd": -98.84
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 59.3112,
-      "unrealized_usd": -41.52
+      "unrealized_usd": -37.96
     },
     {
       "symbol": "NFLX",
       "side": "sell",
       "qty": 41.0,
-      "unrealized_usd": 88.97
+      "unrealized_usd": 82.41
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.7875,
-      "unrealized_usd": -25.63
+      "unrealized_usd": -16.41
     }
   ]
 }
