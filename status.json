@@ -1,52 +1,52 @@
 {
-  "updated_utc": "2026-09-08 20:54:25",
+  "updated_utc": "2026-09-08 21:54:51",
   "alive": true,
   "state": "active",
-  "uptime_hours": 250.4,
+  "uptime_hours": 251.4,
   "open_positions": 6,
   "trades_today": 9,
   "daily_pnl_usd": -402.93,
   "realized_pnl_usd": -2797.14,
-  "unrealized_pnl_usd": -45.69,
-  "total_pnl_usd": -2842.83,
-  "equity_usd": 65642.16,
+  "unrealized_pnl_usd": -68.58,
+  "total_pnl_usd": -2865.72,
+  "equity_usd": 65619.27,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 410.1403,
-      "unrealized_usd": -2.33
+      "unrealized_usd": -12.1
     },
     {
       "symbol": "GLD",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": 9.01
+      "unrealized_usd": 4.93
     },
     {
       "symbol": "META",
       "side": "sell",
       "qty": 5.0,
-      "unrealized_usd": -10.3
+      "unrealized_usd": -14.94
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 867.0,
-      "unrealized_usd": -25.84
+      "unrealized_usd": -19.07
     },
     {
       "symbol": "SOFI",
       "side": "sell",
       "qty": 183.0,
-      "unrealized_usd": -12.54
+      "unrealized_usd": -10.98
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.7875,
-      "unrealized_usd": -3.7
+      "unrealized_usd": -16.41
     }
   ]
 }
