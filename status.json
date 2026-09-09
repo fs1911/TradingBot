@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-09 00:55:49",
+  "updated_utc": "2026-09-09 01:56:07",
   "alive": true,
   "state": "active",
-  "uptime_hours": 254.4,
-  "open_positions": 5,
+  "uptime_hours": 255.4,
+  "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -2807.77,
-  "unrealized_pnl_usd": -40.61,
-  "total_pnl_usd": -2848.38,
-  "equity_usd": 65636.61,
+  "realized_pnl_usd": -2819.59,
+  "unrealized_pnl_usd": -70.32,
+  "total_pnl_usd": -2889.91,
+  "equity_usd": 65595.08,
   "market_trend": "bearish",
   "positions": [
     {
@@ -19,16 +19,28 @@
       "unrealized_usd": 1.77
     },
     {
+      "symbol": "DOGE/USD",
+      "side": "buy",
+      "qty": 36320.5397,
+      "unrealized_usd": -14.11
+    },
+    {
+      "symbol": "ETH/USD",
+      "side": "buy",
+      "qty": 1.3148,
+      "unrealized_usd": 4.19
+    },
+    {
       "symbol": "GLD",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": 5.01
+      "unrealized_usd": -5.39
     },
     {
       "symbol": "META",
       "side": "sell",
       "qty": 5.0,
-      "unrealized_usd": -22.25
+      "unrealized_usd": -26.15
     },
     {
       "symbol": "NIO",
@@ -40,7 +52,7 @@
       "symbol": "SOFI",
       "side": "sell",
       "qty": 183.0,
-      "unrealized_usd": -16.47
+      "unrealized_usd": -21.96
     }
   ]
 }
