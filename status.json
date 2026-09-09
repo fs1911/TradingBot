@@ -1,64 +1,40 @@
 {
-  "updated_utc": "2026-09-09 12:58:47",
+  "updated_utc": "2026-09-09 13:59:54",
   "alive": true,
   "state": "active",
-  "uptime_hours": 266.4,
-  "open_positions": 8,
+  "uptime_hours": 267.5,
+  "open_positions": 4,
   "trades_today": 4,
   "daily_pnl_usd": -106.33,
-  "realized_pnl_usd": -2827.88,
-  "unrealized_pnl_usd": -113.73,
-  "total_pnl_usd": -2941.61,
-  "equity_usd": 65543.38,
+  "realized_pnl_usd": -3000.79,
+  "unrealized_pnl_usd": 9.85,
+  "total_pnl_usd": -2990.94,
+  "equity_usd": 65494.05,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 410.1403,
-      "unrealized_usd": -0.24
+      "unrealized_usd": -17.14
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 36320.5397,
-      "unrealized_usd": 48.03
+      "unrealized_usd": 0.56
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3148,
-      "unrealized_usd": 25.13
-    },
-    {
-      "symbol": "GLD",
-      "side": "sell",
-      "qty": 8.0,
-      "unrealized_usd": -26.59
+      "unrealized_usd": 22.18
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 60.618,
-      "unrealized_usd": 14.33
-    },
-    {
-      "symbol": "META",
-      "side": "sell",
-      "qty": 5.0,
-      "unrealized_usd": -165.7
-    },
-    {
-      "symbol": "NIO",
-      "side": "sell",
-      "qty": 867.0,
-      "unrealized_usd": -8.67
-    },
-    {
-      "symbol": "SOFI",
-      "side": "sell",
-      "qty": 183.0,
-      "unrealized_usd": -0.02
+      "unrealized_usd": 4.24
     }
   ]
 }
