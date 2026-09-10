@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-10 04:04:04",
+  "updated_utc": "2026-09-10 05:04:18",
   "alive": true,
   "state": "active",
-  "uptime_hours": 281.5,
-  "open_positions": 3,
+  "uptime_hours": 282.5,
+  "open_positions": 4,
   "trades_today": 2,
   "daily_pnl_usd": -113.48,
-  "realized_pnl_usd": -3327.17,
-  "unrealized_pnl_usd": 31.44,
-  "total_pnl_usd": -3295.73,
-  "equity_usd": 65189.26,
+  "realized_pnl_usd": -3333.05,
+  "unrealized_pnl_usd": 25.42,
+  "total_pnl_usd": -3307.63,
+  "equity_usd": 65177.36,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 420.4431,
-      "unrealized_usd": 10.61
+      "unrealized_usd": 21.5
     },
     {
       "symbol": "DOGE/USD",
@@ -25,10 +25,16 @@
       "unrealized_usd": 1.11
     },
     {
+      "symbol": "LINK/USD",
+      "side": "buy",
+      "qty": 275.3079,
+      "unrealized_usd": -17.97
+    },
+    {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.1014,
-      "unrealized_usd": 19.72
+      "unrealized_usd": 20.78
     }
   ]
 }
