@@ -1,40 +1,34 @@
 {
-  "updated_utc": "2026-09-11 04:11:39",
+  "updated_utc": "2026-09-11 05:11:59",
   "alive": true,
   "state": "active",
-  "uptime_hours": 305.7,
-  "open_positions": 7,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -3756.55,
-  "unrealized_pnl_usd": -94.35,
-  "total_pnl_usd": -3850.9,
-  "equity_usd": 64634.09,
+  "uptime_hours": 306.7,
+  "open_positions": 6,
+  "trades_today": 1,
+  "daily_pnl_usd": -86.91,
+  "realized_pnl_usd": -3854.92,
+  "unrealized_pnl_usd": 39.9,
+  "total_pnl_usd": -3815.02,
+  "equity_usd": 64669.97,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0419,
-      "unrealized_usd": -0.51
+      "unrealized_usd": 5.45
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.3251,
-      "unrealized_usd": 7.16
-    },
-    {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 275.3079,
-      "unrealized_usd": -94.53
+      "unrealized_usd": 24.67
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": -2.85
+      "unrealized_usd": -9.57
     },
     {
       "symbol": "PALL",
@@ -46,13 +40,13 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.446,
-      "unrealized_usd": -10.02
+      "unrealized_usd": 7.07
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": -15.68
+      "unrealized_usd": -9.8
     }
   ]
 }
