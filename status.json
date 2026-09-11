@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-11 20:17:22",
+  "updated_utc": "2026-09-11 21:17:36",
   "alive": true,
   "state": "active",
-  "uptime_hours": 321.7,
+  "uptime_hours": 322.8,
   "open_positions": 7,
   "trades_today": 5,
   "daily_pnl_usd": -92.09,
   "realized_pnl_usd": -3932.04,
-  "unrealized_pnl_usd": 174.82,
-  "total_pnl_usd": -3757.22,
-  "equity_usd": 64727.77,
+  "unrealized_pnl_usd": 172.06,
+  "total_pnl_usd": -3759.98,
+  "equity_usd": 64725.01,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0419,
-      "unrealized_usd": 20.52
+      "unrealized_usd": 16.5
     },
     {
       "symbol": "CPER",
       "side": "buy",
       "qty": 82.4761,
-      "unrealized_usd": -6.2
+      "unrealized_usd": -11.15
     },
     {
       "symbol": "LTC/USD",
@@ -34,19 +34,19 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 32.446,
-      "unrealized_usd": 102.31
+      "unrealized_usd": 106.37
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.2299,
-      "unrealized_usd": -4.51
+      "unrealized_usd": -4.47
     },
     {
       "symbol": "V",
       "side": "buy",
       "qty": 8.7858,
-      "unrealized_usd": 18.1
+      "unrealized_usd": 20.21
     },
     {
       "symbol": "XLK",
