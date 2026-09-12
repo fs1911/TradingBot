@@ -1,23 +1,17 @@
 {
-  "updated_utc": "2026-09-12 01:18:32",
+  "updated_utc": "2026-09-12 02:18:59",
   "alive": true,
   "state": "active",
-  "uptime_hours": 326.8,
-  "open_positions": 7,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -3932.04,
-  "unrealized_pnl_usd": 137.38,
-  "total_pnl_usd": -3794.66,
-  "equity_usd": 64690.33,
+  "uptime_hours": 327.8,
+  "open_positions": 5,
+  "trades_today": 2,
+  "daily_pnl_usd": 98.22,
+  "realized_pnl_usd": -3851.57,
+  "unrealized_pnl_usd": 33.63,
+  "total_pnl_usd": -3817.94,
+  "equity_usd": 64667.05,
   "market_trend": "bullish",
   "positions": [
-    {
-      "symbol": "BTC/USD",
-      "side": "buy",
-      "qty": 0.0419,
-      "unrealized_usd": 17.83
-    },
     {
       "symbol": "CPER",
       "side": "buy",
@@ -29,12 +23,6 @@
       "side": "buy",
       "qty": 60.9108,
       "unrealized_usd": 31.7
-    },
-    {
-      "symbol": "SOL/USD",
-      "side": "buy",
-      "qty": 32.446,
-      "unrealized_usd": 85.93
     },
     {
       "symbol": "SPY",
