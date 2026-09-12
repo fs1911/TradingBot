@@ -1,17 +1,23 @@
 {
-  "updated_utc": "2026-09-12 14:22:13",
+  "updated_utc": "2026-09-12 15:22:30",
   "alive": true,
   "state": "active",
-  "uptime_hours": 339.8,
-  "open_positions": 4,
-  "trades_today": 7,
-  "daily_pnl_usd": 143.51,
-  "realized_pnl_usd": -3816.73,
-  "unrealized_pnl_usd": 1.93,
-  "total_pnl_usd": -3814.8,
-  "equity_usd": 64670.19,
+  "uptime_hours": 340.8,
+  "open_positions": 5,
+  "trades_today": 8,
+  "daily_pnl_usd": 149.7,
+  "realized_pnl_usd": -3842.85,
+  "unrealized_pnl_usd": -14.42,
+  "total_pnl_usd": -3857.27,
+  "equity_usd": 64627.72,
   "market_trend": "bullish",
   "positions": [
+    {
+      "symbol": "BCH/USD",
+      "side": "buy",
+      "qty": 13.9758,
+      "unrealized_usd": -16.35
+    },
     {
       "symbol": "CPER",
       "side": "buy",
