@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-13 22:29:30",
+  "updated_utc": "2026-09-13 23:29:42",
   "alive": true,
   "state": "active",
-  "uptime_hours": 372.0,
+  "uptime_hours": 373.0,
   "open_positions": 7,
   "trades_today": 8,
   "daily_pnl_usd": -200.19,
   "realized_pnl_usd": -4190.5,
-  "unrealized_pnl_usd": -174.82,
-  "total_pnl_usd": -4365.32,
-  "equity_usd": 64119.67,
+  "unrealized_pnl_usd": -172.17,
+  "total_pnl_usd": -4362.67,
+  "equity_usd": 64122.32,
   "market_trend": "bullish",
   "positions": [
     {
@@ -34,7 +34,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2783,
-      "unrealized_usd": -44.94
+      "unrealized_usd": -42.29
     },
     {
       "symbol": "SPY",
