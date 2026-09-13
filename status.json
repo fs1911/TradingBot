@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-13 16:28:05",
+  "updated_utc": "2026-09-13 17:28:17",
   "alive": true,
   "state": "active",
-  "uptime_hours": 365.9,
+  "uptime_hours": 366.9,
   "open_positions": 9,
   "trades_today": 4,
   "daily_pnl_usd": -229.64,
   "realized_pnl_usd": -4166.9,
-  "unrealized_pnl_usd": -42.82,
-  "total_pnl_usd": -4209.72,
-  "equity_usd": 64275.27,
+  "unrealized_pnl_usd": -8.29,
+  "total_pnl_usd": -4175.19,
+  "equity_usd": 64309.8,
   "market_trend": "bullish",
   "positions": [
     {
@@ -34,13 +34,13 @@
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 38004.66,
-      "unrealized_usd": -50.32
+      "unrealized_usd": -20.52
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2766,
-      "unrealized_usd": -31.27
+      "unrealized_usd": -26.53
     },
     {
       "symbol": "LTC/USD",
