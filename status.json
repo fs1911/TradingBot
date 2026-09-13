@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-13 11:26:54",
+  "updated_utc": "2026-09-13 12:27:06",
   "alive": true,
   "state": "active",
-  "uptime_hours": 360.9,
+  "uptime_hours": 361.9,
   "open_positions": 8,
   "trades_today": 4,
   "daily_pnl_usd": -229.64,
-  "realized_pnl_usd": -4160.46,
-  "unrealized_pnl_usd": -178.13,
-  "total_pnl_usd": -4338.59,
-  "equity_usd": 64146.4,
+  "realized_pnl_usd": -4160.45,
+  "unrealized_pnl_usd": -140.4,
+  "total_pnl_usd": -4300.85,
+  "equity_usd": 64184.14,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 436.604,
-      "unrealized_usd": -24.43
+      "unrealized_usd": -23.2
     },
     {
       "symbol": "CPER",
@@ -34,13 +34,13 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2766,
-      "unrealized_usd": -64.2
+      "unrealized_usd": -55.78
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 59.7774,
-      "unrealized_usd": -25.41
+      "unrealized_usd": 2.67
     },
     {
       "symbol": "SPY",
