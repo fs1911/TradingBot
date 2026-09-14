@@ -1,34 +1,28 @@
 {
-  "updated_utc": "2026-09-14 19:37:28",
+  "updated_utc": "2026-09-14 20:38:16",
   "alive": true,
   "state": "active",
-  "uptime_hours": 393.1,
-  "open_positions": 3,
-  "trades_today": 15,
-  "daily_pnl_usd": -26.8,
-  "realized_pnl_usd": -4464.32,
-  "unrealized_pnl_usd": 50.93,
-  "total_pnl_usd": -4413.39,
-  "equity_usd": 64071.6,
+  "uptime_hours": 394.1,
+  "open_positions": 2,
+  "trades_today": 16,
+  "daily_pnl_usd": 41.62,
+  "realized_pnl_usd": -4480.62,
+  "unrealized_pnl_usd": 12.82,
+  "total_pnl_usd": -4467.8,
+  "equity_usd": 64017.19,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 12.0,
-      "unrealized_usd": -11.58
-    },
-    {
-      "symbol": "DOGE/USD",
-      "side": "buy",
-      "qty": 38093.6307,
-      "unrealized_usd": 35.81
+      "unrealized_usd": -6.78
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": 26.71
+      "unrealized_usd": 19.6
     }
   ]
 }
