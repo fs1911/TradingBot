@@ -1,58 +1,34 @@
 {
-  "updated_utc": "2026-09-14 18:36:48",
+  "updated_utc": "2026-09-14 19:37:28",
   "alive": true,
   "state": "active",
-  "uptime_hours": 392.1,
-  "open_positions": 7,
-  "trades_today": 8,
-  "daily_pnl_usd": -43.74,
-  "realized_pnl_usd": -4459.53,
-  "unrealized_pnl_usd": 99.75,
-  "total_pnl_usd": -4359.78,
-  "equity_usd": 64125.21,
-  "market_trend": "bullish",
+  "uptime_hours": 393.1,
+  "open_positions": 3,
+  "trades_today": 15,
+  "daily_pnl_usd": -26.8,
+  "realized_pnl_usd": -4464.32,
+  "unrealized_pnl_usd": 50.93,
+  "total_pnl_usd": -4413.39,
+  "equity_usd": 64071.6,
+  "market_trend": "bearish",
   "positions": [
+    {
+      "symbol": "AMZN",
+      "side": "sell",
+      "qty": 12.0,
+      "unrealized_usd": -11.58
+    },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 38093.6307,
-      "unrealized_usd": 22.25
-    },
-    {
-      "symbol": "ETH/USD",
-      "side": "buy",
-      "qty": 1.2783,
-      "unrealized_usd": 37.89
-    },
-    {
-      "symbol": "GLD",
-      "side": "buy",
-      "qty": 8.0886,
-      "unrealized_usd": -3.86
-    },
-    {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 281.8729,
-      "unrealized_usd": 59.44
-    },
-    {
-      "symbol": "SLV",
-      "side": "buy",
-      "qty": 55.5333,
-      "unrealized_usd": -6.64
-    },
-    {
-      "symbol": "TSLA",
-      "side": "buy",
-      "qty": 8.7981,
-      "unrealized_usd": -26.48
+      "unrealized_usd": 35.81
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": 17.15
+      "unrealized_usd": 26.71
     }
   ]
 }
