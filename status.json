@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-14 02:30:21",
+  "updated_utc": "2026-09-14 03:30:36",
   "alive": true,
   "state": "active",
-  "uptime_hours": 376.0,
+  "uptime_hours": 377.0,
   "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -4190.5,
-  "unrealized_pnl_usd": -171.85,
-  "total_pnl_usd": -4362.35,
-  "equity_usd": 64122.64,
+  "unrealized_pnl_usd": -164.43,
+  "total_pnl_usd": -4354.93,
+  "equity_usd": 64130.06,
   "market_trend": "bullish",
   "positions": [
     {
@@ -34,13 +34,13 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2783,
-      "unrealized_usd": -5.57
+      "unrealized_usd": 5.02
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.2299,
-      "unrealized_usd": -15.93
+      "unrealized_usd": -18.6
     },
     {
       "symbol": "V",
@@ -52,7 +52,7 @@
       "symbol": "XLK",
       "side": "buy",
       "qty": 17.2451,
-      "unrealized_usd": -55.08
+      "unrealized_usd": -55.6
     }
   ]
 }
