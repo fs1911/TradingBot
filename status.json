@@ -1,58 +1,64 @@
 {
-  "updated_utc": "2026-09-14 15:34:47",
+  "updated_utc": "2026-09-14 16:35:27",
   "alive": true,
   "state": "active",
-  "uptime_hours": 389.0,
-  "open_positions": 7,
+  "uptime_hours": 390.0,
+  "open_positions": 8,
   "trades_today": 5,
   "daily_pnl_usd": -71.29,
-  "realized_pnl_usd": -4473.84,
-  "unrealized_pnl_usd": -48.25,
-  "total_pnl_usd": -4522.09,
-  "equity_usd": 63962.9,
-  "market_trend": "bearish",
+  "realized_pnl_usd": -4473.61,
+  "unrealized_pnl_usd": 18.07,
+  "total_pnl_usd": -4455.54,
+  "equity_usd": 64029.45,
+  "market_trend": "bullish",
   "positions": [
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 38093.6307,
-      "unrealized_usd": -32.76
+      "unrealized_usd": -3.35
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2783,
-      "unrealized_usd": -18.96
+      "unrealized_usd": 12.91
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 281.8729,
-      "unrealized_usd": 2.16
+      "unrealized_usd": 19.92
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.3922,
-      "unrealized_usd": -1.6
+      "unrealized_usd": 23.35
+    },
+    {
+      "symbol": "TSLA",
+      "side": "buy",
+      "qty": 8.7981,
+      "unrealized_usd": -10.47
     },
     {
       "symbol": "XLE",
       "side": "sell",
       "qty": 49.0,
-      "unrealized_usd": 2.21
+      "unrealized_usd": -8.33
     },
     {
       "symbol": "XLF",
       "side": "sell",
       "qty": 56.0,
-      "unrealized_usd": 4.2
+      "unrealized_usd": -7.0
     },
     {
       "symbol": "XLY",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": -3.5
+      "unrealized_usd": -8.96
     }
   ]
 }
