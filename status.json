@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-14 06:31:14",
+  "updated_utc": "2026-09-14 07:31:29",
   "alive": true,
   "state": "active",
-  "uptime_hours": 380.0,
+  "uptime_hours": 381.0,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -4196.94,
-  "unrealized_pnl_usd": -78.46,
-  "total_pnl_usd": -4275.4,
-  "equity_usd": 64209.59,
+  "unrealized_pnl_usd": -110.2,
+  "total_pnl_usd": -4307.14,
+  "equity_usd": 64177.85,
   "market_trend": "bullish",
   "positions": [
     {
@@ -22,31 +22,31 @@
       "symbol": "CPER",
       "side": "buy",
       "qty": 82.4761,
-      "unrealized_usd": -45.79
+      "unrealized_usd": -49.09
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 38093.6307,
-      "unrealized_usd": 3.81
+      "unrealized_usd": -11.43
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2783,
-      "unrealized_usd": 11.04
+      "unrealized_usd": 9.79
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 281.8729,
-      "unrealized_usd": 7.1
+      "unrealized_usd": 2.02
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.2299,
-      "unrealized_usd": -20.84
+      "unrealized_usd": -24.27
     },
     {
       "symbol": "V",
@@ -58,7 +58,7 @@
       "symbol": "XLK",
       "side": "buy",
       "qty": 17.2451,
-      "unrealized_usd": -58.53
+      "unrealized_usd": -61.98
     }
   ]
 }
