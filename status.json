@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-15 13:43:38",
+  "updated_utc": "2026-09-15 14:44:28",
   "alive": true,
   "state": "active",
-  "uptime_hours": 411.2,
-  "open_positions": 6,
-  "trades_today": 3,
-  "daily_pnl_usd": -95.1,
-  "realized_pnl_usd": -4649.18,
-  "unrealized_pnl_usd": -33.42,
-  "total_pnl_usd": -4682.6,
-  "equity_usd": 63802.39,
+  "uptime_hours": 412.2,
+  "open_positions": 8,
+  "trades_today": 5,
+  "daily_pnl_usd": -186.63,
+  "realized_pnl_usd": -4746.21,
+  "unrealized_pnl_usd": 77.39,
+  "total_pnl_usd": -4668.82,
+  "equity_usd": 63816.17,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 12.0,
-      "unrealized_usd": -0.15
+      "unrealized_usd": 49.56
     },
     {
       "symbol": "AVAX/USD",
@@ -28,25 +28,37 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 14.3557,
-      "unrealized_usd": 33.74
+      "unrealized_usd": -1.0
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 276.3132,
-      "unrealized_usd": -38.56
+      "unrealized_usd": -53.93
     },
     {
-      "symbol": "SOL/USD",
-      "side": "buy",
-      "qty": 31.4638,
-      "unrealized_usd": -29.24
-    },
-    {
-      "symbol": "XLE",
+      "symbol": "SOFI",
       "side": "sell",
-      "qty": 49.0,
-      "unrealized_usd": -16.17
+      "qty": 183.0,
+      "unrealized_usd": 55.81
+    },
+    {
+      "symbol": "SPY",
+      "side": "sell",
+      "qty": 4.0,
+      "unrealized_usd": 9.58
+    },
+    {
+      "symbol": "TSLA",
+      "side": "sell",
+      "qty": 8.0,
+      "unrealized_usd": 2.56
+    },
+    {
+      "symbol": "UNG",
+      "side": "sell",
+      "qty": 305.0,
+      "unrealized_usd": -2.17
     }
   ]
 }
