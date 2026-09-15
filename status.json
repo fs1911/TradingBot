@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-15 16:46:33",
+  "updated_utc": "2026-09-15 17:47:36",
   "alive": true,
   "state": "active",
-  "uptime_hours": 414.2,
+  "uptime_hours": 415.3,
   "open_positions": 8,
-  "trades_today": 9,
-  "daily_pnl_usd": -297.51,
-  "realized_pnl_usd": -4891.35,
-  "unrealized_pnl_usd": -24.6,
-  "total_pnl_usd": -4915.95,
-  "equity_usd": 63569.04,
+  "trades_today": 10,
+  "daily_pnl_usd": -310.05,
+  "realized_pnl_usd": -4903.79,
+  "unrealized_pnl_usd": 32.38,
+  "total_pnl_usd": -4871.41,
+  "equity_usd": 63613.58,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 425.0768,
-      "unrealized_usd": -37.82
+      "unrealized_usd": -33.7
     },
     {
       "symbol": "BCH/USD",
@@ -28,37 +28,37 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0415,
-      "unrealized_usd": -5.59
+      "unrealized_usd": 14.07
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 39140.0859,
-      "unrealized_usd": 18.94
+      "unrealized_usd": 40.75
     },
     {
-      "symbol": "IWM",
+      "symbol": "NIO",
       "side": "sell",
-      "qty": 11.0,
-      "unrealized_usd": -8.2
+      "qty": 881.0,
+      "unrealized_usd": 3.08
     },
     {
       "symbol": "SLV",
       "side": "sell",
       "qty": 55.0,
-      "unrealized_usd": -17.01
+      "unrealized_usd": -17.26
     },
     {
       "symbol": "SOFI",
       "side": "sell",
       "qty": 183.0,
-      "unrealized_usd": 30.19
+      "unrealized_usd": 28.37
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 7.36
+      "unrealized_usd": 9.56
     }
   ]
 }
