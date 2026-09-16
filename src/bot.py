@@ -694,8 +694,21 @@ class TradingBot:
             pos_detail: list[dict] = []
             try:
                 for p in self.broker.get_positions():
-                    direction = 1 if p.side.value == "buy" else -1
-                    u = (p.current_price - p.entry_price) * abs(p.qty) * direction
+                    # Use the broker's own unrealized P&L (Alpaca computes it from
+                    # market value − cost basis). The old recompute from entry_price
+                    # produced absurd values (e.g. +$83k on 0.04 BTC) whenever a
+                    # stored entry price was corrupt. Fall back to the recompute only
+                    # if the broker value is missing/non-finite, and ignore any
+                    # single position whose |unrealized| exceeds account equity
+                    # (physically impossible → corrupt data, don't let it poison the total).
+                    u = p.unrealized_pnl
+                    if u is None or not math.isfinite(u):
+                        direction = 1 if p.side.value == "buy" else -1
+                        u = (p.current_price - p.entry_price) * abs(p.qty) * direction
+                    if abs(u) > max(account.equity, 1.0):
+                        logger.warning(f"Heartbeat: implausible unrealized {u:.0f} on "
+                                       f"{p.symbol} (equity {account.equity:.0f}) — skipping")
+                        continue
                     unrealized += u
                     pos_detail.append({
                         "symbol": p.symbol,
