@@ -1,64 +1,58 @@
 {
-  "updated_utc": "2026-09-16 17:09:46",
+  "updated_utc": "2026-09-16 18:10:00",
   "alive": true,
   "state": "active",
-  "uptime_hours": 7.1,
-  "open_positions": 8,
-  "trades_today": 5,
-  "daily_pnl_usd": 89661.1,
-  "realized_pnl_usd": -5169.38,
-  "unrealized_pnl_usd": -68.36,
-  "total_pnl_usd": -5237.74,
-  "equity_usd": 63247.25,
+  "uptime_hours": 8.1,
+  "open_positions": 7,
+  "trades_today": 7,
+  "daily_pnl_usd": 89601.43,
+  "realized_pnl_usd": -5246.81,
+  "unrealized_pnl_usd": -0.95,
+  "total_pnl_usd": -5247.76,
+  "equity_usd": 63237.23,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 6.0243,
-      "unrealized_usd": -24.49
-    },
-    {
-      "symbol": "AVAX/USD",
-      "side": "buy",
-      "qty": 431.7234,
-      "unrealized_usd": -46.4
+      "unrealized_usd": -13.35
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 292.9078,
-      "unrealized_usd": -22.73
+      "unrealized_usd": -20.56
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.7129,
-      "unrealized_usd": 15.89
+      "unrealized_usd": 18.83
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": -0.24
+      "unrealized_usd": -4.8
     },
     {
       "symbol": "TSLA",
       "side": "buy",
       "qty": 8.7517,
-      "unrealized_usd": 11.38
+      "unrealized_usd": 16.63
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 44.0761,
-      "unrealized_usd": -1.76
+      "unrealized_usd": 0.88
     },
     {
       "symbol": "XLY",
       "side": "buy",
       "qty": 28.4351,
-      "unrealized_usd": 0.0
+      "unrealized_usd": 1.42
     }
   ]
 }
