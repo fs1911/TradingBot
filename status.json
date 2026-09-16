@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-16 19:10:45",
+  "updated_utc": "2026-09-16 20:11:02",
   "alive": true,
   "state": "active",
-  "uptime_hours": 9.1,
+  "uptime_hours": 10.1,
   "open_positions": 8,
-  "trades_today": 15,
-  "daily_pnl_usd": 89385.7,
-  "realized_pnl_usd": -5462.1,
-  "unrealized_pnl_usd": 11.8,
-  "total_pnl_usd": -5450.3,
-  "equity_usd": 63034.69,
+  "trades_today": 19,
+  "daily_pnl_usd": 89347.16,
+  "realized_pnl_usd": -5481.76,
+  "unrealized_pnl_usd": -13.23,
+  "total_pnl_usd": -5494.99,
+  "equity_usd": 62990.0,
   "market_trend": "bearish",
   "positions": [
+    {
+      "symbol": "BABA",
+      "side": "sell",
+      "qty": 29.0,
+      "unrealized_usd": -14.64
+    },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 19.0,
-      "unrealized_usd": 0.95
+      "unrealized_usd": -45.57
     },
     {
       "symbol": "INTC",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": -4.65
+      "unrealized_usd": -34.72
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 292.9078,
-      "unrealized_usd": -13.53
+      "unrealized_usd": 50.21
     },
     {
-      "symbol": "NVDA",
-      "side": "buy",
-      "qty": 14.7129,
-      "unrealized_usd": -18.19
-    },
-    {
-      "symbol": "QQQ",
+      "symbol": "MSFT",
       "side": "sell",
-      "qty": 4.0,
-      "unrealized_usd": 19.6
+      "qty": 6.0,
+      "unrealized_usd": -1.62
+    },
+    {
+      "symbol": "NFLX",
+      "side": "sell",
+      "qty": 41.0,
+      "unrealized_usd": 4.1
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": 27.74
-    },
-    {
-      "symbol": "UBER",
-      "side": "buy",
-      "qty": 44.0761,
-      "unrealized_usd": -18.07
+      "unrealized_usd": 21.76
     },
     {
       "symbol": "XLK",
       "side": "sell",
       "qty": 17.0,
-      "unrealized_usd": 17.96
+      "unrealized_usd": 7.25
     }
   ]
 }
