@@ -1,64 +1,58 @@
 {
-  "updated_utc": "2026-09-17 14:16:16",
+  "updated_utc": "2026-09-17 15:17:13",
   "alive": true,
   "state": "active",
-  "uptime_hours": 28.2,
-  "open_positions": 8,
-  "trades_today": 9,
-  "daily_pnl_usd": -17.6,
-  "realized_pnl_usd": -5939.62,
-  "unrealized_pnl_usd": 186.45,
-  "total_pnl_usd": -5753.17,
-  "equity_usd": 62731.82,
+  "uptime_hours": 29.2,
+  "open_positions": 7,
+  "trades_today": 10,
+  "daily_pnl_usd": -67.9,
+  "realized_pnl_usd": -5988.22,
+  "unrealized_pnl_usd": 165.9,
+  "total_pnl_usd": -5822.32,
+  "equity_usd": 62662.67,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 36.6335,
-      "unrealized_usd": 49.23
+      "unrealized_usd": 37.32
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9211,
-      "unrealized_usd": 1.15
+      "unrealized_usd": 0.11
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 61.3046,
-      "unrealized_usd": 100.99
+      "unrealized_usd": 112.58
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.2909,
-      "unrealized_usd": -1.23
+      "unrealized_usd": -7.09
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.3765,
-      "unrealized_usd": 12.37
-    },
-    {
-      "symbol": "TSLA",
-      "side": "buy",
-      "qty": 8.397,
-      "unrealized_usd": -1.47
+      "unrealized_usd": 9.67
     },
     {
       "symbol": "XLK",
       "side": "buy",
       "qty": 16.7108,
-      "unrealized_usd": 5.85
+      "unrealized_usd": 3.18
     },
     {
       "symbol": "XLY",
       "side": "buy",
       "qty": 28.1591,
-      "unrealized_usd": 19.57
+      "unrealized_usd": 10.14
     }
   ]
 }
