@@ -1,70 +1,64 @@
 {
-  "updated_utc": "2026-09-17 13:15:42",
+  "updated_utc": "2026-09-17 14:16:16",
   "alive": true,
   "state": "active",
-  "uptime_hours": 27.2,
-  "open_positions": 9,
-  "trades_today": 6,
-  "daily_pnl_usd": 39.37,
-  "realized_pnl_usd": -5458.77,
-  "unrealized_pnl_usd": -311.8,
-  "total_pnl_usd": -5770.57,
-  "equity_usd": 62714.42,
-  "market_trend": "bearish",
+  "uptime_hours": 28.2,
+  "open_positions": 8,
+  "trades_today": 9,
+  "daily_pnl_usd": -17.6,
+  "realized_pnl_usd": -5939.62,
+  "unrealized_pnl_usd": 186.45,
+  "total_pnl_usd": -5753.17,
+  "equity_usd": 62731.82,
+  "market_trend": "bullish",
   "positions": [
     {
-      "symbol": "BABA",
-      "side": "sell",
-      "qty": 29.0,
-      "unrealized_usd": -33.78
+      "symbol": "ARKK",
+      "side": "buy",
+      "qty": 36.6335,
+      "unrealized_usd": 49.23
     },
     {
-      "symbol": "COIN",
-      "side": "sell",
-      "qty": 19.0,
-      "unrealized_usd": -140.79
-    },
-    {
-      "symbol": "INTC",
-      "side": "sell",
-      "qty": 31.0,
-      "unrealized_usd": -148.18
+      "symbol": "IWM",
+      "side": "buy",
+      "qty": 10.9211,
+      "unrealized_usd": 1.15
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 61.3046,
-      "unrealized_usd": 84.51
+      "unrealized_usd": 100.99
     },
     {
-      "symbol": "MSFT",
-      "side": "sell",
-      "qty": 6.0,
-      "unrealized_usd": -29.94
-    },
-    {
-      "symbol": "NFLX",
-      "side": "sell",
-      "qty": 41.0,
-      "unrealized_usd": -2.46
+      "symbol": "NVDA",
+      "side": "buy",
+      "qty": 14.2909,
+      "unrealized_usd": -1.23
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.3765,
-      "unrealized_usd": 24.29
+      "unrealized_usd": 12.37
     },
     {
-      "symbol": "SPY",
-      "side": "sell",
-      "qty": 4.0,
-      "unrealized_usd": -15.76
+      "symbol": "TSLA",
+      "side": "buy",
+      "qty": 8.397,
+      "unrealized_usd": -1.47
     },
     {
       "symbol": "XLK",
-      "side": "sell",
-      "qty": 17.0,
-      "unrealized_usd": -49.7
+      "side": "buy",
+      "qty": 16.7108,
+      "unrealized_usd": 5.85
+    },
+    {
+      "symbol": "XLY",
+      "side": "buy",
+      "qty": 28.1591,
+      "unrealized_usd": 19.57
     }
   ]
 }
