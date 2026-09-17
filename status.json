@@ -1,34 +1,34 @@
 {
-  "updated_utc": "2026-09-17 09:14:39",
+  "updated_utc": "2026-09-17 10:14:54",
   "alive": true,
   "state": "active",
-  "uptime_hours": 23.1,
+  "uptime_hours": 24.1,
   "open_positions": 9,
-  "trades_today": 5,
-  "daily_pnl_usd": 42.49,
-  "realized_pnl_usd": -5458.96,
-  "unrealized_pnl_usd": -249.28,
-  "total_pnl_usd": -5708.24,
-  "equity_usd": 62776.75,
+  "trades_today": 6,
+  "daily_pnl_usd": 39.37,
+  "realized_pnl_usd": -5458.97,
+  "unrealized_pnl_usd": -226.84,
+  "total_pnl_usd": -5685.81,
+  "equity_usd": 62799.18,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "BABA",
       "side": "sell",
       "qty": 29.0,
-      "unrealized_usd": -30.88
+      "unrealized_usd": -24.5
     },
     {
       "symbol": "COIN",
       "side": "sell",
       "qty": 19.0,
-      "unrealized_usd": -133.38
+      "unrealized_usd": -112.29
     },
     {
       "symbol": "INTC",
       "side": "sell",
       "qty": 31.0,
-      "unrealized_usd": -97.96
+      "unrealized_usd": -110.67
     },
     {
       "symbol": "LTC/USD",
@@ -40,31 +40,31 @@
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -26.57
+      "unrealized_usd": -22.62
     },
     {
       "symbol": "NFLX",
       "side": "sell",
       "qty": 41.0,
-      "unrealized_usd": -6.97
+      "unrealized_usd": -7.79
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 31.3765,
-      "unrealized_usd": 9.23
+      "unrealized_usd": 14.88
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": -4.0
+      "unrealized_usd": -3.4
     },
     {
       "symbol": "XLK",
       "side": "sell",
       "qty": 17.0,
-      "unrealized_usd": -34.06
+      "unrealized_usd": -35.76
     }
   ]
 }
