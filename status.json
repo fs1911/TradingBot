@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-18 13:27:41",
+  "updated_utc": "2026-09-18 14:28:48",
   "alive": true,
   "state": "active",
-  "uptime_hours": 51.4,
+  "uptime_hours": 52.4,
   "open_positions": 8,
-  "trades_today": 2,
-  "daily_pnl_usd": 97.0,
-  "realized_pnl_usd": -5745.42,
-  "unrealized_pnl_usd": 166.61,
-  "total_pnl_usd": -5578.81,
-  "equity_usd": 62906.18,
-  "market_trend": "bullish",
+  "trades_today": 6,
+  "daily_pnl_usd": 207.0,
+  "realized_pnl_usd": -5654.39,
+  "unrealized_pnl_usd": 280.41,
+  "total_pnl_usd": -5373.98,
+  "equity_usd": 63111.01,
+  "market_trend": "bearish",
   "positions": [
+    {
+      "symbol": "AAPL",
+      "side": "sell",
+      "qty": 9.0,
+      "unrealized_usd": 16.03
+    },
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 5.7035,
-      "unrealized_usd": -11.98
-    },
-    {
-      "symbol": "ARKK",
-      "side": "buy",
-      "qty": 36.6335,
-      "unrealized_usd": 72.12
+      "unrealized_usd": -10.89
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2633,
-      "unrealized_usd": 10.74
+      "unrealized_usd": 104.92
     },
     {
-      "symbol": "IWM",
-      "side": "buy",
-      "qty": 10.9211,
-      "unrealized_usd": -28.18
+      "symbol": "JNJ",
+      "side": "sell",
+      "qty": 11.0,
+      "unrealized_usd": -2.79
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 275.1619,
-      "unrealized_usd": 123.73
+      "unrealized_usd": 171.33
     },
     {
-      "symbol": "NVDA",
-      "side": "buy",
-      "qty": 14.2909,
-      "unrealized_usd": -10.52
+      "symbol": "MSFT",
+      "side": "sell",
+      "qty": 6.0,
+      "unrealized_usd": 4.8
     },
     {
-      "symbol": "XLK",
-      "side": "buy",
-      "qty": 16.7108,
-      "unrealized_usd": 9.86
+      "symbol": "QQQ",
+      "side": "sell",
+      "qty": 4.0,
+      "unrealized_usd": -1.87
     },
     {
-      "symbol": "XLY",
-      "side": "buy",
-      "qty": 28.1591,
-      "unrealized_usd": 0.84
+      "symbol": "XLV",
+      "side": "sell",
+      "qty": 18.0,
+      "unrealized_usd": -1.12
     }
   ]
 }
