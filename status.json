@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-18 17:30:43",
+  "updated_utc": "2026-09-18 18:31:55",
   "alive": true,
   "state": "active",
-  "uptime_hours": 55.4,
+  "uptime_hours": 56.4,
   "open_positions": 6,
   "trades_today": 8,
   "daily_pnl_usd": 157.0,
-  "realized_pnl_usd": -5702.83,
-  "unrealized_pnl_usd": 341.4,
-  "total_pnl_usd": -5361.43,
-  "equity_usd": 63123.56,
-  "market_trend": "bearish",
+  "realized_pnl_usd": -5703.64,
+  "unrealized_pnl_usd": 332.31,
+  "total_pnl_usd": -5371.33,
+  "equity_usd": 63113.66,
+  "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 1.87
+      "unrealized_usd": -4.29
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2633,
-      "unrealized_usd": 132.2
+      "unrealized_usd": 151.22
     },
     {
       "symbol": "LINK/USD",
@@ -34,19 +34,19 @@
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -3.06
+      "unrealized_usd": -10.83
     },
     {
       "symbol": "QQQ",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": -2.03
+      "unrealized_usd": -5.95
     },
     {
       "symbol": "XLV",
       "side": "sell",
       "qty": 18.0,
-      "unrealized_usd": 2.84
+      "unrealized_usd": -7.42
     }
   ]
 }
