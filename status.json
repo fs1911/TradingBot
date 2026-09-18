@@ -1,58 +1,58 @@
 {
-  "updated_utc": "2026-09-18 09:26:38",
+  "updated_utc": "2026-09-18 10:26:52",
   "alive": true,
   "state": "active",
-  "uptime_hours": 47.3,
+  "uptime_hours": 48.3,
   "open_positions": 8,
   "trades_today": 1,
   "daily_pnl_usd": 122.12,
-  "realized_pnl_usd": -5745.45,
-  "unrealized_pnl_usd": 294.66,
-  "total_pnl_usd": -5450.79,
-  "equity_usd": 63034.2,
+  "realized_pnl_usd": -5745.53,
+  "unrealized_pnl_usd": 300.49,
+  "total_pnl_usd": -5445.04,
+  "equity_usd": 63039.95,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "buy",
       "qty": 5.7035,
-      "unrealized_usd": 7.98
+      "unrealized_usd": 15.4
     },
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 36.6335,
-      "unrealized_usd": 85.68
+      "unrealized_usd": 86.78
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2633,
-      "unrealized_usd": 37.03
+      "unrealized_usd": 26.67
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9211,
-      "unrealized_usd": -13.87
+      "unrealized_usd": -18.46
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 275.1619,
-      "unrealized_usd": 122.35
+      "unrealized_usd": 144.36
     },
     {
       "symbol": "NVDA",
       "side": "buy",
       "qty": 14.2909,
-      "unrealized_usd": 24.92
+      "unrealized_usd": 21.35
     },
     {
       "symbol": "XLK",
       "side": "buy",
       "qty": 16.7108,
-      "unrealized_usd": 26.07
+      "unrealized_usd": 19.89
     },
     {
       "symbol": "XLY",
