@@ -1,16 +1,16 @@
 {
-  "updated_utc": "2026-09-19 06:36:02",
+  "updated_utc": "2026-09-19 07:21:51",
   "alive": true,
   "state": "active",
-  "uptime_hours": 68.5,
-  "open_positions": 8,
+  "uptime_hours": 0.0,
+  "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5533.8,
-  "unrealized_pnl_usd": 77.83,
-  "total_pnl_usd": -5455.97,
-  "equity_usd": 63029.02,
-  "market_trend": "bullish",
+  "realized_pnl_usd": -5360.76,
+  "unrealized_pnl_usd": -66.77,
+  "total_pnl_usd": -5427.53,
+  "equity_usd": 63057.46,
+  "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
@@ -22,7 +22,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": -8.21
+      "unrealized_usd": 1.87
     },
     {
       "symbol": "DOGE/USD",
@@ -37,16 +37,10 @@
       "unrealized_usd": 2.83
     },
     {
-      "symbol": "ETH/USD",
-      "side": "buy",
-      "qty": 1.2633,
-      "unrealized_usd": 169.68
-    },
-    {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 27.9249,
-      "unrealized_usd": -40.35
+      "unrealized_usd": -25.36
     },
     {
       "symbol": "SPY",
