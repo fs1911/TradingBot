@@ -167,3 +167,126 @@ def run_ratio_research(
     lines.append("**Summary:** " + ("at least one ratio SURVIVED at realistic costs — investigate further."
                  if any_survivor else "no ratio survived at realistic costs across the walk-forward."))
     return "\n".join(lines)
+
+
+# ─── experiment #10: parameter robustness + dollar-index ratios ──────────────
+PARAM_GRID = {
+    "z_windows": [40, 60, 90],
+    "entries":   [1.5, 2.0, 2.5],
+    "exits":     [0.0, 0.5, 1.0],
+}
+
+
+def param_grid_robustness(a: pd.Series, b: pd.Series, *, commission_pct: float,
+                          slippage_pct: float, borrow_pct_annual: float,
+                          window: int = 252, step: int = 63) -> list[dict]:
+    """Run the ratio strategy over a grid of (z_window, entry, exit) and evaluate
+    each. A real edge survives across MOST of the grid; an overfit one only at one
+    lucky corner."""
+    rows = []
+    for zw in PARAM_GRID["z_windows"]:
+        for en in PARAM_GRID["entries"]:
+            for ex in PARAM_GRID["exits"]:
+                if ex >= en:
+                    continue
+                r = ratio_strategy_returns(a, b, z_window=zw, entry=en, exit=ex,
+                                           commission_pct=commission_pct, slippage_pct=slippage_pct,
+                                           borrow_pct_annual=borrow_pct_annual)
+                res = evaluate_hypothesis(f"z{zw}/e{en}/x{ex}", r, window, step)
+                res.update({"z": zw, "entry": en, "exit": ex})
+                rows.append(res)
+    return rows
+
+
+def _grid_summary(rows: list[dict]) -> tuple[int, int, float]:
+    """(#combos that survive-ish, total, median OOS MAR). Survive-ish = OOS ret>0
+    and walk-forward ≥ 50%."""
+    valid = [r for r in rows if r.get("oos_mar") is not None]
+    if not valid:
+        return 0, 0, 0.0
+    good = sum(1 for r in valid if r["oos_ret"] > 0 and r["wf_pct"] >= 50)
+    mars = sorted(r["oos_mar"] for r in valid)
+    med = mars[len(mars) // 2]
+    return good, len(valid), round(med, 2)
+
+
+def run_experiment10_report(
+    get_ohlcv: Callable[[str, str, int], pd.DataFrame],
+    robust_pair: tuple[str, str],
+    usd_pairs: list[tuple[str, str]],
+    limit: int = 2500,
+    window: int = 252,
+    step: int = 63,
+) -> str:
+    from datetime import datetime, timezone
+
+    cache: dict[str, pd.DataFrame] = {}
+    def _series(sym: str):
+        if sym not in cache:
+            try:
+                d = get_ohlcv(sym, "1Day", limit)
+                s = d["close"].sort_index()
+                s.index = s.index.normalize()
+                cache[sym] = s
+            except Exception as e:
+                logger.warning(f"Exp10: fetch {sym} failed: {e}")
+                cache[sym] = pd.Series(dtype=float)
+        return cache[sym]
+
+    lines = [f"# Experiment #10 — GLD/GDX robustness + Dollar ratios "
+             f"({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
+
+    # Part A: parameter robustness of the candidate pair
+    a_sym, b_sym = robust_pair
+    a, b = _series(a_sym), _series(b_sym)
+    lines.append(f"## Part A — {a_sym}/{b_sym} parameter robustness (overfit check)")
+    if len(a) < 400 or len(b) < 400:
+        lines.append("_insufficient data_\n")
+    else:
+        for label, comm, slip, borrow in [("base", 0.05, 0.03, 1.0), ("realistic", 0.05, 0.08, 3.0)]:
+            grid = param_grid_robustness(a, b, commission_pct=comm, slippage_pct=slip,
+                                         borrow_pct_annual=borrow, window=window, step=step)
+            good, total, med = _grid_summary(grid)
+            pct = round(100 * good / total) if total else 0
+            robust = "✅ robust across parameters" if pct >= 60 else (
+                     "⚠️ works only in part of the grid" if pct >= 35 else "❌ overfit (lucky params only)")
+            lines.append(f"**{label} costs:** {good}/{total} parameter combos survive "
+                         f"(OOS+, WF≥50%) · median OOS MAR {med} → {robust}")
+        lines.append("")
+        # compact grid at realistic costs
+        grid = param_grid_robustness(a, b, commission_pct=0.05, slippage_pct=0.08,
+                                     borrow_pct_annual=3.0, window=window, step=step)
+        lines.append("| z-win | entry | exit | OOS ret% | OOS MAR | Walk-fwd |")
+        lines.append("|--:|--:|--:|--:|--:|:--:|")
+        for r in grid:
+            if r.get("oos_mar") is None:
+                continue
+            lines.append(f"| {r['z']} | {r['entry']} | {r['exit']} | {r['oos_ret']:+.0f} | "
+                         f"{r['oos_mar']} | {r['wf']} |")
+        lines.append("")
+
+    # Part B: dollar-index ratios (the user's idea, done correctly via UUP)
+    lines.append("## Part B — Dollar-index ratios (commodity vs USD strength)")
+    lines.append("_Note: GLD etc. are already priced in USD, so 'X/USD' is a directional bet. "
+                 "The real market-neutral 'vs dollar' spread uses the dollar-index ETF (UUP)._")
+    lines.append("")
+    lines.append("| Ratio | Scenario | OOS ret% | OOS MAR | Walk-fwd | Verdict |")
+    lines.append("|---|---|--:|--:|:--:|---|")
+    for a_sym, b_sym in usd_pairs:
+        a, b = _series(a_sym), _series(b_sym)
+        if len(a) < 400 or len(b) < 400:
+            lines.append(f"| {a_sym}/{b_sym} | — | | | | insufficient data |")
+            continue
+        for label, comm, slip, borrow in COST_SCENARIOS:
+            r = ratio_strategy_returns(a, b, commission_pct=comm, slippage_pct=slip,
+                                       borrow_pct_annual=borrow)
+            res = evaluate_hypothesis(f"{a_sym}/{b_sym}", r, window, step)
+            if res.get("oos_mar") is None:
+                lines.append(f"| {a_sym}/{b_sym} | {label} | — | — | — | insufficient |")
+                continue
+            lines.append(f"| {a_sym}/{b_sym} | {label} | {res['oos_ret']:+.0f} | {res['oos_mar']} | "
+                         f"{res['wf']} | {res['verdict']} |")
+    lines.append("")
+    lines.append("Verdict rule: GLD/GDX is only real if it survives across MOST of the parameter grid "
+                 "at realistic costs — not just at the single combo used in experiment #9.")
+    return "\n".join(lines)

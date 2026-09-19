@@ -233,6 +233,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment10(self) -> None:
+        """Experiment #10: GLD/GDX parameter-robustness grid (overfit check) +
+        dollar-index ratios (commodity vs USD strength via UUP). → experiment10_results.md."""
+        try:
+            from .backtest.research import run_experiment10_report
+            rp = self.bot_cfg.get("param_robust_pair", {"a": "GLD", "b": "GDX"})
+            usd = self.bot_cfg.get("usd_ratio_experiments", [])
+            usd_pairs = [(e["a"], e["b"]) for e in usd]
+            logger.info("Experiment #10: GLD/GDX robustness + dollar ratios…")
+            report = run_experiment10_report(
+                get_ohlcv=self.broker.get_ohlcv,
+                robust_pair=(rp["a"], rp["b"]), usd_pairs=usd_pairs)
+            self.heartbeat._put_file("experiment10_results.md", report.encode(),
+                                     "Experiment #10: GLD/GDX robustness + dollar ratios")
+            logger.info("Experiment #10: report pushed to experiment10_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #10 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment10_results.md",
+                                         f"# Experiment #10 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #10 failure traceback")
+            except Exception:
+                pass
+
     def _run_ratio_research(self) -> None:
         """Experiment #9: inter-commodity ratio mean reversion (economically-linked
         pairs like gold/silver), cost sweep + walk-forward. → ratio_research_results.md."""
@@ -460,6 +486,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_ratio_research_on_start", False):
             import threading
             threading.Thread(target=self._run_ratio_research, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment10_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment10, daemon=True).start()
 
         while self._running:
             try:
