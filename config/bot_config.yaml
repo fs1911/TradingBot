@@ -18,7 +18,7 @@ bot:
   run_xsec_on_start: false  # XSec momentum done (2026-08-29): not robust (equities 6/18, crypto 3/17 windows)
   run_rotation_on_start: false  # BTC/Gold/Dollar done (2026-08-29): not robust (beat holds 3/19 windows)
   run_vol_premium_on_start: false  # Vol premium done (2026-08-29): real but loses to SPY (MAR 1.24 vs 7.22), 5/21 windows
-  run_quant_on_start: true   # Quant research: structure diagnostics + stat-arb pairs → quant_results.md
+  run_quant_on_start: false  # Quant research done (2026-09-19): pairs stat-arb PASSED walk-forward 8/12 (67%) — needs cost stress-test
 
 # Universe for the quant-research / pairs scan (backtest only). A rich cross-section
 # of related assets raises the chance of a cointegrated, mean-reverting spread.
