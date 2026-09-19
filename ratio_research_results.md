@@ -1,4 +1,4 @@
-# Commodity-Ratio Research — 2026-09-19 10:23 UTC
+# Commodity-Ratio Research — 2026-09-19 10:24 UTC
 
 Mean reversion of economically-linked commodity ratios (fixed 1:1 legs, market-neutral). Net of costs incl. short borrow. A real edge survives OOS, most walk-forward windows, AND realistic costs.
 
