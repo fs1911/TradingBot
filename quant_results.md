@@ -1,4 +1,4 @@
-# Quant Research — 2026-09-19 07:22 UTC
+# Quant Research — 2026-09-19 07:23 UTC
 
 ## Market structure (is any asset non-random?)
 Hurst <0.45 = mean-reverting · >0.55 = trending · ~0.5 = random walk (no edge).
