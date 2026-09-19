@@ -22,6 +22,17 @@ bot:
   run_pairs_stress_on_start: false  # Stress-test done (2026-09-19): edge did NOT survive — 33% walk-fwd, rests on 1 pair, dies at realistic costs
   run_ratio_research_on_start: false  # Exp #9 done (2026-09-19): GLD/GDX survives at low/base costs (67-76% WF), marginal at realistic — needs param-robustness test
   run_experiment10_on_start: false  # Exp #10 done (2026-09-19): GLD/GDX OVERFIT (5/27 combos at realistic costs); dollar ratios no edge
+  run_experiment11_on_start: true  # Exp #11: seasonality/lead-lag/term-structure/weekday under the STRONG rigor battery → experiment11_results.md
+
+# Experiment #11: economically-grounded calendar / cross-asset effects
+experiment11:
+  seasonality_symbols: ["UNG", "USO", "XLE", "GLD", "SPY"]   # nat-gas/oil/energy seasonality
+  lead_lag_pairs:
+    - {leader: "CPER", target: "SPY"}     # Dr. Copper leads equities?
+    - {leader: "CPER", target: "XLI"}     # copper leads industrials?
+    - {leader: "HG=F", target: "SPY"}     # (skipped if unavailable)
+  term_structure: {front: "VXX", back: "VIXM", trade: "SVXY"}  # VIX contango -> short vol
+  weekday_symbols: ["BTC/USD", "ETH/USD"]  # crypto day-of-week effect
 
 # Experiment #10 config
 param_robust_pair: {a: "GLD", b: "GDX"}   # candidate to stress across the parameter grid

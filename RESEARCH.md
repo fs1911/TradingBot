@@ -20,6 +20,13 @@ Jede Hypothese muss:
 wahrscheinlicher sieht eine rein zufällig gut aus. Deshalb ist die Messlatte
 absichtlich streng, und ein einzelnes schönes Fenster zählt nicht.
 
+**Stärkere Prüf-Batterie (ab Exp. 11, `src/backtest/rigor.py`):** zusätzlich zu
+OOS/Walk-Forward/Kosten jetzt auch (1) **Bootstrap-p-Wert** (ist der Mittelwert
+statistisch von Null unterscheidbar?), (2) **Multiple-Testing-Haircut** (Bonferroni:
+Schwelle α/Anzahl-Versuche), (3) **Regime-Stabilität** (positiv in allen 3 Dritteln
+der Historie?), (4) **Sharpe & t-Statistik**, (5) **Parameter-Plateau** statt
+Einzel-Ecke. Ein Edge gilt nur als echt, wenn er ALLE Stufen übersteht.
+
 ## Bisherige Experimente
 
 | # | Datum | Hypothese | Ergebnis | Verdikt |
@@ -54,6 +61,12 @@ absichtlich streng, und ein einzelnes schönes Fenster zählt nicht.
 - Saisonalität in Energie/Agrar (Erdgas Winter, Benzin Sommer) — Kalendereffekte.
 - Term-Struktur / Roll-Yield (Contango/Backwardation) als Signal.
 - Lead-Lag (Kupfer als Frühindikator; Wochenend-Effekte in Krypto).
+
+### Experiment 11 (läuft, unter der stärkeren Batterie)
+
+Saisonalität (UNG/USO/XLE/GLD/SPY), Lead-Lag (Kupfer→Aktien), Term-Struktur
+(VIX-Contango→SVXY), Wochentag-Effekt (Krypto) — alle geprüft mit Bootstrap-p-Wert
++ Multiple-Testing-Haircut + Regime-Stabilität. Ergebnis → `experiment11_results.md`.
 
 ## Erkenntnis-Stand
 

@@ -233,6 +233,34 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment11(self) -> None:
+        """Experiment #11: seasonality, lead-lag, term-structure, weekday effects,
+        each judged by the STRONG rigor battery (bootstrap p-value + multiple-testing
+        haircut + regime stability). → experiment11_results.md."""
+        try:
+            from .backtest.experiments_11 import run_experiment11_report
+            cfg = self.bot_cfg.get("experiment11", {})
+            report = run_experiment11_report(
+                get_ohlcv=self.broker.get_ohlcv,
+                seasonality_symbols=cfg.get("seasonality_symbols", []),
+                lead_lag_pairs=[(p["leader"], p["target"]) for p in cfg.get("lead_lag_pairs", [])],
+                term_structure=cfg.get("term_structure"),
+                weekday_symbols=cfg.get("weekday_symbols", []),
+            )
+            self.heartbeat._put_file("experiment11_results.md", report.encode(),
+                                     "Experiment #11: hypotheses under the strong rigor battery")
+            logger.info("Experiment #11: report pushed to experiment11_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #11 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment11_results.md",
+                                         f"# Experiment #11 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #11 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment10(self) -> None:
         """Experiment #10: GLD/GDX parameter-robustness grid (overfit check) +
         dollar-index ratios (commodity vs USD strength via UUP). → experiment10_results.md."""
@@ -490,6 +518,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment10_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment10, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment11_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment11, daemon=True).start()
 
         while self._running:
             try:
