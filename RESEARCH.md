@@ -33,20 +33,27 @@ absichtlich streng, und ein einzelnes schönes Fenster zählt nicht.
 | 7 | 2026-09 | Quant-Struktur + Stat-Arb-Pairs (alle Symbole) | Walk-Forward 8/12 (67 %) — vielversprechend | ⚠️ zu prüfen |
 | 8 | 2026-09 | Pairs-Stress-Test (nur sinnvolle Paare, echte Kosten) | 33 % Walk-Forward; hängt an 1 Paar (NVDA/AMD); stirbt bei harten Kosten | ❌ nicht tragfähig |
 | 9 | 2026-09 | Inter-Rohstoff-Ratios (Gold/Silber, Platin/Palladium, Gold/Öl, Gold/Miner, Silber/Miner) | **GLD/GDX** überlebt bei niedrigen/Basis-Kosten (Walk-Fwd 76%/67%, MAR 2.5-2.9), marginal bei realistischen Kosten (52%, MAR 1.92, +18% OOS); andere Ratios ❌; PPLT/PALL hohe Rendite aber nur 47% WF | ⚠️ GLD/GDX vielversprechend |
-| 10 | 2026-09 | GLD/GDX Parameter-Robustheit (z-Fenster, Entry/Exit-Schwellen) — echt oder überangepasst? | *offen* | ⏳ |
+| 10 | 2026-09 | GLD/GDX Parameter-Robustheit (z-Fenster, Entry/Exit-Schwellen) — echt oder überangepasst? | **Überfit.** Basis-Kosten 15/27 Kombis (⚠️, Median MAR 1.01), realistische Kosten nur **5/27** (Median MAR 0.67). Funktioniert nur in einer Parameter-Ecke (z60-90/Entry2.0), nicht breit. Dollar-Ratios (GLD/UUP, SLV/UUP, USO/UUP, GDX/UUP) alle ❌ | ❌ nicht robust |
 
-## Erkenntnis-Stand (Update Exp. 9)
+## Erkenntnis-Stand (Update Exp. 10)
 
-- **Erster wirtschaftlich begründeter Teilerfolg: GLD/GDX** (Gold vs. Goldminen).
-  Ökonomisch sinnvoll — Minen-Aktien sind ein gehebeltes Gold-Investment (Goldpreis
-  minus Förderkosten), der Spread hat also einen echten strukturellen Anker, kein
-  Zufall wie NVDA/AMD. Übersteht OOS + Walk-Forward bei niedrigen/Basis-Kosten;
-  wird bei realistischen Kosten marginal. Beide ETFs sind liquide → reale Kosten
-  liegen eher bei "Basis" als "hart".
-- **Offene, entscheidende Frage:** Hängt es an den zufällig gewählten Parametern
-  (z-Fenster 60, Entry 2.0, Exit 0.5)? Wenn ja → überangepasst. Wenn es über einen
-  Bereich vernünftiger Parameter hält → echter, tragfähiger Kandidat. Das ist
-  Experiment #10.
+- **GLD/GDX war doch überangepasst.** Die schöne Zahl aus Exp. 9 (z60/Entry2.0/Exit0.5)
+  war eine der wenigen guten Zellen im Raster. Über die *meisten* Parameter bricht der
+  Edge bei realistischen Kosten zusammen (5/27). Ein echter Edge würde breit halten.
+  → Der Robustheitstest (Exp. 10) hat genau seinen Zweck erfüllt: einen scheinbaren
+  Fund als Überanpassung entlarvt, bevor Geld darauf gesetzt wurde.
+- **Dollar-Ratios (die USD-Idee):** korrekt über den Dollar-Index (UUP) getestet —
+  kein Edge. GLD/UUP ist faktisch eine Richtungswette auf Gold (negativ). Bestätigt:
+  „X/USD" ist kein marktneutraler Spread.
+- **Faint signal, kein Edge:** Bei Basis-Kosten deutet das Gold/Miner-Verhältnis eine
+  schwache reale Mean-Reversion an (15/27), aber zu fragil/kostenempfindlich, um
+  handelbar zu sein.
+
+## Offener Backlog (noch nicht getestet)
+
+- Saisonalität in Energie/Agrar (Erdgas Winter, Benzin Sommer) — Kalendereffekte.
+- Term-Struktur / Roll-Yield (Contango/Backwardation) als Signal.
+- Lead-Lag (Kupfer als Frühindikator; Wochenend-Effekte in Krypto).
 
 ## Erkenntnis-Stand
 
