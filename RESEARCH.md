@@ -32,7 +32,21 @@ absichtlich streng, und ein einzelnes schönes Fenster zählt nicht.
 | 6 | 2026-08 | Volatilitäts-Risikoprämie (SVXY, naiv + trend) | Prämie real, aber MAR 1.24 vs SPY 7.22; 5/21 | ❌ schlechter als Halten |
 | 7 | 2026-09 | Quant-Struktur + Stat-Arb-Pairs (alle Symbole) | Walk-Forward 8/12 (67 %) — vielversprechend | ⚠️ zu prüfen |
 | 8 | 2026-09 | Pairs-Stress-Test (nur sinnvolle Paare, echte Kosten) | 33 % Walk-Forward; hängt an 1 Paar (NVDA/AMD); stirbt bei harten Kosten | ❌ nicht tragfähig |
-| 9 | 2026-09 | Inter-Rohstoff-Ratios (Gold/Silber, Platin/Palladium, Gold/Öl) | *läuft* → `ratio_research_results.md` | ⏳ |
+| 9 | 2026-09 | Inter-Rohstoff-Ratios (Gold/Silber, Platin/Palladium, Gold/Öl, Gold/Miner, Silber/Miner) | **GLD/GDX** überlebt bei niedrigen/Basis-Kosten (Walk-Fwd 76%/67%, MAR 2.5-2.9), marginal bei realistischen Kosten (52%, MAR 1.92, +18% OOS); andere Ratios ❌; PPLT/PALL hohe Rendite aber nur 47% WF | ⚠️ GLD/GDX vielversprechend |
+| 10 | 2026-09 | GLD/GDX Parameter-Robustheit (z-Fenster, Entry/Exit-Schwellen) — echt oder überangepasst? | *offen* | ⏳ |
+
+## Erkenntnis-Stand (Update Exp. 9)
+
+- **Erster wirtschaftlich begründeter Teilerfolg: GLD/GDX** (Gold vs. Goldminen).
+  Ökonomisch sinnvoll — Minen-Aktien sind ein gehebeltes Gold-Investment (Goldpreis
+  minus Förderkosten), der Spread hat also einen echten strukturellen Anker, kein
+  Zufall wie NVDA/AMD. Übersteht OOS + Walk-Forward bei niedrigen/Basis-Kosten;
+  wird bei realistischen Kosten marginal. Beide ETFs sind liquide → reale Kosten
+  liegen eher bei "Basis" als "hart".
+- **Offene, entscheidende Frage:** Hängt es an den zufällig gewählten Parametern
+  (z-Fenster 60, Entry 2.0, Exit 0.5)? Wenn ja → überangepasst. Wenn es über einen
+  Bereich vernünftiger Parameter hält → echter, tragfähiger Kandidat. Das ist
+  Experiment #10.
 
 ## Erkenntnis-Stand
 

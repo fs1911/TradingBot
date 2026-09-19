@@ -20,7 +20,7 @@ bot:
   run_vol_premium_on_start: false  # Vol premium done (2026-08-29): real but loses to SPY (MAR 1.24 vs 7.22), 5/21 windows
   run_quant_on_start: false  # Quant research done (2026-09-19): pairs stat-arb PASSED walk-forward 8/12 (67%) — needs cost stress-test
   run_pairs_stress_on_start: false  # Stress-test done (2026-09-19): edge did NOT survive — 33% walk-fwd, rests on 1 pair, dies at realistic costs
-  run_ratio_research_on_start: true  # Experiment #9: inter-commodity ratio mean reversion → ratio_research_results.md
+  run_ratio_research_on_start: false  # Exp #9 done (2026-09-19): GLD/GDX survives at low/base costs (67-76% WF), marginal at realistic — needs param-robustness test
 
 # Experiment #9: economically-linked commodity ratios (real supply/demand coupling).
 ratio_experiments:
