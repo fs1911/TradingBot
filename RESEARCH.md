@@ -41,6 +41,7 @@ Einzel-Ecke. Ein Edge gilt nur als echt, wenn er ALLE Stufen übersteht.
 | 8 | 2026-09 | Pairs-Stress-Test (nur sinnvolle Paare, echte Kosten) | 33 % Walk-Forward; hängt an 1 Paar (NVDA/AMD); stirbt bei harten Kosten | ❌ nicht tragfähig |
 | 9 | 2026-09 | Inter-Rohstoff-Ratios (Gold/Silber, Platin/Palladium, Gold/Öl, Gold/Miner, Silber/Miner) | **GLD/GDX** überlebt bei niedrigen/Basis-Kosten (Walk-Fwd 76%/67%, MAR 2.5-2.9), marginal bei realistischen Kosten (52%, MAR 1.92, +18% OOS); andere Ratios ❌; PPLT/PALL hohe Rendite aber nur 47% WF | ⚠️ GLD/GDX vielversprechend |
 | 10 | 2026-09 | GLD/GDX Parameter-Robustheit (z-Fenster, Entry/Exit-Schwellen) — echt oder überangepasst? | **Überfit.** Basis-Kosten 15/27 Kombis (⚠️, Median MAR 1.01), realistische Kosten nur **5/27** (Median MAR 0.67). Funktioniert nur in einer Parameter-Ecke (z60-90/Entry2.0), nicht breit. Dollar-Ratios (GLD/UUP, SLV/UUP, USO/UUP, GDX/UUP) alle ❌ | ❌ nicht robust |
+| 11 | 2026-09 | Saisonalität, Lead-Lag (Kupfer), Term-Struktur (VIX-Contango), Wochentag (Krypto) — unter der **stärkeren** Batterie (Bootstrap-p-Wert, Multiple-Testing-Haircut, Regime-Stabilität) | **0 von 10** überleben. Bestes: XLE-Saisonalität (3/3 Regime, p=0.044) scheitert am Haircut (nötig <0.0025) + Walk-Forward 38%. Lead-Lag klar negativ (t=−2.6) | ❌ kein Edge |
 
 ## Erkenntnis-Stand (Update Exp. 10)
 
@@ -62,12 +63,14 @@ Einzel-Ecke. Ein Edge gilt nur als echt, wenn er ALLE Stufen übersteht.
 - Term-Struktur / Roll-Yield (Contango/Backwardation) als Signal.
 - Lead-Lag (Kupfer als Frühindikator; Wochenend-Effekte in Krypto).
 
-### Experiment 11 (läuft, unter der stärkeren Batterie)
+### Experiment 11 (abgeschlossen — 0/10 unter der stärkeren Batterie)
 
 Saisonalität (UNG/USO/XLE/GLD/SPY), Lead-Lag (Kupfer→Aktien), Term-Struktur
-(VIX-Contango→SVXY), Wochentag-Effekt (Krypto) — alle geprüft mit Bootstrap-p-Wert
-+ Multiple-Testing-Haircut + Regime-Stabilität. Ergebnis → `experiment11_results.md`.
-
+(VIX-Contango→SVXY), Wochentag-Effekt (Krypto). Die schärfere Batterie hat ihren
+Zweck erfüllt: XLE-Saisonalität war in allen 3 Regimen positiv und p<0.05 —
+gescheitert erst am Multiple-Testing-Haircut (nötig p<0.0025) und Walk-Forward 38%.
+Genau die Fälle, die eine schwache Prüfung durchgelassen hätte, werden korrekt
+verworfen. Details → `experiment11_results.md`.
 ## Erkenntnis-Stand
 
 - Richtungswetten aus öffentlichen Kursen haben nach Kosten keinen persistenten

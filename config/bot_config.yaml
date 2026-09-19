@@ -22,7 +22,7 @@ bot:
   run_pairs_stress_on_start: false  # Stress-test done (2026-09-19): edge did NOT survive — 33% walk-fwd, rests on 1 pair, dies at realistic costs
   run_ratio_research_on_start: false  # Exp #9 done (2026-09-19): GLD/GDX survives at low/base costs (67-76% WF), marginal at realistic — needs param-robustness test
   run_experiment10_on_start: false  # Exp #10 done (2026-09-19): GLD/GDX OVERFIT (5/27 combos at realistic costs); dollar ratios no edge
-  run_experiment11_on_start: true  # Exp #11: seasonality/lead-lag/term-structure/weekday under the STRONG rigor battery → experiment11_results.md
+  run_experiment11_on_start: false  # Exp #11 done (2026-09-19): 0/10 survive the strong battery (significance + haircut + regime)
 
 # Experiment #11: economically-grounded calendar / cross-asset effects
 experiment11:
