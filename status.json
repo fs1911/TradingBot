@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-19 19:40:17",
+  "updated_utc": "2026-09-19 19:41:41",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
@@ -7,9 +7,9 @@
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -5410.23,
-  "unrealized_pnl_usd": 34.93,
-  "total_pnl_usd": -5375.3,
-  "equity_usd": 63109.69,
+  "unrealized_pnl_usd": 56.76,
+  "total_pnl_usd": -5353.47,
+  "equity_usd": 63131.52,
   "market_trend": "neutral",
   "positions": [
     {
@@ -46,7 +46,7 @@
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 54.471,
-      "unrealized_usd": -11.23
+      "unrealized_usd": 10.6
     },
     {
       "symbol": "SPY",
