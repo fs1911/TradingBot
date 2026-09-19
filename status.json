@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-19 18:07:44",
+  "updated_utc": "2026-09-19 18:09:07",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
@@ -7,9 +7,9 @@
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -5410.23,
-  "unrealized_pnl_usd": 51.98,
-  "total_pnl_usd": -5358.25,
-  "equity_usd": 63126.74,
+  "unrealized_pnl_usd": 50.18,
+  "total_pnl_usd": -5360.05,
+  "equity_usd": 63124.94,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,7 +22,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": 14.23
+      "unrealized_usd": 12.43
     },
     {
       "symbol": "DOGE/USD",
