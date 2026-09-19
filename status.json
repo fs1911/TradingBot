@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-19 03:35:17",
+  "updated_utc": "2026-09-19 04:35:33",
   "alive": true,
   "state": "active",
-  "uptime_hours": 65.5,
+  "uptime_hours": 66.5,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -5533.8,
-  "unrealized_pnl_usd": 187.97,
-  "total_pnl_usd": -5345.83,
-  "equity_usd": 63139.16,
+  "unrealized_pnl_usd": 135.08,
+  "total_pnl_usd": -5398.72,
+  "equity_usd": 63086.27,
   "market_trend": "bullish",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": -0.62
+      "unrealized_usd": -1.08
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 35941.9004,
-      "unrealized_usd": 22.75
+      "unrealized_usd": -5.21
     },
     {
       "symbol": "EEM",
@@ -40,13 +40,13 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2633,
-      "unrealized_usd": 165.75
+      "unrealized_usd": 163.88
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 27.9249,
-      "unrealized_usd": 9.05
+      "unrealized_usd": -13.55
     },
     {
       "symbol": "SPY",
