@@ -233,6 +233,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_ratio_research(self) -> None:
+        """Experiment #9: inter-commodity ratio mean reversion (economically-linked
+        pairs like gold/silver), cost sweep + walk-forward. → ratio_research_results.md."""
+        try:
+            from .backtest.research import run_ratio_research
+            experiments = self.bot_cfg.get("ratio_experiments", [])
+            pairs = [(e["a"], e["b"]) for e in experiments] if experiments else []
+            if not pairs:
+                logger.warning("Ratio research: no ratio_experiments configured")
+                return
+            logger.info(f"Ratio research: {len(pairs)} commodity ratios…")
+            report = run_ratio_research(get_ohlcv=self.broker.get_ohlcv, experiments=pairs)
+            self.heartbeat._put_file("ratio_research_results.md", report.encode(),
+                                     "Commodity-ratio research (experiment #9)")
+            logger.info("Ratio research: report pushed to ratio_research_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Ratio research failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("ratio_research_results.md",
+                                         f"# Commodity-Ratio Research — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Ratio research failure traceback")
+            except Exception:
+                pass
+
     def _run_pairs_stress(self) -> None:
         """Stress-test the pairs stat-arb edge: economically-sensible pairs only,
         cost-sensitivity sweep (incl. short borrow fees), leave-one-out robustness.
@@ -430,6 +456,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_pairs_stress_on_start", False):
             import threading
             threading.Thread(target=self._run_pairs_stress, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_ratio_research_on_start", False):
+            import threading
+            threading.Thread(target=self._run_ratio_research, daemon=True).start()
 
         while self._running:
             try:
