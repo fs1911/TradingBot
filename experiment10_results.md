@@ -1,4 +1,4 @@
-# Experiment #10 — GLD/GDX robustness + Dollar ratios (2026-09-19 10:31 UTC)
+# Experiment #10 — GLD/GDX robustness + Dollar ratios (2026-09-19 10:32 UTC)
 
 ## Part A — GLD/GDX parameter robustness (overfit check)
 **base costs:** 15/27 parameter combos survive (OOS+, WF≥50%) · median OOS MAR 1.01 → ⚠️ works only in part of the grid
