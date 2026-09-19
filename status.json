@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-19 21:15:26",
+  "updated_utc": "2026-09-19 22:15:41",
   "alive": true,
   "state": "active",
-  "uptime_hours": 0.0,
-  "open_positions": 8,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5410.23,
-  "unrealized_pnl_usd": -59.58,
-  "total_pnl_usd": -5469.81,
-  "equity_usd": 63015.18,
+  "uptime_hours": 1.0,
+  "open_positions": 7,
+  "trades_today": 1,
+  "daily_pnl_usd": -54.07,
+  "realized_pnl_usd": -5475.46,
+  "unrealized_pnl_usd": -54.21,
+  "total_pnl_usd": -5529.67,
+  "equity_usd": 62955.32,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": -5.24
+      "unrealized_usd": -5.44
     },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 35941.9004,
-      "unrealized_usd": 9.84
+      "unrealized_usd": 3.77
     },
     {
       "symbol": "EEM",
@@ -37,16 +37,10 @@
       "unrealized_usd": 2.83
     },
     {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 250.3959,
-      "unrealized_usd": -26.53
-    },
-    {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 54.471,
-      "unrealized_usd": -28.7
+      "unrealized_usd": -43.58
     },
     {
       "symbol": "SPY",
