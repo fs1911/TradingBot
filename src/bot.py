@@ -233,6 +233,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_pairs_stress(self) -> None:
+        """Stress-test the pairs stat-arb edge: economically-sensible pairs only,
+        cost-sensitivity sweep (incl. short borrow fees), leave-one-out robustness.
+        Pushed to pairs_stress_results.md."""
+        try:
+            from .backtest.quant_research import run_pairs_stress_report
+            groups = self.bot_cfg.get("pairs_groups")
+            if not groups:
+                logger.warning("Pairs stress: no pairs_groups configured")
+                return
+            logger.info(f"Pairs stress: {len(groups)} economic groups…")
+            report = run_pairs_stress_report(get_ohlcv=self.broker.get_ohlcv, groups=groups)
+            self.heartbeat._put_file("pairs_stress_results.md", report.encode(),
+                                     "Pairs stat-arb stress test")
+            logger.info("Pairs stress: report pushed to pairs_stress_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Pairs stress failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("pairs_stress_results.md",
+                                         f"# Pairs Stat-Arb Stress Test — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Pairs stress failure traceback")
+            except Exception:
+                pass
+
     def _run_quant(self) -> None:
         """Quant research: market-structure diagnostics (Hurst/variance-ratio) +
         statistical-arbitrage pairs trading (market-neutral mean reversion),
@@ -400,6 +426,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_quant_on_start", False):
             import threading
             threading.Thread(target=self._run_quant, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_pairs_stress_on_start", False):
+            import threading
+            threading.Thread(target=self._run_pairs_stress, daemon=True).start()
 
         while self._running:
             try:

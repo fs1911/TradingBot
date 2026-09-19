@@ -19,6 +19,16 @@ bot:
   run_rotation_on_start: false  # BTC/Gold/Dollar done (2026-08-29): not robust (beat holds 3/19 windows)
   run_vol_premium_on_start: false  # Vol premium done (2026-08-29): real but loses to SPY (MAR 1.24 vs 7.22), 5/21 windows
   run_quant_on_start: false  # Quant research done (2026-09-19): pairs stat-arb PASSED walk-forward 8/12 (67%) — needs cost stress-test
+  run_pairs_stress_on_start: true  # Stress-test the pairs edge (realistic costs + robustness) → pairs_stress_results.md
+
+# Economically-sensible groups for the pairs stress test — only pairs WITHIN a
+# group are considered (removes spurious cross-domain pairs like AMD/BTC).
+pairs_groups:
+  index:   ["SPY", "QQQ", "IWM", "DIA", "XLF", "XLK", "XLE", "XLY", "XLV", "XLI", "XLP", "XLU"]
+  banks:   ["JPM", "BAC", "C", "WFC", "GS", "MS"]
+  bigtech: ["AAPL", "MSFT", "GOOGL", "META", "NVDA", "AMD"]
+  metals:  ["GLD", "SLV", "GDX", "PPLT", "PALL"]
+  crypto:  ["BTC/USD", "ETH/USD", "SOL/USD", "LTC/USD", "BCH/USD"]
 
 # Universe for the quant-research / pairs scan (backtest only). A rich cross-section
 # of related assets raises the chance of a cointegrated, mean-reverting spread.

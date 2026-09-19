@@ -115,9 +115,12 @@ def pair_spread(log_a: pd.Series, log_b: pd.Series, beta_window: int) -> tuple[p
 
 def backtest_pair(a: pd.Series, b: pd.Series, *, beta_window: int = 120, z_window: int = 60,
                   entry: float = 2.0, exit: float = 0.5, commission_pct: float = 0.05,
-                  slippage_pct: float = 0.03) -> pd.Series:
+                  slippage_pct: float = 0.03, borrow_pct_annual: float = 0.0) -> pd.Series:
     """Market-neutral z-score mean-reversion on the pair spread. Fully causal.
-    Returns daily net strategy returns (as a fraction of the gross leg exposure)."""
+    Returns daily net strategy returns (as a fraction of the gross leg exposure).
+
+    borrow_pct_annual models the cost of shorting one leg: a daily drag applied
+    whenever a position is open (the honest cost the first backtest ignored)."""
     df = pd.concat({"a": a, "b": b}, axis=1).dropna()
     if len(df) < beta_window + z_window + 40:
         return pd.Series(dtype=float)
@@ -129,6 +132,7 @@ def backtest_pair(a: pd.Series, b: pd.Series, *, beta_window: int = 120, z_windo
 
     ra, rb = la.diff(), lb.diff()
     cost = (commission_pct + slippage_pct) / 100
+    borrow_daily = (borrow_pct_annual / 100) / 252
 
     pos = np.zeros(len(df))          # +1 long spread (long A, short B); -1 short spread
     zz = z.to_numpy()
@@ -154,7 +158,8 @@ def backtest_pair(a: pd.Series, b: pd.Series, *, beta_window: int = 120, z_windo
     gross = (1 + beta_f.abs()).replace(0, 1)
     spread_ret = (ra - beta_f * rb).fillna(0) / gross
     turn = pos_s.diff().abs().fillna(pos_s.abs())
-    return (pos_s * spread_ret - turn * cost).rename("ret")
+    borrow = borrow_daily * pos_s.abs()                          # short-leg carry while in a trade
+    return (pos_s * spread_ret - turn * cost - borrow).rename("ret")
 
 
 def find_pairs(data: dict[str, pd.DataFrame], beta_window: int = 120,
@@ -174,6 +179,137 @@ def find_pairs(data: dict[str, pd.DataFrame], beta_window: int = 120,
                 scored.append((syms[i], syms[j], round(hl, 1)))
     scored.sort(key=lambda t: t[2])         # shortest half-life first
     return scored[:max_pairs]
+
+
+def find_pairs_grouped(data: dict[str, pd.DataFrame], groups: dict[str, list[str]],
+                       beta_window: int = 120, max_pairs: int = 12) -> list[tuple[str, str, float]]:
+    """Like find_pairs but only pairs WITHIN the same economic group (index ETFs,
+    banks, big tech, metals, crypto) — removes economically nonsensical spurious
+    pairs (e.g. AMD/BTC). Ranked by in-sample spread half-life."""
+    panel = _price_panel(data)
+    is_p, _ = split_is_oos(panel)
+    have = set(panel.columns)
+    scored = []
+    for _, members in groups.items():
+        ms = [m for m in members if m in have]
+        for i in range(len(ms)):
+            for j in range(i + 1, len(ms)):
+                la, lb = np.log(is_p[ms[i]]), np.log(is_p[ms[j]])
+                spread, _ = pair_spread(la, lb, beta_window)
+                hl = _half_life(spread)
+                if 2 <= hl <= 60:
+                    scored.append((ms[i], ms[j], round(hl, 1)))
+    scored.sort(key=lambda t: t[2])
+    return scored[:max_pairs]
+
+
+# Cost scenarios for the stress test: (label, commission%, slippage%, borrow%/yr)
+COST_SCENARIOS = [
+    ("optimistic", 0.02, 0.02, 0.0),
+    ("base",       0.05, 0.03, 1.0),
+    ("realistic",  0.05, 0.08, 3.0),
+    ("harsh",      0.10, 0.15, 8.0),
+]
+
+
+def _pool_pairs(panel: pd.DataFrame, pairs, comm, slip, borrow) -> pd.DataFrame | None:
+    cols = {}
+    for a, b, _ in pairs:
+        r = backtest_pair(panel[a], panel[b], commission_pct=comm, slippage_pct=slip,
+                          borrow_pct_annual=borrow)
+        if not r.empty:
+            cols[f"{a}/{b}"] = r
+    if not cols:
+        return None
+    return pd.DataFrame(cols)
+
+
+def run_pairs_stress_report(
+    get_ohlcv: Callable[[str, str, int], pd.DataFrame],
+    groups: dict[str, list[str]],
+    limit: int = 2000,
+    window: int = 252,
+    step: int = 63,
+) -> str:
+    """Stress-test the pairs stat-arb edge: economically-sensible pairs only, a
+    cost-sensitivity sweep (incl. short borrow fees), and a leave-one-out
+    robustness check. Returns Markdown."""
+    from datetime import datetime, timezone
+
+    symbols = sorted({s for members in groups.values() for s in members})
+    data: dict[str, pd.DataFrame] = {}
+    for sym in symbols:
+        try:
+            d = get_ohlcv(sym, "1Day", limit)
+            if d is not None and len(d) >= 400:
+                data[sym] = d
+        except Exception as e:
+            logger.warning(f"Stress: could not fetch {sym}: {e}")
+
+    lines = [f"# Pairs Stat-Arb Stress Test — {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC", ""]
+    if len(data) < 4:
+        lines.append("_not enough data_")
+        return "\n".join(lines)
+
+    pairs = find_pairs_grouped(data, groups)
+    lines.append("Economically-sensible pairs only (within index / banks / big-tech / metals / crypto).")
+    lines.append("")
+    if not pairs:
+        lines.append("_no within-group mean-reverting pairs found — the earlier edge was spurious cross-domain pairs_")
+        return "\n".join(lines)
+    lines.append(f"**{len(pairs)} pairs:** {', '.join(f'{a}/{b}({hl}d)' for a, b, hl in pairs)}")
+    lines.append("")
+
+    panel = _price_panel(data)
+
+    # 1) Cost sensitivity sweep
+    lines.append("## Cost sensitivity — where does the edge die?")
+    lines.append("| Scenario | comm/slip/borrow | OOS ret% | OOS MAR | Walk-fwd (MAR>0.5) |")
+    lines.append("|---|---|--:|--:|:--:|")
+    base_oos_mar = None
+    for label, comm, slip, borrow in COST_SCENARIOS:
+        pooled = _pool_pairs(panel, pairs, comm, slip, borrow)
+        if pooled is None:
+            lines.append(f"| {label} | {comm}/{slip}/{borrow}% | — | — | — |")
+            continue
+        port = pooled.mean(axis=1)
+        _, oos = split_is_oos(port.to_frame("r"))
+        st = _curve_stats(oos["r"])
+        rows, i = [], 0
+        while i + window <= len(port):
+            ws = _curve_stats(port.iloc[i:i + window])
+            rows.append(ws["ret"] > 0 and ws["mar"] > 0.5)
+            i += step
+        wf = f"{sum(rows)}/{len(rows)} ({round(100*sum(rows)/len(rows))}%)" if rows else "—"
+        if label == "base":
+            base_oos_mar = st["mar"]
+        lines.append(f"| {label} | {comm}/{slip}/{borrow}% | {st['ret']:+.0f} | {st['mar']} | {wf} |")
+    lines.append("")
+
+    # 2) Leave-one-out robustness at realistic costs
+    lines.append("## Robustness — is it driven by one lucky pair? (realistic costs)")
+    pooled = _pool_pairs(panel, pairs, 0.05, 0.08, 3.0)
+    if pooled is not None and pooled.shape[1] >= 2:
+        def _oos_mar(dfcols: pd.DataFrame) -> float:
+            port = dfcols.mean(axis=1)
+            _, oos = split_is_oos(port.to_frame("r"))
+            return _curve_stats(oos["r"])["mar"]
+        full = _oos_mar(pooled)
+        lines.append(f"Full portfolio OOS MAR (realistic costs): **{full}**")
+        lines.append("")
+        lines.append("| Pair | its OOS ret% | portfolio OOS MAR without it |")
+        lines.append("|---|--:|--:|")
+        for col in pooled.columns:
+            _, oos_one = split_is_oos(pooled[[col]].rename(columns={col: "r"}))
+            solo = _curve_stats(oos_one["r"])["ret"]
+            without = _oos_mar(pooled.drop(columns=[col]))
+            lines.append(f"| {col} | {solo:+.0f} | {without} |")
+        lines.append("")
+        lines.append("If removing any single pair collapses the MAR, the 'edge' rests on one pair (fragile).")
+    lines.append("")
+    lines.append("Verdict rule: a real, tradeable edge stays positive at REALISTIC costs, keeps a decent "
+                 "walk-forward %, and does not depend on a single pair.")
+    return "\n".join(lines)
 
 
 def run_quant_report(
