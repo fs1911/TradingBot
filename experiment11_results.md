@@ -1,4 +1,4 @@
-# Experiment #11 — batch of hypotheses under the STRONG rigor battery (2026-09-19 14:50 UTC)
+# Experiment #11 — batch of hypotheses under the STRONG rigor battery (2026-09-19 14:53 UTC)
 
 Each strategy is causal and judged by: OOS return, Sharpe, t-stat, a block-bootstrap p-value with a multiple-testing haircut (α/20), walk-forward, and regime stability (all 3 thirds positive). Realistic costs.
 
