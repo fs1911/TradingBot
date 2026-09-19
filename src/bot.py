@@ -233,6 +233,33 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_quant(self) -> None:
+        """Quant research: market-structure diagnostics (Hurst/variance-ratio) +
+        statistical-arbitrage pairs trading (market-neutral mean reversion),
+        OOS + walk-forward. Pushed to quant_results.md."""
+        try:
+            from .backtest.quant_research import run_quant_report
+            symbols = self.bot_cfg.get("quant_universe")
+            if not symbols:
+                # flatten the backtest universes as a fallback
+                uni = self.bot_cfg.get("backtest_universes", {})
+                symbols = sorted({s for lst in uni.values() for s in lst})
+            logger.info(f"Quant research: analysing {len(symbols)} symbols…")
+            report = run_quant_report(get_ohlcv=self.broker.get_ohlcv, symbols=symbols)
+            self.heartbeat._put_file("quant_results.md", report.encode(),
+                                     "Quant research (structure + stat-arb pairs)")
+            logger.info("Quant research: report pushed to quant_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Quant research failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("quant_results.md",
+                                         f"# Quant Research — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Quant research failure traceback")
+            except Exception:
+                pass
+
     def _run_vol_premium(self) -> None:
         """Volatility risk-premium edge test via a short-VIX ETF (SVXY), naive and
         trend-filtered, vs holding SPY, with tail metrics + walk-forward. Pushed to
@@ -369,6 +396,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_vol_premium_on_start", False):
             import threading
             threading.Thread(target=self._run_vol_premium, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_quant_on_start", False):
+            import threading
+            threading.Thread(target=self._run_quant, daemon=True).start()
 
         while self._running:
             try:

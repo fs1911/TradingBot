@@ -18,6 +18,19 @@ bot:
   run_xsec_on_start: false  # XSec momentum done (2026-08-29): not robust (equities 6/18, crypto 3/17 windows)
   run_rotation_on_start: false  # BTC/Gold/Dollar done (2026-08-29): not robust (beat holds 3/19 windows)
   run_vol_premium_on_start: false  # Vol premium done (2026-08-29): real but loses to SPY (MAR 1.24 vs 7.22), 5/21 windows
+  run_quant_on_start: true   # Quant research: structure diagnostics + stat-arb pairs → quant_results.md
+
+# Universe for the quant-research / pairs scan (backtest only). A rich cross-section
+# of related assets raises the chance of a cointegrated, mean-reverting spread.
+quant_universe: [
+  "SPY", "QQQ", "IWM", "DIA",
+  "XLF", "XLK", "XLE", "XLY", "XLV", "XLI", "XLP", "XLU",
+  "JPM", "BAC", "C", "WFC", "GS", "MS",
+  "AAPL", "MSFT", "GOOGL", "META", "NVDA", "AMD",
+  "GLD", "SLV", "GDX", "PPLT", "PALL",
+  "USO", "XLE", "UNG",
+  "BTC/USD", "ETH/USD", "SOL/USD", "LTC/USD", "BCH/USD"
+]
 
 vol_premium:
   short_vol_candidates: ["SVXY", "VIXY", "VXX"]  # first available; VXX/VIXY are long-vol → shorted
