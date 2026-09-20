@@ -25,7 +25,7 @@ bot:
   run_experiment11_on_start: false  # Exp #11 done (2026-09-19): 0/10 survive the strong battery (significance + haircut + regime)
   run_experiment12_on_start: false  # Exp #12 done (2026-09-20): RSI2 SPY & QQQ SURVIVE full battery (p=0.001, WF 76-81%, 3/3 regimes) — needs param-robustness (exp #13)
   run_experiment13_on_start: false  # Exp #13 done (2026-09-20): RSI(2) real but fragile — sign consistent across grid, but only 2-4/24 combos pass strict significance at realistic costs; 0 on DIA/XLF
-  run_experiment14_on_start: true  # Exp #14 (final agenda item): volatility-targeting risk overlay → experiment14_results.md
+  run_experiment14_on_start: false  # Exp #14 done (2026-09-20): vol-targeting cuts drawdowns ~half but doesn't add return (0/6 better MAR) — risk mgmt, not edge. AGENDA COMPLETE.
 
 experiment14:
   symbols: ["SPY", "QQQ", "IWM", "GLD", "BTC/USD", "ETH/USD"]   # vol-targeting vs buy-and-hold

@@ -44,6 +44,36 @@ Einzel-Ecke. Ein Edge gilt nur als echt, wenn er ALLE Stufen übersteht.
 | 11 | 2026-09 | Saisonalität, Lead-Lag (Kupfer), Term-Struktur (VIX-Contango), Wochentag (Krypto) — unter der **stärkeren** Batterie (Bootstrap-p-Wert, Multiple-Testing-Haircut, Regime-Stabilität) | **0 von 10** überleben. Bestes: XLE-Saisonalität (3/3 Regime, p=0.044) scheitert am Haircut (nötig <0.0025) + Walk-Forward 38%. Lead-Lag klar negativ (t=−2.6) | ❌ kein Edge |
 | 12 | 2026-09 | Turn-of-Month, Overnight-Drift, RSI(2)-Reversal, Low-Vol — unter der starken Batterie | **2 von 10 überleben:** **RSI(2) auf SPY** (p=0.001, Sharpe 1.15, WF 81%, 3/3 Regime) **und QQQ** (p=0.001, WF 76%, 3/3). Overnight klar negativ; Turn-of-Month/Low-Vol ❌ | ⚠️ RSI(2) besteht ALLES — Robustheit prüfen (#13) |
 | 13 | 2026-09 | RSI(2) Parameter-Robustheit + Kosten-Stress (SPY/QQQ/DIA/XLK/XLF) — echt oder Glücks-Parameter? | **Real, aber fragil.** *Richtung* über das ganze Raster konsistent positiv (echter kurzfristiger Mean-Reversion-Effekt, kein Zufall!), aber bei realistischen Kosten überstehen nur 2-4/24 Kombis die strenge Signifikanz (Haircut); DIA/XLF 0/24; bei harten Kosten ~0. Kein handelbarer Edge nach ehrlicher Korrektur | ❌ (aber echter Effekt) |
+| 14 | 2026-09 | Volatilitäts-Targeting (Risiko-Overlay auf Halten) | Drawdowns ~halbiert (BTC −77%→−25%, SPY −25%→−15%), Sharpe ~gleich (QQQ/GLD minimal besser), aber Rendite deutlich niedriger → **0/6 besser risikoadjustiert (MAR)**. Risikomanagement, kein Return-Edge | ✅ als Risiko-Tool, ❌ als Edge |
+
+## FAZIT — Forschungsprojekt abgeschlossen (2026-09-20)
+
+**Der vorab definierte, mit unseren Daten testbare Hypothesenraum ist vollständig
+abgearbeitet: 14 Experimente, alle dokumentiert, mit einer über die Zeit
+verschärften Prüf-Batterie (bis hin zu Bootstrap-Signifikanz + Multiple-Testing-
+Korrektur + Regime-Stabilität).**
+
+Ergebnis, ehrlich und reproduzierbar:
+
+1. **Kein robuster, kosten-überlebender, handelbarer Edge** — weder gerichtet
+   (Trend, Momentum, Rotation, Saisonalität, Lead-Lag, Term-Struktur, Overnight)
+   noch marktneutral (Stat-Arb-Pairs, Rohstoff-Ratios) — hält der ehrlichen
+   Prüfung nach Kosten stand. Jeder scheinbare Fund zerbrach an einer Stufe: OOS,
+   Walk-Forward, Kosten, Parameter-Robustheit oder Signifikanz nach Haircut.
+2. **Der einzige reale, aber zu schwache Effekt:** kurzfristige Mean-Reversion in
+   liquiden Aktienindizes (RSI(2)) — Richtung konsistent, aber nach Kosten +
+   Korrektur nicht verlässlich handelbar (deckt sich mit der Literatur: real,
+   seit ~2010 wegkonkurriert).
+3. **Was zuverlässig funktioniert:** (a) die **Aktien-Risikoprämie** — schlicht
+   halten, hat in jedem Test die beste Rendite geliefert; (b) **Volatilitäts-
+   Targeting** als Risikomanagement — halbiert Drawdowns, fügt aber keine Rendite
+   hinzu.
+
+**Schlussfolgerung:** Ein Retail-Bot erzeugt aus öffentlichen Preisdaten nach
+Kosten keinen verlässlichen Edge. Das ist kein Versagen der Methode — es ist das
+Ergebnis, und es stimmt mit Jahrzehnten akademischer Evidenz überein. Das
+Framework bleibt bestehen: jede *neue* Hypothese kann in Minuten durch dieselbe
+Härte geprüft werden.
 
 ## Erkenntnis-Stand (Update Exp. 10)
 
