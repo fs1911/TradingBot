@@ -24,7 +24,7 @@ bot:
   run_experiment10_on_start: false  # Exp #10 done (2026-09-19): GLD/GDX OVERFIT (5/27 combos at realistic costs); dollar ratios no edge
   run_experiment11_on_start: false  # Exp #11 done (2026-09-19): 0/10 survive the strong battery (significance + haircut + regime)
   run_experiment12_on_start: false  # Exp #12 done (2026-09-20): RSI2 SPY & QQQ SURVIVE full battery (p=0.001, WF 76-81%, 3/3 regimes) — needs param-robustness (exp #13)
-  run_experiment13_on_start: true  # Exp #13: RSI(2) parameter-robustness grid + cost stress → experiment13_results.md
+  run_experiment13_on_start: false  # Exp #13 done (2026-09-20): RSI(2) real but fragile — sign consistent across grid, but only 2-4/24 combos pass strict significance at realistic costs; 0 on DIA/XLF
 
 experiment13:
   symbols: ["SPY", "QQQ", "DIA", "XLK", "XLF"]   # test the RSI(2) survivor across liquid indices/sectors

@@ -43,7 +43,7 @@ Einzel-Ecke. Ein Edge gilt nur als echt, wenn er ALLE Stufen übersteht.
 | 10 | 2026-09 | GLD/GDX Parameter-Robustheit (z-Fenster, Entry/Exit-Schwellen) — echt oder überangepasst? | **Überfit.** Basis-Kosten 15/27 Kombis (⚠️, Median MAR 1.01), realistische Kosten nur **5/27** (Median MAR 0.67). Funktioniert nur in einer Parameter-Ecke (z60-90/Entry2.0), nicht breit. Dollar-Ratios (GLD/UUP, SLV/UUP, USO/UUP, GDX/UUP) alle ❌ | ❌ nicht robust |
 | 11 | 2026-09 | Saisonalität, Lead-Lag (Kupfer), Term-Struktur (VIX-Contango), Wochentag (Krypto) — unter der **stärkeren** Batterie (Bootstrap-p-Wert, Multiple-Testing-Haircut, Regime-Stabilität) | **0 von 10** überleben. Bestes: XLE-Saisonalität (3/3 Regime, p=0.044) scheitert am Haircut (nötig <0.0025) + Walk-Forward 38%. Lead-Lag klar negativ (t=−2.6) | ❌ kein Edge |
 | 12 | 2026-09 | Turn-of-Month, Overnight-Drift, RSI(2)-Reversal, Low-Vol — unter der starken Batterie | **2 von 10 überleben:** **RSI(2) auf SPY** (p=0.001, Sharpe 1.15, WF 81%, 3/3 Regime) **und QQQ** (p=0.001, WF 76%, 3/3). Overnight klar negativ; Turn-of-Month/Low-Vol ❌ | ⚠️ RSI(2) besteht ALLES — Robustheit prüfen (#13) |
-| 13 | 2026-09 | RSI(2) Parameter-Robustheit + Kosten-Stress (SPY/QQQ) — echt oder Glücks-Parameter? | *offen* | ⏳ |
+| 13 | 2026-09 | RSI(2) Parameter-Robustheit + Kosten-Stress (SPY/QQQ/DIA/XLK/XLF) — echt oder Glücks-Parameter? | **Real, aber fragil.** *Richtung* über das ganze Raster konsistent positiv (echter kurzfristiger Mean-Reversion-Effekt, kein Zufall!), aber bei realistischen Kosten überstehen nur 2-4/24 Kombis die strenge Signifikanz (Haircut); DIA/XLF 0/24; bei harten Kosten ~0. Kein handelbarer Edge nach ehrlicher Korrektur | ❌ (aber echter Effekt) |
 
 ## Erkenntnis-Stand (Update Exp. 10)
 
