@@ -233,6 +233,27 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment14(self) -> None:
+        """Experiment #14 (final agenda item): volatility-targeting risk overlay vs
+        buy-and-hold. → experiment14_results.md."""
+        try:
+            from .backtest.experiments_14 import run_experiment14_report
+            symbols = self.bot_cfg.get("experiment14", {}).get("symbols", ["SPY", "QQQ", "BTC/USD"])
+            report = run_experiment14_report(get_ohlcv=self.broker.get_ohlcv, symbols=symbols)
+            self.heartbeat._put_file("experiment14_results.md", report.encode(),
+                                     "Experiment #14: volatility targeting")
+            logger.info("Experiment #14: report pushed to experiment14_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #14 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment14_results.md",
+                                         f"# Experiment #14 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #14 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment13(self) -> None:
         """Experiment #13: RSI(2) parameter-robustness grid + cost stress on the
         indices that survived exp #12. → experiment13_results.md."""
@@ -576,6 +597,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment13_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment13, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment14_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment14, daemon=True).start()
 
         while self._running:
             try:
