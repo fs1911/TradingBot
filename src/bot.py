@@ -233,6 +233,31 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment12(self) -> None:
+        """Experiment #12: turn-of-month, overnight drift, RSI(2) reversal, low-vol
+        anomaly — under the strong rigor battery. → experiment12_results.md."""
+        try:
+            from .backtest.experiments_12 import run_experiment12_report
+            cfg = self.bot_cfg.get("experiment12", {})
+            report = run_experiment12_report(
+                get_ohlcv=self.broker.get_ohlcv,
+                index_symbols=cfg.get("index_symbols", []),
+                lowvol_universe=cfg.get("lowvol_universe", []),
+            )
+            self.heartbeat._put_file("experiment12_results.md", report.encode(),
+                                     "Experiment #12: documented anomalies under the strong battery")
+            logger.info("Experiment #12: report pushed to experiment12_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #12 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment12_results.md",
+                                         f"# Experiment #12 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #12 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment11(self) -> None:
         """Experiment #11: seasonality, lead-lag, term-structure, weekday effects,
         each judged by the STRONG rigor battery (bootstrap p-value + multiple-testing
@@ -522,6 +547,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment11_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment11, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment12_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment12, daemon=True).start()
 
         while self._running:
             try:

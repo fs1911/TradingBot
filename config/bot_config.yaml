@@ -23,6 +23,12 @@ bot:
   run_ratio_research_on_start: false  # Exp #9 done (2026-09-19): GLD/GDX survives at low/base costs (67-76% WF), marginal at realistic — needs param-robustness test
   run_experiment10_on_start: false  # Exp #10 done (2026-09-19): GLD/GDX OVERFIT (5/27 combos at realistic costs); dollar ratios no edge
   run_experiment11_on_start: false  # Exp #11 done (2026-09-19): 0/10 survive the strong battery (significance + haircut + regime)
+  run_experiment12_on_start: true  # Exp #12: turn-of-month/overnight/RSI2/low-vol under the strong battery → experiment12_results.md
+
+# Experiment #12: documented anomalies
+experiment12:
+  index_symbols: ["SPY", "QQQ", "IWM"]     # turn-of-month, overnight, RSI(2)
+  lowvol_universe: ["XLF", "XLK", "XLE", "XLY", "XLV", "XLI", "XLP", "XLU", "SPY", "QQQ"]
 
 # Experiment #11: economically-grounded calendar / cross-asset effects
 experiment11:
