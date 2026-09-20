@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-20 07:40:08",
+  "updated_utc": "2026-09-20 07:42:20",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5553.11,
-  "unrealized_pnl_usd": 36.76,
-  "total_pnl_usd": -5516.35,
-  "equity_usd": 62968.64,
+  "realized_pnl_usd": -5553.1,
+  "unrealized_pnl_usd": -1.44,
+  "total_pnl_usd": -5554.54,
+  "equity_usd": 62930.45,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 330.222,
-      "unrealized_usd": 53.89
+      "unrealized_usd": 12.34
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": -33.11
+      "unrealized_usd": -32.41
     },
     {
       "symbol": "EEM",
@@ -40,7 +40,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2172,
-      "unrealized_usd": -7.6
+      "unrealized_usd": -4.95
     },
     {
       "symbol": "SOL/USD",
