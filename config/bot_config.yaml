@@ -23,7 +23,11 @@ bot:
   run_ratio_research_on_start: false  # Exp #9 done (2026-09-19): GLD/GDX survives at low/base costs (67-76% WF), marginal at realistic — needs param-robustness test
   run_experiment10_on_start: false  # Exp #10 done (2026-09-19): GLD/GDX OVERFIT (5/27 combos at realistic costs); dollar ratios no edge
   run_experiment11_on_start: false  # Exp #11 done (2026-09-19): 0/10 survive the strong battery (significance + haircut + regime)
-  run_experiment12_on_start: true  # Exp #12: turn-of-month/overnight/RSI2/low-vol under the strong battery → experiment12_results.md
+  run_experiment12_on_start: false  # Exp #12 done (2026-09-20): RSI2 SPY & QQQ SURVIVE full battery (p=0.001, WF 76-81%, 3/3 regimes) — needs param-robustness (exp #13)
+  run_experiment13_on_start: true  # Exp #13: RSI(2) parameter-robustness grid + cost stress → experiment13_results.md
+
+experiment13:
+  symbols: ["SPY", "QQQ", "DIA", "XLK", "XLF"]   # test the RSI(2) survivor across liquid indices/sectors
 
 # Experiment #12: documented anomalies
 experiment12:

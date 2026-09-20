@@ -233,6 +233,27 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment13(self) -> None:
+        """Experiment #13: RSI(2) parameter-robustness grid + cost stress on the
+        indices that survived exp #12. → experiment13_results.md."""
+        try:
+            from .backtest.experiments_13 import run_experiment13_report
+            symbols = self.bot_cfg.get("experiment13", {}).get("symbols", ["SPY", "QQQ"])
+            report = run_experiment13_report(get_ohlcv=self.broker.get_ohlcv, symbols=symbols)
+            self.heartbeat._put_file("experiment13_results.md", report.encode(),
+                                     "Experiment #13: RSI(2) parameter robustness")
+            logger.info("Experiment #13: report pushed to experiment13_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #13 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment13_results.md",
+                                         f"# Experiment #13 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #13 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment12(self) -> None:
         """Experiment #12: turn-of-month, overnight drift, RSI(2) reversal, low-vol
         anomaly — under the strong rigor battery. → experiment12_results.md."""
@@ -551,6 +572,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment12_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment12, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment13_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment13, daemon=True).start()
 
         while self._running:
             try:

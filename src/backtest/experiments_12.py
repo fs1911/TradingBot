@@ -66,21 +66,22 @@ def overnight_returns(df, commission_pct=0.05, slippage_pct=0.03):
     return (overnight.fillna(0) - 2 * cost).rename("ret")   # in at close, out at open, every day
 
 
-def rsi2_returns(df, oversold=10.0, commission_pct=0.05, slippage_pct=0.03):
+def rsi2_returns(df, oversold=10.0, exit_sma=5, use_trend=True,
+                commission_pct=0.05, slippage_pct=0.03):
     c = _norm(df["close"])
     arr = c.to_numpy()
     rsi = _rsi(arr, 2)
     sma200 = c.rolling(200).mean().to_numpy()
-    sma5 = c.rolling(5).mean().to_numpy()
+    sma_exit = c.rolling(exit_sma).mean().to_numpy()
     pos = np.zeros(len(c))
     cur = 0
     for i in range(len(c)):
-        if np.isnan(rsi[i]) or np.isnan(sma200[i]):
+        if np.isnan(rsi[i]) or (use_trend and np.isnan(sma200[i])) or np.isnan(sma_exit[i]):
             pos[i] = 0; continue
         if cur == 0:
-            if rsi[i] < oversold and arr[i] > sma200[i]:
+            if rsi[i] < oversold and (not use_trend or arr[i] > sma200[i]):
                 cur = 1
-        elif arr[i] > sma5[i]:
+        elif arr[i] > sma_exit[i]:
             cur = 0
         pos[i] = cur
     pos_s = pd.Series(pos, index=c.index).shift(1).fillna(0)
