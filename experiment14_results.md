@@ -1,4 +1,4 @@
-# Experiment #14 — volatility targeting (risk overlay) (2026-09-20 07:42 UTC)
+# Experiment #14 — volatility targeting (risk overlay) (2026-09-20 07:43 UTC)
 
 Scale buy-and-hold to a 10% annual-vol target (causal, capped leverage). NOT a return edge — the question is whether it beats plain holding on RISK-ADJUSTED return (MAR/Sharpe) and drawdown.
 
