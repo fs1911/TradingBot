@@ -1,4 +1,4 @@
-# Experiment #12 — documented anomalies under the strong rigor battery (2026-09-20 07:24 UTC)
+# Experiment #12 — documented anomalies under the strong rigor battery (2026-09-20 07:26 UTC)
 
 Causal strategies, realistic costs, multiple-testing haircut α/30.
 
