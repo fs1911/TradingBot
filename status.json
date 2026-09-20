@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-20 14:47:23",
+  "updated_utc": "2026-09-20 15:47:38",
   "alive": true,
   "state": "active",
-  "uptime_hours": 7.0,
+  "uptime_hours": 8.0,
   "open_positions": 8,
   "trades_today": 1,
   "daily_pnl_usd": 108.12,
   "realized_pnl_usd": -5473.41,
-  "unrealized_pnl_usd": 23.15,
-  "total_pnl_usd": -5450.26,
-  "equity_usd": 63034.73,
+  "unrealized_pnl_usd": 64.17,
+  "total_pnl_usd": -5409.24,
+  "equity_usd": 63075.75,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,13 +22,13 @@
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 12.8256,
-      "unrealized_usd": 26.04
+      "unrealized_usd": 30.4
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": -18.5
+      "unrealized_usd": -13.33
     },
     {
       "symbol": "EEM",
@@ -40,13 +40,13 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.2172,
-      "unrealized_usd": 4.76
+      "unrealized_usd": 31.28
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 29.1868,
-      "unrealized_usd": 19.82
+      "unrealized_usd": 24.78
     },
     {
       "symbol": "SPY",
