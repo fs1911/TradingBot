@@ -233,6 +233,28 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment17(self) -> None:
+        """Experiment #17: regime-conditional RSI(2) mean reversion (apply only in
+        high-vol regime) — can conditioning rescue the real-but-weak effect?
+        → experiment17_results.md."""
+        try:
+            from .backtest.experiments_17 import run_experiment17_report
+            symbols = self.bot_cfg.get("experiment17", {}).get("symbols", ["SPY", "QQQ"])
+            report = run_experiment17_report(get_ohlcv=self.broker.get_ohlcv, symbols=symbols)
+            self.heartbeat._put_file("experiment17_results.md", report.encode(),
+                                     "Experiment #17: regime-conditional mean reversion")
+            logger.info("Experiment #17: report pushed to experiment17_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #17 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment17_results.md",
+                                         f"# Experiment #17 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #17 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment16(self) -> None:
         """Experiment #16: volume-based signals + stocks/bonds dual momentum,
         under the full rigor battery. → experiment16_results.md."""
@@ -655,6 +677,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment16_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment16, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment17_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment17, daemon=True).start()
 
         while self._running:
             try:
