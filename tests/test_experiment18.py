@@ -4,7 +4,10 @@ Tests for experiment #18: intraday mean reversion on 5-minute bars.
 import numpy as np
 import pandas as pd
 
-from src.backtest.experiments_18 import intraday_meanrev_daily_returns, run_experiment18_report
+from src.backtest.experiments_18 import (
+    intraday_meanrev_daily_returns, run_experiment18_report,
+    intraday_meanrev_bar_returns, _intraday_bar_eval,
+)
 
 
 def _intraday_df(days=40, bars_per_day=78, seed=0):
@@ -40,6 +43,18 @@ def test_insufficient_data_returns_empty():
     small = _intraday_df(days=2, bars_per_day=10)
     out = intraday_meanrev_daily_returns(small)
     assert out.empty or len(out) <= 2
+
+
+def test_bar_level_eval_on_short_span():
+    """~50 days is too few for the daily battery but yields thousands of bars for a
+    preliminary bar-level significance read."""
+    df = _intraday_df(days=50, seed=7)
+    bar = intraday_meanrev_bar_returns(df)
+    assert len(bar) > 2000                         # thousands of observations
+    ev = _intraday_bar_eval(bar, n_trials=50)
+    assert "verdict" in ev
+    if "days" in ev:
+        assert set(["sharpe", "t_stat", "p_value", "is_ret", "oos_ret"]) <= set(ev)
 
 
 def test_report_wellformed():
