@@ -1,4 +1,4 @@
-# Experiment #17 — regime-conditional RSI(2) mean reversion (2026-09-21 04:23 UTC)
+# Experiment #17 — regime-conditional RSI(2) mean reversion (2026-09-21 04:24 UTC)
 
 Apply the known RSI(2) reversal only in a volatility regime (high vs low), where theory says reversal is strongest. Can conditioning rescue the real-but-weak effect? Full rigor battery, multiple-testing haircut α/45.
 
