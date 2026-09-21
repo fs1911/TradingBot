@@ -1,4 +1,4 @@
-# Experiment #19 — broad-universe scan (2026-09-21 07:00 UTC)
+# Experiment #19 — broad-universe scan (2026-09-21 07:02 UTC)
 
 All asset classes, daily data. Per symbol: Hurst (<0.45 mean-reverting, >0.55 trending), variance ratio, and RSI(2) mean-reversion through the full rigor battery (multiple-testing haircut α/60, realistic costs).
 
