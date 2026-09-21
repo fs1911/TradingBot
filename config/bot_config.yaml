@@ -29,7 +29,7 @@ bot:
   run_experiment15_on_start: false  # Exp #15 done (2026-09-21): ML 0/6 survive; model rediscovered the same weak mean-reversion signal (neg weight on rsi2/d_sma20), confirms no tradeable edge
   run_experiment16_on_start: false  # Exp #16 done (2026-09-21): 0/9 — volume signals & SPY/TLT dual momentum add no significant edge (OBV/dual-mom positive but fail haircut)
   run_experiment17_on_start: false  # Exp #17 done (2026-09-21): 1/8 "survives" (RSI2-lowvol SPY) but it's a multiple-testing artifact — contradicts the pre-registered high-vol hypothesis, 1 of 4 indices, p=0.001 barely under α/45. Rejected.
-  run_experiment18_on_start: true  # Exp #18 RE-RUN with bar-level eval (daily battery needs years; free feed gives only ~70 days) → experiment18_results.md
+  run_experiment18_on_start: false  # Exp #18 done (2026-09-21): intraday MR LOSES significantly (t=-2 to -5) on bar level; free feed only ~70 days → real intraday research needs paid multi-year data
 
 experiment18:
   symbols: ["SPY", "QQQ", "BTC/USD", "ETH/USD"]   # intraday mean reversion (crypto = 24/7, cleaner sessions)
