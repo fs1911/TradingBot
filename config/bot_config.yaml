@@ -30,7 +30,7 @@ bot:
   run_experiment16_on_start: false  # Exp #16 done (2026-09-21): 0/9 — volume signals & SPY/TLT dual momentum add no significant edge (OBV/dual-mom positive but fail haircut)
   run_experiment17_on_start: false  # Exp #17 done (2026-09-21): 1/8 "survives" (RSI2-lowvol SPY) but it's a multiple-testing artifact — contradicts the pre-registered high-vol hypothesis, 1 of 4 indices, p=0.001 barely under α/45. Rejected.
   run_experiment18_on_start: false  # Exp #18 done (2026-09-21): intraday MR LOSES significantly (t=-2 to -5) on bar level; free feed only ~70 days → real intraday research needs paid multi-year data
-  run_experiment19_on_start: true  # Exp #19: BROAD scan across all asset classes (indices/metals/commodities/currencies/bonds/crypto) → experiment19_results.md
+  run_experiment19_on_start: false  # Exp #19 done (2026-09-21): 0/55 survive. Mean-reversion lives ONLY in large-cap US equity indices/sectors (⚠️); metals/commodities/currencies/bonds/crypto = random walk, no edge
 
 experiment19:
   groups:
