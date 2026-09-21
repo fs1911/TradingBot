@@ -1,4 +1,4 @@
-# Experiment #15 — machine learning (walk-forward logistic regression) (2026-09-21 04:12 UTC)
+# Experiment #15 — machine learning (walk-forward logistic regression) (2026-09-21 04:14 UTC)
 
 A logistic-regression classifier trained walk-forward on past data only, predicting next-day direction from 11 features, trading long/flat. Judged by the full rigor battery (multiple-testing haircut α/35).
 
