@@ -45,13 +45,14 @@ Einzel-Ecke. Ein Edge gilt nur als echt, wenn er ALLE Stufen übersteht.
 | 12 | 2026-09 | Turn-of-Month, Overnight-Drift, RSI(2)-Reversal, Low-Vol — unter der starken Batterie | **2 von 10 überleben:** **RSI(2) auf SPY** (p=0.001, Sharpe 1.15, WF 81%, 3/3 Regime) **und QQQ** (p=0.001, WF 76%, 3/3). Overnight klar negativ; Turn-of-Month/Low-Vol ❌ | ⚠️ RSI(2) besteht ALLES — Robustheit prüfen (#13) |
 | 13 | 2026-09 | RSI(2) Parameter-Robustheit + Kosten-Stress (SPY/QQQ/DIA/XLK/XLF) — echt oder Glücks-Parameter? | **Real, aber fragil.** *Richtung* über das ganze Raster konsistent positiv (echter kurzfristiger Mean-Reversion-Effekt, kein Zufall!), aber bei realistischen Kosten überstehen nur 2-4/24 Kombis die strenge Signifikanz (Haircut); DIA/XLF 0/24; bei harten Kosten ~0. Kein handelbarer Edge nach ehrlicher Korrektur | ❌ (aber echter Effekt) |
 | 14 | 2026-09 | Volatilitäts-Targeting (Risiko-Overlay auf Halten) | Drawdowns ~halbiert (BTC −77%→−25%, SPY −25%→−15%), Sharpe ~gleich (QQQ/GLD minimal besser), aber Rendite deutlich niedriger → **0/6 besser risikoadjustiert (MAR)**. Risikomanagement, kein Return-Edge | ✅ als Risiko-Tool, ❌ als Edge |
+| 15 | 2026-09 | **ML** (Walk-Forward Logistische Regression, 11 Features → Tagesrichtung) | **0/6 überleben.** QQQ marginal (p=0.03, scheitert Haircut). Aufschlussreich: das Modell lernte *negatives* Gewicht auf rsi2 & d_sma20 = „kaufe wenn überverkauft" — es hat also **denselben schwachen Mean-Reversion-Effekt wie Exp #13 wiederentdeckt** und bestätigt: nichts Handelbares generalisiert | ❌ kein Edge (aber konsistent mit #13) |
 
-## FAZIT — Forschungsprojekt abgeschlossen (2026-09-20)
+## STAND — laufendes Forschungsprojekt (zuletzt 2026-09-21)
 
-**Der vorab definierte, mit unseren Daten testbare Hypothesenraum ist vollständig
-abgearbeitet: 14 Experimente, alle dokumentiert, mit einer über die Zeit
-verschärften Prüf-Batterie (bis hin zu Bootstrap-Signifikanz + Multiple-Testing-
-Korrektur + Regime-Stabilität).**
+**Der ursprünglich definierte Hypothesenraum (Exp. 1–14) ist abgearbeitet; das
+Projekt läuft als offene Forschung weiter mit neuen Methodik-Kategorien (ML ab
+Exp. 15, danach Volumen-/Intermarket-Signale usw.).** Ergebnis bisher, ehrlich und
+reproduzierbar über eine im Zeitverlauf verschärfte Batterie:
 
 Ergebnis, ehrlich und reproduzierbar:
 

@@ -233,6 +233,31 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment16(self) -> None:
+        """Experiment #16: volume-based signals + stocks/bonds dual momentum,
+        under the full rigor battery. → experiment16_results.md."""
+        try:
+            from .backtest.experiments_16 import run_experiment16_report
+            cfg = self.bot_cfg.get("experiment16", {})
+            report = run_experiment16_report(
+                get_ohlcv=self.broker.get_ohlcv,
+                volume_symbols=cfg.get("volume_symbols", []),
+                dual_momentum=cfg.get("dual_momentum"),
+            )
+            self.heartbeat._put_file("experiment16_results.md", report.encode(),
+                                     "Experiment #16: volume signals + dual momentum")
+            logger.info("Experiment #16: report pushed to experiment16_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #16 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment16_results.md",
+                                         f"# Experiment #16 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #16 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment15(self) -> None:
         """Experiment #15: walk-forward logistic-regression ML on price features,
         judged by the full rigor battery. → experiment15_results.md."""
@@ -626,6 +651,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment15_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment15, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment16_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment16, daemon=True).start()
 
         while self._running:
             try:
