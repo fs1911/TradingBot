@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-21 22:11:00",
+  "updated_utc": "2026-09-21 23:11:13",
   "alive": true,
   "state": "active",
-  "uptime_hours": 15.1,
+  "uptime_hours": 16.1,
   "open_positions": 8,
   "trades_today": 3,
   "daily_pnl_usd": 295.72,
   "realized_pnl_usd": -4952.4,
-  "unrealized_pnl_usd": -84.12,
-  "total_pnl_usd": -5036.52,
-  "equity_usd": 63448.47,
+  "unrealized_pnl_usd": -29.88,
+  "total_pnl_usd": -4982.28,
+  "equity_usd": 63502.71,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": -32.46
+      "unrealized_usd": -31.83
     },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 277.0768,
-      "unrealized_usd": -57.97
+      "unrealized_usd": -74.04
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 11.6929,
-      "unrealized_usd": -41.14
+      "unrealized_usd": -4.56
     },
     {
       "symbol": "EEM",
       "side": "buy",
       "qty": 47.1362,
-      "unrealized_usd": 84.37
+      "unrealized_usd": 88.62
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 50.0357,
-      "unrealized_usd": -86.41
+      "unrealized_usd": -60.16
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 50.94
+      "unrealized_usd": 51.73
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 44.6637,
-      "unrealized_usd": 4.47
+      "unrealized_usd": 7.59
     },
     {
       "symbol": "XLF",
       "side": "buy",
       "qty": 56.3847,
-      "unrealized_usd": -5.92
+      "unrealized_usd": -7.23
     }
   ]
 }
