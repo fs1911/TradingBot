@@ -233,6 +233,28 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment19(self) -> None:
+        """Experiment #19: broad-universe scan (indices/sectors/metals/energy/
+        agriculture/currencies/bonds/crypto) — structure diagnostics + RSI(2) through
+        the full rigor battery. → experiment19_results.md."""
+        try:
+            from .backtest.experiments_19 import run_experiment19_report
+            groups = self.bot_cfg.get("experiment19", {}).get("groups", {})
+            report = run_experiment19_report(get_ohlcv=self.broker.get_ohlcv, groups=groups)
+            self.heartbeat._put_file("experiment19_results.md", report.encode(),
+                                     "Experiment #19: broad-universe scan")
+            logger.info("Experiment #19: report pushed to experiment19_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #19 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment19_results.md",
+                                         f"# Experiment #19 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #19 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment18(self) -> None:
         """Experiment #18: intraday (5-min) mean reversion — a new data regime,
         judged by the full rigor battery. → experiment18_results.md."""
@@ -709,6 +731,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment18_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment18, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment19_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment19, daemon=True).start()
 
         while self._running:
             try:
