@@ -233,6 +233,27 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment15(self) -> None:
+        """Experiment #15: walk-forward logistic-regression ML on price features,
+        judged by the full rigor battery. → experiment15_results.md."""
+        try:
+            from .backtest.experiments_15 import run_experiment15_report
+            symbols = self.bot_cfg.get("experiment15", {}).get("symbols", ["SPY", "QQQ"])
+            report = run_experiment15_report(get_ohlcv=self.broker.get_ohlcv, symbols=symbols)
+            self.heartbeat._put_file("experiment15_results.md", report.encode(),
+                                     "Experiment #15: machine-learning prediction")
+            logger.info("Experiment #15: report pushed to experiment15_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #15 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment15_results.md",
+                                         f"# Experiment #15 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #15 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment14(self) -> None:
         """Experiment #14 (final agenda item): volatility-targeting risk overlay vs
         buy-and-hold. → experiment14_results.md."""
@@ -601,6 +622,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment14_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment14, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment15_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment15, daemon=True).start()
 
         while self._running:
             try:
