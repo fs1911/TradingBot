@@ -1,4 +1,4 @@
-# Experiment #16 — volume signals + stocks/bonds dual momentum (2026-09-21 04:19 UTC)
+# Experiment #16 — volume signals + stocks/bonds dual momentum (2026-09-21 04:20 UTC)
 
 New categories: volume as a primary signal, and a defensive stocks-vs-bonds allocation. Full rigor battery, multiple-testing haircut α/40.
 
