@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-21 04:19:33",
+  "updated_utc": "2026-09-21 04:20:52",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5316.21,
-  "unrealized_pnl_usd": 207.09,
-  "total_pnl_usd": -5109.12,
-  "equity_usd": 63375.87,
+  "realized_pnl_usd": -5316.22,
+  "unrealized_pnl_usd": 207.4,
+  "total_pnl_usd": -5108.82,
+  "equity_usd": 63376.17,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 7.23
+      "unrealized_usd": 6.87
     },
     {
       "symbol": "AVAX/USD",
@@ -52,7 +52,7 @@
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 14.51
+      "unrealized_usd": 15.17
     },
     {
       "symbol": "XLF",
