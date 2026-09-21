@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-21 04:12:20",
+  "updated_utc": "2026-09-21 04:14:38",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5316.22,
-  "unrealized_pnl_usd": 207.69,
-  "total_pnl_usd": -5108.53,
-  "equity_usd": 63376.46,
+  "realized_pnl_usd": -5316.21,
+  "unrealized_pnl_usd": 208.2,
+  "total_pnl_usd": -5108.01,
+  "equity_usd": 63376.98,
   "market_trend": "neutral",
   "positions": [
     {
@@ -34,7 +34,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": 5.18
+      "unrealized_usd": 5.83
     },
     {
       "symbol": "EEM",
@@ -52,7 +52,7 @@
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 14.18
+      "unrealized_usd": 14.05
     },
     {
       "symbol": "XLF",
