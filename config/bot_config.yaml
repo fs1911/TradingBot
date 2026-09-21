@@ -28,7 +28,7 @@ bot:
   run_experiment14_on_start: false  # Exp #14 done (2026-09-20): vol-targeting cuts drawdowns ~half but doesn't add return (0/6 better MAR) — risk mgmt, not edge. AGENDA COMPLETE.
   run_experiment15_on_start: false  # Exp #15 done (2026-09-21): ML 0/6 survive; model rediscovered the same weak mean-reversion signal (neg weight on rsi2/d_sma20), confirms no tradeable edge
   run_experiment16_on_start: false  # Exp #16 done (2026-09-21): 0/9 — volume signals & SPY/TLT dual momentum add no significant edge (OBV/dual-mom positive but fail haircut)
-  run_experiment17_on_start: true  # Exp #17: regime-conditional RSI(2) (high-vol only) — rescue the real-but-weak effect? → experiment17_results.md
+  run_experiment17_on_start: false  # Exp #17 done (2026-09-21): 1/8 "survives" (RSI2-lowvol SPY) but it's a multiple-testing artifact — contradicts the pre-registered high-vol hypothesis, 1 of 4 indices, p=0.001 barely under α/45. Rejected.
 
 experiment17:
   symbols: ["SPY", "QQQ", "IWM", "XLK"]   # regime-conditional mean reversion
