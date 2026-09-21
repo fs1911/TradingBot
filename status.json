@@ -1,40 +1,40 @@
 {
-  "updated_utc": "2026-09-21 03:50:26",
+  "updated_utc": "2026-09-21 04:12:20",
   "alive": true,
   "state": "active",
-  "uptime_hours": 20.1,
+  "uptime_hours": 0.0,
   "open_positions": 8,
-  "trades_today": 1,
-  "daily_pnl_usd": 100.34,
+  "trades_today": 0,
+  "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -5316.22,
-  "unrealized_pnl_usd": 210.75,
-  "total_pnl_usd": -5105.47,
-  "equity_usd": 63379.52,
+  "unrealized_pnl_usd": 207.69,
+  "total_pnl_usd": -5108.53,
+  "equity_usd": 63376.46,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 5.43
+      "unrealized_usd": 7.14
     },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 233.8175,
-      "unrealized_usd": 5.85
+      "unrealized_usd": 34.37
     },
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 12.8256,
-      "unrealized_usd": 135.05
+      "unrealized_usd": 109.79
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0388,
-      "unrealized_usd": 13.48
+      "unrealized_usd": 5.18
     },
     {
       "symbol": "EEM",
@@ -46,13 +46,13 @@
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 251.8858,
-      "unrealized_usd": 7.7
+      "unrealized_usd": 8.51
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 14.71
+      "unrealized_usd": 14.18
     },
     {
       "symbol": "XLF",
