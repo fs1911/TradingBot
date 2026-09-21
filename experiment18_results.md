@@ -1,4 +1,4 @@
-# Experiment #18 — intraday (5Min) mean reversion (2026-09-21 06:26 UTC)
+# Experiment #18 — intraday (5Min) mean reversion (2026-09-21 06:27 UTC)
 
 NEW DATA REGIME: intraday bars (~50-80x more observations than daily). Within-session rolling-z mean reversion, flat overnight, per-bar P&L aggregated to daily and judged by the full rigor battery (haircut α/50). Intraday costs bite hard — watch whether any edge survives them.
 
