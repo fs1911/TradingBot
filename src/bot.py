@@ -233,6 +233,30 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment18(self) -> None:
+        """Experiment #18: intraday (5-min) mean reversion — a new data regime,
+        judged by the full rigor battery. → experiment18_results.md."""
+        try:
+            from .backtest.experiments_18 import run_experiment18_report
+            cfg = self.bot_cfg.get("experiment18", {})
+            report = run_experiment18_report(
+                get_ohlcv=self.broker.get_ohlcv,
+                symbols=cfg.get("symbols", ["SPY", "QQQ", "BTC/USD"]),
+                timeframe=cfg.get("timeframe", "5Min"))
+            self.heartbeat._put_file("experiment18_results.md", report.encode(),
+                                     "Experiment #18: intraday mean reversion")
+            logger.info("Experiment #18: report pushed to experiment18_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #18 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment18_results.md",
+                                         f"# Experiment #18 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #18 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment17(self) -> None:
         """Experiment #17: regime-conditional RSI(2) mean reversion (apply only in
         high-vol regime) — can conditioning rescue the real-but-weak effect?
@@ -681,6 +705,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment17_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment17, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment18_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment18, daemon=True).start()
 
         while self._running:
             try:
