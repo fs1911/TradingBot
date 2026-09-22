@@ -32,54 +32,58 @@ from loguru import logger
 from .rigor import full_rigor, rigor_row, RIGOR_HEADER, annualized_sharpe
 
 
+def page_funding_history(ex, symbol: str, lookback_days: int = 1400,
+                         page_limit: int = 200) -> pd.Series:
+    """Page a ccxt exchange's funding-rate history FORWARD from `lookback_days` ago
+    into a UTC-indexed pd.Series. Exchanges cap ~200 rows/call, so advance `since`
+    past the last returned timestamp until now. Public data — no API keys."""
+    now_ms = ex.milliseconds()
+    since = now_ms - lookback_days * 86400 * 1000
+    rows, guard = {}, 0
+    while since < now_ms and guard < 600:
+        guard += 1
+        try:
+            batch = ex.fetch_funding_rate_history(symbol, since=since, limit=page_limit)
+        except Exception:
+            break
+        if not batch:
+            since += page_limit * 8 * 3600 * 1000        # skip an empty window
+            continue
+        last_ts = since
+        for r in batch:
+            ts, fr = r.get("timestamp"), r.get("fundingRate")
+            if ts is None or fr is None:
+                continue
+            rows[int(ts)] = float(fr)
+            last_ts = max(last_ts, int(ts))
+        if last_ts <= since and len(batch) < page_limit:
+            break                                        # no forward progress
+        since = last_ts + 1
+    if not rows:
+        return pd.Series(dtype=float)
+    return pd.Series({pd.to_datetime(ts, unit="ms", utc=True): fr
+                      for ts, fr in rows.items()}).sort_index()
+
+
+def open_swap_exchange(exchange_id: str):
+    """Open a public ccxt swap/perp exchange client (lazy import; no API keys)."""
+    import ccxt  # lazy: only on the VM
+    ex = getattr(ccxt, exchange_id)({"enableRateLimit": True,
+                                     "options": {"defaultType": "swap"}})
+    ex.load_markets()
+    return ex
+
+
 def build_ccxt_funding_fetcher(exchange_ids=("bybit", "binance", "okx"),
                                lookback_days: int = 1400):
-    """Return (fetch_funding, exchange_id_used). Lazily imports ccxt (not needed in
-    CI). Picks the first public exchange that returns BTC funding history, then uses
-    it for all symbols. `fetch_funding(symbol)` pages the full funding-rate history
-    into a UTC-indexed pd.Series. Public data — no API keys required."""
-    import ccxt  # lazy: only on the VM
-
-    def _page(ex, symbol, page_limit: int = 200):
-        # Page FORWARD from `lookback_days` ago. Exchanges cap ~200 rows/call, so we
-        # keep advancing `since` past the last returned timestamp until we reach now.
-        now_ms = ex.milliseconds()
-        since = now_ms - lookback_days * 86400 * 1000
-        rows, seen, guard = {}, set(), 0
-        while since < now_ms and guard < 600:
-            guard += 1
-            try:
-                batch = ex.fetch_funding_rate_history(symbol, since=since, limit=page_limit)
-            except Exception:
-                break
-            if not batch:
-                since += page_limit * 8 * 3600 * 1000   # skip an empty window, keep going
-                continue
-            last_ts = since
-            for r in batch:
-                ts = r.get("timestamp")
-                fr = r.get("fundingRate")
-                if ts is None or fr is None:
-                    continue
-                rows[int(ts)] = float(fr)
-                last_ts = max(last_ts, int(ts))
-            if last_ts <= since and len(batch) < page_limit:
-                break                                    # no forward progress
-            since = last_ts + 1
-        if not rows:
-            return pd.Series(dtype=float)
-        s = pd.Series({pd.to_datetime(ts, unit="ms", utc=True): fr
-                       for ts, fr in rows.items()})
-        return s.sort_index()
-
+    """Return (fetch_funding, exchange_id_used). Picks the first public exchange that
+    returns BTC funding history, then uses it for all symbols. `fetch_funding(symbol)`
+    pages the full funding-rate history into a UTC-indexed pd.Series."""
     chosen = None
     for exid in exchange_ids:
         try:
-            klass = getattr(ccxt, exid)
-            ex = klass({"enableRateLimit": True, "options": {"defaultType": "swap"}})
-            ex.load_markets()
-            probe = _page(ex, "BTC/USDT:USDT")
-            if len(probe) > 100:
+            ex = open_swap_exchange(exid)
+            if len(page_funding_history(ex, "BTC/USDT:USDT", lookback_days)) > 100:
                 chosen = (ex, exid)
                 break
         except Exception as e:
@@ -90,7 +94,7 @@ def build_ccxt_funding_fetcher(exchange_ids=("bybit", "binance", "okx"),
     ex, exid = chosen
 
     def fetch_funding(symbol: str) -> pd.Series:
-        return _page(ex, symbol)
+        return page_funding_history(ex, symbol, lookback_days)
 
     return fetch_funding, exid
 

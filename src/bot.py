@@ -233,6 +233,52 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment27(self) -> None:
+        """Experiment #27: cross-exchange funding differential (low-turnover,
+        perp-vs-perp carry) through the full rigor battery. → experiment27_results.md."""
+        try:
+            from .backtest.experiments_24 import open_swap_exchange, page_funding_history
+            from .backtest.experiments_27 import run_experiment27_report
+            cfg = self.bot_cfg.get("experiment27", {})
+            symbols = cfg.get("symbols", ["BTC/USDT:USDT", "ETH/USDT:USDT"])
+            exchanges = cfg.get("exchanges", ["bybit", "binance", "okx"])
+            clients = {}
+            for exid in exchanges:
+                try:
+                    clients[exid] = open_swap_exchange(exid)
+                except Exception as e:
+                    logger.warning(f"Exp27: exchange {exid} unusable: {e}")
+            if len(clients) < 2:
+                raise RuntimeError(f"Need ≥2 usable exchanges, got {list(clients)}")
+
+            def fetch_multi(symbol: str) -> dict:
+                out = {}
+                for exid, ex in clients.items():
+                    try:
+                        s = page_funding_history(ex, symbol)
+                        if len(s):
+                            out[exid] = s
+                    except Exception:
+                        pass
+                return out
+
+            report = run_experiment27_report(fetch_multi=fetch_multi, symbols=symbols)
+            report = report.replace("differential (", f"differential [venues: "
+                                    f"{','.join(clients)}] (", 1)
+            self.heartbeat._put_file("experiment27_results.md", report.encode(),
+                                     "Experiment #27: cross-exchange funding differential")
+            logger.info(f"Experiment #27: report pushed (venues={list(clients)})")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #27 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment27_results.md",
+                                         f"# Experiment #27 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #27 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment26(self) -> None:
         """Experiment #26: broader / cross-sectional structural carry (broad basket,
         carry-weighted tilt, dispersion spread) through the full rigor battery.
@@ -942,6 +988,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment26_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment26, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment27_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment27, daemon=True).start()
 
         while self._running:
             try:
