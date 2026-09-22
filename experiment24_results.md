@@ -1,4 +1,4 @@
-# Experiment #24 — crypto funding-rate carry [data: bybit] (2026-09-22 08:45 UTC)
+# Experiment #24 — crypto funding-rate carry [data: bybit] (2026-09-22 08:47 UTC)
 
 Delta-neutral (long spot / short perp) carry from perpetual funding. Daily carry through the full rigor battery; cost scenarios (annual drag for hedge maintenance): 0%, 2%, 5%. Haircut α/78.
 
