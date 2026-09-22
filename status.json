@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-22 14:20:23",
+  "updated_utc": "2026-09-22 15:20:33",
   "alive": true,
   "state": "active",
-  "uptime_hours": 0.0,
+  "uptime_hours": 1.0,
   "open_positions": 8,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5351.48,
-  "unrealized_pnl_usd": -50.1,
-  "total_pnl_usd": -5401.58,
-  "equity_usd": 63083.41,
-  "market_trend": "neutral",
+  "trades_today": 3,
+  "daily_pnl_usd": -124.8,
+  "realized_pnl_usd": -5478.46,
+  "unrealized_pnl_usd": 20.24,
+  "total_pnl_usd": -5458.22,
+  "equity_usd": 63026.77,
+  "market_trend": "bullish",
   "positions": [
-    {
-      "symbol": "AAPL",
-      "side": "sell",
-      "qty": 9.0,
-      "unrealized_usd": -37.73
-    },
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 34.4322,
-      "unrealized_usd": -5.28
+      "unrealized_usd": -1.15
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0369,
-      "unrealized_usd": 21.27
+      "unrealized_usd": 22.11
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 25.8348,
-      "unrealized_usd": 4.94
+      "unrealized_usd": -14.17
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9302,
-      "unrealized_usd": -7.33
+      "unrealized_usd": -22.2
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 51.98
+      "unrealized_usd": 50.52
     },
     {
       "symbol": "UBER",
       "side": "buy",
       "qty": 44.6637,
-      "unrealized_usd": -27.02
+      "unrealized_usd": -28.81
     },
     {
-      "symbol": "XLF",
+      "symbol": "XLE",
       "side": "buy",
-      "qty": 56.3847,
-      "unrealized_usd": -50.92
+      "qty": 50.4822,
+      "unrealized_usd": -0.76
+    },
+    {
+      "symbol": "XLV",
+      "side": "buy",
+      "qty": 18.599,
+      "unrealized_usd": 14.69
     }
   ]
 }
