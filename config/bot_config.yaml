@@ -42,7 +42,7 @@ bot:
   run_experiment27_on_start: false  # Exp #27 done (2026-09-22, 2 venues): statistically ✅ but economically trivial. Combined only ~1.55%/yr gross (Sharpe 5.53, 100% wf) — survives battery but too thin (<3%/yr); after two-venue fees/transfers/dual-liquidation it's no edge. Funding is highly correlated across venues. Level carry (#24-26 tilt ~8.6%) stays the only worthwhile version
   run_experiment28_on_start: false  # Exp #28 DEFERRED (2026-09-22): unbounded dated-futures fetch hung the bot & jammed deploys. Now bounded (16 contracts + 15s ccxt timeout) but disabled on-start to keep restarts safe; re-enable manually once trusted. Dated-contract history is likely unavailable anyway (data boundary)
 
-  run_experiment29_on_start: true   # Exp #29: funding rate as a froth gauge for Finanzradar (contrarian predictor + 'step aside when hot' filter) — reliable data, human-usable signal
+  run_experiment29_on_start: false  # Exp #29 done (2026-09-22): NEGATIVE. Funding is NOT a contrarian froth predictor — contrarian in only 1/6 coins (BNB), in 5/6 high funding preceded HIGHER returns (funding runs with momentum). 'Step aside when hot' filter beats buy&hold in 0/6. No usable Finanzradar rule from funding
 
 experiment28:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT"]
