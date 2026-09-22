@@ -233,6 +233,35 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment26(self) -> None:
+        """Experiment #26: broader / cross-sectional structural carry (broad basket,
+        carry-weighted tilt, dispersion spread) through the full rigor battery.
+        → experiment26_results.md."""
+        try:
+            from .backtest.experiments_24 import build_ccxt_funding_fetcher
+            from .backtest.experiments_26 import run_experiment26_report
+            cfg = self.bot_cfg.get("experiment26", {})
+            symbols = cfg.get("symbols", ["BTC/USDT:USDT", "ETH/USDT:USDT"])
+            exchanges = tuple(cfg.get("exchanges",
+                              self.bot_cfg.get("experiment24", {}).get("exchanges",
+                              ["bybit", "binance", "okx"])))
+            fetch_funding, exid = build_ccxt_funding_fetcher(exchange_ids=exchanges)
+            report = run_experiment26_report(fetch_funding=fetch_funding, symbols=symbols)
+            report = report.replace("carry (", f"carry [data: {exid}] (", 1)
+            self.heartbeat._put_file("experiment26_results.md", report.encode(),
+                                     "Experiment #26: broader structural carry")
+            logger.info(f"Experiment #26: report pushed (exchange={exid})")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #26 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment26_results.md",
+                                         f"# Experiment #26 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #26 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment25(self) -> None:
         """Experiment #25: funding carry net of a concrete Bybit-style cost model
         plus the capital required for a target income. → experiment25_results.md."""
@@ -909,6 +938,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment25_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment25, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment26_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment26, daemon=True).start()
 
         while self._running:
             try:
