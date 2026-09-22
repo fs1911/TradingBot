@@ -233,6 +233,38 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment25(self) -> None:
+        """Experiment #25: funding carry net of a concrete Bybit-style cost model
+        plus the capital required for a target income. → experiment25_results.md."""
+        try:
+            from .backtest.experiments_24 import build_ccxt_funding_fetcher
+            from .backtest.experiments_25 import run_experiment25_report
+            cfg = self.bot_cfg.get("experiment25", {})
+            symbols = cfg.get("symbols", self.bot_cfg.get("experiment24", {}).get(
+                "symbols", ["BTC/USDT:USDT", "ETH/USDT:USDT", "DOGE/USDT:USDT"]))
+            exchanges = tuple(cfg.get("exchanges",
+                              self.bot_cfg.get("experiment24", {}).get("exchanges",
+                              ["bybit", "binance", "okx"])))
+            target = float(cfg.get("target_annual_chf", 3650.0))
+            spot_vol = float(cfg.get("spot_vol_annual", 0.6))
+            fetch_funding, exid = build_ccxt_funding_fetcher(exchange_ids=exchanges)
+            report = run_experiment25_report(fetch_funding=fetch_funding, symbols=symbols,
+                                             spot_vol_annual=spot_vol, target_annual=target)
+            report = report.replace("costs (", f"costs [data: {exid}] (", 1)
+            self.heartbeat._put_file("experiment25_results.md", report.encode(),
+                                     "Experiment #25: funding carry net of costs")
+            logger.info(f"Experiment #25: report pushed (exchange={exid})")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #25 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment25_results.md",
+                                         f"# Experiment #25 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #25 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment24(self) -> None:
         """Experiment #24: crypto funding-rate carry (delta-neutral, structural
         premium). Fetches public perpetual funding history via ccxt and runs the
@@ -873,6 +905,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment24_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment24, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment25_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment25, daemon=True).start()
 
         while self._running:
             try:

@@ -37,9 +37,17 @@ bot:
   run_experiment23_on_start: false  # Exp #23 done (2026-09-22): 0/4, premium NEGATIVE (Sharpe -0.25 to -0.29, OOS -11%, p~0.73). B&H 0.96 ≈ rebalanced 0.94-0.95, frequency irrelevant. In a trending bull market letting winners run beats trimming → rebalancing is risk-control, not an edge. Last structural mechanism mapped
   run_experiment24_on_start: false  # Exp #24 done (2026-09-22, ~1400d Bybit): FIRST SURVIVOR. BTC/ETH/DOGE ✅ (Sharpe ~7), basket@0% Sharpe 9.25 (100% wf, 3/3 regimes). BUT gross return only ~8%/yr, cost-fragile (dies @5%/yr, marginal @2%), funding negative 17-27% of time, battery can't see counterparty/liquidation/basis risk, not tradeable on Alpaca. Real but thin → net-cost study in #25
 
+  run_experiment25_on_start: true   # Exp #25: funding carry NET of a concrete Bybit fee model + capital needed for a target income — turns #24's Sharpe into a francs answer
+
 experiment24:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT", "XRP/USDT:USDT", "DOGE/USDT:USDT"]
   exchanges: ["bybit", "binance", "okx"]   # first public exchange returning funding history wins
+
+experiment25:
+  symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT", "XRP/USDT:USDT", "DOGE/USDT:USDT"]   # drop SOL (failed #24: 27% negative funding)
+  exchanges: ["bybit", "binance", "okx"]
+  target_annual_chf: 3650   # ~10 CHF/day income goal
+  spot_vol_annual: 0.6      # assumed annual vol of the hedged leg for rehedge-cost model
 
 experiment20:
   # Today's liquid S&P large caps across sectors (survivorship-biased ON PURPOSE:
