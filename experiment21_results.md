@@ -1,4 +1,4 @@
-# Experiment #21 — momentum, done properly (2026-09-22 07:43 UTC)
+# Experiment #21 — momentum, done properly (2026-09-22 07:46 UTC)
 
 Universe: 92 stocks. Span: 2018-04-25 → 2026-09-21 (1549 days). All monthly rebalanced, 5 bps costs, decile long/short (unless noted). Multiple-testing haircut α/66.
 
