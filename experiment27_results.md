@@ -1,4 +1,4 @@
-# Experiment #27 — cross-exchange funding differential [venues: bybit,binance,okx] (2026-09-22 10:15 UTC)
+# Experiment #27 — cross-exchange funding differential [venues: bybit,binance,okx] (2026-09-22 10:19 UTC)
 
 Perp-vs-perp across venues (long low-funding venue, short high-funding venue): market-neutral, ~no spot leg, harvests the funding DIFFERENTIAL. Combined series through full rigor; α/90.
 
