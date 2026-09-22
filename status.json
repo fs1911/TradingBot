@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-22 09:22:51",
+  "updated_utc": "2026-09-22 09:25:07",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 6,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5426.43,
-  "unrealized_pnl_usd": 90.66,
-  "total_pnl_usd": -5335.77,
-  "equity_usd": 63149.22,
+  "realized_pnl_usd": -5426.42,
+  "unrealized_pnl_usd": 88.87,
+  "total_pnl_usd": -5337.55,
+  "equity_usd": 63147.44,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": -36.92
+      "unrealized_usd": -37.14
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0369,
-      "unrealized_usd": 11.46
+      "unrealized_usd": 9.9
     },
     {
       "symbol": "EEM",
