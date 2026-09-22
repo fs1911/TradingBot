@@ -233,6 +233,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment28(self) -> None:
+        """Experiment #28: dated quarterly-futures calendar basis — low-turnover carry
+        AND a Finanzradar froth signal (basis vs forward returns).
+        → experiment28_results.md."""
+        try:
+            from .backtest.experiments_28 import (
+                build_dated_basis_fetcher, run_experiment28_report)
+            cfg = self.bot_cfg.get("experiment28", {})
+            symbols = cfg.get("symbols", ["BTC/USDT:USDT", "ETH/USDT:USDT"])
+            exchanges = tuple(cfg.get("exchanges", ["okx", "binance", "bybit"]))
+            fetch_basis = build_dated_basis_fetcher(exchanges=exchanges)
+            report = run_experiment28_report(fetch_basis=fetch_basis, symbols=symbols)
+            self.heartbeat._put_file("experiment28_results.md", report.encode(),
+                                     "Experiment #28: dated-futures calendar basis")
+            logger.info("Experiment #28: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #28 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment28_results.md",
+                                         f"# Experiment #28 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #28 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment27(self) -> None:
         """Experiment #27: cross-exchange funding differential (low-turnover,
         perp-vs-perp carry) through the full rigor battery. → experiment27_results.md."""
@@ -992,6 +1018,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment27_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment27, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment28_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment28, daemon=True).start()
 
         while self._running:
             try:

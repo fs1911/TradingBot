@@ -40,6 +40,11 @@ bot:
   run_experiment25_on_start: false  # Exp #25 done (2026-09-22): gross ~7.9%/yr. NET turnover-sensitive: 7d taker = -4.4% (loss); rare rotation wins (90d maker +7.3%, 90d taker +6.2%, 30d maker +6.7%). 10 CHF/day needs ~50-83k CHF capital. Real & net-positive only with low-turnover/maker execution, but just 1-3pp over risk-free cash; unpriced tail risks plausibly eat that margin
   run_experiment26_on_start: false  # Exp #26 done (2026-09-22, 23 perps): 3/3 survive. Breadth DILUTES return (broad basket 5.8%/yr). Carry-weighted tilt WINS: 8.6%/yr Sharpe 11.15 100% wf. Spread 6.3%/yr Sharpe 14.78 but more legs/cost. Edge confirmed & modestly improvable (~8.6% gross) but still cash-plus & cost-fragile — no order-of-magnitude breakthrough
   run_experiment27_on_start: false  # Exp #27 done (2026-09-22, 2 venues): statistically ✅ but economically trivial. Combined only ~1.55%/yr gross (Sharpe 5.53, 100% wf) — survives battery but too thin (<3%/yr); after two-venue fees/transfers/dual-liquidation it's no edge. Funding is highly correlated across venues. Level carry (#24-26 tilt ~8.6%) stays the only worthwhile version
+  run_experiment28_on_start: true   # Exp #28: dated quarterly-futures calendar basis — low-turnover carry (dodges #25 turnover killer) AND Finanzradar froth signal (basis vs forward returns). Dated-contract history may be unavailable → degrades honestly
+
+experiment28:
+  symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT"]
+  exchanges: ["okx", "binance", "bybit"]   # first exchange yielding dated-futures history wins
 
 experiment27:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT", "XRP/USDT:USDT", "DOGE/USDT:USDT"]
