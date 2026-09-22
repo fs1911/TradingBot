@@ -34,7 +34,7 @@ bot:
   run_experiment20_on_start: false  # Exp #20 done (2026-09-22): 0/6 survive on 92 stocks. Reversal negative even @1bps and killed by costs (t→-3.7); 12-1 momentum has the project's only positive Sharpe (0.44, 2/3 regimes+) but p≈0.15, not significant, OOS negative. No tradeable edge even on survivor-biased universe
   run_experiment21_on_start: false  # Exp #21 done (2026-09-22): 0/6 survive. Market-neutral variants cluster Sharpe 0.27-0.43, none significant, refinements add nothing. Long-only top decile is strongest ever (Sharpe 0.72, +106% OOS, 3/3 regimes) but fails haircut+walk-forward — suspected BETA not alpha; test vs benchmark in #22
   run_experiment22_on_start: false  # Exp #22 done (2026-09-22): 0/5 — clearly BETA. Equal-weight-universe benchmark Sharpe=1.03 BEATS every momentum selection (0.61-0.78); alpha Sharpes ~0, none significant. Momentum has zero selection alpha, was worse than holding all names equally. Strongest project result dissolves; only Sharpe>1 is survivor-biased beta+diversification
-  run_experiment23_on_start: true   # Exp #23: rebalancing premium (vol harvesting) — excess of periodically-rebalanced equal weight over buy&hold, isolates the only structural (non-predictive) mechanism left; reuses experiment20 universe
+  run_experiment23_on_start: false  # Exp #23 done (2026-09-22): 0/4, premium NEGATIVE (Sharpe -0.25 to -0.29, OOS -11%, p~0.73). B&H 0.96 ≈ rebalanced 0.94-0.95, frequency irrelevant. In a trending bull market letting winners run beats trimming → rebalancing is risk-control, not an edge. Last structural mechanism mapped
 
 experiment20:
   # Today's liquid S&P large caps across sectors (survivorship-biased ON PURPOSE:
