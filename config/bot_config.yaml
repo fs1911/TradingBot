@@ -37,7 +37,7 @@ bot:
   run_experiment23_on_start: false  # Exp #23 done (2026-09-22): 0/4, premium NEGATIVE (Sharpe -0.25 to -0.29, OOS -11%, p~0.73). B&H 0.96 ≈ rebalanced 0.94-0.95, frequency irrelevant. In a trending bull market letting winners run beats trimming → rebalancing is risk-control, not an edge. Last structural mechanism mapped
   run_experiment24_on_start: false  # Exp #24 done (2026-09-22, ~1400d Bybit): FIRST SURVIVOR. BTC/ETH/DOGE ✅ (Sharpe ~7), basket@0% Sharpe 9.25 (100% wf, 3/3 regimes). BUT gross return only ~8%/yr, cost-fragile (dies @5%/yr, marginal @2%), funding negative 17-27% of time, battery can't see counterparty/liquidation/basis risk, not tradeable on Alpaca. Real but thin → net-cost study in #25
 
-  run_experiment25_on_start: true   # Exp #25: funding carry NET of a concrete Bybit fee model + capital needed for a target income — turns #24's Sharpe into a francs answer
+  run_experiment25_on_start: false  # Exp #25 done (2026-09-22): gross ~7.9%/yr. NET turnover-sensitive: 7d taker = -4.4% (loss); rare rotation wins (90d maker +7.3%, 90d taker +6.2%, 30d maker +6.7%). 10 CHF/day needs ~50-83k CHF capital. Real & net-positive only with low-turnover/maker execution, but just 1-3pp over risk-free cash; unpriced tail risks plausibly eat that margin
 
 experiment24:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT", "XRP/USDT:USDT", "DOGE/USDT:USDT"]
