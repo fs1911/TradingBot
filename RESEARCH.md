@@ -1,3 +1,4 @@
+<!-- ops: force redeploy 2026-09-22 (exp #28 unbounded fetch stalled the runner; #28 now capped at 16 contracts, #29 added) -->
 # TradingBot — Forschungs-Journal
 
 Dieses Projekt wird als **Quant-Forschungsprojekt** geführt, nicht als
