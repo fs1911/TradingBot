@@ -112,6 +112,8 @@ def build_dated_basis_fetcher(exchanges=("okx", "binance", "bybit"),
                     contracts.append((int(m["expiry"]), m["symbol"]))
             if not contracts:
                 continue
+            # hard cap: at most the 16 most recent contracts, to bound fetch time
+            contracts = sorted(contracts)[-16:]
             spot_px = _daily_closes(spot, f"{base}/USDT", since)
             if len(spot_px) < 200:
                 continue

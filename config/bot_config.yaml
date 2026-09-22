@@ -42,9 +42,15 @@ bot:
   run_experiment27_on_start: false  # Exp #27 done (2026-09-22, 2 venues): statistically ✅ but economically trivial. Combined only ~1.55%/yr gross (Sharpe 5.53, 100% wf) — survives battery but too thin (<3%/yr); after two-venue fees/transfers/dual-liquidation it's no edge. Funding is highly correlated across venues. Level carry (#24-26 tilt ~8.6%) stays the only worthwhile version
   run_experiment28_on_start: true   # Exp #28: dated quarterly-futures calendar basis — low-turnover carry (dodges #25 turnover killer) AND Finanzradar froth signal (basis vs forward returns). Dated-contract history may be unavailable → degrades honestly
 
+  run_experiment29_on_start: true   # Exp #29: funding rate as a froth gauge for Finanzradar (contrarian predictor + 'step aside when hot' filter) — reliable data, human-usable signal
+
 experiment28:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT"]
   exchanges: ["okx", "binance", "bybit"]   # first exchange yielding dated-futures history wins
+
+experiment29:
+  symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT", "XRP/USDT:USDT", "DOGE/USDT:USDT", "BNB/USDT:USDT"]
+  exchanges: ["bybit", "binance", "okx"]
 
 experiment27:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT", "XRP/USDT:USDT", "DOGE/USDT:USDT"]

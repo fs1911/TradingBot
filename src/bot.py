@@ -233,6 +233,56 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment29(self) -> None:
+        """Experiment #29: funding rate as a froth gauge — a Finanzradar sentiment
+        signal (predictive buckets + a 'step aside when hot' filter).
+        → experiment29_results.md."""
+        try:
+            import pandas as pd
+            from .backtest.experiments_24 import open_swap_exchange, page_funding_history
+            from .backtest.experiments_29 import run_experiment29_report
+            cfg = self.bot_cfg.get("experiment29", {})
+            symbols = cfg.get("symbols", ["BTC/USDT:USDT", "ETH/USDT:USDT"])
+            exchanges = cfg.get("exchanges", ["bybit", "binance", "okx"])
+            ex = exid = None
+            for cand in exchanges:
+                try:
+                    e = open_swap_exchange(cand)
+                    if len(page_funding_history(e, "BTC/USDT:USDT")) > 100:
+                        ex, exid = e, cand
+                        break
+                except Exception as err:
+                    logger.warning(f"Exp29: exchange {cand} unusable: {err}")
+            if ex is None:
+                raise RuntimeError("No usable exchange for funding+prices")
+
+            def fetch_funding(sym: str) -> pd.Series:
+                return page_funding_history(ex, sym)
+
+            def fetch_prices(sym: str) -> pd.Series:
+                ohlcv = ex.fetch_ohlcv(sym, "1d", limit=1500)
+                if not ohlcv:
+                    return pd.Series(dtype=float)
+                return pd.Series({pd.to_datetime(r[0], unit="ms", utc=True): float(r[4])
+                                  for r in ohlcv if r[4] is not None}).sort_index()
+
+            report = run_experiment29_report(fetch_funding=fetch_funding,
+                                             fetch_prices=fetch_prices, symbols=symbols)
+            report = report.replace("signal) (", f"signal) [data: {exid}] (", 1)
+            self.heartbeat._put_file("experiment29_results.md", report.encode(),
+                                     "Experiment #29: funding froth signal")
+            logger.info(f"Experiment #29: report pushed (exchange={exid})")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #29 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment29_results.md",
+                                         f"# Experiment #29 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #29 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment28(self) -> None:
         """Experiment #28: dated quarterly-futures calendar basis — low-turnover carry
         AND a Finanzradar froth signal (basis vs forward returns).
@@ -1022,6 +1072,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment28_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment28, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment29_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment29, daemon=True).start()
 
         while self._running:
             try:
