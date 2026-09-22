@@ -1,4 +1,4 @@
-# Experiment #25 — funding carry, net of realistic costs [data: bybit] (2026-09-22 09:29 UTC)
+# Experiment #25 — funding carry, net of realistic costs [data: bybit] (2026-09-22 09:32 UTC)
 
 Delta-neutral carry NET of a concrete fee model (Bybit taker 0.055% / maker 0.020% per leg), assumed hedge-leg annual vol 60%. Sweeps rotation frequency and fee tier. Target income: 3,650 CHF/yr.
 
