@@ -1,4 +1,4 @@
-# Experiment #22 — long-only momentum: alpha or beta? (2026-09-22 08:02 UTC)
+# Experiment #22 — long-only momentum: alpha or beta? (2026-09-22 08:04 UTC)
 
 Universe: 92 stocks. Span: 2018-04-25 → 2026-09-21 (1549 days). Long-only, monthly, 5 bps. Equal-weight-universe benchmark Sharpe = 1.03. Rigor on EXCESS returns; haircut α/70.
 
