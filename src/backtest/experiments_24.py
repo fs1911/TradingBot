@@ -40,25 +40,36 @@ def build_ccxt_funding_fetcher(exchange_ids=("bybit", "binance", "okx"),
     into a UTC-indexed pd.Series. Public data — no API keys required."""
     import ccxt  # lazy: only on the VM
 
-    def _page(ex, symbol):
-        since = ex.milliseconds() - lookback_days * 86400 * 1000
-        rows, guard = [], 0
-        while guard < 400:
+    def _page(ex, symbol, page_limit: int = 200):
+        # Page FORWARD from `lookback_days` ago. Exchanges cap ~200 rows/call, so we
+        # keep advancing `since` past the last returned timestamp until we reach now.
+        now_ms = ex.milliseconds()
+        since = now_ms - lookback_days * 86400 * 1000
+        rows, seen, guard = {}, set(), 0
+        while since < now_ms and guard < 600:
             guard += 1
-            batch = ex.fetch_funding_rate_history(symbol, since=since, limit=1000)
-            if not batch:
+            try:
+                batch = ex.fetch_funding_rate_history(symbol, since=since, limit=page_limit)
+            except Exception:
                 break
-            rows += batch
-            nxt = batch[-1]["timestamp"] + 1
-            if nxt <= since or len(batch) < 1000:
-                since = nxt
-                if len(batch) < 1000:
-                    break
-            since = nxt
+            if not batch:
+                since += page_limit * 8 * 3600 * 1000   # skip an empty window, keep going
+                continue
+            last_ts = since
+            for r in batch:
+                ts = r.get("timestamp")
+                fr = r.get("fundingRate")
+                if ts is None or fr is None:
+                    continue
+                rows[int(ts)] = float(fr)
+                last_ts = max(last_ts, int(ts))
+            if last_ts <= since and len(batch) < page_limit:
+                break                                    # no forward progress
+            since = last_ts + 1
         if not rows:
             return pd.Series(dtype=float)
-        s = pd.Series({pd.to_datetime(r["timestamp"], unit="ms", utc=True):
-                       float(r["fundingRate"]) for r in rows if r.get("fundingRate") is not None})
+        s = pd.Series({pd.to_datetime(ts, unit="ms", utc=True): fr
+                       for ts, fr in rows.items()})
         return s.sort_index()
 
     chosen = None
