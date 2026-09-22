@@ -1,4 +1,4 @@
-# Experiment #26 — broader / smarter structural carry [data: bybit] (2026-09-22 09:44 UTC)
+# Experiment #26 — broader / smarter structural carry [data: bybit] (2026-09-22 09:48 UTC)
 
 23 coins with usable funding history (BTC/USDT:USDT, ETH/USDT:USDT, SOL/USDT:USDT, XRP/USDT:USDT, DOGE/USDT:USDT, BNB/USDT:USDT, ADA/USDT:USDT, AVAX/USDT:USDT, LINK/USDT:USDT, DOT/USDT:USDT, LTC/USDT:USDT, TRX/USDT:USDT, ATOM/USDT:USDT, UNI/USDT:USDT, NEAR/USDT:USDT, APT/USDT:USDT, FIL/USDT:USDT, ARB/USDT:USDT, OP/USDT:USDT, AAVE/USDT:USDT, INJ/USDT:USDT, SUI/USDT:USDT, SEI/USDT:USDT). Span 2022-11-22 → 2026-09-22. Each variant's daily carry through the full rigor battery; haircut α/84.
 
