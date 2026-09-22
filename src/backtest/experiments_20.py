@@ -77,12 +77,14 @@ def _decile_weights(score: pd.Series, top: float, bottom: float,
 
 
 def _rebalance_dates(dates: pd.DatetimeIndex, freq: str) -> set:
-    """freq: 'D' every day, 'W' last trading day of each ISO week, 'M' month-end."""
+    """freq: 'D' every day, 'W' ISO-week end, 'M' month-end, 'Q' quarter-end."""
     if freq == "D":
         return set(dates)
     idx = pd.Series(dates, index=dates)
     if freq == "W":
         key = idx.index.to_period("W")
+    elif freq == "Q":
+        key = idx.index.to_period("Q")
     else:  # 'M'
         key = idx.index.to_period("M")
     last = idx.groupby(key).max()

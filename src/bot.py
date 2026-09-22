@@ -233,6 +233,29 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment23(self) -> None:
+        """Experiment #23: rebalancing premium (volatility harvesting) — excess of
+        periodically-rebalanced equal weight over buy&hold, through the full rigor
+        battery. → experiment23_results.md."""
+        try:
+            from .backtest.experiments_23 import run_experiment23_report
+            universe = self.bot_cfg.get("experiment23", {}).get(
+                "universe", self.bot_cfg.get("experiment20", {}).get("universe", []))
+            report = run_experiment23_report(get_ohlcv=self.broker.get_ohlcv, universe=universe)
+            self.heartbeat._put_file("experiment23_results.md", report.encode(),
+                                     "Experiment #23: rebalancing premium")
+            logger.info("Experiment #23: report pushed to experiment23_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #23 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment23_results.md",
+                                         f"# Experiment #23 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #23 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment22(self) -> None:
         """Experiment #22: is long-only momentum alpha or beta? Excess return over
         an equal-weight-universe benchmark through the full rigor battery.
@@ -815,6 +838,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment22_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment22, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment23_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment23, daemon=True).start()
 
         while self._running:
             try:
