@@ -1,4 +1,4 @@
-# Experiment #20 — cross-sectional long/short over individual stocks (2026-09-22 06:32 UTC)
+# Experiment #20 — cross-sectional long/short over individual stocks (2026-09-22 06:35 UTC)
 
 Universe: 92 stocks with ≥2y history. Span: 2018-04-25 → 2026-09-21 (1549 trading days). Dollar-neutral, decile long/short, equal weight. Multiple-testing haircut α/60.
 
