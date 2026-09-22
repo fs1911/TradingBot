@@ -1,4 +1,4 @@
-# Experiment #29 — funding as a froth gauge (Finanzradar signal) [data: bybit] (2026-09-22 14:11 UTC)
+# Experiment #29 — funding as a froth gauge (Finanzradar signal) [data: bybit] (2026-09-22 14:15 UTC)
 
 Funding = how crowded leveraged longs are. Tests whether high funding predicts lower forward 30d returns (contrarian), and whether a 'step aside when hot' filter beats buy & hold. For Finanzradar, not a bot trade.
 
