@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-22 07:51:39",
+  "updated_utc": "2026-09-22 07:54:55",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 6,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5426.42,
-  "unrealized_pnl_usd": 76.55,
-  "total_pnl_usd": -5349.87,
-  "equity_usd": 63135.12,
+  "realized_pnl_usd": -5426.43,
+  "unrealized_pnl_usd": 76.38,
+  "total_pnl_usd": -5350.05,
+  "equity_usd": 63134.94,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": -39.03
+      "unrealized_usd": -38.76
     },
     {
       "symbol": "BTC/USD",
@@ -40,7 +40,7 @@
       "symbol": "UBER",
       "side": "buy",
       "qty": 44.6637,
-      "unrealized_usd": 1.34
+      "unrealized_usd": 0.89
     },
     {
       "symbol": "XLF",
