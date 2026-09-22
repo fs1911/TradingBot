@@ -1,4 +1,4 @@
-# Experiment #23 — rebalancing premium (volatility harvesting) (2026-09-22 08:20 UTC)
+# Experiment #23 — rebalancing premium (volatility harvesting) (2026-09-22 08:22 UTC)
 
 Universe: 92 stocks, common span 2020-07-27 → 2026-09-21 (1546 days). Buy&hold equal-weight Sharpe = 0.96. EXCESS (rebalanced − buy&hold) through full rigor; haircut α/74.
 
