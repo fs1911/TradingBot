@@ -32,6 +32,7 @@ bot:
   run_experiment18_on_start: false  # Exp #18 done (2026-09-21): intraday MR LOSES significantly (t=-2 to -5) on bar level; free feed only ~70 days → real intraday research needs paid multi-year data
   run_experiment19_on_start: false  # Exp #19 done (2026-09-21): 0/55 survive. Mean-reversion lives ONLY in large-cap US equity indices/sectors (⚠️); metals/commodities/currencies/bonds/crypto = random walk, no edge
   run_experiment20_on_start: false  # Exp #20 done (2026-09-22): 0/6 survive on 92 stocks. Reversal negative even @1bps and killed by costs (t→-3.7); 12-1 momentum has the project's only positive Sharpe (0.44, 2/3 regimes+) but p≈0.15, not significant, OOS negative. No tradeable edge even on survivor-biased universe
+  run_experiment21_on_start: true   # Exp #21: momentum refinements (vol-scaled / residual / vol-managed / regime-filtered / long-only) — chase the #20 momentum lead; reuses experiment20 universe
 
 experiment20:
   # Today's liquid S&P large caps across sectors (survivorship-biased ON PURPOSE:

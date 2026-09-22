@@ -55,21 +55,24 @@ def build_price_panel(get_ohlcv: Callable[[str, str, int], pd.DataFrame],
     return panel
 
 
-def _decile_weights(score: pd.Series, top: float, bottom: float) -> pd.Series:
-    """Dollar-neutral equal weights: long the top-`top` fraction of `score`,
-    short the bottom-`bottom` fraction. Long leg sums to +1, short leg to -1."""
+def _decile_weights(score: pd.Series, top: float, bottom: float,
+                    long_only: bool = False) -> pd.Series:
+    """Equal weights: long the top-`top` fraction of `score`. If `long_only` is
+    False, also short the bottom-`bottom` fraction (dollar-neutral: long leg +1,
+    short leg -1). If True, only the long leg is held (sums to +1, no shorts)."""
     w = pd.Series(0.0, index=score.index)
     s = score.dropna()
     if len(s) < 10:
         return w
     n = len(s)
     k_top = max(1, int(round(n * top)))
-    k_bot = max(1, int(round(n * bottom)))
     order = s.sort_values()
-    shorts = order.index[:k_bot]
     longs = order.index[-k_top:]
     w[longs] = 1.0 / len(longs)
-    w[shorts] = -1.0 / len(shorts)
+    if not long_only:
+        k_bot = max(1, int(round(n * bottom)))
+        shorts = order.index[:k_bot]
+        w[shorts] = -1.0 / len(shorts)
     return w
 
 
@@ -88,12 +91,12 @@ def _rebalance_dates(dates: pd.DatetimeIndex, freq: str) -> set:
 
 def long_short_returns(panel: pd.DataFrame, score_fn: Callable[[pd.DataFrame], pd.Series],
                        rebalance: str = "M", top: float = 0.1, bottom: float = 0.1,
-                       cost_bps: float = 5.0) -> pd.Series:
-    """Backtest a dollar-neutral long/short portfolio. `score_fn(panel_slice)` returns
-    a per-symbol attractiveness score using data up to and including the rebalance day
-    (long high score, short low score). Weights set at a rebalance close start earning
-    the NEXT day; costs are charged on realised turnover. Returns a daily return series.
-    """
+                       cost_bps: float = 5.0, long_only: bool = False) -> pd.Series:
+    """Backtest a decile long/short portfolio (dollar-neutral, or long-only if
+    `long_only`). `score_fn(panel_slice)` returns a per-symbol attractiveness score
+    using data up to and including the rebalance day (long high score, short low
+    score). Weights set at a rebalance close start earning the NEXT day; costs are
+    charged on realised turnover. Returns a daily return series."""
     rets = panel.pct_change()
     dates = panel.index
     rb = _rebalance_dates(dates, rebalance)
@@ -105,7 +108,7 @@ def long_short_returns(panel: pd.DataFrame, score_fn: Callable[[pd.DataFrame], p
         cost = 0.0
         if dates[i] in rb:
             score = score_fn(panel.iloc[: i + 1])          # causal: through today
-            new_w = _decile_weights(score.reindex(panel.columns), top, bottom)
+            new_w = _decile_weights(score.reindex(panel.columns), top, bottom, long_only)
             turnover = float((new_w - current).abs().sum())  # one-way units traded
             cost = turnover * cost_bps / 1e4
             current = new_w

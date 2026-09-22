@@ -233,6 +233,29 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment21(self) -> None:
+        """Experiment #21: momentum refinements (vol-scaled / residual / vol-managed /
+        regime-filtered / long-only) through the full rigor battery.
+        → experiment21_results.md."""
+        try:
+            from .backtest.experiments_21 import run_experiment21_report
+            universe = self.bot_cfg.get("experiment21", {}).get(
+                "universe", self.bot_cfg.get("experiment20", {}).get("universe", []))
+            report = run_experiment21_report(get_ohlcv=self.broker.get_ohlcv, universe=universe)
+            self.heartbeat._put_file("experiment21_results.md", report.encode(),
+                                     "Experiment #21: momentum refinements")
+            logger.info("Experiment #21: report pushed to experiment21_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #21 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment21_results.md",
+                                         f"# Experiment #21 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #21 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment20(self) -> None:
         """Experiment #20: cross-sectional long/short over many individual stocks
         (short-term reversal + 12-1 momentum) through the full rigor battery.
@@ -761,6 +784,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment20_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment20, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment21_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment21, daemon=True).start()
 
         while self._running:
             try:
