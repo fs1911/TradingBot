@@ -1,64 +1,52 @@
 {
-  "updated_utc": "2026-09-22 19:23:52",
+  "updated_utc": "2026-09-22 20:24:20",
   "alive": true,
   "state": "active",
-  "uptime_hours": 5.1,
-  "open_positions": 8,
-  "trades_today": 4,
-  "daily_pnl_usd": -173.93,
-  "realized_pnl_usd": -5527.44,
-  "unrealized_pnl_usd": 82.31,
-  "total_pnl_usd": -5445.13,
-  "equity_usd": 63039.86,
+  "uptime_hours": 6.1,
+  "open_positions": 6,
+  "trades_today": 6,
+  "daily_pnl_usd": -217.76,
+  "realized_pnl_usd": -5572.0,
+  "unrealized_pnl_usd": 88.81,
+  "total_pnl_usd": -5483.19,
+  "equity_usd": 63001.8,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "ARKK",
       "side": "buy",
       "qty": 34.4322,
-      "unrealized_usd": 7.11
+      "unrealized_usd": -9.76
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0369,
-      "unrealized_usd": 32.99
+      "unrealized_usd": 23.5
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 25.8348,
-      "unrealized_usd": 21.09
+      "unrealized_usd": 35.17
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9302,
-      "unrealized_usd": -12.58
-    },
-    {
-      "symbol": "NIO",
-      "side": "buy",
-      "qty": 845.0788,
-      "unrealized_usd": -8.45
+      "unrealized_usd": -15.64
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 53.43
-    },
-    {
-      "symbol": "XLE",
-      "side": "buy",
-      "qty": 50.4822,
-      "unrealized_usd": -20.95
+      "unrealized_usd": 49.78
     },
     {
       "symbol": "XLV",
       "side": "buy",
       "qty": 18.599,
-      "unrealized_usd": 9.67
+      "unrealized_usd": 5.77
     }
   ]
 }
