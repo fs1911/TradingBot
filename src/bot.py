@@ -233,6 +233,29 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment22(self) -> None:
+        """Experiment #22: is long-only momentum alpha or beta? Excess return over
+        an equal-weight-universe benchmark through the full rigor battery.
+        → experiment22_results.md."""
+        try:
+            from .backtest.experiments_22 import run_experiment22_report
+            universe = self.bot_cfg.get("experiment22", {}).get(
+                "universe", self.bot_cfg.get("experiment20", {}).get("universe", []))
+            report = run_experiment22_report(get_ohlcv=self.broker.get_ohlcv, universe=universe)
+            self.heartbeat._put_file("experiment22_results.md", report.encode(),
+                                     "Experiment #22: long-only momentum alpha vs beta")
+            logger.info("Experiment #22: report pushed to experiment22_results.md")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #22 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment22_results.md",
+                                         f"# Experiment #22 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #22 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment21(self) -> None:
         """Experiment #21: momentum refinements (vol-scaled / residual / vol-managed /
         regime-filtered / long-only) through the full rigor battery.
@@ -788,6 +811,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment21_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment21, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment22_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment22, daemon=True).start()
 
         while self._running:
             try:
