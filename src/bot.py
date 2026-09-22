@@ -233,6 +233,33 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment24(self) -> None:
+        """Experiment #24: crypto funding-rate carry (delta-neutral, structural
+        premium). Fetches public perpetual funding history via ccxt and runs the
+        daily carry through the full rigor battery. → experiment24_results.md."""
+        try:
+            from .backtest.experiments_24 import (
+                build_ccxt_funding_fetcher, run_experiment24_report)
+            cfg = self.bot_cfg.get("experiment24", {})
+            symbols = cfg.get("symbols", ["BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT"])
+            exchanges = tuple(cfg.get("exchanges", ["bybit", "binance", "okx"]))
+            fetch_funding, exid = build_ccxt_funding_fetcher(exchange_ids=exchanges)
+            report = run_experiment24_report(fetch_funding=fetch_funding, symbols=symbols)
+            report = report.replace("carry (", f"carry [data: {exid}] (", 1)
+            self.heartbeat._put_file("experiment24_results.md", report.encode(),
+                                     "Experiment #24: crypto funding-rate carry")
+            logger.info(f"Experiment #24: report pushed (exchange={exid})")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #24 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment24_results.md",
+                                         f"# Experiment #24 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #24 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment23(self) -> None:
         """Experiment #23: rebalancing premium (volatility harvesting) — excess of
         periodically-rebalanced equal weight over buy&hold, through the full rigor
@@ -842,6 +869,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment23_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment23, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment24_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment24, daemon=True).start()
 
         while self._running:
             try:
