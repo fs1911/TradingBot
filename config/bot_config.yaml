@@ -38,7 +38,7 @@ bot:
   run_experiment24_on_start: false  # Exp #24 done (2026-09-22, ~1400d Bybit): FIRST SURVIVOR. BTC/ETH/DOGE ✅ (Sharpe ~7), basket@0% Sharpe 9.25 (100% wf, 3/3 regimes). BUT gross return only ~8%/yr, cost-fragile (dies @5%/yr, marginal @2%), funding negative 17-27% of time, battery can't see counterparty/liquidation/basis risk, not tradeable on Alpaca. Real but thin → net-cost study in #25
 
   run_experiment25_on_start: false  # Exp #25 done (2026-09-22): gross ~7.9%/yr. NET turnover-sensitive: 7d taker = -4.4% (loss); rare rotation wins (90d maker +7.3%, 90d taker +6.2%, 30d maker +6.7%). 10 CHF/day needs ~50-83k CHF capital. Real & net-positive only with low-turnover/maker execution, but just 1-3pp over risk-free cash; unpriced tail risks plausibly eat that margin
-  run_experiment26_on_start: true   # Exp #26: broader/smarter structural carry — wide basket, carry-weighted tilt, cross-sectional dispersion spread; can the one real edge be made bigger/steadier?
+  run_experiment26_on_start: false  # Exp #26 done (2026-09-22, 23 perps): 3/3 survive. Breadth DILUTES return (broad basket 5.8%/yr). Carry-weighted tilt WINS: 8.6%/yr Sharpe 11.15 100% wf. Spread 6.3%/yr Sharpe 14.78 but more legs/cost. Edge confirmed & modestly improvable (~8.6% gross) but still cash-plus & cost-fragile — no order-of-magnitude breakthrough
 
 experiment26:
   # Wide liquid-perp universe for breadth + cross-sectional dispersion
