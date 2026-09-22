@@ -79,8 +79,8 @@ def build_dated_basis_fetcher(exchanges=("okx", "binance", "bybit"),
     clients = {}
     for exid in exchanges:
         try:
-            fut = open_swap_exchange(exid)            # markets loaded
-            spot = getattr(ccxt, exid)({"enableRateLimit": True,
+            fut = open_swap_exchange(exid)            # markets loaded (15s timeout)
+            spot = getattr(ccxt, exid)({"enableRateLimit": True, "timeout": 15000,
                                         "options": {"defaultType": "spot"}})
             spot.load_markets()
             clients[exid] = (fut, spot)

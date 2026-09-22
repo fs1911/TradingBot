@@ -65,10 +65,12 @@ def page_funding_history(ex, symbol: str, lookback_days: int = 1400,
                       for ts, fr in rows.items()}).sort_index()
 
 
-def open_swap_exchange(exchange_id: str):
-    """Open a public ccxt swap/perp exchange client (lazy import; no API keys)."""
+def open_swap_exchange(exchange_id: str, timeout_ms: int = 15000):
+    """Open a public ccxt swap/perp exchange client (lazy import; no API keys). A
+    hard per-request `timeout_ms` ensures a slow/hanging exchange can never block the
+    bot indefinitely."""
     import ccxt  # lazy: only on the VM
-    ex = getattr(ccxt, exchange_id)({"enableRateLimit": True,
+    ex = getattr(ccxt, exchange_id)({"enableRateLimit": True, "timeout": timeout_ms,
                                      "options": {"defaultType": "swap"}})
     ex.load_markets()
     return ex
