@@ -233,6 +233,39 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment30(self) -> None:
+        """Experiment #30: valuation gauges (drawdown-from-ATH & 200d MA) as a
+        Finanzradar overlay. Uses the native broker price path (no ccxt).
+        → experiment30_results.md."""
+        try:
+            import pandas as pd
+            from .backtest.experiments_30 import run_experiment30_report
+            cfg = self.bot_cfg.get("experiment30", {})
+            symbols = cfg.get("symbols", ["SPY", "QQQ", "BTC/USD", "ETH/USD"])
+            horizon = int(cfg.get("horizon", 90))
+
+            def fetch_prices(sym: str) -> pd.Series:
+                df = self.broker.get_ohlcv(sym, "1Day", 2500)
+                if df is None or len(df) == 0:
+                    return pd.Series(dtype=float)
+                return df["close"].sort_index()
+
+            report = run_experiment30_report(fetch_prices=fetch_prices, symbols=symbols,
+                                             horizon=horizon)
+            self.heartbeat._put_file("experiment30_results.md", report.encode(),
+                                     "Experiment #30: valuation gauges for Finanzradar")
+            logger.info("Experiment #30: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #30 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment30_results.md",
+                                         f"# Experiment #30 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #30 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment29(self) -> None:
         """Experiment #29: funding rate as a froth gauge — a Finanzradar sentiment
         signal (predictive buckets + a 'step aside when hot' filter).
@@ -1076,6 +1109,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment29_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment29, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment30_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment30, daemon=True).start()
 
         while self._running:
             try:

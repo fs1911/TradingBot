@@ -43,6 +43,11 @@ bot:
   run_experiment28_on_start: false  # Exp #28 DEFERRED (2026-09-22): unbounded dated-futures fetch hung the bot & jammed deploys. Now bounded (16 contracts + 15s ccxt timeout) but disabled on-start to keep restarts safe; re-enable manually once trusted. Dated-contract history is likely unavailable anyway (data boundary)
 
   run_experiment29_on_start: false  # Exp #29 done (2026-09-22): NEGATIVE. Funding is NOT a contrarian froth predictor — contrarian in only 1/6 coins (BNB), in 5/6 high funding preceded HIGHER returns (funding runs with momentum). 'Step aside when hot' filter beats buy&hold in 0/6. No usable Finanzradar rule from funding
+  run_experiment30_on_start: true   # Exp #30: valuation gauges for Finanzradar (drawdown-from-ATH & 200d MA) via NATIVE broker prices (no ccxt) — does 'cheap' predict higher forward returns? Kaufen/Halten/Überhitzt bands
+
+experiment30:
+  symbols: ["SPY", "QQQ", "DIA", "IWM", "BTC/USD", "ETH/USD"]   # indices + crypto via Alpaca daily
+  horizon: 90   # forward-return horizon in trading days (~4.5 months)
 
 experiment28:
   symbols: ["BTC/USDT:USDT", "ETH/USDT:USDT"]
