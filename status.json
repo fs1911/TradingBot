@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-23 11:02:58",
+  "updated_utc": "2026-09-23 12:03:14",
   "alive": true,
   "state": "active",
-  "uptime_hours": 7.0,
+  "uptime_hours": 8.0,
   "open_positions": 7,
   "trades_today": 1,
   "daily_pnl_usd": 127.94,
-  "realized_pnl_usd": -12770.36,
-  "unrealized_pnl_usd": 7187.91,
-  "total_pnl_usd": -5582.45,
-  "equity_usd": 62902.54,
+  "realized_pnl_usd": -12777.48,
+  "unrealized_pnl_usd": 7135.98,
+  "total_pnl_usd": -5641.5,
+  "equity_usd": 62843.49,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,31 +22,31 @@
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 30440.6039,
-      "unrealized_usd": -117.62
+      "unrealized_usd": -134.49
     },
     {
       "symbol": "INTC",
       "side": "buy",
       "qty": 25.8348,
-      "unrealized_usd": 20.72
+      "unrealized_usd": 4.43
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9302,
-      "unrealized_usd": -24.93
+      "unrealized_usd": -30.51
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 26.612,
-      "unrealized_usd": 7271.63
+      "unrealized_usd": 7263.04
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 52.43
+      "unrealized_usd": 47.83
     },
     {
       "symbol": "XLV",
