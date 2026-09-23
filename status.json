@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-23 03:55:59",
+  "updated_utc": "2026-09-23 03:58:13",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
@@ -7,9 +7,9 @@
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -5584.62,
-  "unrealized_pnl_usd": 276.86,
-  "total_pnl_usd": -5307.76,
-  "equity_usd": 63177.23,
+  "unrealized_pnl_usd": 274.43,
+  "total_pnl_usd": -5310.19,
+  "equity_usd": 63174.8,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,7 +22,7 @@
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0369,
-      "unrealized_usd": 40.05
+      "unrealized_usd": 41.28
     },
     {
       "symbol": "DOGE/USD",
@@ -34,13 +34,13 @@
       "symbol": "INTC",
       "side": "buy",
       "qty": 25.8348,
-      "unrealized_usd": 43.44
+      "unrealized_usd": 40.34
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.9302,
-      "unrealized_usd": -14.44
+      "unrealized_usd": -14.99
     },
     {
       "symbol": "SOL/USD",
