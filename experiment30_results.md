@@ -1,4 +1,4 @@
-# Experiment #30 — valuation gauges for Finanzradar (2026-09-23 03:49 UTC)
+# Experiment #30 — valuation gauges for Finanzradar (2026-09-23 03:51 UTC)
 
 Contrarian valuation: does 'cheap' (deep drawdown / far below the 200d MA) predict higher forward 90-day returns? Native daily prices. A read for Finanzradar, not a bot trade.
 
