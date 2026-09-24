@@ -233,6 +233,34 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment32(self) -> None:
+        """Experiment #32: decades of index history (Stooq → Yahoo, 20s timeout) —
+        drawdown signal at -20/-35/-50% and trend filters vs buy & hold.
+        → experiment32_results.md."""
+        try:
+            from .backtest.experiments_32 import fetch_long_history, run_experiment32_report
+            cfg = self.bot_cfg.get("experiment32", {})
+            assets = cfg.get("assets", [])
+
+            def fetch(a: dict):
+                return fetch_long_history(a.get("stooq", ""), a.get("yahoo", ""), timeout=20)
+
+            report = run_experiment32_report(fetch=fetch, assets=assets,
+                                             horizon=int(cfg.get("horizon", 90)))
+            self.heartbeat._put_file("experiment32_results.md", report.encode(),
+                                     "Experiment #32: decades of history")
+            logger.info("Experiment #32: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #32 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment32_results.md",
+                                         f"# Experiment #32 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #32 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment31(self) -> None:
         """Experiment #31: stress test of the deep-drawdown signal (baseline, episodes,
         OOS halves, broader universe, DCA vs dip-reserve). Native broker prices.
@@ -1150,6 +1178,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment31_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment31, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment32_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment32, daemon=True).start()
 
         while self._running:
             try:

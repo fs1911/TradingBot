@@ -47,6 +47,21 @@ bot:
 
   run_experiment31_on_start: false  # Exp #31 done (2026-09-24): #30 signal NOT robust — zone reached 7/13 in 6y, excess positive 6/7 but t>2 in 0/7, both halves 2/7, ~15 episodes mostly 2022. Dip-reserve beats DCA only 5/13 (cash drag). Needs decades of data
 
+  run_experiment32_on_start: true   # Exp #32: decades of index history (Stooq→Yahoo, 20s timeout) — drawdown signal at -20/-35/-50% + SMA200/12m-momentum vs buy&hold over many cycles
+
+experiment32:
+  horizon: 90
+  assets:
+    - {name: "S&P 500",        stooq: "^spx", yahoo: "^GSPC"}
+    - {name: "Nasdaq Comp.",   stooq: "^ndq", yahoo: "^IXIC"}
+    - {name: "Dow Jones",      stooq: "^dji", yahoo: "^DJI"}
+    - {name: "Russell 2000",   stooq: "^rut", yahoo: "^RUT"}
+    - {name: "Nikkei 225",     stooq: "^nkx", yahoo: "^N225"}
+    - {name: "DAX",            stooq: "^dax", yahoo: "^GDAXI"}
+    - {name: "SMI",            stooq: "^smi", yahoo: "^SSMI"}
+    - {name: "Gold",           stooq: "xauusd", yahoo: "GC=F"}
+    - {name: "Bitcoin",        stooq: "btcusd", yahoo: "BTC-USD"}
+
 experiment31:
   # winners AND laggards (EM, energy, long bonds, small caps) to avoid survivorship
   symbols: ["SPY", "QQQ", "DIA", "IWM", "EFA", "EEM", "XLE", "XLF", "GLD", "TLT", "BTC/USD", "ETH/USD", "SOL/USD"]
