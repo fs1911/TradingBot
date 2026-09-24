@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-24 14:08:33",
+  "updated_utc": "2026-09-24 14:11:06",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 7,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -6081.34,
-  "unrealized_pnl_usd": 284.3,
-  "total_pnl_usd": -5797.04,
-  "equity_usd": 62687.95,
+  "realized_pnl_usd": -6081.26,
+  "unrealized_pnl_usd": 280.04,
+  "total_pnl_usd": -5801.22,
+  "equity_usd": 62683.77,
   "market_trend": "neutral",
   "positions": [
     {
@@ -22,7 +22,7 @@
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 17.59
+      "unrealized_usd": 18.69
     },
     {
       "symbol": "LINK/USD",
@@ -34,25 +34,25 @@
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 45.9009,
-      "unrealized_usd": 148.95
+      "unrealized_usd": 137.01
     },
     {
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": 4.92
+      "unrealized_usd": 3.93
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": 4.34
+      "unrealized_usd": 8.54
     },
     {
       "symbol": "XLY",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": 7.84
+      "unrealized_usd": 11.2
     }
   ]
 }
