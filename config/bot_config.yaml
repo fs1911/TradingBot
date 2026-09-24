@@ -45,7 +45,7 @@ bot:
   run_experiment29_on_start: false  # Exp #29 done (2026-09-22): NEGATIVE. Funding is NOT a contrarian froth predictor — contrarian in only 1/6 coins (BNB), in 5/6 high funding preceded HIGHER returns (funding runs with momentum). 'Step aside when hot' filter beats buy&hold in 0/6. No usable Finanzradar rule from funding
   run_experiment30_on_start: false  # Exp #30 done (2026-09-23): PARTIAL POSITIVE, best Finanzradar find. Drawdown-from-ATH contrarian in 4/6 (BTC/ETH very strong). Pooled: DD<=-35% -> +14%/90d, -35..-10% -> +2.4%, near-ATH -> +4.3%. Usable = DEEP-drawdown buy signal only; 'near-ATH=overheated' does NOT hold; 200d-MA gauge weak (3/6). Conditioned on assets that recover
 
-  run_experiment31_on_start: true   # Exp #31: stress test of the #30 deep-drawdown signal — baseline excess, independent episodes, non-overlapping t-test, OOS halves, losers in universe, DCA vs dip-reserve
+  run_experiment31_on_start: false  # Exp #31 done (2026-09-24): #30 signal NOT robust — zone reached 7/13 in 6y, excess positive 6/7 but t>2 in 0/7, both halves 2/7, ~15 episodes mostly 2022. Dip-reserve beats DCA only 5/13 (cash drag). Needs decades of data
 
 experiment31:
   # winners AND laggards (EM, energy, long bonds, small caps) to avoid survivorship
