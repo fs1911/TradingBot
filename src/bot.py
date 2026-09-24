@@ -233,6 +233,39 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment31(self) -> None:
+        """Experiment #31: stress test of the deep-drawdown signal (baseline, episodes,
+        OOS halves, broader universe, DCA vs dip-reserve). Native broker prices.
+        → experiment31_results.md."""
+        try:
+            import pandas as pd
+            from .backtest.experiments_31 import run_experiment31_report
+            cfg = self.bot_cfg.get("experiment31", {})
+            symbols = cfg.get("symbols", ["SPY", "QQQ", "BTC/USD", "ETH/USD"])
+            horizon = int(cfg.get("horizon", 90))
+
+            def fetch_prices(sym: str) -> pd.Series:
+                df = self.broker.get_ohlcv(sym, "1Day", 2500)
+                if df is None or len(df) == 0:
+                    return pd.Series(dtype=float)
+                return df["close"].sort_index()
+
+            report = run_experiment31_report(fetch_prices=fetch_prices, symbols=symbols,
+                                             horizon=horizon)
+            self.heartbeat._put_file("experiment31_results.md", report.encode(),
+                                     "Experiment #31: drawdown signal stress test")
+            logger.info("Experiment #31: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #31 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment31_results.md",
+                                         f"# Experiment #31 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #31 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment30(self) -> None:
         """Experiment #30: valuation gauges (drawdown-from-ATH & 200d MA) as a
         Finanzradar overlay. Uses the native broker price path (no ccxt).
@@ -1113,6 +1146,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment30_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment30, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment31_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment31, daemon=True).start()
 
         while self._running:
             try:
