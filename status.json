@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-24 03:09:46",
+  "updated_utc": "2026-09-24 04:10:10",
   "alive": true,
   "state": "active",
-  "uptime_hours": 23.2,
+  "uptime_hours": 24.2,
   "open_positions": 8,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
+  "trades_today": 2,
+  "daily_pnl_usd": -1.64,
   "realized_pnl_usd": -6061.89,
-  "unrealized_pnl_usd": 41.15,
-  "total_pnl_usd": -6020.74,
-  "equity_usd": 62464.25,
+  "unrealized_pnl_usd": 20.46,
+  "total_pnl_usd": -6041.43,
+  "equity_usd": 62443.56,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 10.51
+      "unrealized_usd": 14.29
     },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 9.56
+      "unrealized_usd": 12.2
     },
     {
       "symbol": "JNJ",
@@ -34,19 +34,19 @@
       "symbol": "PPLT",
       "side": "sell",
       "qty": 197.0,
-      "unrealized_usd": 3.94
+      "unrealized_usd": -17.73
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.1448,
-      "unrealized_usd": 21.55
+      "unrealized_usd": 16.87
     },
     {
       "symbol": "TLT",
       "side": "sell",
       "qty": 38.0,
-      "unrealized_usd": 11.58
+      "unrealized_usd": 10.82
     },
     {
       "symbol": "XLV",
