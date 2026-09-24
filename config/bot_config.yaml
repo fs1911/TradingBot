@@ -47,7 +47,7 @@ bot:
 
   run_experiment31_on_start: false  # Exp #31 done (2026-09-24): #30 signal NOT robust — zone reached 7/13 in 6y, excess positive 6/7 but t>2 in 0/7, both halves 2/7, ~15 episodes mostly 2022. Dip-reserve beats DCA only 5/13 (cash drag). Needs decades of data
 
-  run_experiment32_on_start: true   # Exp #32: decades of index history (Stooq→Yahoo, 20s timeout) — drawdown signal at -20/-35/-50% + SMA200/12m-momentum vs buy&hold over many cycles
+  run_experiment32_on_start: false  # Exp #32 done (2026-09-24, Yahoo 17-57y): drawdown BUY signal refuted (-35%: excess 5/9, t>2 2/9; Nasdaq/Nikkei/Gold/BTC negative); dip-reserve beats DCA 0/9. SMA200 filter cuts max drawdown 9/9, Sharpe 6/9, but lower CAGR, 0/9 beat B&H — risk tool, not alpha
 
 experiment32:
   horizon: 90
