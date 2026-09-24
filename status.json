@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-24 14:27:50",
+  "updated_utc": "2026-09-24 15:28:31",
   "alive": true,
   "state": "active",
-  "uptime_hours": 0.0,
+  "uptime_hours": 1.0,
   "open_positions": 8,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5882.12,
-  "unrealized_pnl_usd": 161.33,
-  "total_pnl_usd": -5720.79,
-  "equity_usd": 62764.2,
-  "market_trend": "neutral",
+  "trades_today": 2,
+  "daily_pnl_usd": 223.66,
+  "realized_pnl_usd": -5701.38,
+  "unrealized_pnl_usd": 65.19,
+  "total_pnl_usd": -5636.19,
+  "equity_usd": 62848.8,
+  "market_trend": "bearish",
   "positions": [
     {
-      "symbol": "AVAX/USD",
+      "symbol": "BTC/USD",
       "side": "buy",
-      "qty": 308.0036,
-      "unrealized_usd": 42.8
+      "qty": 0.0369,
+      "unrealized_usd": -23.68
     },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 20.78
-    },
-    {
-      "symbol": "LINK/USD",
-      "side": "buy",
-      "qty": 253.5627,
-      "unrealized_usd": 89.22
+      "unrealized_usd": 33.76
     },
     {
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -5.34
+      "unrealized_usd": -8.04
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 866.0,
-      "unrealized_usd": 4.33
+      "unrealized_usd": 8.66
     },
     {
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": 5.46
+      "unrealized_usd": 10.92
     },
     {
       "symbol": "RIVN",
       "side": "sell",
       "qty": 206.0,
-      "unrealized_usd": -11.33
+      "unrealized_usd": 19.57
+    },
+    {
+      "symbol": "SLV",
+      "side": "sell",
+      "qty": 55.0,
+      "unrealized_usd": -3.3
     },
     {
       "symbol": "XLY",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": 15.4
+      "unrealized_usd": 27.3
     }
   ]
 }
