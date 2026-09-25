@@ -1,4 +1,4 @@
-# Experiment #39 — PutWrite + trend: really better, or only less risky? (2026-09-25 07:10 UTC)
+# Experiment #39 — PutWrite + trend: really better, or only less risky? (2026-09-25 07:13 UTC)
 
 Daily 1997-08-01 → 2026-09-24. Sharpe = excess over 13-week T-bill. Bootstrap: paired 20-day blocks, 5000 draws; haircut p < 0.00032.
 
