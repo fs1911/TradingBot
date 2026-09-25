@@ -57,7 +57,7 @@ bot:
   run_experiment37_on_start: false  # Exp #37 done (2026-09-25): VRP real & persistent — VIX-realised +4.0pts, 84% months, t+12.6; 81% retained after 2003 publication (vs 2-34% for #36 anomalies). PutWrite Sharpe 0.84 vs 0.73, maxDD -33 vs -51%, alpha +2.3%/y t2.2 (not after haircut), skew -1.7. SVXY -94% (Feb 2018)
   run_experiment38_on_start: false  # Exp #38 done (2026-09-25): PutWrite+trend daily Sharpe 0.98 (S&P TR 0.58), maxDD -16% vs -55%, crash tail removed (dot-com +5%, GFC -1%), but CAGR 7.0% vs 9.8%; rigor 0/4 on return differentials. Risk-adjusted best of project; needs Sharpe-difference + equal-risk test
   run_experiment39_on_start: false  # Exp #39 done (2026-09-25): excess Sharpe 0.66 vs 0.45, bootstrap p=0.09 (CI incl. 0), 0/3 after haircut. 2x lev 10.1% vs 9.4% (DD -31 vs -55%), equal-vol 11.9% but gap/margin risk. Robust 15/24; start 2012 0/6. Plausible, not proven
-  run_experiment40_on_start: true   # Exp #40: multi-asset trend following (Faber GTAA, TSMOM L/S + long-only, 60/40 with trend) on broad ETF (2006+) and long mutual-fund (1987+) universes
+  run_experiment40_on_start: false  # Exp #40 done (2026-09-25): STRONGEST FIND. Multi-asset TSMOM L/S excess significant after haircut in both universes (walk-fwd 54/58%), corr to equity +0.09/+0.15, crisis alpha in slow bears (2008 +29/+34%) but fails fast crashes (1987, 2020). Post-2012 Sharpe -25-30% but positive. 60/40 equity+TSMOM Sharpe +0.13/+0.22 (CI excl. 0), maxDD -31 vs -55%. Needs shorts+leverage
 
 experiment40:
   universes:
