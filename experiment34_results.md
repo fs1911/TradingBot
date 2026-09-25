@@ -1,4 +1,4 @@
-# Experiment #34 — Shiller CAPE over ~150 years (2026-09-25 05:49 UTC)
+# Experiment #34 — Shiller CAPE over ~150 years (2026-09-25 05:51 UTC)
 
 Source: https://raw.githubusercontent.com/datasets/s-and-p-500/main/data/data.csv. Months with price/CPI: 1868, with CAPE: 1713 (1881-01 → 2023-09). All returns REAL (after inflation), dividends reinvested.
 
