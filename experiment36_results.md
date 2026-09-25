@@ -1,4 +1,4 @@
-# Experiment #36 — calendar anomalies over ~95 years, before vs after publication (2026-09-25 06:21 UTC)
+# Experiment #36 — calendar anomalies over ~95 years, before vs after publication (2026-09-25 06:23 UTC)
 
 S&P 500 daily, 1928-01-03 → 2026-09-24 (24798 days, price index). Values: mean daily return in the window vs outside (basis points). Haircut: two-sided p < 0.00037 (α/135).
 
