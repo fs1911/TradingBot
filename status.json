@@ -1,52 +1,64 @@
 {
-  "updated_utc": "2026-09-25 12:53:57",
+  "updated_utc": "2026-09-25 13:54:56",
   "alive": true,
   "state": "active",
-  "uptime_hours": 0.0,
-  "open_positions": 6,
-  "trades_today": 0,
-  "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5999.12,
-  "unrealized_pnl_usd": -66.99,
-  "total_pnl_usd": -6066.11,
-  "equity_usd": 62418.88,
-  "market_trend": "neutral",
+  "uptime_hours": 1.0,
+  "open_positions": 8,
+  "trades_today": 1,
+  "daily_pnl_usd": -58.68,
+  "realized_pnl_usd": -6111.31,
+  "unrealized_pnl_usd": 8.97,
+  "total_pnl_usd": -6102.34,
+  "equity_usd": 62382.65,
+  "market_trend": "bullish",
   "positions": [
+    {
+      "symbol": "AMD",
+      "side": "buy",
+      "qty": 4.9176,
+      "unrealized_usd": 9.24
+    },
+    {
+      "symbol": "GOOGL",
+      "side": "buy",
+      "qty": 9.0707,
+      "unrealized_usd": -0.77
+    },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 2.19
+      "unrealized_usd": 5.6
     },
     {
-      "symbol": "MSFT",
-      "side": "sell",
-      "qty": 6.0,
-      "unrealized_usd": -30.42
+      "symbol": "JPM",
+      "side": "buy",
+      "qty": 9.1481,
+      "unrealized_usd": -4.39
+    },
+    {
+      "symbol": "LTC/USD",
+      "side": "buy",
+      "qty": 44.6854,
+      "unrealized_usd": -26.65
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 866.0,
-      "unrealized_usd": -8.49
-    },
-    {
-      "symbol": "NVDA",
-      "side": "sell",
-      "qty": 14.0,
-      "unrealized_usd": -36.96
+      "unrealized_usd": 4.33
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.0834,
-      "unrealized_usd": 5.85
+      "unrealized_usd": 8.3
     },
     {
       "symbol": "XLY",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": 0.84
+      "unrealized_usd": 13.3
     }
   ]
 }
