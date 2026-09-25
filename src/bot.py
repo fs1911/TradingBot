@@ -233,6 +233,35 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment40(self) -> None:
+        """Experiment #40: trend following across asset classes (broad ETF universe and
+        long mutual-fund universe). Yahoo adjclose, 20s timeouts.
+        → experiment40_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_40 import run_experiment40_report
+            cfg = self.bot_cfg.get("experiment40", {})
+            universes = {}
+            for name, spec in cfg.get("universes", {}).items():
+                prices = {t: fetch_yahoo_daily(t, "1970-01-01", timeout=20)
+                          for t in spec.get("tickers", [])}
+                universes[name] = (prices, spec.get("equity", ""))
+            irx = fetch_yahoo_daily("^IRX", "1970-01-01", timeout=20)
+            report = run_experiment40_report(universes, irx)
+            self.heartbeat._put_file("experiment40_results.md", report.encode(),
+                                     "Experiment #40: multi-asset trend following")
+            logger.info("Experiment #40: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #40 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment40_results.md",
+                                         f"# Experiment #40 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #40 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment39(self) -> None:
         """Experiment #39: PutWrite + trend — Sharpe-difference bootstrap, equal-risk
         leverage, robustness grid. Yahoo, 20s timeouts. → experiment39_results.md."""
@@ -1381,6 +1410,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment39_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment39, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment40_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment40, daemon=True).start()
 
         while self._running:
             try:
