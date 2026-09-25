@@ -58,6 +58,7 @@ bot:
   run_experiment38_on_start: false  # Exp #38 done (2026-09-25): PutWrite+trend daily Sharpe 0.98 (S&P TR 0.58), maxDD -16% vs -55%, crash tail removed (dot-com +5%, GFC -1%), but CAGR 7.0% vs 9.8%; rigor 0/4 on return differentials. Risk-adjusted best of project; needs Sharpe-difference + equal-risk test
   run_experiment39_on_start: false  # Exp #39 done (2026-09-25): excess Sharpe 0.66 vs 0.45, bootstrap p=0.09 (CI incl. 0), 0/3 after haircut. 2x lev 10.1% vs 9.4% (DD -31 vs -55%), equal-vol 11.9% but gap/margin risk. Robust 15/24; start 2012 0/6. Plausible, not proven
   run_experiment40_on_start: false  # Exp #40 done (2026-09-25): STRONGEST FIND. Multi-asset TSMOM L/S excess significant after haircut in both universes (walk-fwd 54/58%), corr to equity +0.09/+0.15, crisis alpha in slow bears (2008 +29/+34%) but fails fast crashes (1987, 2020). Post-2012 Sharpe -25-30% but positive. 60/40 equity+TSMOM Sharpe +0.13/+0.22 (CI excl. 0), maxDD -31 vs -55%. Needs shorts+leverage
+  run_experiment41_on_start: true   # Exp #41: hardening #40 — horizons 1/3/6/12m + blends, costs 5/10/20bps x borrow 0/2/5%, leverage caps, realistic version, dry spells, 100-run random-sign placebo
 
 experiment40:
   universes:
