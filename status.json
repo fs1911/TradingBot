@@ -1,64 +1,64 @@
 {
-  "updated_utc": "2026-09-25 19:57:47",
+  "updated_utc": "2026-09-25 20:58:14",
   "alive": true,
   "state": "active",
-  "uptime_hours": 7.1,
+  "uptime_hours": 8.1,
   "open_positions": 8,
   "trades_today": 4,
   "daily_pnl_usd": -145.49,
-  "realized_pnl_usd": -6205.09,
-  "unrealized_pnl_usd": 86.61,
-  "total_pnl_usd": -6118.48,
-  "equity_usd": 62366.51,
+  "realized_pnl_usd": -6213.23,
+  "unrealized_pnl_usd": 117.65,
+  "total_pnl_usd": -6095.58,
+  "equity_usd": 62389.41,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 31802.0116,
-      "unrealized_usd": 3.18
+      "unrealized_usd": 16.01
     },
     {
       "symbol": "EEM",
       "side": "buy",
       "qty": 45.7085,
-      "unrealized_usd": -9.01
+      "unrealized_usd": -9.47
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 9.0707,
-      "unrealized_usd": -3.45
+      "unrealized_usd": -1.72
     },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 3.46
+      "unrealized_usd": 4.17
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 44.6854,
-      "unrealized_usd": 47.37
+      "unrealized_usd": 70.83
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 866.0,
-      "unrealized_usd": 26.07
+      "unrealized_usd": 18.62
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.0834,
-      "unrealized_usd": 14.38
+      "unrealized_usd": 14.18
     },
     {
       "symbol": "XLY",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": 4.62
+      "unrealized_usd": 5.04
     }
   ]
 }
