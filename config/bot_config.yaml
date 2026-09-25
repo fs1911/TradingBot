@@ -49,7 +49,7 @@ bot:
 
   run_experiment32_on_start: false  # Exp #32 done (2026-09-24, Yahoo 17-57y): drawdown BUY signal refuted (-35%: excess 5/9, t>2 2/9; Nasdaq/Nikkei/Gold/BTC negative); dip-reserve beats DCA 0/9. SMA200 filter cuts max drawdown 9/9, Sharpe 6/9, but lower CAGR, 0/9 beat B&H — risk tool, not alpha
 
-  run_experiment33_on_start: true   # Exp #33: trend filter judged fairly — T-bill cash yield (^IRX), total-return S&P (^SP500TR), SMA 150/200/250 + monthly check, trend-aware savings plans
+  run_experiment33_on_start: false  # Exp #33 done (2026-09-25): with T-bill cash + dividends SMA200 cuts max DD 8/8, Sharpe better 7/8, robust across 150/200/250/monthly (6/8), but CAGR higher only 2/8 (Nasdaq, Nikkei), rigor 0/8. Trend-DCA full halves DD 8/8 but more wealth only 3/8 (DAX/SMI/Nikkei); light ~= plain DCA. Insurance, not alpha
 
 experiment33:
   cash_yahoo: "^IRX"   # 13-week US T-bill yield (annualised %), proxy for all markets
