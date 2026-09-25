@@ -1,4 +1,4 @@
-# Experiment #35 — trend filter: real edge or averaging artefact? (2026-09-25 06:04 UTC)
+# Experiment #35 — trend filter: real edge or averaging artefact? (2026-09-25 06:06 UTC)
 
 Months: 1149 (1928-01 → 2023-09). Daily closes from 1927-12-30. Real returns, Shiller dividends, 10y-bond proxy; 10-month SMA signal, lagged one month.
 
