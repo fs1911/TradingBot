@@ -1,4 +1,4 @@
-# Experiment #33 — trend filter judged fairly (cash yield, dividends, robustness, savings plans) (2026-09-25 05:02 UTC)
+# Experiment #33 — trend filter judged fairly (cash yield, dividends, robustness, savings plans) (2026-09-25 05:04 UTC)
 
 Cash earns the 13-week US T-bill yield (^IRX, from 1970). For non-USD markets this is a proxy and flatters cash. Cells: CAGR / Sharpe / max drawdown. Rigor on (SMA200-with-cash − B&H).
 
@@ -24,7 +24,7 @@ Cash earns the 13-week US T-bill yield (^IRX, from 1970). For non-USD markets th
 | Russell 2000 | 5.95× / -56% | 5.86× / -56% | 3.23× / -39% |
 | DAX (TR) | 5.87× / -72% | 5.84× / -71% | 6.27× / -29% |
 | SMI | 2.41× / -63% | 2.42× / -61% | 2.55× / -43% |
-| Nikkei 225 | 6.37× / -86% | 6.37× / -86% | 9.69× / -51% |
+| Nikkei 225 | 6.37× / -86% | 6.37× / -86% | 9.68× / -51% |
 
 ---
 **Summary timing (with cash yield):** SMA200 beat B&H on CAGR in 2/8, on Sharpe in 7/8, on max drawdown in 8/8; all four variants beat B&H Sharpe in 6/8; full rigor pass 0/8.
