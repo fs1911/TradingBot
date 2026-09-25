@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - "logs/**"
       - "status.json"
+      # Experiment reports pushed by the bot must not redeploy it either: that
+      # restarted the bot, re-ran the experiment and looped (killing long runs).
+      - "experiment*_results.md"
 
 jobs:
   # ── Gate 1: tests must pass before anything touches the server ──────────────
