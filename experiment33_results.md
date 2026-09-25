@@ -1,4 +1,4 @@
-# Experiment #33 — trend filter judged fairly (cash yield, dividends, robustness, savings plans) (2026-09-25 05:04 UTC)
+# Experiment #33 — trend filter judged fairly (cash yield, dividends, robustness, savings plans) (2026-09-25 05:06 UTC)
 
 Cash earns the 13-week US T-bill yield (^IRX, from 1970). For non-USD markets this is a proxy and flatters cash. Cells: CAGR / Sharpe / max drawdown. Rigor on (SMA200-with-cash − B&H).
 
