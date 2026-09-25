@@ -233,6 +233,30 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment39(self) -> None:
+        """Experiment #39: PutWrite + trend — Sharpe-difference bootstrap, equal-risk
+        leverage, robustness grid. Yahoo, 20s timeouts. → experiment39_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_39 import run_experiment39_report
+            series = {"PUT": fetch_yahoo_daily("^PUT", "1986-01-01", timeout=20),
+                      "SP500TR": fetch_yahoo_daily("^SP500TR", "1987-12-01", timeout=20),
+                      "IRX": fetch_yahoo_daily("^IRX", "1986-01-01", timeout=20)}
+            report = run_experiment39_report(series)
+            self.heartbeat._put_file("experiment39_results.md", report.encode(),
+                                     "Experiment #39: is PutWrite+trend really better")
+            logger.info("Experiment #39: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #39 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment39_results.md",
+                                         f"# Experiment #39 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #39 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment38(self) -> None:
         """Experiment #38: PutWrite premium + 200d trend insurance combinations vs
         S&P 500 TR, with T-bill cash. Yahoo, 20s timeouts. → experiment38_results.md."""
@@ -1353,6 +1377,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment38_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment38, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment39_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment39, daemon=True).start()
 
         while self._running:
             try:
