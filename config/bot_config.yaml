@@ -55,6 +55,7 @@ bot:
   run_experiment35_on_start: false  # Exp #35 done (2026-09-25): #34 trend edge ~2/3 averaging artefact (autocorr +0.27 vs +0.08). True month-end: +0.65pp/y (p=0.56), 0% cash -1.8pp, 1928-49 -2.8pp. Drawdown reduction survives in all eras. Insurance, not alpha
   run_experiment36_on_start: false  # Exp #36 done (2026-09-25): calendar anomalies vanish after publication — pre: TOM t+6.3, monday t-6.1, pre-holiday t+6.4; post: 0/5 significant, effect 2-34% left, last 20y ~0. TOM-only strategy since 2007 +0.9%/y
   run_experiment37_on_start: false  # Exp #37 done (2026-09-25): VRP real & persistent — VIX-realised +4.0pts, 84% months, t+12.6; 81% retained after 2003 publication (vs 2-34% for #36 anomalies). PutWrite Sharpe 0.84 vs 0.73, maxDD -33 vs -51%, alpha +2.3%/y t2.2 (not after haircut), skew -1.7. SVXY -94% (Feb 2018)
+  run_experiment38_on_start: true   # Exp #38: PutWrite premium + 200d trend insurance combined (PUT+trend, 50/50 mixes) vs S&P TR, crises 2000/2008/2020/2022, rigor on differentials
 
 experiment33:
   cash_yahoo: "^IRX"   # 13-week US T-bill yield (annualised %), proxy for all markets
