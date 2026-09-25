@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-25 09:32:16",
+  "updated_utc": "2026-09-25 09:43:04",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
   "open_positions": 6,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -5930.19,
-  "unrealized_pnl_usd": -62.34,
-  "total_pnl_usd": -5992.53,
-  "equity_usd": 62492.46,
+  "realized_pnl_usd": -5930.31,
+  "unrealized_pnl_usd": -63.63,
+  "total_pnl_usd": -5993.94,
+  "equity_usd": 62491.05,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 0.65
+      "unrealized_usd": -1.11
     },
     {
       "symbol": "MSFT",
       "side": "sell",
       "qty": 6.0,
-      "unrealized_usd": -22.26
+      "unrealized_usd": -23.58
     },
     {
       "symbol": "NIO",
@@ -34,13 +34,13 @@
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": -51.8
+      "unrealized_usd": -50.26
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.0834,
-      "unrealized_usd": 7.97
+      "unrealized_usd": 8.22
     },
     {
       "symbol": "XLY",
