@@ -1,4 +1,4 @@
-# Experiment #33 — trend filter judged fairly (cash yield, dividends, robustness, savings plans) (2026-09-25 05:06 UTC)
+# Experiment #33 — trend filter judged fairly (cash yield, dividends, robustness, savings plans) (2026-09-25 05:09 UTC)
 
 Cash earns the 13-week US T-bill yield (^IRX, from 1970). For non-USD markets this is a proxy and flatters cash. Cells: CAGR / Sharpe / max drawdown. Rigor on (SMA200-with-cash − B&H).
 
@@ -12,7 +12,7 @@ Cash earns the 13-week US T-bill yield (^IRX, from 1970). For non-USD markets th
 | Russell 2000 | 39 | +8.1% / 0.47 / -60% | +5.8% / 0.49 / -41% | +5.8% / 0.46 / -41% | +5.5% / 0.46 / -36% | +5.9% / 0.49 / -42% | ❌ |
 | DAX (TR) | 39 | +8.0% / 0.47 / -73% | +8.0% / 0.62 / -35% | +8.4% / 0.62 / -30% | +6.6% / 0.53 / -36% | +8.0% / 0.61 / -45% | ❌ |
 | SMI | 36 | +6.3% / 0.44 / -56% | +5.7% / 0.57 / -40% | +6.7% / 0.64 / -32% | +5.9% / 0.60 / -30% | +5.2% / 0.51 / -38% | ❌ |
-| Nikkei 225 | 55 | +6.6% / 0.41 / -82% | +7.6% / 0.62 / -31% | +7.4% / 0.58 / -38% | +7.5% / 0.62 / -36% | +7.2% / 0.59 / -38% | ❌ |
+| Nikkei 225 | 55 | +6.5% / 0.41 / -82% | +7.6% / 0.62 / -31% | +7.4% / 0.58 / -38% | +7.5% / 0.62 / -36% | +7.2% / 0.59 / -38% | ❌ |
 
 ## Savings plans (monthly contribution 1) — final multiple / max drawdown
 | Asset | plain DCA | trend-DCA light | trend-DCA full |
