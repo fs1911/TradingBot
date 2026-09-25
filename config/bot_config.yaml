@@ -52,7 +52,7 @@ bot:
   run_experiment33_on_start: false  # Exp #33 done (2026-09-25): with T-bill cash + dividends SMA200 cuts max DD 8/8, Sharpe better 7/8, robust across 150/200/250/monthly (6/8), but CAGR higher only 2/8 (Nasdaq, Nikkei), rigor 0/8. Trend-DCA full halves DD 8/8 but more wealth only 3/8 (DAX/SMI/Nikkei); light ~= plain DCA. Insurance, not alpha
 
   run_experiment34_on_start: false  # Exp #34 done (2026-09-25, Shiller 1881-2023): CAPE predicts real returns consistently (10y cheapest +10.9%/y vs dearest +3.0%/y, sign stable pre/post 1950) but only borderline significant (n=14 at 10y) and NOT tradeable: CAPE-scaled allocation 5.0% vs 6.65% real. Trend filter 8.8% vs 6.65% real but on monthly-average prices (Working-effect bias) -> verify in #35
-  run_experiment35_on_start: true   # Exp #35: is the #34 trend-filter edge real? Same rules on Shiller monthly averages vs true month-end S&P closes since 1927
+  run_experiment35_on_start: false  # Exp #35 done (2026-09-25): #34 trend edge ~2/3 averaging artefact (autocorr +0.27 vs +0.08). True month-end: +0.65pp/y (p=0.56), 0% cash -1.8pp, 1928-49 -2.8pp. Drawdown reduction survives in all eras. Insurance, not alpha
 
 experiment33:
   cash_yahoo: "^IRX"   # 13-week US T-bill yield (annualised %), proxy for all markets
