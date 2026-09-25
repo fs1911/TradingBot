@@ -54,6 +54,7 @@ bot:
   run_experiment34_on_start: false  # Exp #34 done (2026-09-25, Shiller 1881-2023): CAPE predicts real returns consistently (10y cheapest +10.9%/y vs dearest +3.0%/y, sign stable pre/post 1950) but only borderline significant (n=14 at 10y) and NOT tradeable: CAPE-scaled allocation 5.0% vs 6.65% real. Trend filter 8.8% vs 6.65% real but on monthly-average prices (Working-effect bias) -> verify in #35
   run_experiment35_on_start: false  # Exp #35 done (2026-09-25): #34 trend edge ~2/3 averaging artefact (autocorr +0.27 vs +0.08). True month-end: +0.65pp/y (p=0.56), 0% cash -1.8pp, 1928-49 -2.8pp. Drawdown reduction survives in all eras. Insurance, not alpha
   run_experiment36_on_start: false  # Exp #36 done (2026-09-25): calendar anomalies vanish after publication — pre: TOM t+6.3, monday t-6.1, pre-holiday t+6.4; post: 0/5 significant, effect 2-34% left, last 20y ~0. TOM-only strategy since 2007 +0.9%/y
+  run_experiment37_on_start: true   # Exp #37: volatility risk premium — VIX vs realised vol since 1990 (pre/post 2003, since 2018), PutWrite/BuyWrite/SVXY vs S&P TR with equity-beta-adjusted alpha
 
 experiment33:
   cash_yahoo: "^IRX"   # 13-week US T-bill yield (annualised %), proxy for all markets

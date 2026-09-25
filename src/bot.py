@@ -233,6 +233,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment37(self) -> None:
+        """Experiment #37: volatility risk premium — VIX vs realised vol since 1990,
+        PutWrite/BuyWrite/SVXY vs S&P 500 TR. Yahoo, 20s timeouts.
+        → experiment37_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_37 import run_experiment37_report
+            syms = {"VIX": ("^VIX", "1990-01-01"), "GSPC": ("^GSPC", "1989-11-01"),
+                    "SP500TR": ("^SP500TR", "1987-12-01"), "PUT": ("^PUT", "1986-01-01"),
+                    "BXM": ("^BXM", "1986-01-01"), "SVXY": ("SVXY", "2011-01-01")}
+            series = {k: fetch_yahoo_daily(sym, start, timeout=20) for k, (sym, start) in syms.items()}
+            report = run_experiment37_report(series)
+            self.heartbeat._put_file("experiment37_results.md", report.encode(),
+                                     "Experiment #37: volatility risk premium")
+            logger.info("Experiment #37: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #37 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment37_results.md",
+                                         f"# Experiment #37 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #37 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment36(self) -> None:
         """Experiment #36: calendar anomalies on daily S&P 500 since 1927, before vs
         after publication. 20s timeout. → experiment36_results.md."""
@@ -1295,6 +1321,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment36_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment36, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment37_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment37, daemon=True).start()
 
         while self._running:
             try:
