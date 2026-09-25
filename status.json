@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-25 06:09:10",
+  "updated_utc": "2026-09-25 06:11:26",
   "alive": true,
   "state": "active",
   "uptime_hours": 0.0,
@@ -7,9 +7,9 @@
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -5897.73,
-  "unrealized_pnl_usd": -55.11,
-  "total_pnl_usd": -5952.84,
-  "equity_usd": 62532.15,
+  "unrealized_pnl_usd": -56.93,
+  "total_pnl_usd": -5954.66,
+  "equity_usd": 62530.33,
   "market_trend": "neutral",
   "positions": [
     {
@@ -40,7 +40,7 @@
       "symbol": "NVDA",
       "side": "sell",
       "qty": 14.0,
-      "unrealized_usd": -31.64
+      "unrealized_usd": -33.46
     },
     {
       "symbol": "SPY",
