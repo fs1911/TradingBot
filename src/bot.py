@@ -233,6 +233,28 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment36(self) -> None:
+        """Experiment #36: calendar anomalies on daily S&P 500 since 1927, before vs
+        after publication. 20s timeout. → experiment36_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_36 import run_experiment36_report
+            close = fetch_yahoo_daily("^GSPC", "1927-12-01", timeout=20)
+            report = run_experiment36_report(close)
+            self.heartbeat._put_file("experiment36_results.md", report.encode(),
+                                     "Experiment #36: calendar anomalies before/after publication")
+            logger.info("Experiment #36: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #36 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment36_results.md",
+                                         f"# Experiment #36 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #36 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment35(self) -> None:
         """Experiment #35: trend filter on Shiller monthly averages vs true month-end
         S&P 500 closes since 1927 (Working-effect check). 20s timeouts.
@@ -1269,6 +1291,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment35_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment35, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment36_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment36, daemon=True).start()
 
         while self._running:
             try:
