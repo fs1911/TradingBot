@@ -1,64 +1,58 @@
 {
-  "updated_utc": "2026-09-25 14:55:29",
+  "updated_utc": "2026-09-25 15:55:40",
   "alive": true,
   "state": "active",
-  "uptime_hours": 2.0,
-  "open_positions": 8,
-  "trades_today": 2,
-  "daily_pnl_usd": -76.24,
-  "realized_pnl_usd": -6130.66,
-  "unrealized_pnl_usd": 9.19,
-  "total_pnl_usd": -6121.47,
-  "equity_usd": 62363.52,
+  "uptime_hours": 3.0,
+  "open_positions": 7,
+  "trades_today": 3,
+  "daily_pnl_usd": -118.73,
+  "realized_pnl_usd": -6180.65,
+  "unrealized_pnl_usd": 62.81,
+  "total_pnl_usd": -6117.84,
+  "equity_usd": 62367.15,
   "market_trend": "bearish",
   "positions": [
-    {
-      "symbol": "AMD",
-      "side": "buy",
-      "qty": 4.9176,
-      "unrealized_usd": -19.84
-    },
     {
       "symbol": "AMZN",
       "side": "sell",
       "qty": 12.0,
-      "unrealized_usd": -0.38
+      "unrealized_usd": -11.72
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 9.0707,
-      "unrealized_usd": -10.34
+      "unrealized_usd": -4.35
     },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 17.48
+      "unrealized_usd": 12.53
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 44.6854,
-      "unrealized_usd": -16.11
+      "unrealized_usd": 26.81
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 866.0,
-      "unrealized_usd": 12.99
+      "unrealized_usd": 21.65
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.0834,
-      "unrealized_usd": 1.03
+      "unrealized_usd": 2.22
     },
     {
       "symbol": "XLY",
       "side": "sell",
       "qty": 28.0,
-      "unrealized_usd": 24.36
+      "unrealized_usd": 15.68
     }
   ]
 }
