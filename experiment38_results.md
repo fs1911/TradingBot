@@ -1,4 +1,4 @@
-# Experiment #38 — volatility premium + trend insurance combined (2026-09-25 06:57 UTC)
+# Experiment #38 — volatility premium + trend insurance combined (2026-09-25 06:59 UTC)
 
 Daily, 1997-05-21 → 2026-09-24 (7376 days). Cash = 13-week T-bill (^IRX); 5 bps per trend switch; 50/50 rebalanced daily.
 
