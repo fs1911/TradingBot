@@ -233,6 +233,28 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment34(self) -> None:
+        """Experiment #34: Shiller CAPE since 1871 — predictive power, CAPE-conditional
+        trend filter, CAPE-based allocation. 20s download timeout.
+        → experiment34_results.md."""
+        try:
+            from .backtest.experiments_34 import fetch_shiller, run_experiment34_report
+            df, src = fetch_shiller(timeout=20)
+            report = run_experiment34_report(df, src)
+            self.heartbeat._put_file("experiment34_results.md", report.encode(),
+                                     "Experiment #34: Shiller CAPE")
+            logger.info("Experiment #34: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #34 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment34_results.md",
+                                         f"# Experiment #34 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #34 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment33(self) -> None:
         """Experiment #33: trend filter with T-bill cash yield, dividends, SMA
         robustness and trend-aware savings plans. Long history via the #32 fetcher
@@ -1215,6 +1237,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment33_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment33, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment34_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment34, daemon=True).start()
 
         while self._running:
             try:
