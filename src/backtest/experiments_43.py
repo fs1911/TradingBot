@@ -204,7 +204,8 @@ def part_a(data: dict, n_trials: int) -> list:
     L.append("|---|--:|--:|--:|--:|--:|--:|--:|--:|:--:|--:|")
     mkt = mkt_x + rf
     rows = {"Market": mkt}
-    rows.update(long_only_tilts(data))
+    # some French files (BE-ME) start in 1926: evaluate every tilt on the common 1963+ window
+    rows.update({k: v.reindex(mkt.index) for k, v in long_only_tilts(data).items()})
     lv = rows.get("Low variance quintile")
     if lv is not None:
         d = pd.concat({"lv": lv, "rf": rf, "m": mkt}, axis=1).dropna()
