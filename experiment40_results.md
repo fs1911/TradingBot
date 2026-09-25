@@ -1,4 +1,4 @@
-# Experiment #40 — trend following across asset classes (2026-09-25 07:51 UTC)
+# Experiment #40 — trend following across asset classes (2026-09-25 07:54 UTC)
 
 Monthly rebalancing, total-return prices, cash = 13-week T-bill (^IRX), 5 bps per unit turnover. Haircut α/160. Published: MOP 2012.
 
