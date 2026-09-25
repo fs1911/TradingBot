@@ -233,6 +233,30 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment35(self) -> None:
+        """Experiment #35: trend filter on Shiller monthly averages vs true month-end
+        S&P 500 closes since 1927 (Working-effect check). 20s timeouts.
+        → experiment35_results.md."""
+        try:
+            from .backtest.experiments_34 import fetch_shiller
+            from .backtest.experiments_35 import fetch_yahoo_daily, run_experiment35_report
+            shiller, _ = fetch_shiller(timeout=20)
+            daily = fetch_yahoo_daily("^GSPC", "1927-12-01", timeout=20)
+            report = run_experiment35_report(shiller, daily)
+            self.heartbeat._put_file("experiment35_results.md", report.encode(),
+                                     "Experiment #35: averaging artefact check")
+            logger.info("Experiment #35: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #35 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment35_results.md",
+                                         f"# Experiment #35 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #35 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment34(self) -> None:
         """Experiment #34: Shiller CAPE since 1871 — predictive power, CAPE-conditional
         trend filter, CAPE-based allocation. 20s download timeout.
@@ -1241,6 +1265,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment34_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment34, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment35_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment35, daemon=True).start()
 
         while self._running:
             try:
