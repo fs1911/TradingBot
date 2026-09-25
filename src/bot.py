@@ -233,6 +233,64 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Benchmark failed: {e}")
 
+    def _run_experiment42(self) -> None:
+        """Experiment #42: chart-technical rules (Fibonacci & co.) vs a circular-shift
+        placebo across ~45 markets. Yahoo, 20s timeouts. → experiment42_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_42 import run_experiment42_report
+            cfg = self.bot_cfg.get("experiment42", {})
+            markets = {}
+            for name, (cls, sym) in cfg.get("markets", {}).items():
+                markets[name] = (cls, fetch_yahoo_daily(sym, "1927-12-01", timeout=20))
+            irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=20)
+            report = run_experiment42_report(markets, irx)
+            self.heartbeat._put_file("experiment42_results.md", report.encode(),
+                                     "Experiment #42: chart-technical rules vs placebo")
+            logger.info("Experiment #42: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #42 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment42_results.md",
+                                         f"# Experiment #42 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #42 failure traceback")
+            except Exception:
+                pass
+
+    def _run_experiment43(self) -> None:
+        """Experiment #43: Buffett factors — Kenneth French library (value, quality,
+        low-vol, intl) + own single-stock low-vol/low-beta/MAX test with placebo.
+        → experiment43_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_43 import (FILES, fetch_french, parse_french_monthly,
+                                                  run_experiment43_report)
+            french = {k: parse_french_monthly(fetch_french(f, timeout=30)) for k, f in FILES.items()}
+            cfg = self.bot_cfg.get("experiment43", {})
+            regions = {}
+            for name, spec in cfg.get("regions", {}).items():
+                tickers = list(spec.get("tickers", []))
+                if spec.get("from_experiment20"):
+                    tickers += list(self.bot_cfg.get("experiment20", {}).get("universe", []))
+                prices = {t: fetch_yahoo_daily(t, "1990-01-01", timeout=20) for t in tickers}
+                regions[name] = (prices, fetch_yahoo_daily(spec.get("index", "^GSPC"), "1990-01-01", timeout=20))
+            report = run_experiment43_report(french, regions)
+            self.heartbeat._put_file("experiment43_results.md", report.encode(),
+                                     "Experiment #43: Buffett factors")
+            logger.info("Experiment #43: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #43 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment43_results.md",
+                                         f"# Experiment #43 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #43 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment41(self) -> None:
         """Experiment #41: hardening #40 multi-asset trend following (horizons, costs,
         borrow fees, leverage caps, realistic version, dry spells, placebo). Uses the
@@ -1447,6 +1505,14 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment41_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment41, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment42_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment42, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment43_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment43, daemon=True).start()
 
         while self._running:
             try:

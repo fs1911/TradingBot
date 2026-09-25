@@ -59,6 +59,67 @@ bot:
   run_experiment39_on_start: false  # Exp #39 done (2026-09-25): excess Sharpe 0.66 vs 0.45, bootstrap p=0.09 (CI incl. 0), 0/3 after haircut. 2x lev 10.1% vs 9.4% (DD -31 vs -55%), equal-vol 11.9% but gap/margin risk. Robust 15/24; start 2012 0/6. Plausible, not proven
   run_experiment40_on_start: false  # Exp #40 done (2026-09-25): STRONGEST FIND. Multi-asset TSMOM L/S excess significant after haircut in both universes (walk-fwd 54/58%), corr to equity +0.09/+0.15, crisis alpha in slow bears (2008 +29/+34%) but fails fast crashes (1987, 2020). Post-2012 Sharpe -25-30% but positive. 60/40 equity+TSMOM Sharpe +0.13/+0.22 (CI excl. 0), maxDD -31 vs -55%. Needs shorts+leverage
   run_experiment41_on_start: false  # Exp #41 done (2026-09-25): trend REAL (placebo p=0.00, real 0.56/0.77 vs placebo max 0.27/0.36), longer horizons better, 9/9 cost cells positive but borrow fees bite. Realistic version (3/6/12, 10bps, 2% borrow, <=2x): broad Sharpe 0.31 (post-2012 0.03), long 0.54 — not sig after haircut. 60/40 gain CI excl 0 only in long universe
+  run_experiment42_on_start: true   # Exp #42: chart-technical rules (Fibonacci, support, breakouts, RSI, MACD, Bollinger, golden cross) vs circular-shift placebo, ~45 markets
+  run_experiment43_on_start: true   # Exp #43: Buffett factors — French data (value, quality, low-vol, 1963+, EU/intl) + own low-vol/low-beta/MAX single-stock test with placebo
+
+experiment42:
+  # {name: [asset class, Yahoo symbol]} — longest free histories; futures are continuous front-month (roll gaps)
+  markets:
+    "S&P 500": [Indizes, "^GSPC"]
+    "Dow Jones": [Indizes, "^DJI"]
+    "Nasdaq Comp.": [Indizes, "^IXIC"]
+    "Russell 2000": [Indizes, "^RUT"]
+    "DAX": [Indizes, "^GDAXI"]
+    "SMI": [Indizes, "^SSMI"]
+    "FTSE 100": [Indizes, "^FTSE"]
+    "CAC 40": [Indizes, "^FCHI"]
+    "Nikkei 225": [Indizes, "^N225"]
+    "Hang Seng": [Indizes, "^HSI"]
+    "Euro Stoxx 50": [Indizes, "^STOXX50E"]
+    "AAPL": [Einzelaktien, "AAPL"]
+    "MSFT": [Einzelaktien, "MSFT"]
+    "JPM": [Einzelaktien, "JPM"]
+    "XOM": [Einzelaktien, "XOM"]
+    "KO": [Einzelaktien, "KO"]
+    "IBM": [Einzelaktien, "IBM"]
+    "GE": [Einzelaktien, "GE"]
+    "INTC": [Einzelaktien, "INTC"]
+    "Nestlé": [Einzelaktien, "NESN.SW"]
+    "Novartis": [Einzelaktien, "NOVN.SW"]
+    "UBS": [Einzelaktien, "UBSG.SW"]
+    "SAP": [Einzelaktien, "SAP.DE"]
+    "Siemens": [Einzelaktien, "SIE.DE"]
+    "Gold": [Rohstoffe, "GC=F"]
+    "Silber": [Rohstoffe, "SI=F"]
+    "Rohöl WTI": [Rohstoffe, "CL=F"]
+    "Erdgas": [Rohstoffe, "NG=F"]
+    "Kupfer": [Rohstoffe, "HG=F"]
+    "Mais": [Rohstoffe, "ZC=F"]
+    "Weizen": [Rohstoffe, "ZW=F"]
+    "Soja": [Rohstoffe, "ZS=F"]
+    "EUR/USD": [Waehrungen, "EURUSD=X"]
+    "USD/JPY": [Waehrungen, "JPY=X"]
+    "GBP/USD": [Waehrungen, "GBPUSD=X"]
+    "USD/CHF": [Waehrungen, "CHF=X"]
+    "AUD/USD": [Waehrungen, "AUDUSD=X"]
+    "EUR/CHF": [Waehrungen, "EURCHF=X"]
+    "US-Staatsanl. 20J+": [Anleihen, "TLT"]
+    "US-Staatsanl. 7-10J": [Anleihen, "IEF"]
+    "Unternehmensanl.": [Anleihen, "LQD"]
+    "Hochzinsanl. (Fonds)": [Anleihen, "VWEHX"]
+    "Bitcoin": [Krypto, "BTC-USD"]
+    "Ethereum": [Krypto, "ETH-USD"]
+
+experiment43:
+  regions:
+    # US reuses experiment20 universe
+    "USA (92 Large Caps)": {index: "^GSPC", from_experiment20: true}
+    "Schweiz (SMI)":
+      index: "^SSMI"
+      tickers: [NESN.SW, NOVN.SW, ROG.SW, UBSG.SW, ZURN.SW, ABBN.SW, CFR.SW, SIKA.SW, LONN.SW, GIVN.SW, ALC.SW, HOLN.SW, SREN.SW, PGHN.SW, SLHN.SW, SCMN.SW, GEBN.SW, KNIN.SW, LOGN.SW, SOON.SW, SGSN.SW, SCHP.SW, STMN.SW, BARN.SW, EMSN.SW]
+    "Deutschland (DAX)":
+      index: "^GDAXI"
+      tickers: [SAP.DE, SIE.DE, ALV.DE, DTE.DE, MBG.DE, BMW.DE, BAS.DE, BAYN.DE, MUV2.DE, DBK.DE, ADS.DE, IFX.DE, DHL.DE, RWE.DE, EOAN.DE, VOW3.DE, HEN3.DE, BEI.DE, FRE.DE, MRK.DE, DB1.DE, CON.DE, HEI.DE, MTX.DE, SY1.DE, CBK.DE, HNR1.DE, RHM.DE, ENR.DE, ZAL.DE]
 
 experiment40:
   universes:
