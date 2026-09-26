@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-26 21:09:15",
+  "updated_utc": "2026-09-26 22:09:34",
   "alive": true,
   "state": "active",
-  "uptime_hours": 32.3,
-  "open_positions": 7,
+  "uptime_hours": 33.3,
+  "open_positions": 8,
   "trades_today": 8,
   "daily_pnl_usd": 128.65,
-  "realized_pnl_usd": -6124.93,
-  "unrealized_pnl_usd": -4.65,
-  "total_pnl_usd": -6129.58,
-  "equity_usd": 62355.41,
+  "realized_pnl_usd": -6131.18,
+  "unrealized_pnl_usd": 18.52,
+  "total_pnl_usd": -6112.66,
+  "equity_usd": 62372.33,
   "market_trend": "bullish",
   "positions": [
     {
@@ -31,6 +31,12 @@
       "unrealized_usd": 5.71
     },
     {
+      "symbol": "LINK/USD",
+      "side": "buy",
+      "qty": 221.7546,
+      "unrealized_usd": -5.81
+    },
+    {
       "symbol": "NIO",
       "side": "sell",
       "qty": 866.0,
@@ -40,7 +46,7 @@
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 25.603,
-      "unrealized_usd": -34.87
+      "unrealized_usd": -5.89
     },
     {
       "symbol": "SPY",
