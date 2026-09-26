@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-26 02:00:28",
+  "updated_utc": "2026-09-26 03:00:45",
   "alive": true,
   "state": "active",
-  "uptime_hours": 13.1,
-  "open_positions": 7,
+  "uptime_hours": 14.1,
+  "open_positions": 8,
   "trades_today": 1,
   "daily_pnl_usd": 95.38,
-  "realized_pnl_usd": -6127.15,
-  "unrealized_pnl_usd": 74.05,
-  "total_pnl_usd": -6053.1,
-  "equity_usd": 62431.89,
+  "realized_pnl_usd": -6133.41,
+  "unrealized_pnl_usd": 39.58,
+  "total_pnl_usd": -6093.83,
+  "equity_usd": 62391.16,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 31802.0116,
-      "unrealized_usd": 43.03
+      "unrealized_usd": 11.3
     },
     {
       "symbol": "EEM",
@@ -28,7 +28,7 @@
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 9.0707,
-      "unrealized_usd": -2.55
+      "unrealized_usd": -3.36
     },
     {
       "symbol": "IWM",
@@ -41,6 +41,12 @@
       "side": "sell",
       "qty": 866.0,
       "unrealized_usd": 17.32
+    },
+    {
+      "symbol": "SOL/USD",
+      "side": "buy",
+      "qty": 25.603,
+      "unrealized_usd": -1.95
     },
     {
       "symbol": "SPY",
