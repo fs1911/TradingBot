@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-27 13:14:06",
+  "updated_utc": "2026-09-27 14:14:27",
   "alive": true,
   "state": "active",
-  "uptime_hours": 48.3,
-  "open_positions": 10,
+  "uptime_hours": 49.3,
+  "open_positions": 11,
   "trades_today": 2,
   "daily_pnl_usd": 74.58,
-  "realized_pnl_usd": -6106.84,
-  "unrealized_pnl_usd": 34.25,
-  "total_pnl_usd": -6072.59,
-  "equity_usd": 62412.4,
+  "realized_pnl_usd": -6113.09,
+  "unrealized_pnl_usd": 53.95,
+  "total_pnl_usd": -6059.14,
+  "equity_usd": 62425.85,
   "market_trend": "bullish",
   "positions": [
     {
       "symbol": "BCH/USD",
       "side": "buy",
       "qty": 9.3124,
-      "unrealized_usd": -9.41
+      "unrealized_usd": 15.92
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0369,
-      "unrealized_usd": 12.72
+      "unrealized_usd": 21.67
     },
     {
       "symbol": "DOGE/USD",
@@ -49,10 +49,16 @@
       "unrealized_usd": 5.71
     },
     {
+      "symbol": "LINK/USD",
+      "side": "buy",
+      "qty": 219.4298,
+      "unrealized_usd": -3.84
+    },
+    {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 43.4859,
-      "unrealized_usd": -15.74
+      "unrealized_usd": -26.48
     },
     {
       "symbol": "NIO",
