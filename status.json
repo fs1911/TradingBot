@@ -1,22 +1,28 @@
 {
-  "updated_utc": "2026-09-28 05:19:29",
+  "updated_utc": "2026-09-28 06:19:47",
   "alive": true,
   "state": "active",
-  "uptime_hours": 64.4,
-  "open_positions": 8,
+  "uptime_hours": 65.4,
+  "open_positions": 9,
   "trades_today": 2,
   "daily_pnl_usd": -59.67,
-  "realized_pnl_usd": -6331.93,
-  "unrealized_pnl_usd": -124.73,
-  "total_pnl_usd": -6456.66,
-  "equity_usd": 62028.33,
+  "realized_pnl_usd": -6338.14,
+  "unrealized_pnl_usd": -175.61,
+  "total_pnl_usd": -6513.75,
+  "equity_usd": 61971.24,
   "market_trend": "bullish",
   "positions": [
+    {
+      "symbol": "BCH/USD",
+      "side": "buy",
+      "qty": 9.983,
+      "unrealized_usd": -17.97
+    },
     {
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 32852.3878,
-      "unrealized_usd": -17.57
+      "unrealized_usd": -48.65
     },
     {
       "symbol": "EEM",
@@ -28,31 +34,31 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 1.1588,
-      "unrealized_usd": -28.92
+      "unrealized_usd": -32.97
     },
     {
       "symbol": "GOOGL",
       "side": "buy",
       "qty": 9.0707,
-      "unrealized_usd": -22.4
+      "unrealized_usd": -25.04
     },
     {
       "symbol": "IWM",
       "side": "sell",
       "qty": 11.0,
-      "unrealized_usd": 22.98
+      "unrealized_usd": 19.13
     },
     {
       "symbol": "NIO",
       "side": "sell",
       "qty": 866.0,
-      "unrealized_usd": -51.96
+      "unrealized_usd": -43.3
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 4.0834,
-      "unrealized_usd": 1.81
+      "unrealized_usd": 1.85
     },
     {
       "symbol": "XLY",
