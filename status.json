@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-09-29 03:27:56",
+  "updated_utc": "2026-09-29 04:28:14",
   "alive": true,
   "state": "active",
-  "uptime_hours": 86.6,
+  "uptime_hours": 87.6,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -6419.2,
-  "unrealized_pnl_usd": -88.02,
-  "total_pnl_usd": -6507.22,
-  "equity_usd": 61977.77,
+  "unrealized_pnl_usd": -74.25,
+  "total_pnl_usd": -6493.45,
+  "equity_usd": 61991.54,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AMD",
       "side": "sell",
       "qty": 5.0,
-      "unrealized_usd": 30.65
+      "unrealized_usd": 33.15
     },
     {
       "symbol": "BCH/USD",
@@ -28,37 +28,37 @@
       "symbol": "DOGE/USD",
       "side": "buy",
       "qty": 32852.3878,
-      "unrealized_usd": -44.35
+      "unrealized_usd": -36.47
     },
     {
       "symbol": "GOOGL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": -7.87
+      "unrealized_usd": -7.15
     },
     {
       "symbol": "INTC",
       "side": "sell",
       "qty": 26.0,
-      "unrealized_usd": 64.08
+      "unrealized_usd": 73.44
     },
     {
       "symbol": "LTC/USD",
       "side": "buy",
       "qty": 43.7526,
-      "unrealized_usd": -124.43
+      "unrealized_usd": -130.87
     },
     {
       "symbol": "NFLX",
       "side": "sell",
       "qty": 44.0,
-      "unrealized_usd": 44.36
+      "unrealized_usd": 42.16
     },
     {
       "symbol": "SOFI",
       "side": "sell",
       "qty": 195.0,
-      "unrealized_usd": 1.95
+      "unrealized_usd": 3.9
     }
   ]
 }
