@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-09-30 20:29:04",
+  "updated_utc": "2026-09-30 21:29:47",
   "alive": true,
   "state": "active",
-  "uptime_hours": 7.1,
+  "uptime_hours": 8.1,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -7181.01,
-  "unrealized_pnl_usd": -272.1,
-  "total_pnl_usd": -7453.11,
-  "equity_usd": 61031.88,
+  "realized_pnl_usd": -7179.94,
+  "unrealized_pnl_usd": -280.81,
+  "total_pnl_usd": -7460.75,
+  "equity_usd": 61024.24,
   "market_trend": "neutral",
   "positions": [
     {
@@ -28,19 +28,19 @@
       "symbol": "EEM",
       "side": "buy",
       "qty": 71.2305,
-      "unrealized_usd": -7.12
+      "unrealized_usd": -1.42
     },
     {
       "symbol": "EFA",
       "side": "buy",
       "qty": 84.5997,
-      "unrealized_usd": -66.14
+      "unrealized_usd": -61.07
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -1.06
+      "unrealized_usd": 1.09
     },
     {
       "symbol": "FXY",
@@ -52,41 +52,41 @@
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -3.22
+      "unrealized_usd": -3.21
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": -19.31
+      "unrealized_usd": -20.31
     },
     {
       "symbol": "SLV",
       "side": "buy",
       "qty": 17.4238,
-      "unrealized_usd": -0.78
+      "unrealized_usd": 0.17
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 13.0098,
-      "unrealized_usd": -64.01
+      "unrealized_usd": -70.9
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": -23.99
+      "unrealized_usd": -27.01
     },
     {
       "symbol": "UUP",
       "side": "buy",
       "qty": 389.6716,
-      "unrealized_usd": 31.17
+      "unrealized_usd": 19.48
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -7448.2,
+  "journal_gap_usd": -7447.13,
   "broker_fees_usd": 6278.29,
   "broker_fee_entries": 9586
 }
