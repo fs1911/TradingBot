@@ -62,6 +62,7 @@ bot:
   run_experiment41_on_start: false  # Exp #41 done (2026-09-25): trend REAL (placebo p=0.00, real 0.56/0.77 vs placebo max 0.27/0.36), longer horizons better, 9/9 cost cells positive but borrow fees bite. Realistic version (3/6/12, 10bps, 2% borrow, <=2x): broad Sharpe 0.31 (post-2012 0.03), long 0.54 — not sig after haircut. 60/40 gain CI excl 0 only in long universe
   run_experiment42_on_start: false  # Exp #42 done (2026-09-25): 0/13 chart rules beat placebo after haircut. Fibonacci 38/50/61.8% + support bounce NEGATIVE timing everywhere (worse than random), 0-1/44 markets beat own 95%. Breakout 20/10 p=0.016, RSI14 p=0.036 not sig. Net Sharpe < B&H in median for all 13. Hints (not haircut-proof): RSI/Bollinger short-term reversal in single stocks, breakouts in crypto/bonds
   run_experiment43_on_start: false  # Exp #43 done (2026-09-25): French 1963+: only momentum sig after α/190 (t 4.6; intl t 4-4.7, still strong 2010+). Value halved post-1992, 0 since 2010 (US). Quality RMW most persistent (post-pub +2.6%, intl t~4). Long-only: low-var ΔSharpe +0.12 (p .02, 2010+ +0.17, DD -42 vs -50), Buffett mix +0.15 CI [+.05,+.23] p .003 — not sig after haircut. Own single-stock test 0/9 (survivorship dominates)
+  run_experiment44_on_start: true   # Exp #44: backtest of the EXACT live portfolio rule (trend_portfolio.py) incl. BTC/ETH, costs, sensitivity
 
 experiment42:
   # {name: [asset class, Yahoo symbol]} — longest free histories; futures are continuous front-month (roll gaps)
@@ -388,7 +389,26 @@ rotation_baskets:
 
 broker: "alpaca"
 
-active_strategies:
+# ── Portfolio mode (2026-09-30): replaces the intraday strategies below ─────────
+# Research verdict after 43 experiments: short-term chart rules have no edge (#42),
+# crypto fees ate the rest (CFEE 6.3k since 27.07). The only approach that held up is
+# multi-asset trend following (#40/#41). Long-only version, monthly rebalance, no
+# leverage. Expectation (#40, 2006–2025): ~5%/yr, vol ~6.5%, maxDD ~−20% (S&P −55%),
+# weak since 2012 — crash insurance, not a money machine.
+portfolio:
+  enabled: false               # switched on after Exp #44 has checked this exact rule
+  calendar: SPY                 # trading calendar for aligning ETFs and 24/7 crypto
+  cash_symbol: BIL              # T-bill ETF, only used as the cash hurdle (not traded)
+  universe: [SPY, EFA, EEM, IWM, VNQ, SHY, IEF, TLT, LQD, HYG, TIP, GLD, SLV, DBC, USO, UNG, DBA, UUP, FXE, FXY, FXF, BTC/USD, ETH/USD]
+  horizons_days: [91, 182, 365] # 3 / 6 / 12 months; signal = mean of signs, long-only
+  target_vol: 0.10              # ex-ante portfolio volatility target
+  max_gross: 1.0                # never more than 100% invested (no leverage)
+  max_weight: 0.25              # per asset
+  caps: {"BTC/USD": 0.10, "ETH/USD": 0.10}
+  min_trade_usd: 200            # skip small adjustments (entries/exits always execute)
+  min_trade_pct: 0.01
+
+active_strategies:   # inactive while portfolio.enabled is true
   - "macd_momentum"
   - "vwap_reversion"
   - "supertrend"

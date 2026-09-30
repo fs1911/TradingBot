@@ -115,11 +115,15 @@ class AlpacaBroker(BaseBroker):
         start = end - timedelta(minutes=minutes_per_bar * limit * 1.5)
 
         if self._is_crypto(symbol):
-            req = CryptoBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit)
+            # No server-side limit: Alpaca returns bars ascending FROM start, so a
+            # limit cuts off the NEWEST bars. Crypto trades 24/7, the 1.5× window
+            # holds more bars than `limit`, and the bot saw candles ~37 h old.
+            # Fetch the whole window and keep the last `limit` bars below.
+            req = CryptoBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end)
             bars = self._crypto_data.get_crypto_bars(req).df
         else:
             # feed="iex" uses the free IEX data feed (SIP requires paid subscription)
-            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, limit=limit, feed="iex")
+            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf, start=start, end=end, feed="iex")
             bars = self._data.get_stock_bars(req).df
 
         if bars.empty:
@@ -133,7 +137,7 @@ class AlpacaBroker(BaseBroker):
         bars = bars[["datetime", "open", "high", "low", "close", "volume"]].copy()
         bars["datetime"] = pd.to_datetime(bars["datetime"])
         bars = bars.set_index("datetime").sort_index()
-        return bars
+        return bars.tail(limit)
 
     def place_order(self, order: Order) -> Order:
         side = AlpacaSide.BUY if order.side == OrderSide.BUY else AlpacaSide.SELL

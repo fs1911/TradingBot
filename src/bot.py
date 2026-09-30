@@ -49,6 +49,8 @@ from .monitoring.reporter import PerformanceReporter
 from .monitoring.telegram_notifier import TelegramNotifier
 from .monitoring.auto_tuner import AutoTuner
 from .monitoring.journal_sync import JournalSyncer
+from .strategies.trend_portfolio import (build_panel, target_weights, rebalance_orders,
+                                         rebalance_due)
 from .monitoring.trade_state import (plausible_entry, save_open_trades, load_open_trades,
                                      sanitize_journal, trade_fee, journal_pnl_since)
 
@@ -157,6 +159,8 @@ class TradingBot:
         self._market_trend: str = "neutral"       # Updated each tick from SPY
         self._cooldown_path = Path(__file__).parent.parent / "logs" / "sl_cooldowns.json"
         self._open_trades_path = Path(__file__).parent.parent / "logs" / "open_trades.json"
+        self._portfolio_state_path = Path(__file__).parent.parent / "logs" / "portfolio_state.json"
+        self._portfolio_log_path = Path(__file__).parent.parent / "logs" / "portfolio_rebalances.csv"
         self._sl_cooldown: dict[str, datetime] = self._load_sl_cooldowns()
 
         # Graceful shutdown
@@ -271,6 +275,35 @@ class TradingBot:
                 self.heartbeat._put_file("experiment42_results.md",
                                          f"# Experiment #42 — FAILED\n\n```\n{tb}\n```\n".encode(),
                                          "Experiment #42 failure traceback")
+            except Exception:
+                pass
+
+    def _run_experiment44(self) -> None:
+        """Experiment #44: backtest of the exact live trend-portfolio rule on Yahoo
+        total-return prices. → experiment44_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_44 import run_experiment44_report
+            cfg = self.bot_cfg.get("portfolio", {})
+            universe = list(cfg.get("universe", []))
+            smap = {u: u.replace("/", "-") for u in universe}
+            syms = [smap[u] for u in universe] + [cfg.get("cash_symbol", "BIL"), cfg.get("calendar", "SPY")]
+            prices = {y: fetch_yahoo_daily(y, "1990-01-01", timeout=20) for y in dict.fromkeys(syms)}
+            report = run_experiment44_report(prices, universe, smap, cfg.get("cash_symbol", "BIL"),
+                                             cfg.get("calendar", "SPY"),
+                                             tuple(cfg.get("horizons_days", (91, 182, 365))),
+                                             cfg.get("target_vol", 0.10), cfg.get("caps", {}))
+            self.heartbeat._put_file("experiment44_results.md", report.encode(),
+                                     "Experiment #44: live trend-portfolio backtest")
+            logger.info("Experiment #44: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #44 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment44_results.md",
+                                         f"# Experiment #44 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #44 failure traceback")
             except Exception:
                 pass
 
@@ -1529,6 +1562,10 @@ class TradingBot:
             import threading
             threading.Thread(target=self._run_experiment43, daemon=True).start()
 
+        if self.bot_cfg.get("bot", {}).get("run_experiment44_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment44, daemon=True).start()
+
         while self._running:
             try:
                 self._tick()
@@ -1559,6 +1596,21 @@ class TradingBot:
 
         # Hourly heartbeat — makes "is the bot alive & trading?" observable anytime
         self._maybe_heartbeat(now, account)
+
+        # Portfolio mode (multi-asset trend, monthly): replaces the intraday
+        # strategies and their SL/TP/time exits entirely.
+        if self.bot_cfg.get("portfolio", {}).get("enabled", False):
+            try:
+                market_open = self.broker.is_market_open()
+            except Exception as e:
+                logger.warning(f"Market open check failed ({e}) — skipping portfolio check")
+                market_open = False
+            try:
+                self._portfolio_tick(now, account, market_open)
+            except Exception as e:
+                logger.error(f"Portfolio tick failed: {e}", exc_info=True)
+            self._daily_housekeeping(now, account)
+            return
 
         # Auto-heal paused/stopped states — bot recovers without user intervention
         self._auto_recover()
@@ -1592,6 +1644,10 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Position management error: {e}")
 
+        self._daily_housekeeping(now, account)
+
+    def _daily_housekeeping(self, now: datetime, account) -> None:
+        """Daily report, anomaly check, journal sync, morning report."""
         # Daily report at 20:00 UTC (22:00 Swiss time) — after US market close
         if now.hour == 20 and now.minute < 2:
             today = now.strftime("%Y-%m-%d")
@@ -1619,6 +1675,115 @@ class TradingBot:
             if self._last_morning_report != today:
                 self._last_morning_report = today
                 self._send_morning_report()
+
+    # ── Portfolio mode ────────────────────────────────────────────────────────
+
+    def _load_portfolio_state(self) -> dict:
+        try:
+            return json.loads(self._portfolio_state_path.read_text())
+        except Exception:
+            return {}
+
+    def _save_portfolio_state(self, state: dict) -> None:
+        try:
+            self._portfolio_state_path.parent.mkdir(exist_ok=True)
+            self._portfolio_state_path.write_text(json.dumps(state, indent=1))
+        except Exception as e:
+            logger.warning(f"Could not save portfolio state: {e}")
+
+    def _place_qty(self, symbol: str, qty: float) -> bool:
+        """Market order for a signed qty. If a fractional ETF order is rejected,
+        retry with whole shares."""
+        side = OrderSide.BUY if qty > 0 else OrderSide.SELL
+        q = round(abs(qty), 6)
+        for attempt in (q, float(math.floor(q))):
+            if attempt <= 0:
+                break
+            try:
+                order = self.broker.place_order(Order(symbol=symbol, side=side, qty=attempt,
+                                                      order_type=OrderType.MARKET))
+                if order.order_id:
+                    return True
+            except Exception as e:
+                logger.warning(f"Portfolio order {side.value} {attempt} {symbol} failed: {e}")
+            if "/" in symbol:
+                break
+        return False
+
+    def _portfolio_tick(self, now: datetime, account, market_open: bool) -> None:
+        """Monthly rebalance of the multi-asset trend portfolio."""
+        cfg = self.bot_cfg.get("portfolio", {})
+        state = self._load_portfolio_state()
+        if not rebalance_due(now, state.get("last_month"), market_open):
+            return
+        universe = list(cfg.get("universe", []))
+        cash_sym = cfg.get("cash_symbol", "BIL")
+        calendar = cfg.get("calendar", "SPY")
+        closes = {}
+        for sym in dict.fromkeys(universe + [cash_sym, calendar]):
+            try:
+                df = self.broker.get_ohlcv(sym, "1Day", limit=400)
+                if not df.empty:
+                    closes[sym] = df["close"]
+            except Exception as e:
+                logger.warning(f"Portfolio: no daily data for {sym}: {e}")
+        panel = build_panel(closes, calendar)
+        tradable = [c for c in universe if c in panel.columns]
+        if panel.empty or len(tradable) < max(1, (len(universe) + 1) // 2):
+            logger.error(f"Portfolio: only {len(tradable)}/{len(universe)} assets with data — no rebalance")
+            return
+        cols = tradable + ([cash_sym] if cash_sym in panel.columns else [])
+        w = target_weights(panel[cols], cash_col=cash_sym,
+                           horizons=tuple(cfg.get("horizons_days", (91, 182, 365))),
+                           target_vol=cfg.get("target_vol", 0.10),
+                           max_gross=cfg.get("max_gross", 1.0),
+                           max_weight=cfg.get("max_weight", 0.25),
+                           caps=cfg.get("caps", {}))
+
+        # 1) Leave everything that is not a long position in the universe
+        #    (old intraday trades, shorts): close it first.
+        for p in self.broker.get_positions():
+            if p.symbol not in universe or p.qty < 0:
+                if self.broker.close_position(p.symbol):
+                    logger.info(f"Portfolio: closed legacy position {p.symbol} {p.qty}")
+        self._open_trades = {}
+        save_open_trades(self._open_trades_path, self._open_trades)
+
+        # 2) Move the remaining holdings to the target weights
+        positions = {p.symbol: p for p in self.broker.get_positions()}
+        holdings = {s: p.qty for s, p in positions.items()}
+        prices = {s: float(panel[s].dropna().iloc[-1]) for s in tradable}
+        prices.update({s: p.current_price for s, p in positions.items() if p.current_price})
+        equity = self.broker.get_account().equity
+        orders = rebalance_orders(w, equity, prices, holdings,
+                                  cfg.get("min_trade_usd", 200.0), cfg.get("min_trade_pct", 0.01))
+        done = []
+        for sym, dq, why in orders:
+            ok = self.broker.close_position(sym) if why == "exit" else self._place_qty(sym, dq)
+            done.append((sym, dq, why, ok))
+            logger.info(f"Portfolio {why}: {sym} {dq:+.6f} @ ~{prices.get(sym, 0):.4f} → {'ok' if ok else 'FAILED'}")
+
+        # 3) Record
+        try:
+            new = not self._portfolio_log_path.exists()
+            with open(self._portfolio_log_path, "a") as f:
+                if new:
+                    f.write("utc,symbol,action,delta_qty,price,target_weight,ok,equity\n")
+                for sym, dq, why, ok in done:
+                    f.write(f"{now:%Y-%m-%d %H:%M:%S},{sym},{why},{dq:.6f},{prices.get(sym, 0):.6f},"
+                            f"{float(w.get(sym, 0.0)):.4f},{ok},{equity:.2f}\n")
+        except Exception as e:
+            logger.warning(f"Portfolio log failed: {e}")
+        failed = [d for d in done if not d[3]]
+        self._save_portfolio_state({"last_month": now.strftime("%Y-%m"),
+                                    "rebalanced_utc": now.isoformat(),
+                                    "weights": {k: round(float(v), 4) for k, v in w.items()},
+                                    "orders": len(done), "failed": [d[0] for d in failed]})
+        lines = "\n".join(f"{k}: {100*v:.1f}%" for k, v in w.sort_values(ascending=False).items())
+        self.telegram.send(
+            f"📊 <b>Monats-Rebalancing Trend-Portfolio</b>\n\n"
+            f"Investiert: {100*w.sum():.0f}% · Cash: {100*(1-w.sum()):.0f}%\n{lines or '— alles Cash —'}\n\n"
+            f"Orders: {len(done)}" + (f" · fehlgeschlagen: {', '.join(d[0] for d in failed)}" if failed else ""))
 
     def _process_symbol(self, symbol: str, account) -> None:
         # Fetch OHLCV
