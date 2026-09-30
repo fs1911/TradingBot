@@ -62,7 +62,7 @@ bot:
   run_experiment41_on_start: false  # Exp #41 done (2026-09-25): trend REAL (placebo p=0.00, real 0.56/0.77 vs placebo max 0.27/0.36), longer horizons better, 9/9 cost cells positive but borrow fees bite. Realistic version (3/6/12, 10bps, 2% borrow, <=2x): broad Sharpe 0.31 (post-2012 0.03), long 0.54 — not sig after haircut. 60/40 gain CI excl 0 only in long universe
   run_experiment42_on_start: false  # Exp #42 done (2026-09-25): 0/13 chart rules beat placebo after haircut. Fibonacci 38/50/61.8% + support bounce NEGATIVE timing everywhere (worse than random), 0-1/44 markets beat own 95%. Breakout 20/10 p=0.016, RSI14 p=0.036 not sig. Net Sharpe < B&H in median for all 13. Hints (not haircut-proof): RSI/Bollinger short-term reversal in single stocks, breakouts in crypto/bonds
   run_experiment43_on_start: false  # Exp #43 done (2026-09-25): French 1963+: only momentum sig after α/190 (t 4.6; intl t 4-4.7, still strong 2010+). Value halved post-1992, 0 since 2010 (US). Quality RMW most persistent (post-pub +2.6%, intl t~4). Long-only: low-var ΔSharpe +0.12 (p .02, 2010+ +0.17, DD -42 vs -50), Buffett mix +0.15 CI [+.05,+.23] p .003 — not sig after haircut. Own single-stock test 0/9 (survivorship dominates)
-  run_experiment44_on_start: true   # Exp #44: backtest of the EXACT live portfolio rule (trend_portfolio.py) incl. BTC/ETH, costs, sensitivity
+  run_experiment44_on_start: false  # Exp #44 done (2026-09-30): exact live rule 1994-2026 CAGR +5.4%, vol 6.1%, excess Sharpe 0.75 (SPY 0.60), maxDD -17% (SPY -55%); GFC +9%, Covid -5%, 2022 0%. Post-2012 Sharpe 0.54 < SPY 0.82. Crypto adds ~+0.4%/yr. Robust to vol target/crypto cap; 3/6/12 blend > 12m only
 
 experiment42:
   # {name: [asset class, Yahoo symbol]} — longest free histories; futures are continuous front-month (roll gaps)
@@ -396,7 +396,7 @@ broker: "alpaca"
 # leverage. Expectation (#40, 2006–2025): ~5%/yr, vol ~6.5%, maxDD ~−20% (S&P −55%),
 # weak since 2012 — crash insurance, not a money machine.
 portfolio:
-  enabled: false               # switched on after Exp #44 has checked this exact rule
+  enabled: true                 # on since 2026-09-30 after Exp #44 checked this exact rule
   calendar: SPY                 # trading calendar for aligning ETFs and 24/7 crypto
   cash_symbol: BIL              # T-bill ETF, only used as the cash hurdle (not traded)
   universe: [SPY, EFA, EEM, IWM, VNQ, SHY, IEF, TLT, LQD, HYG, TIP, GLD, SLV, DBC, USO, UNG, DBA, UUP, FXE, FXY, FXF, BTC/USD, ETH/USD]
