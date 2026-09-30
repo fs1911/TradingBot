@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-09-30 04:39:37",
+  "updated_utc": "2026-09-30 05:40:01",
   "alive": true,
   "state": "active",
-  "uptime_hours": 111.8,
+  "uptime_hours": 112.8,
   "open_positions": 9,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -6779.7,
-  "unrealized_pnl_usd": -176.36,
-  "total_pnl_usd": -6956.06,
-  "equity_usd": 61528.93,
+  "unrealized_pnl_usd": -155.5,
+  "total_pnl_usd": -6935.2,
+  "equity_usd": 61549.79,
   "market_trend": "bearish",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 23.08
+      "unrealized_usd": 26.23
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0367,
-      "unrealized_usd": -28.86
+      "unrealized_usd": -25.61
     },
     {
       "symbol": "DOGE/USD",
@@ -34,31 +34,31 @@
       "symbol": "INTC",
       "side": "sell",
       "qty": 26.0,
-      "unrealized_usd": -20.28
+      "unrealized_usd": -7.02
     },
     {
       "symbol": "LINK/USD",
       "side": "buy",
       "qty": 211.1056,
-      "unrealized_usd": -38.61
+      "unrealized_usd": -44.1
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 25.8587,
-      "unrealized_usd": -2.83
+      "unrealized_usd": 0.02
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": -8.93
+      "unrealized_usd": -6.29
     },
     {
       "symbol": "TSLA",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": -17.46
+      "unrealized_usd": -16.26
     },
     {
       "symbol": "XLV",
