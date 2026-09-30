@@ -1869,8 +1869,19 @@ class TradingBot:
                     # single position whose |unrealized| exceeds account equity
                     # (physically impossible → corrupt data, don't let it poison the total).
                     u = p.unrealized_pnl
-                    if u is None or not math.isfinite(u):
-                        direction = 1 if p.side.value == "buy" else -1
+                    direction = 1 if p.side.value == "buy" else -1
+                    if not plausible_entry(p.entry_price, p.current_price):
+                        # Alpaca paper sometimes corrupts the crypto cost basis (e.g.
+                        # SOL avg entry negative → +7.6k fake unrealized). Use our own
+                        # recorded entry instead; without one, skip it rather than count fiction.
+                        own = self._open_trades.get(p.symbol, {}).get("entry_price")
+                        if plausible_entry(own, p.current_price):
+                            u = (p.current_price - own) * abs(p.qty) * direction
+                        else:
+                            logger.warning(f"Heartbeat: no credible entry for {p.symbol} "
+                                           f"(broker {p.entry_price}) — skipping")
+                            continue
+                    elif u is None or not math.isfinite(u):
                         u = (p.current_price - p.entry_price) * abs(p.qty) * direction
                     if abs(u) > max(account.equity, 1.0):
                         logger.warning(f"Heartbeat: implausible unrealized {u:.0f} on "

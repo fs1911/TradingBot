@@ -51,3 +51,16 @@ def test_corrupt_unrealized_is_ignored(tmp_path):
     assert round(kwargs["realized_pnl"] + kwargs["unrealized_pnl"], 2) == round(63240.0 - 68485.0, 2)
     # the corrupt position is not in the per-position detail
     assert all(p["symbol"] != "BTC/USD" for p in kwargs["positions"])
+
+
+def test_corrupt_broker_entry_uses_own_recorded_entry(tmp_path):
+    """Alpaca paper reported SOL with a negative avg entry → +7.6k fake unrealized.
+    The bot's own recorded entry must be used instead."""
+    import datetime as dt
+    positions = [_pos("SOL/USD", 25.8587, -150.0, 140.0, 7623.07, OrderSide.BUY)]
+    bot = _bot(tmp_path, positions, equity=61461.0)
+    bot._open_trades = {"SOL/USD": {"entry_price": 141.0}}
+    account = AccountInfo(equity=61461.0, cash=1000.0, buying_power=1000.0)
+    bot._maybe_heartbeat(dt.datetime.now(dt.timezone.utc), account)
+    kwargs = bot.heartbeat.build_status.call_args.kwargs
+    assert round(kwargs["unrealized_pnl"], 2) == round((140.0 - 141.0) * 25.8587, 2)
