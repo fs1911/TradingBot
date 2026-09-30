@@ -49,6 +49,8 @@ from .monitoring.reporter import PerformanceReporter
 from .monitoring.telegram_notifier import TelegramNotifier
 from .monitoring.auto_tuner import AutoTuner
 from .monitoring.journal_sync import JournalSyncer
+from .monitoring.trade_state import (plausible_entry, save_open_trades, load_open_trades,
+                                     sanitize_journal)
 from .monitoring.heartbeat import Heartbeat
 from .brokers.base_broker import BaseBroker, Order, OrderSide, OrderType
 
@@ -107,6 +109,8 @@ class TradingBot:
 
         # Auxiliary
         self.sentiment = SentimentAnalyzer()
+        # Void fictitious P&L from restore artefacts before anything reads the journal
+        sanitize_journal(Path(__file__).parent.parent / "logs" / "trading_journal.csv")
         self.reporter = PerformanceReporter()
         self.telegram = TelegramNotifier()
 
@@ -142,6 +146,7 @@ class TradingBot:
         self._last_morning_report: str = ""
         self._market_trend: str = "neutral"       # Updated each tick from SPY
         self._cooldown_path = Path(__file__).parent.parent / "logs" / "sl_cooldowns.json"
+        self._open_trades_path = Path(__file__).parent.parent / "logs" / "open_trades.json"
         self._sl_cooldown: dict[str, datetime] = self._load_sl_cooldowns()
 
         # Graceful shutdown
@@ -1769,6 +1774,7 @@ class TradingBot:
                 "strategy": entry.strategy,
                 "opened_at": datetime.now(timezone.utc),
             }
+            save_open_trades(self._open_trades_path, self._open_trades)
             self.risk_manager.metrics.open_positions += 1
             self.telegram.trade_entered(
                 symbol=symbol, side=side.value, qty=qty, price=current_price,
@@ -1961,25 +1967,46 @@ class TradingBot:
             self.telegram.error_alert(f"Morgenbericht fehlgeschlagen: {e}")
 
     def _load_existing_positions(self) -> None:
-        """On restart, sync _open_trades with positions already open at the broker."""
+        """On restart, sync _open_trades with positions already open at the broker.
+        Prefer the persisted trade record (original entry, SL/TP, strategy, opening
+        time). Without one, use the broker's avg entry only if it is plausible —
+        Alpaca paper has reported e.g. BTC at −2.2M USD, whose fallback TP then fired
+        instantly and booked a fictitious profit. Otherwise use the current price."""
         try:
+            saved = load_open_trades(self._open_trades_path)
             positions = self.broker.get_positions()
             for pos in positions:
-                if pos.symbol not in self._open_trades:
+                if pos.symbol in self._open_trades:
+                    continue
+                rec = saved.get(pos.symbol)
+                if rec and str(rec.get("side")) == pos.side.value and plausible_entry(
+                        rec.get("entry_price"), pos.current_price):
                     self._open_trades[pos.symbol] = {
-                        "order_id": "restored",
-                        "entry_price": pos.entry_price,
-                        "side": pos.side,
-                        "qty": abs(pos.qty),
-                        "sl": None,
-                        "tp": None,
-                        "strategy": "restored",
-                        "opened_at": datetime.now(timezone.utc),
+                        **rec, "side": pos.side, "qty": abs(pos.qty),
                     }
-                    logger.info(
-                        f"Restored position: {pos.symbol} {pos.side.value} "
-                        f"qty={pos.qty:.4f} @ {pos.entry_price:.4f}"
-                    )
+                    logger.info(f"Resumed position: {pos.symbol} {pos.side.value} "
+                                f"@ {rec['entry_price']:.4f} via {rec.get('strategy')}")
+                    continue
+                entry = pos.entry_price
+                if not plausible_entry(entry, pos.current_price):
+                    logger.warning(f"{pos.symbol}: implausible broker entry {entry} "
+                                   f"(price {pos.current_price}) — using current price")
+                    entry = pos.current_price
+                self._open_trades[pos.symbol] = {
+                    "order_id": "restored",
+                    "entry_price": entry,
+                    "side": pos.side,
+                    "qty": abs(pos.qty),
+                    "sl": None,
+                    "tp": None,
+                    "strategy": "restored",
+                    "opened_at": datetime.now(timezone.utc),
+                }
+                logger.info(
+                    f"Restored position: {pos.symbol} {pos.side.value} "
+                    f"qty={pos.qty:.4f} @ {entry:.4f}"
+                )
+            save_open_trades(self._open_trades_path, self._open_trades)
         except Exception as e:
             logger.warning(f"Could not load existing positions on startup: {e}")
 
@@ -2141,6 +2168,8 @@ class TradingBot:
             self.risk_manager.metrics.open_positions = max(
                 0, self.risk_manager.metrics.open_positions - 1
             )
+        if closed:
+            save_open_trades(self._open_trades_path, self._open_trades)
 
     # ── Signal fusion ─────────────────────────────────────────────────────────
 

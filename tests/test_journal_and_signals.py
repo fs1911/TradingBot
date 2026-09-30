@@ -206,9 +206,9 @@ class TestBehavioralDetection:
             journal_path=Path("/tmp/_nonexistent.csv"),
         )
 
-    def _frame(self):
+    def _frame(self, days_ago: float = 1.0):
         rows = []
-        t0 = datetime(2026, 7, 8, 5, 8, 0, tzinfo=timezone.utc)
+        t0 = datetime.now(timezone.utc) - timedelta(days=days_ago)
         # SOL: 8 rapid same-symbol entries, 2s holds (ghost + rapid)
         for i, pnl in enumerate([-24, -23, -26, 13, 9, 11, 7, 5]):
             rows.append({"entry_time": (t0 + timedelta(minutes=i)).isoformat(),
@@ -241,6 +241,10 @@ class TestBehavioralDetection:
         warnings = self._tuner()._detect_behavioral_patterns(self._frame())
         assert any("Verlust-Serien" in w for w in warnings)
 
+    def test_old_anomalies_are_not_reported_again(self):
+        """Anomalies older than the window must not be re-reported every night."""
+        assert self._tuner()._detect_behavioral_patterns(self._frame(days_ago=30)) == []
+
     def test_clean_data_produces_no_warnings(self):
         """Well-behaved trades must not trigger false alarms."""
         t0 = datetime(2026, 7, 8, 8, 0, 0, tzinfo=timezone.utc)
@@ -263,6 +267,7 @@ class TestSLCooldownPersistence:
     def _bot(self, tmp_path):
         bot = object.__new__(TradingBot)
         bot._cooldown_path = tmp_path / "sl_cooldowns.json"
+        bot._open_trades_path = tmp_path / "open_trades.json"
         bot._sl_cooldown = {}
         return bot
 

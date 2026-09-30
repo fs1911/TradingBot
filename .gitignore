@@ -4,6 +4,7 @@ __pycache__/
 logs/*.log
 logs/*.csv
 logs/*.db
+logs/*.json
 status.json
 .venv/
 *.egg-info/

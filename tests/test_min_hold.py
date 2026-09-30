@@ -16,6 +16,7 @@ def _make_bot(tmp_path, opened_at):
     bot.bot_cfg = {"bot": {"min_hold_seconds": 120, "max_hold_hours": 24}}
     bot.risk_cfg = {"trailing_stop": {"enabled": False}}
     bot._cooldown_path = tmp_path / "cd.json"
+    bot._open_trades_path = tmp_path / "open_trades.json"
     bot._sl_cooldown = {}
     bot._open_trades = {
         "ETH/USD": {

@@ -17,6 +17,9 @@ from loguru import logger
 
 class AutoTuner:
     MIN_TRADES_TOTAL = 30
+    # Only recent trades: counting the whole journal re-reported the same
+    # historical anomalies (e.g. 282 ghost trades from July) every night.
+    WINDOW_DAYS = 7
 
     def __init__(
         self,
@@ -42,17 +45,21 @@ class AutoTuner:
             df = df.copy()
             df["entry_ts"] = pd.to_datetime(df["entry_time"], utc=True, errors="coerce")
             df = df.dropna(subset=["entry_ts"])
+            cutoff = pd.Timestamp.now(tz="UTC") - pd.Timedelta(days=self.WINDOW_DAYS)
+            df = df[df["entry_ts"] >= cutoff]
         except Exception:
+            return warnings
+        if df.empty:
             return warnings
 
         # 1. Ghost trades: position closed in ≤2 seconds (spread/mark artifact)
         if "hold_seconds" in df.columns:
             ghost = df[df["hold_seconds"] <= 2]
-            if len(ghost) > 10:
+            if len(ghost) > 0:
                 pct = len(ghost) / len(df) * 100
                 warnings.append(
                     f"⚠️ <b>Ghost-Trades</b>: {len(ghost)} Trades ({pct:.0f}%) "
-                    f"geschlossen in ≤2 Sek — Mindesthaltezeit greift nicht?"
+                    f"geschlossen in ≤2 Sek (letzte {self.WINDOW_DAYS} Tage) — Mindesthaltezeit greift nicht?"
                 )
                 logger.warning(f"AnomalyMonitor: {len(ghost)} ghost trades detected ({pct:.0f}%)")
 
@@ -71,7 +78,7 @@ class AutoTuner:
                 preview = ", ".join(rapid_symbols[:5]) + (" …" if len(rapid_symbols) > 5 else "")
                 warnings.append(
                     f"⚠️ <b>Rapid Re-Entry</b>: {len(rapid_symbols)} Symbole "
-                    f"≥3× in 30 Min gehandelt: {preview}"
+                    f"≥3× in 30 Min gehandelt (letzte {self.WINDOW_DAYS} Tage): {preview}"
                 )
                 logger.warning(f"AnomalyMonitor: rapid re-entry on {rapid_symbols}")
 
@@ -93,7 +100,7 @@ class AutoTuner:
                 preview = ", ".join(streak_symbols[:5]) + (" …" if len(streak_symbols) > 5 else "")
                 warnings.append(
                     f"⚠️ <b>Verlust-Serien</b>: {len(streak_symbols)} Symbole "
-                    f"mit ≥4 aufeinanderfolgenden Verlusten: {preview}"
+                    f"mit ≥4 aufeinanderfolgenden Verlusten (letzte {self.WINDOW_DAYS} Tage): {preview}"
                 )
                 logger.warning(f"AnomalyMonitor: losing streaks on {streak_symbols}")
 
