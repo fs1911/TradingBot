@@ -50,7 +50,17 @@ from .monitoring.telegram_notifier import TelegramNotifier
 from .monitoring.auto_tuner import AutoTuner
 from .monitoring.journal_sync import JournalSyncer
 from .monitoring.trade_state import (plausible_entry, save_open_trades, load_open_trades,
-                                     sanitize_journal)
+                                     sanitize_journal, trade_fee, journal_pnl_since)
+
+
+def _valid_fill(fill):
+    """(price, qty) from a broker fill if both are positive numbers, else None."""
+    try:
+        px, q = fill
+        px, q = float(px), float(q)
+    except (TypeError, ValueError):
+        return None
+    return (px, q) if px > 0 and q > 0 else None
 from .monitoring.heartbeat import Heartbeat
 from .brokers.base_broker import BaseBroker, Order, OrderSide, OrderType
 
@@ -1764,11 +1774,17 @@ class TradingBot:
                 if tp is not None and tp >= current_price:
                     logger.warning(f"{symbol}: dropping invalid short TP {tp} >= entry {current_price:.4f}")
                     tp = None
+            # Book the real fill, not the price at decision time: the journal used
+            # to be far more optimistic than the account (slippage + spread).
+            fill = _valid_fill(self.broker.get_fill(order.order_id))
+            entry_px, entry_qty = fill if fill else (current_price, qty)
             self._open_trades[symbol] = {
                 "order_id": order.order_id,
-                "entry_price": current_price,
+                "entry_price": entry_px,
+                "signal_price": current_price,
+                "fill_known": fill is not None,
                 "side": side,
-                "qty": qty,
+                "qty": entry_qty,
                 "sl": sl,
                 "tp": tp,
                 "strategy": entry.strategy,
@@ -1827,6 +1843,7 @@ class TradingBot:
                 next(f)  # header
                 first = next(f)
                 self._pnl_baseline = float(first.split(",")[1])
+                self._pnl_baseline_utc = first.split(",")[0]
         except (StopIteration, FileNotFoundError, ValueError, IndexError):
             self._pnl_baseline = current_equity
         return self._pnl_baseline
@@ -1875,6 +1892,11 @@ class TradingBot:
             # counter reset on every restart and understated closed losses).
             baseline = self._get_pnl_baseline(account.equity)
             realized_true = (account.equity - baseline) - unrealized
+            # Reconciliation: what the journal claims vs what the account shows over
+            # the same period. A large gap means fills/fees are not being booked.
+            since = getattr(self, "_pnl_baseline_utc", None)
+            jp = journal_pnl_since(Path(__file__).parent.parent / "logs" / "trading_journal.csv",
+                                   since) if since else None
 
             status = self.heartbeat.build_status(
                 state=m.state.value,
@@ -1887,6 +1909,9 @@ class TradingBot:
                 unrealized_pnl=unrealized,
                 positions=pos_detail,
             )
+            if jp is not None:
+                status["journal_pnl_usd"] = round(jp, 2)
+                status["journal_gap_usd"] = round(realized_true - jp, 2)
             self.heartbeat.push(status)
             self.heartbeat.append_history(self._equity_history_path, status)
             # Sync the journal hourly (not only at 20:00) so the branch copy is
@@ -2098,7 +2123,17 @@ class TradingBot:
                 success = self.broker.close_position(symbol)
                 if success:
                     direction = 1 if side == OrderSide.BUY else -1
-                    pnl = (price - trade["entry_price"]) * trade["qty"] * direction
+                    fill = _valid_fill(self.broker.get_close_fill(symbol))
+                    exit_px = fill[0] if fill else price
+                    gross = (exit_px - trade["entry_price"]) * trade["qty"] * direction
+                    fee = trade_fee(symbol, trade["entry_price"], exit_px, trade["qty"],
+                                    self.bot_cfg.get("bot", {}).get("crypto_fee_bps", 25.0))
+                    pnl = gross - fee
+                    fill_note = (f"fills: entry {trade['entry_price']:.6g} (signal "
+                                 f"{trade.get('signal_price', trade['entry_price']):.6g}"
+                                 f"{'' if trade.get('fill_known') else ', no fill data'}), exit "
+                                 f"{exit_px:.6g} (signal {price:.6g}{'' if fill else ', no fill data'}); "
+                                 f"fee est {fee:.2f}")
                     # Label honesty: a "tp"/"trailing_stop" that closes at a loss
                     # wasn't really a profit-taking exit (spread/late fill). Record
                     # what actually happened so the journal stats stay truthful.
@@ -2109,7 +2144,7 @@ class TradingBot:
                     new_state = self.risk_manager.metrics.state
                     self.telegram.trade_exited(
                         symbol=symbol, side=side.value, qty=trade["qty"],
-                        entry=trade["entry_price"], exit_price=price,
+                        entry=trade["entry_price"], exit_price=exit_px,
                         pnl=pnl, reason=reason,
                     )
                     # Inform user when bot changes state — bot handles recovery itself
@@ -2146,12 +2181,13 @@ class TradingBot:
                             strategy=trade.get("strategy", ""),
                             direction="long" if side == OrderSide.BUY else "short",
                             entry_price=trade["entry_price"],
-                            exit_price=price,
+                            exit_price=exit_px,
                             qty=trade["qty"],
                             pnl=pnl,
                             entry_time=trade["opened_at"],
                             exit_time=datetime.now(timezone.utc),
                             exit_reason=reason,
+                            notes=fill_note,
                         )
                     except Exception as e:
                         logger.error(f"CRITICAL: failed to journal closed trade {symbol} pnl={pnl:.2f}: {e}")

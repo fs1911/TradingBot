@@ -91,6 +91,15 @@ class BaseBroker(ABC):
     def is_market_open(self) -> bool:
         return True
 
+    def get_fill(self, order_id: Optional[str], timeout: float = 10.0) -> Optional[tuple[float, float]]:
+        """(average fill price, filled qty) of an order, or None if unknown.
+        Brokers that can report real fills override this."""
+        return None
+
+    def get_close_fill(self, symbol: str, timeout: float = 10.0) -> Optional[tuple[float, float]]:
+        """Fill of the most recent close_position(symbol) order, or None."""
+        return None
+
     def get_current_price(self, symbol: str) -> float:
         df = self.get_ohlcv(symbol, "1Min", limit=1)
         if df.empty:

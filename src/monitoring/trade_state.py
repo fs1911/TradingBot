@@ -102,3 +102,24 @@ def sanitize_journal(path: Path) -> int:
     df.to_csv(path, index=False)
     logger.warning(f"sanitize_journal: voided P&L of {n} rows with implausible entry prices")
     return n
+
+
+def trade_fee(symbol: str, entry_px: float, exit_px: float, qty: float,
+              crypto_bps: float = 25.0) -> float:
+    """Estimated round-trip fee. Alpaca charges crypto a taker fee on both legs
+    (0.25% at the base tier); US stocks are commission-free (regulatory fees ignored)."""
+    if "/" not in symbol:
+        return 0.0
+    return abs(qty) * (abs(entry_px) + abs(exit_px)) * crypto_bps / 1e4
+
+
+def journal_pnl_since(path: Path, since_utc: str) -> float | None:
+    """Sum of journal P&L for trades closed on/after since_utc (date precision)."""
+    if not path.exists():
+        return None
+    try:
+        df = pd.read_csv(path, usecols=["date", "pnl_usd"])
+    except Exception:
+        return None
+    d = pd.to_datetime(df["date"], errors="coerce")
+    return float(df.loc[d >= pd.Timestamp(since_utc[:10]), "pnl_usd"].sum())

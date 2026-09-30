@@ -10,6 +10,7 @@ API receives "BTCUSD" (no slash).
 from __future__ import annotations
 import math
 import os
+import time
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 import pandas as pd
@@ -75,6 +76,7 @@ class AlpacaBroker(BaseBroker):
         self._trading = TradingClient(api_key, secret_key, paper=paper)
         self._data = StockHistoricalDataClient(api_key, secret_key)
         self._crypto_data = CryptoHistoricalDataClient(api_key, secret_key)
+        self._last_close_ids: dict[str, str] = {}
         logger.info(f"AlpacaBroker initialised (paper={paper})")
 
     def get_account(self) -> AccountInfo:
@@ -182,12 +184,38 @@ class AlpacaBroker(BaseBroker):
     def close_position(self, symbol: str) -> bool:
         try:
             trade_symbol = self._trading_symbol(symbol)  # ETH/USD → ETHUSD
-            self._trading.close_position(trade_symbol)
+            resp = self._trading.close_position(trade_symbol)
+            oid = getattr(resp, "id", None)
+            if oid is not None:
+                self._last_close_ids[symbol] = str(oid)
             logger.info(f"Closed position: {symbol}")
             return True
         except Exception as e:
             logger.error(f"Close position {symbol} failed: {e}")
             return False
+
+    def get_fill(self, order_id: Optional[str], timeout: float = 10.0) -> Optional[tuple[float, float]]:
+        """Poll the order until filled (market orders fill within ~1s); on timeout
+        return a partial fill if there is one."""
+        if not order_id:
+            return None
+        deadline = time.monotonic() + timeout
+        while True:
+            try:
+                o = self._trading.get_order_by_id(order_id)
+                status = str(getattr(o.status, "value", o.status))
+                px, q = o.filled_avg_price, float(o.filled_qty or 0)
+                if status == "filled" and px is not None and q > 0:
+                    return float(px), q
+                if status in ("canceled", "expired", "rejected") or time.monotonic() >= deadline:
+                    return (float(px), q) if px is not None and q > 0 else None
+            except Exception as e:
+                logger.warning(f"get_fill {order_id}: {e}")
+                return None
+            time.sleep(0.5)
+
+    def get_close_fill(self, symbol: str, timeout: float = 10.0) -> Optional[tuple[float, float]]:
+        return self.get_fill(self._last_close_ids.pop(symbol, None), timeout)
 
     def get_open_orders(self) -> list[Order]:
         orders = []
