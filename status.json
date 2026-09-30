@@ -1,68 +1,68 @@
 {
-  "updated_utc": "2026-09-30 10:23:11",
+  "updated_utc": "2026-09-30 11:23:42",
   "alive": true,
   "state": "active",
-  "uptime_hours": 2.0,
+  "uptime_hours": 3.0,
   "open_positions": 8,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -6930.84,
-  "unrealized_pnl_usd": -3.9,
-  "total_pnl_usd": -6934.74,
-  "equity_usd": 61550.25,
+  "realized_pnl_usd": -6929.88,
+  "unrealized_pnl_usd": 40.66,
+  "total_pnl_usd": -6889.22,
+  "equity_usd": 61595.77,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "AAPL",
       "side": "sell",
       "qty": 9.0,
-      "unrealized_usd": 28.39
+      "unrealized_usd": 33.16
     },
     {
       "symbol": "AVAX/USD",
       "side": "buy",
       "qty": 274.2916,
-      "unrealized_usd": 5.49
+      "unrealized_usd": 7.41
     },
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0367,
-      "unrealized_usd": -12.71
+      "unrealized_usd": -13.16
     },
     {
       "symbol": "INTC",
       "side": "sell",
       "qty": 26.0,
-      "unrealized_usd": -3.38
+      "unrealized_usd": -3.64
     },
     {
       "symbol": "SOL/USD",
       "side": "buy",
       "qty": 25.8587,
-      "unrealized_usd": -2.57
+      "unrealized_usd": -0.01
     },
     {
       "symbol": "SPY",
       "side": "sell",
       "qty": 4.0,
-      "unrealized_usd": -3.01
+      "unrealized_usd": -0.13
     },
     {
       "symbol": "TSLA",
       "side": "sell",
       "qty": 8.0,
-      "unrealized_usd": -4.77
+      "unrealized_usd": 19.74
     },
     {
       "symbol": "XLV",
       "side": "sell",
       "qty": 18.0,
-      "unrealized_usd": -11.34
+      "unrealized_usd": -2.7
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -7198.03,
+  "journal_gap_usd": -7197.07,
   "broker_fees_usd": 6278.29,
   "broker_fee_entries": 9586
 }
