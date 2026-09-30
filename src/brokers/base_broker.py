@@ -100,6 +100,11 @@ class BaseBroker(ABC):
         """Fill of the most recent close_position(symbol) order, or None."""
         return None
 
+    def get_fees_since(self, since_iso: str) -> Optional[tuple[float, int]]:
+        """(total fees in USD, number of fee entries) charged by the broker since
+        since_iso, or None if the broker cannot report it."""
+        return None
+
     def get_current_price(self, symbol: str) -> float:
         df = self.get_ohlcv(symbol, "1Min", limit=1)
         if df.empty:

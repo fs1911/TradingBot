@@ -217,6 +217,39 @@ class AlpacaBroker(BaseBroker):
     def get_close_fill(self, symbol: str, timeout: float = 10.0) -> Optional[tuple[float, float]]:
         return self.get_fill(self._last_close_ids.pop(symbol, None), timeout)
 
+    @staticmethod
+    def _fee_usd(a: dict) -> float:
+        """Crypto fee (CFEE) activity → USD. Alpaca books the fee in the coin
+        (qty, negative) at a price; prefer net_amount when it is given."""
+        try:
+            na = float(a.get("net_amount") or 0)
+            if na:
+                return abs(na)
+            return abs(float(a.get("qty") or 0)) * float(a.get("price") or 0)
+        except (TypeError, ValueError):
+            return 0.0
+
+    def get_fees_since(self, since_iso: str) -> Optional[tuple[float, int]]:
+        """Sum the account's CFEE activities (crypto fees actually charged, also
+        in paper) since since_iso. Paginates; None on API error."""
+        total, n, token = 0.0, 0, None
+        try:
+            for _ in range(200):
+                params = {"after": since_iso, "direction": "asc", "page_size": 100}
+                if token:
+                    params["page_token"] = token
+                page = self._trading.get("/account/activities/CFEE", params) or []
+                for a in page:
+                    total += self._fee_usd(a)
+                    n += 1
+                if len(page) < 100:
+                    break
+                token = page[-1].get("id")
+            return total, n
+        except Exception as e:
+            logger.warning(f"get_fees_since: {e}")
+            return None
+
     def get_open_orders(self) -> list[Order]:
         orders = []
         for o in self._trading.get_orders():

@@ -1912,6 +1912,14 @@ class TradingBot:
             if jp is not None:
                 status["journal_pnl_usd"] = round(jp, 2)
                 status["journal_gap_usd"] = round(realized_true - jp, 2)
+            # Fees the broker actually charged (Alpaca CFEE, simulated in paper too)
+            # — settles whether the journal/account gap is fees or slippage.
+            if since:
+                fees = self.broker.get_fees_since(
+                    since.strip().replace(" ", "T") + "Z")
+                if isinstance(fees, tuple):
+                    status["broker_fees_usd"] = round(fees[0], 2)
+                    status["broker_fee_entries"] = fees[1]
             self.heartbeat.push(status)
             self.heartbeat.append_history(self._equity_history_path, status)
             # Sync the journal hourly (not only at 20:00) so the branch copy is
@@ -2127,7 +2135,7 @@ class TradingBot:
                     exit_px = fill[0] if fill else price
                     gross = (exit_px - trade["entry_price"]) * trade["qty"] * direction
                     fee = trade_fee(symbol, trade["entry_price"], exit_px, trade["qty"],
-                                    self.bot_cfg.get("bot", {}).get("crypto_fee_bps", 25.0))
+                                    self.bot_cfg.get("bot", {}).get("crypto_fee_bps", 0.0))
                     pnl = gross - fee
                     fill_note = (f"fills: entry {trade['entry_price']:.6g} (signal "
                                  f"{trade.get('signal_price', trade['entry_price']):.6g}"

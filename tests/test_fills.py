@@ -64,3 +64,12 @@ def test_exit_without_fill_falls_back_to_signal(tmp_path):
     kw = bot.reporter.log_trade.call_args.kwargs
     assert kw["exit_price"] == 110.0 and kw["pnl"] == 20.0
     assert "no fill data" in kw["notes"]
+
+
+def test_alpaca_fee_activity_to_usd():
+    import pytest
+    ab = pytest.importorskip("src.brokers.alpaca_broker")
+    f = ab.AlpacaBroker._fee_usd
+    assert f({"qty": "-0.00025", "price": "80000"}) == pytest.approx(20.0)
+    assert f({"net_amount": "-3.5", "qty": "-1", "price": "1"}) == 3.5
+    assert f({"qty": None}) == 0.0
