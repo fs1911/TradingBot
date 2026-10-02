@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-10-02 11:57:10",
+  "updated_utc": "2026-10-02 12:57:52",
   "alive": true,
   "state": "active",
-  "uptime_hours": 46.6,
+  "uptime_hours": 47.6,
   "open_positions": 11,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -7241.33,
-  "unrealized_pnl_usd": 16.17,
-  "total_pnl_usd": -7225.16,
-  "equity_usd": 61259.83,
+  "realized_pnl_usd": -7236.81,
+  "unrealized_pnl_usd": 155.03,
+  "total_pnl_usd": -7081.78,
+  "equity_usd": 61403.21,
   "market_trend": "neutral",
   "positions": [
     {
@@ -28,59 +28,59 @@
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": 25.94
+      "unrealized_usd": 69.74
     },
     {
       "symbol": "EFA",
       "side": "buy",
       "qty": 33.5997,
-      "unrealized_usd": -30.73
+      "unrealized_usd": -28.04
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": 17.96
+      "unrealized_usd": 20.6
     },
     {
       "symbol": "FXY",
       "side": "buy",
       "qty": 73.0418,
-      "unrealized_usd": -15.49
+      "unrealized_usd": -1.61
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": 5.68
+      "unrealized_usd": 17.2
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": 7.88
+      "unrealized_usd": 32.75
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": -6.17
+      "unrealized_usd": 48.03
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": -46.32
+      "unrealized_usd": -49.71
     },
     {
       "symbol": "UUP",
       "side": "buy",
       "qty": 389.6716,
-      "unrealized_usd": 81.48
+      "unrealized_usd": 70.14
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -7508.52,
+  "journal_gap_usd": -7504.0,
   "broker_fees_usd": 6296.06,
   "broker_fee_entries": 9592
 }
