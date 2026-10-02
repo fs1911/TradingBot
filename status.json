@@ -1,34 +1,34 @@
 {
-  "updated_utc": "2026-10-02 20:02:59",
+  "updated_utc": "2026-10-02 21:03:43",
   "alive": true,
   "state": "active",
-  "uptime_hours": 54.7,
+  "uptime_hours": 55.7,
   "open_positions": 11,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -7266.36,
-  "unrealized_pnl_usd": 112.94,
-  "total_pnl_usd": -7153.42,
-  "equity_usd": 61331.57,
+  "realized_pnl_usd": -7263.96,
+  "unrealized_pnl_usd": 47.04,
+  "total_pnl_usd": -7216.92,
+  "equity_usd": 61268.07,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "DBA",
       "side": "buy",
       "qty": 365.7659,
-      "unrealized_usd": -27.49
+      "unrealized_usd": -67.73
     },
     {
       "symbol": "DBC",
       "side": "buy",
       "qty": 186.7827,
-      "unrealized_usd": -4.66
+      "unrealized_usd": -6.53
     },
     {
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": 73.95
+      "unrealized_usd": 71.42
     },
     {
       "symbol": "EFA",
@@ -40,47 +40,47 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -2.71
+      "unrealized_usd": -2.75
     },
     {
       "symbol": "FXY",
       "side": "buy",
       "qty": 73.0418,
-      "unrealized_usd": -18.77
+      "unrealized_usd": -18.41
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -7.2
+      "unrealized_usd": -10.48
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": 15.1
+      "unrealized_usd": 13.19
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": 31.25
+      "unrealized_usd": 26.67
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 1.44
+      "unrealized_usd": -2.59
     },
     {
       "symbol": "UUP",
       "side": "buy",
       "qty": 389.6716,
-      "unrealized_usd": 74.04
+      "unrealized_usd": 66.24
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -7533.55,
+  "journal_gap_usd": -7531.15,
   "broker_fees_usd": 6296.06,
   "broker_fee_entries": 9592
 }
