@@ -278,6 +278,29 @@ class TradingBot:
             except Exception:
                 pass
 
+    def _run_experiment45(self) -> None:
+        """Experiment #45: Finanzradar trend signal per asset. → experiment45_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_45 import run_experiment45_report
+            assets = self.bot_cfg.get("experiment45", {}).get("assets", [])
+            prices = {a["yahoo"]: fetch_yahoo_daily(a["yahoo"], "1927-12-01", timeout=20) for a in assets}
+            irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=20)
+            report = run_experiment45_report(assets, prices, irx)
+            self.heartbeat._put_file("experiment45_results.md", report.encode(),
+                                     "Experiment #45: Finanzradar trend signal per asset")
+            logger.info("Experiment #45: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #45 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment45_results.md",
+                                         f"# Experiment #45 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #45 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment44(self) -> None:
         """Experiment #44: backtest of the exact live trend-portfolio rule on Yahoo
         total-return prices. → experiment44_results.md."""
@@ -1565,6 +1588,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment44_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment44, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment45_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment45, daemon=True).start()
 
         while self._running:
             try:
