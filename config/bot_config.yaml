@@ -64,6 +64,19 @@ bot:
   run_experiment43_on_start: false  # Exp #43 done (2026-09-25): French 1963+: only momentum sig after α/190 (t 4.6; intl t 4-4.7, still strong 2010+). Value halved post-1992, 0 since 2010 (US). Quality RMW most persistent (post-pub +2.6%, intl t~4). Long-only: low-var ΔSharpe +0.12 (p .02, 2010+ +0.17, DD -42 vs -50), Buffett mix +0.15 CI [+.05,+.23] p .003 — not sig after haircut. Own single-stock test 0/9 (survivorship dominates)
   run_experiment44_on_start: false  # Exp #44 done (2026-09-30): exact live rule 1994-2026 CAGR +5.4%, vol 6.1%, excess Sharpe 0.75 (SPY 0.60), maxDD -17% (SPY -55%); GFC +9%, Covid -5%, 2022 0%. Post-2012 Sharpe 0.54 < SPY 0.82. Crypto adds ~+0.4%/yr. Robust to vol target/crypto cap; 3/6/12 blend > 12m only
   run_experiment45_on_start: false  # Exp #45 done (2026-10-07): 3/6/12M score cuts maxDD in 35/35 assets (median 25 pts) but median CAGR -1.0%, Sharpe +0.00; false signals ~40% both ways; pooled placebo p=0.048 (not after haircut), 1/35 single. Works as risk brake for indices/commodities (Sharpe +0.07/+0.16), NOT for single stocks (Sharpe -0.08, entry-exit fwd 12M -5.5%). Post-2013 mostly worse than B&H on equity indices
+  run_experiment46_on_start: true   # Exp #46: macro filters (unemployment, credit spread, yield curve, VIX, CAPE, vote) against false trend signals; placebo = shifted stress series
+
+experiment46:
+  indices:
+    - {name: "S&P 500 (seit 1928)", yahoo: "^GSPC"}
+    - {name: "S&P 500 Fonds (TR)", yahoo: "VFINX"}
+    - {name: "Nasdaq", yahoo: "^IXIC"}
+    - {name: "DAX", yahoo: "^GDAXI"}
+    - {name: "SMI", yahoo: "^SSMI"}
+    - {name: "Nikkei 225", yahoo: "^N225"}
+    - {name: "Schwellenländer (EEM)", yahoo: "EEM"}
+    - {name: "Hochzinsanl. (HYG)", yahoo: "HYG"}
+    - {name: "Rohstoffe breit (DBC)", yahoo: "DBC"}
 
 experiment45:
   assets:

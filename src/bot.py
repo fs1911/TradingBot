@@ -278,6 +278,35 @@ class TradingBot:
             except Exception:
                 pass
 
+    def _run_experiment46(self) -> None:
+        """Experiment #46: macro filters against false trend signals (FRED + Shiller).
+        → experiment46_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_34 import fetch_shiller
+            from .backtest.experiments_46 import FRED_SERIES, fetch_fred, run_experiment46_report
+            import pandas as pd
+            idx = self.bot_cfg.get("experiment46", {}).get("indices", [])
+            prices = {a["yahoo"]: fetch_yahoo_daily(a["yahoo"], "1927-12-01", timeout=20) for a in idx}
+            irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=20)
+            macro = {sid: fetch_fred(sid, timeout=30) for sid in FRED_SERIES}
+            shiller, _ = fetch_shiller(timeout=30)
+            macro["CAPE"] = shiller["cape"].dropna() if not shiller.empty else pd.Series(dtype=float)
+            report = run_experiment46_report(idx, prices, irx, macro)
+            self.heartbeat._put_file("experiment46_results.md", report.encode(),
+                                     "Experiment #46: macro filters vs false trend signals")
+            logger.info("Experiment #46: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #46 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment46_results.md",
+                                         f"# Experiment #46 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #46 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment45(self) -> None:
         """Experiment #45: Finanzradar trend signal per asset. → experiment45_results.md."""
         try:
@@ -1592,6 +1621,10 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment45_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment45, daemon=True).start()
+
+        if self.bot_cfg.get("bot", {}).get("run_experiment46_on_start", False):
+            import threading
+            threading.Thread(target=self._run_experiment46, daemon=True).start()
 
         while self._running:
             try:
