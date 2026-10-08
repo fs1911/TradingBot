@@ -1,5 +1,3 @@
-# Experiment #48 — insider purchases as a buy signal (2026-10-08 09:01 UTC)
+# Experiment #48 - waiting
 
-SEC purchases parsed: 0; quarters failed: 84 (e.g. 2006q1: <HTTPError 403: 'Forbidden'>).
-
-No data — SEC download failed.
+SEC_CONTACT_EMAIL is not set on the server. Add the repository secret SEC_CONTACT_EMAIL and redeploy.
