@@ -39,14 +39,118 @@ CRISES = (("1973–74", "1973-01", "1974-09"), ("1987", "1987-08", "1987-11"),
           ("2020", "2020-02", "2020-03"), ("2022", "2022-01", "2022-09"))
 
 
-def fetch_fred(series: str, timeout: int = 20) -> pd.Series:
+def _get(url: str, timeout: int = 20, data: bytes | None = None, headers: dict | None = None) -> str:
     import urllib.request
+    h = {"User-Agent": "Mozilla/5.0 (research)"}
+    h.update(headers or {})
+    req = urllib.request.Request(url, data=data, headers=h)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def fetch_fred(series: str, timeout: int = 20, errors: dict | None = None) -> pd.Series:
     try:
-        req = urllib.request.Request(FRED + series, headers={"User-Agent": "Mozilla/5.0 (research)"})
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return parse_fred_csv(r.read().decode("utf-8", "replace"))
+        return parse_fred_csv(_get(FRED + series, timeout))
+    except Exception as e:
+        if errors is not None:
+            errors[f"FRED {series}"] = repr(e)[:120]
+        return pd.Series(dtype=float)
+
+
+def parse_dbnomics_json(text: str) -> pd.Series:
+    """DBnomics v22 series JSON → monthly Series (period 'YYYY-MM')."""
+    import json
+    try:
+        doc = json.loads(text)["series"]["docs"][0]
+        idx = pd.to_datetime(pd.Series(doc["period"]), errors="coerce")
+        val = pd.to_numeric(pd.Series(doc["value"]), errors="coerce")
+        s = pd.Series(val.to_numpy(), index=idx).dropna()
+        return s[s.index.notna()].sort_index()
     except Exception:
         return pd.Series(dtype=float)
+
+
+def parse_bls_json(text: str) -> pd.Series:
+    """BLS public API JSON → monthly Series."""
+    import json
+    try:
+        rows = json.loads(text)["Results"]["series"][0]["data"]
+    except Exception:
+        return pd.Series(dtype=float)
+    data = {}
+    for r in rows:
+        per = r.get("period", "")
+        if per.startswith("M") and per != "M13":
+            try:
+                data[pd.Timestamp(f"{r['year']}-{per[1:]}-01")] = float(r["value"])
+            except (ValueError, KeyError):
+                continue
+    return pd.Series(data, dtype=float).sort_index()
+
+
+def fetch_unemployment(timeout: int = 20, errors: dict | None = None) -> tuple:
+    """US unemployment rate: FRED → DBnomics (BLS mirror) → BLS API (10-year chunks)."""
+    s = fetch_fred("UNRATE", timeout, errors)
+    if len(s) > 500:
+        return s, "FRED"
+    try:
+        s = parse_dbnomics_json(_get("https://api.db.nomics.world/v22/series/BLS/ln/LNS14000000"
+                                     "?observations=1&format=json", timeout))
+        if len(s) > 500:
+            return s, "DBnomics (BLS)"
+    except Exception as e:
+        if errors is not None:
+            errors["DBnomics UNRATE"] = repr(e)[:120]
+    import json
+    from datetime import datetime
+    parts = []
+    for y0 in range(1948, datetime.utcnow().year + 1, 10):
+        try:
+            body = json.dumps({"seriesid": ["LNS14000000"], "startyear": str(y0),
+                               "endyear": str(min(y0 + 9, datetime.utcnow().year))}).encode()
+            parts.append(parse_bls_json(_get("https://api.bls.gov/publicAPI/v1/timeseries/data/", timeout,
+                                             body, {"Content-Type": "application/json"})))
+        except Exception as e:
+            if errors is not None:
+                errors["BLS UNRATE"] = repr(e)[:120]
+            break
+    s = pd.concat(parts).sort_index() if parts else pd.Series(dtype=float)
+    s = s[~s.index.duplicated(keep="last")]
+    return (s, "BLS API") if len(s) > 500 else (pd.Series(dtype=float), "none")
+
+
+def fetch_macro(fetch_yahoo, timeout: int = 20) -> tuple:
+    """All macro inputs with fallbacks. fetch_yahoo(symbol, start) → daily Series.
+    Returns (macro dict, sources dict, errors dict)."""
+    errors, src, macro = {}, {}, {}
+    macro["UNRATE"], src["UNRATE"] = fetch_unemployment(timeout, errors)
+    baa, aaa = fetch_fred("BAA", timeout, errors), fetch_fred("AAA", timeout, errors)
+    if len(baa) > 500 and len(aaa) > 500:
+        macro["BAA"], macro["AAA"], src["credit"] = baa, aaa, "FRED Moody's BAA−AAA"
+    else:
+        hy, tr = fetch_yahoo("VWEHX", "1980-01-01"), fetch_yahoo("VFITX", "1980-01-01")
+        if len(hy) > 1000 and len(tr) > 1000:
+            macro["CREDIT_RATIO"] = (hy / tr).dropna()
+            src["credit"] = "Yahoo VWEHX/VFITX (high-yield vs Treasury fund, proxy)"
+        else:
+            src["credit"] = "none"
+    g10, tb = fetch_fred("GS10", timeout, errors), fetch_fred("TB3MS", timeout, errors)
+    if len(g10) > 500 and len(tb) > 500:
+        macro["GS10"], macro["TB3MS"], src["curve"] = g10, tb, "FRED GS10/TB3MS"
+    else:
+        tnx, irx = fetch_yahoo("^TNX", "1960-01-01"), fetch_yahoo("^IRX", "1960-01-01")
+        if len(tnx) > 1000 and len(irx) > 1000:
+            macro["GS10"], macro["TB3MS"], src["curve"] = tnx, irx, "Yahoo ^TNX/^IRX"
+        else:
+            src["curve"] = "none"
+    vix = fetch_fred("VIXCLS", timeout, errors)
+    if len(vix) < 1000:
+        vix = fetch_yahoo("^VIX", "1990-01-01")
+        src["VIX"] = "Yahoo ^VIX" if len(vix) > 1000 else "none"
+    else:
+        src["VIX"] = "FRED VIXCLS"
+    macro["VIXCLS"] = vix
+    return macro, src, errors
 
 
 def parse_fred_csv(text: str) -> pd.Series:
@@ -88,6 +192,11 @@ def stress_series(macro: dict, index: pd.PeriodIndex) -> dict:
     if len(baa) and len(aaa):
         sp = (baa - aaa).dropna()
         st = (sp > sp.rolling(12).mean()).where(sp.rolling(12).mean().notna())
+        out["F2 credit spread"] = align(st)
+    cr = to_monthly(macro.get("CREDIT_RATIO"))
+    if "F2 credit spread" not in out and len(cr):
+        # proxy: high-yield fund losing ground to Treasuries = widening spreads
+        st = (cr < cr.rolling(12).mean()).where(cr.rolling(12).mean().notna())
         out["F2 credit spread"] = align(st)
     g10, tb = to_monthly(macro.get("GS10")), to_monthly(macro.get("TB3MS"))
     if len(g10) and len(tb):
@@ -215,7 +324,8 @@ def analyse_index(name: str, daily: pd.Series, irx: pd.Series, macro: dict, n_tr
 
 
 def run_experiment46_report(indices: list, prices: dict, irx: pd.Series, macro: dict,
-                            n_trials: int = 216) -> str:
+                            n_trials: int = 216, sources: dict | None = None,
+                            errors: dict | None = None) -> str:
     """indices: [{name, yahoo}]; macro: {FRED id: Series, 'CAPE': Series}."""
     from datetime import datetime, timezone
     L = [f"# Experiment #46 — macro filters against false trend signals "
@@ -223,6 +333,10 @@ def run_experiment46_report(indices: list, prices: dict, irx: pd.Series, macro: 
     have = {k: (len(v) if v is not None else 0) for k, v in macro.items()}
     L.append("Macro data: " + ", ".join(f"{k} {'✓' if n else '✗'}" for k, n in have.items()) +
              f". Haircut α/{n_trials} = {0.05/n_trials:.5f} (placebo p floor ≈ 1/200).")
+    if sources:
+        L.append("Sources: " + "; ".join(f"{k}: {v}" for k, v in sources.items()) + ".")
+    if errors:
+        L.append("Fetch errors: " + "; ".join(f"{k}: {v}" for k, v in errors.items()) + ".")
     L.append("Rule: stress → follow the 3/6/12M trend score; no stress → fully invested. "
              "Costs 10 bps per unit turnover. US macro data are applied to non-US indices too.")
     L.append("")

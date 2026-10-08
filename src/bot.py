@@ -284,15 +284,17 @@ class TradingBot:
         try:
             from .backtest.experiments_35 import fetch_yahoo_daily
             from .backtest.experiments_34 import fetch_shiller
-            from .backtest.experiments_46 import FRED_SERIES, fetch_fred, run_experiment46_report
+            from .backtest.experiments_46 import fetch_macro, run_experiment46_report
             import pandas as pd
             idx = self.bot_cfg.get("experiment46", {}).get("indices", [])
             prices = {a["yahoo"]: fetch_yahoo_daily(a["yahoo"], "1927-12-01", timeout=20) for a in idx}
             irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=20)
-            macro = {sid: fetch_fred(sid, timeout=30) for sid in FRED_SERIES}
+            macro, sources, errors = fetch_macro(lambda sym, start: fetch_yahoo_daily(sym, start, timeout=20),
+                                                 timeout=30)
             shiller, _ = fetch_shiller(timeout=30)
             macro["CAPE"] = shiller["cape"].dropna() if not shiller.empty else pd.Series(dtype=float)
-            report = run_experiment46_report(idx, prices, irx, macro)
+            sources["CAPE"] = "Shiller" if len(macro["CAPE"]) else "none"
+            report = run_experiment46_report(idx, prices, irx, macro, sources=sources, errors=errors)
             self.heartbeat._put_file("experiment46_results.md", report.encode(),
                                      "Experiment #46: macro filters vs false trend signals")
             logger.info("Experiment #46: report pushed")
