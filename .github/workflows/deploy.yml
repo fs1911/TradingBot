@@ -79,12 +79,12 @@ jobs:
 
             # Contact e-mail for SEC EDGAR requests (SEC requires it in the User-Agent).
             # Kept as a repository secret so it never appears in this public repo.
-            if [ -n "${{ secrets.SEC_CONTACT_EMAIL }}" ]; then
-              if grep -q "^SEC_CONTACT_EMAIL=" .env 2>/dev/null; then
-                sed -i "s|^SEC_CONTACT_EMAIL=.*|SEC_CONTACT_EMAIL=${{ secrets.SEC_CONTACT_EMAIL }}|" .env
-              else
-                echo "SEC_CONTACT_EMAIL=${{ secrets.SEC_CONTACT_EMAIL }}" >> .env
-              fi
+            # Robust against a trailing newline in the secret and a non-writable .env.
+            SEC_EMAIL="$(printf '%s' "${{ secrets.SEC_CONTACT_EMAIL }}" | tr -d '\r\n ')"
+            if [ -n "$SEC_EMAIL" ]; then
+              sudo sed -i '/^SEC_CONTACT_EMAIL=/d' .env || true
+              echo "SEC_CONTACT_EMAIL=$SEC_EMAIL" | sudo tee -a .env > /dev/null
+              echo "SEC contact configured"
             fi
 
             sudo systemctl restart tradingbot
