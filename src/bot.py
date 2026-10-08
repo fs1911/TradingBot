@@ -317,7 +317,16 @@ class TradingBot:
             from .backtest.experiments_35 import fetch_yahoo_daily
             from .backtest.experiments_48 import fetch_purchases, signals, run_experiment48_report
             cfg = self.bot_cfg.get("experiment48", {})
-            ua = cfg.get("user_agent", "TradingBot-Research github.com/fs1911/TradingBot")
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file(
+                    "experiment48_results.md",
+                    b"# Experiment #48 - waiting\n\nSEC_CONTACT_EMAIL is not set on the server. Add the "
+                    b"repository secret SEC_CONTACT_EMAIL and redeploy.\n",
+                    "Experiment #48 waiting for SEC contact secret")
+                logger.warning("Experiment #48: SEC_CONTACT_EMAIL missing - skipped")
+                return
+            ua = f"{cfg.get('user_agent', 'TradingBot-Research')} {contact}"
             purch, fails = fetch_purchases(range(2006, _dt.utcnow().year + 1), ua, timeout=90,
                                            log=lambda m: logger.info(m))
             sig = signals(purch)

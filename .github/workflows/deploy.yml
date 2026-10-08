@@ -77,5 +77,15 @@ jobs:
               fi
             fi
 
+            # Contact e-mail for SEC EDGAR requests (SEC requires it in the User-Agent).
+            # Kept as a repository secret so it never appears in this public repo.
+            if [ -n "${{ secrets.SEC_CONTACT_EMAIL }}" ]; then
+              if grep -q "^SEC_CONTACT_EMAIL=" .env 2>/dev/null; then
+                sed -i "s|^SEC_CONTACT_EMAIL=.*|SEC_CONTACT_EMAIL=${{ secrets.SEC_CONTACT_EMAIL }}|" .env
+              else
+                echo "SEC_CONTACT_EMAIL=${{ secrets.SEC_CONTACT_EMAIL }}" >> .env
+              fi
+            fi
+
             sudo systemctl restart tradingbot
             echo "Deploy successful: $(date)"

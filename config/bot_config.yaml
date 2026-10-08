@@ -66,10 +66,10 @@ bot:
   run_experiment45_on_start: false  # Exp #45 done (2026-10-07): 3/6/12M score cuts maxDD in 35/35 assets (median 25 pts) but median CAGR -1.0%, Sharpe +0.00; false signals ~40% both ways; pooled placebo p=0.048 (not after haircut), 1/35 single. Works as risk brake for indices/commodities (Sharpe +0.07/+0.16), NOT for single stocks (Sharpe -0.08, entry-exit fwd 12M -5.5%). Post-2013 mostly worse than B&H on equity indices
   run_experiment46_on_start: false  # Exp #46 done (2026-10-08): macro vote (≥2 of unemployment/credit/curve) on US equity: false exits 61→40% (S&P TR), Sharpe 0.64 vs trend 0.58 vs B&H 0.53, CAGR ≈B&H with maxDD -24% vs -51%; placebo p<0.005 (floor, haircut not resolvable); CI vs trend mostly incl 0. Credit proxy best on DAX/SMI (ΔSharpe +0.11/+0.14, CI excl 0). Misses non-recession bears (2022, 1987, 2020). Hurts commodities/HYG/EEM. CAPE/VIX/curve alone useless. Plausible, not proven
   run_experiment47_on_start: false  # Exp #47 done (2026-10-08): index trend+macro vote on single stocks: CAGR ≈B&H (US 13.5 vs 13.9, CH 10.6 vs 9.6, DE 9.1 vs 6.8), smaller DD 74/92, 22/24, 26/30, higher Sharpe 64/92, 21/24, 27/30; placebo p 0.01/<0.01/0.03 (not haircut-proof). EW portfolios: 2000-02 +2..+8% vs -21..-41%, 2008 -2..-12% vs -46..-57%; no help 2011/2018/2022. Index trend alone or own trend: big DD cut but lower return
-  run_experiment48_on_start: false  # Exp #48 BLOCKED (2026-10-08): SEC returned 403 for all 84 quarters — SEC requires a contact e-mail in the User-Agent; waiting for user permission
+  run_experiment48_on_start: true   # Exp #48: SEC insider purchases; needs repository secret SEC_CONTACT_EMAIL (SEC User-Agent rule), injected into .env by deploy
 
 experiment48:
-  user_agent: "TradingBot-Research github.com/fs1911/TradingBot"   # SEC asks for a descriptive User-Agent
+  user_agent: "TradingBot-Research"   # + contact e-mail from env SEC_CONTACT_EMAIL (repository secret, never in this public repo)
   max_tickers: 3000
 
 experiment46:
