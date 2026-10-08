@@ -258,7 +258,10 @@ def placebo_filter(px, cash, score, stress, n_min: int = 24) -> tuple:
                                 filtered_weight(sc, pd.Series(np.roll(vals, k), index=sc.index)), 10.0),
                          cash.loc[sc.index]).get("sharpe", float("nan")))
     sh = np.array([v for v in sh if np.isfinite(v)])
-    return real, float((sh >= real).mean()) if len(sh) else float("nan")
+    if not len(sh):
+        return real, float("nan")
+    # resolution: with n shifts the smallest reportable p is 1/(n+1)
+    return real, max(float((sh >= real).mean()), 1.0 / (len(sh) + 1))
 
 
 def crisis_ret(r: pd.Series, a: str, b: str) -> float:
@@ -309,7 +312,8 @@ def analyse_index(name: str, daily: pd.Series, irx: pd.Series, macro: dict, n_tr
             dt = f"{a['obs']:+.2f} [{a['lo']:+.2f}, {a['hi']:+.2f}]"
             db = f"{b['obs']:+.2f} [{b['lo']:+.2f}, {b['hi']:+.2f}]"
             _, p = placebo_filter(px, cash, score, stresses[k])
-            pp = f"{p:.3f}{' ✅' if p < crit else ''}" if np.isfinite(p) else "—"
+            # ✅ only if the test can resolve the haircut (it cannot with ~200 shifts)
+            pp = (f"{p:.3f}{' ✅' if p < crit else ''}" if p > 0.0051 else f"<0.005 (floor)") if np.isfinite(p) else "—"
         L.append(f"| {k} | {_p(s['cagr'], 1)} | {_p(s['maxdd'])} | {s['sharpe']:.2f} | {s['pre']:.2f} | "
                  f"{s['post']:.2f} | {100*w.mean():.0f}% | {ex:.1f} | {_p(fx)} | {dt} | {db} | {pp} |")
     L.append("")
