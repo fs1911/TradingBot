@@ -278,6 +278,71 @@ class TradingBot:
             except Exception:
                 pass
 
+    def _run_experiment47(self) -> None:
+        """Experiment #47: market (index) trend + macro signal applied to single stocks.
+        → experiment47_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_46 import fetch_macro
+            from .backtest.experiments_47 import run_experiment47_report
+            fy = lambda sym, start="1990-01-01": fetch_yahoo_daily(sym, start, timeout=20)
+            macro, sources, _ = fetch_macro(fy, timeout=30)
+            irx = fy("^IRX", "1960-01-01")
+            regions = {}
+            for name, spec in self.bot_cfg.get("experiment43", {}).get("regions", {}).items():
+                tickers = list(spec.get("tickers", []))
+                if spec.get("from_experiment20"):
+                    tickers += list(self.bot_cfg.get("experiment20", {}).get("universe", []))
+                regions[name] = ({t: fy(t) for t in tickers}, fy(spec.get("index", "^GSPC"), "1985-01-01"))
+            report = run_experiment47_report(regions, irx, macro, sources, n_shifts=100)
+            self.heartbeat._put_file("experiment47_results.md", report.encode(),
+                                     "Experiment #47: market signal on single stocks")
+            logger.info("Experiment #47: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #47 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment47_results.md",
+                                         f"# Experiment #47 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #47 failure traceback")
+            except Exception:
+                pass
+
+    def _run_experiment48(self) -> None:
+        """Experiment #48: insider purchases (SEC Form 4 data sets) as a buy signal.
+        → experiment48_results.md."""
+        try:
+            from datetime import datetime as _dt
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_48 import fetch_purchases, signals, run_experiment48_report
+            cfg = self.bot_cfg.get("experiment48", {})
+            ua = cfg.get("user_agent", "TradingBot-Research github.com/fs1911/TradingBot")
+            purch, fails = fetch_purchases(range(2006, _dt.utcnow().year + 1), ua, timeout=90,
+                                           log=lambda m: logger.info(m))
+            sig = signals(purch)
+            tickers = sorted(set().union(*[set(e["ticker"]) for e in sig.values()]))[: cfg.get("max_tickers", 3000)]
+            prices = {}
+            for t in tickers:
+                s = fetch_yahoo_daily(t.replace(".", "-"), "2005-06-01", timeout=15)
+                if s is not None and len(s) > 300:
+                    prices[t] = s
+            spy = fetch_yahoo_daily("SPY", "2005-01-01", timeout=20)
+            report = run_experiment48_report(purch, fails, prices, spy)
+            self.heartbeat._put_file("experiment48_results.md", report.encode(),
+                                     "Experiment #48: insider purchases")
+            logger.info("Experiment #48: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #48 failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment48_results.md",
+                                         f"# Experiment #48 — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #48 failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment46(self) -> None:
         """Experiment #46: macro filters against false trend signals (FRED + Shiller).
         → experiment46_results.md."""
@@ -1627,6 +1692,14 @@ class TradingBot:
         if self.bot_cfg.get("bot", {}).get("run_experiment46_on_start", False):
             import threading
             threading.Thread(target=self._run_experiment46, daemon=True).start()
+
+        # #47 and #48 run one after the other (memory on the small VM)
+        _b = self.bot_cfg.get("bot", {})
+        _seq = [f for flag, f in (("run_experiment47_on_start", self._run_experiment47),
+                                  ("run_experiment48_on_start", self._run_experiment48)) if _b.get(flag, False)]
+        if _seq:
+            import threading
+            threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
 
         while self._running:
             try:
