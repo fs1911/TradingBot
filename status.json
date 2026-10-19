@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-10-19 08:07:33",
+  "updated_utc": "2026-10-19 09:08:16",
   "alive": true,
   "state": "active",
-  "uptime_hours": 138.6,
+  "uptime_hours": 139.6,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -7274.87,
-  "unrealized_pnl_usd": -49.97,
-  "total_pnl_usd": -7324.84,
-  "equity_usd": 61160.15,
+  "realized_pnl_usd": -7274.36,
+  "unrealized_pnl_usd": -100.71,
+  "total_pnl_usd": -7375.07,
+  "equity_usd": 61109.92,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": -12.27
+      "unrealized_usd": -10.41
     },
     {
       "symbol": "DBA",
@@ -28,13 +28,13 @@
       "symbol": "DBC",
       "side": "buy",
       "qty": 186.7827,
-      "unrealized_usd": 217.61
+      "unrealized_usd": 155.97
     },
     {
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": -271.4
+      "unrealized_usd": -274.77
     },
     {
       "symbol": "EFA",
@@ -46,7 +46,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -66.52
+      "unrealized_usd": -64.56
     },
     {
       "symbol": "FXY",
@@ -58,25 +58,25 @@
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": 4.2
+      "unrealized_usd": 2.01
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": -80.91
+      "unrealized_usd": -83.82
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": 3.01
+      "unrealized_usd": -8.6
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 157.18
+      "unrealized_usd": 184.34
     },
     {
       "symbol": "UUP",
@@ -86,7 +86,7 @@
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -7542.06,
+  "journal_gap_usd": -7541.55,
   "broker_fees_usd": 6296.06,
   "broker_fee_entries": 9592
 }
