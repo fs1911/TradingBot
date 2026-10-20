@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-10-20 22:35:17",
+  "updated_utc": "2026-10-20 23:36:00",
   "alive": true,
   "state": "active",
-  "uptime_hours": 177.1,
+  "uptime_hours": 178.1,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -7274.36,
-  "unrealized_pnl_usd": 3.05,
-  "total_pnl_usd": -7271.31,
-  "equity_usd": 61213.68,
+  "unrealized_pnl_usd": 57.91,
+  "total_pnl_usd": -7216.45,
+  "equity_usd": 61268.54,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": -7.36
+      "unrealized_usd": -8.67
     },
     {
       "symbol": "DBA",
       "side": "buy",
       "qty": 365.7659,
-      "unrealized_usd": -42.13
+      "unrealized_usd": 20.49
     },
     {
       "symbol": "DBC",
@@ -34,49 +34,49 @@
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": -272.24
+      "unrealized_usd": -265.01
     },
     {
       "symbol": "EFA",
       "side": "buy",
       "qty": 33.5997,
-      "unrealized_usd": -31.07
+      "unrealized_usd": -21.74
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -57.31
+      "unrealized_usd": -61.24
     },
     {
       "symbol": "FXY",
       "side": "buy",
       "qty": 73.0418,
-      "unrealized_usd": -30.1
+      "unrealized_usd": -41.48
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -13.7
+      "unrealized_usd": -17.78
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": -38.87
+      "unrealized_usd": -40.35
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": 51.33
+      "unrealized_usd": 42.87
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 188.5
+      "unrealized_usd": 194.83
     },
     {
       "symbol": "UUP",
