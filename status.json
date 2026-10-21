@@ -1,34 +1,34 @@
 {
-  "updated_utc": "2026-10-21 18:49:40",
+  "updated_utc": "2026-10-21 19:50:24",
   "alive": true,
   "state": "active",
-  "uptime_hours": 197.3,
+  "uptime_hours": 198.4,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -7274.54,
-  "unrealized_pnl_usd": 46.56,
-  "total_pnl_usd": -7227.98,
-  "equity_usd": 61257.01,
+  "realized_pnl_usd": -7274.86,
+  "unrealized_pnl_usd": 33.47,
+  "total_pnl_usd": -7241.39,
+  "equity_usd": 61243.6,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": 11.35
+      "unrealized_usd": 9.79
     },
     {
       "symbol": "DBA",
       "side": "buy",
       "qty": 365.7659,
-      "unrealized_usd": -62.24
+      "unrealized_usd": -58.59
     },
     {
       "symbol": "DBC",
       "side": "buy",
       "qty": 186.7827,
-      "unrealized_usd": 167.18
+      "unrealized_usd": 166.24
     },
     {
       "symbol": "EEM",
@@ -40,53 +40,53 @@
       "symbol": "EFA",
       "side": "buy",
       "qty": 33.5997,
-      "unrealized_usd": -19.14
+      "unrealized_usd": -17.8
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -42.97
+      "unrealized_usd": -48.01
     },
     {
       "symbol": "FXY",
       "side": "buy",
       "qty": 73.0418,
-      "unrealized_usd": -28.63
+      "unrealized_usd": -29.29
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -12.86
+      "unrealized_usd": -12.71
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": -32.45
+      "unrealized_usd": -36.67
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": 81.22
+      "unrealized_usd": 81.01
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 178.73
+      "unrealized_usd": 177.01
     },
     {
       "symbol": "UUP",
       "side": "buy",
       "qty": 389.6716,
-      "unrealized_usd": 79.88
+      "unrealized_usd": 75.99
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -7541.73,
+  "journal_gap_usd": -7542.05,
   "broker_fees_usd": 6296.06,
   "broker_fee_entries": 9592
 }
