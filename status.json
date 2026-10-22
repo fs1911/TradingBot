@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-10-22 08:59:40",
+  "updated_utc": "2026-10-22 10:00:23",
   "alive": true,
   "state": "active",
-  "uptime_hours": 211.5,
+  "uptime_hours": 212.5,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -7274.36,
-  "unrealized_pnl_usd": -281.22,
-  "total_pnl_usd": -7555.58,
-  "equity_usd": 60929.41,
+  "unrealized_pnl_usd": -274.21,
+  "total_pnl_usd": -7548.57,
+  "equity_usd": 60936.42,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": -21.44
+      "unrealized_usd": -20.44
     },
     {
       "symbol": "DBA",
@@ -34,7 +34,7 @@
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": -416.28
+      "unrealized_usd": -407.01
     },
     {
       "symbol": "EFA",
@@ -46,7 +46,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -71.33
+      "unrealized_usd": -72.75
     },
     {
       "symbol": "FXY",
@@ -58,25 +58,25 @@
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -30.47
+      "unrealized_usd": -28.8
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": -62.05
+      "unrealized_usd": -60.94
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": -43.3
+      "unrealized_usd": -36.56
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 231.75
+      "unrealized_usd": 220.4
     },
     {
       "symbol": "UUP",
