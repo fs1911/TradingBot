@@ -278,6 +278,50 @@ class TradingBot:
             except Exception:
                 pass
 
+    def _run_experiment50b(self) -> None:
+        """Experiment #50b: hardening buybacks vs issuance (cut-offs, app rule, value-weight,
+        size, staleness, quarterly freshness). → experiment50b_results.md."""
+        try:
+            from datetime import datetime as _dt
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_49 import fetch_frames, fetch_ticker_map, components
+            from .backtest.experiments_50b import fetch_concepts, run_experiment50b_report
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file("experiment50b_results.md",
+                                         b"# Experiment #50b - waiting\n\nSEC_CONTACT_EMAIL missing on server.\n",
+                                         "Experiment #50b waiting for SEC contact")
+                return
+            ua = f"TradingBot-Research {contact}"
+            min_assets = float(self.bot_cfg.get("experiment49", {}).get("min_assets", 1e9))
+            frames, _ = fetch_frames(range(2009, _dt.utcnow().year), ua, log=lambda m: logger.info(m))
+            tmap = fetch_ticker_map(ua)
+            ciks = set()
+            for df in frames.values():
+                if df is not None and not df.empty:
+                    c = components(df)
+                    ciks |= {int(k) for k in c.index[c["assets"] >= min_assets] if int(k) in tmap}
+            concepts, fails = fetch_concepts(sorted(ciks), ua, log=lambda m: logger.info(m))
+            prices = {}
+            for t in sorted({tmap[c] for c in concepts if c in tmap})[:3000]:
+                sr = fetch_yahoo_daily(t.replace(".", "-"), "2009-01-01", timeout=15)
+                if sr is not None and len(sr) > 250:
+                    prices[t] = sr
+            report = run_experiment50b_report(frames, concepts, fails, tmap, prices, min_assets)
+            self.heartbeat._put_file("experiment50b_results.md", report.encode(),
+                                     "Experiment #50b: hardening buybacks")
+            logger.info("Experiment #50b: report pushed")
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            logger.error(f"Experiment #50b failed: {e}\n{tb}")
+            try:
+                self.heartbeat._put_file("experiment50b_results.md",
+                                         f"# Experiment #50b — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                         "Experiment #50b failure traceback")
+            except Exception:
+                pass
+
     def _run_experiment50(self) -> None:
         """Experiment #50: share buybacks vs issuance (SEC companyconcept, split-safe,
         point-in-time), alone and with quality / market regime. → experiment50_results.md."""
@@ -1817,7 +1861,8 @@ class TradingBot:
         _seq = [f for flag, f in (("run_experiment47_on_start", self._run_experiment47),
                                   ("run_experiment48_on_start", self._run_experiment48),
                                   ("run_experiment49_on_start", self._run_experiment49),
-                                  ("run_experiment50_on_start", self._run_experiment50)) if _b.get(flag, False)]
+                                  ("run_experiment50_on_start", self._run_experiment50),
+                                  ("run_experiment50b_on_start", self._run_experiment50b)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
