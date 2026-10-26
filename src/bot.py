@@ -289,6 +289,30 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiment56(self) -> None:
+        """Experiment #56: can an implementable factor portfolio beat the MSCI World on return?
+        French developed + US portfolios, real ETFs. → experiment56_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_43 import fetch_french, parse_french_monthly
+            from .backtest.experiments_56 import FILES, ETFS_EUR, ETFS_USD, run_experiment56_report
+            frames, loaded = {}, {}
+            for lbl, names in FILES.items():
+                frames[lbl], loaded[lbl] = None, None
+                for fname in names:
+                    df = parse_french_monthly(fetch_french(fname, timeout=30))
+                    if df is not None and not df.empty:
+                        frames[lbl], loaded[lbl] = df, fname
+                        break
+            eur = {n: fetch_yahoo_daily(sym, "2009-01-01", timeout=20) for n, sym in ETFS_EUR.items()}
+            usd = {n: fetch_yahoo_daily(sym, "2000-01-01", timeout=20) for n, sym in ETFS_USD.items()}
+            report = run_experiment56_report(frames, loaded, eur, usd)
+            self.heartbeat._put_file("experiment56_results.md", report.encode(),
+                                     "Experiment #56: beat the MSCI World?")
+            logger.info("Experiment #56: report pushed")
+        except Exception as e:
+            self._push_failure("56", e)
+
     def _run_experiment52(self) -> None:
         """Experiment #52 (H1): factor premia in small vs big companies (French 25 portfolios).
         → experiment52_results.md."""
@@ -1946,7 +1970,8 @@ class TradingBot:
                                   ("run_experiment50b_on_start", self._run_experiment50b),
                                   ("run_experiment52_on_start", self._run_experiment52),
                                   ("run_experiment53_on_start", self._run_experiments53_55),
-                                  ("run_experiment51_on_start", self._run_experiment51)) if _b.get(flag, False)]
+                                  ("run_experiment51_on_start", self._run_experiment51),
+                                  ("run_experiment56_on_start", self._run_experiment56)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
