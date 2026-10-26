@@ -278,6 +278,87 @@ class TradingBot:
             except Exception:
                 pass
 
+    def _push_failure(self, n: str, e: Exception) -> None:
+        import traceback
+        tb = traceback.format_exc()
+        logger.error(f"Experiment #{n} failed: {e}\n{tb}")
+        try:
+            self.heartbeat._put_file(f"experiment{n}_results.md",
+                                     f"# Experiment #{n} — FAILED\n\n```\n{tb}\n```\n".encode(),
+                                     f"Experiment #{n} failure traceback")
+        except Exception:
+            pass
+
+    def _run_experiment52(self) -> None:
+        """Experiment #52 (H1): factor premia in small vs big companies (French 25 portfolios).
+        → experiment52_results.md."""
+        try:
+            from .backtest.experiments_43 import fetch_french, parse_french_monthly
+            from .backtest.experiments_52 import FILES_25, run_experiment52_report
+            data = {lbl: parse_french_monthly(fetch_french(f, timeout=30)) for lbl, (f, _) in FILES_25.items()}
+            ff5 = parse_french_monthly(fetch_french("F-F_Research_Data_5_Factors_2x3_CSV.zip", timeout=30))
+            report = run_experiment52_report(data, ff5)
+            self.heartbeat._put_file("experiment52_results.md", report.encode(),
+                                     "Experiment #52: small vs big factor premia")
+            logger.info("Experiment #52: report pushed")
+        except Exception as e:
+            self._push_failure("52", e)
+
+    def _run_experiments53_55(self) -> None:
+        """Experiments #53–#55: crash buying, counter-cyclical savings plan, what matters for a
+        saver. → experiments53_55_results.md."""
+        try:
+            from .backtest.experiments_34 import fetch_shiller
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_53_55 import run_experiments53_55_report
+            shiller, _ = fetch_shiller(timeout=30)
+            markets = {}
+            for name, sym, start, is_tr in (("S&P 500 fund TR (VFINX)", "VFINX", "1980-01-01", True),
+                                            ("S&P 500 price (^GSPC)", "^GSPC", "1927-12-01", False),
+                                            ("Nasdaq Composite (^IXIC)", "^IXIC", "1971-01-01", False),
+                                            ("DAX (^GDAXI)", "^GDAXI", "1987-12-01", True),
+                                            ("SMI (^SSMI)", "^SSMI", "1990-01-01", False),
+                                            ("Nikkei 225 (^N225)", "^N225", "1965-01-01", False)):
+                markets[name] = (fetch_yahoo_daily(sym, start, timeout=30), is_tr)
+            irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=30)
+            report = run_experiments53_55_report(shiller, markets, irx)
+            self.heartbeat._put_file("experiments53_55_results.md", report.encode(),
+                                     "Experiments #53-#55: crashes, savings plan, saver math")
+            logger.info("Experiments #53-55: report pushed")
+        except Exception as e:
+            self._push_failure("s53_55", e)
+
+    def _run_experiment51(self) -> None:
+        """Experiment #51: copying Berkshire / well-known hedge funds from 13F filings.
+        → experiment51_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_51 import fetch_holdings, map_cusips, run_experiment51_report
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file("experiment51_results.md",
+                                         b"# Experiment #51 - waiting\n\nSEC_CONTACT_EMAIL missing on server.\n",
+                                         "Experiment #51 waiting for SEC contact")
+                return
+            ua = f"TradingBot-Research {contact}"
+            h, n_zips, fails = fetch_holdings(ua, log=lambda m: logger.info(m))
+            if len(h):
+                mapping = map_cusips(sorted(h["cusip"].unique()), log=lambda m: logger.info(m))
+                h["ticker"] = h["cusip"].map(mapping)
+            prices = {}
+            tickers = h["ticker"].dropna().value_counts().index[:3000] if "ticker" in h else []
+            for t in sorted(tickers):
+                sr = fetch_yahoo_daily(str(t).replace(".", "-").replace("/", "-"), "2013-01-01", timeout=15)
+                if sr is not None and len(sr) > 60:
+                    prices[t] = sr
+            spy = fetch_yahoo_daily("SPY", "2013-01-01", timeout=20)
+            report = run_experiment51_report(h, n_zips, fails, prices, spy)
+            self.heartbeat._put_file("experiment51_results.md", report.encode(),
+                                     "Experiment #51: smart money (13F)")
+            logger.info("Experiment #51: report pushed")
+        except Exception as e:
+            self._push_failure("51", e)
+
     def _run_experiment50b(self) -> None:
         """Experiment #50b: hardening buybacks vs issuance (cut-offs, app rule, value-weight,
         size, staleness, quarterly freshness). → experiment50b_results.md."""
@@ -1862,7 +1943,10 @@ class TradingBot:
                                   ("run_experiment48_on_start", self._run_experiment48),
                                   ("run_experiment49_on_start", self._run_experiment49),
                                   ("run_experiment50_on_start", self._run_experiment50),
-                                  ("run_experiment50b_on_start", self._run_experiment50b)) if _b.get(flag, False)]
+                                  ("run_experiment50b_on_start", self._run_experiment50b),
+                                  ("run_experiment52_on_start", self._run_experiment52),
+                                  ("run_experiment53_on_start", self._run_experiments53_55),
+                                  ("run_experiment51_on_start", self._run_experiment51)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
