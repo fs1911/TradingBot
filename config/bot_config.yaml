@@ -73,7 +73,7 @@ bot:
   run_experiment52_on_start: false  # Exp #52 done (2026-10-26): premia survive publication only in smallest quintile (value +9.8%/yr t3.3, momentum +8.8% t2.6; big +1.7%/+4.3% n.s.); profitability gone after 2013; 2010+ weaker (t 1.3-1.5); micro caps, not usable
   run_experiment53_on_start: false  # Exp #53-55 done (2026-10-26): crash buying no edge (p 0.12-0.92, 7 markets); reserve savings plans lose vs DCA (R30 -1..-7% median); horizon +10y +94%, double savings +100%, fee 2% -29%, strategy +1%/yr +22%
   run_experiment51_on_start: false  # Exp #51 done (2026-10-26): 13F copying 2013-2026: Berkshire clone -2.1%/yr vs SPY (t -1.0), best ideas -0.2%, consensus -0.2%, all holdings -0.9%; all Sharpe < SPY; conviction +0.7% (t 0.4). No edge
-  run_experiment56_on_start: true   # Exp #56: beat the MSCI World on return? factor portfolios 1990-2026 (blind 2011-2026 test) + real ETFs
+  run_experiment56_on_start: false  # Exp #56 done (2026-10-26): NO. Blind pick (small momentum, +6.7%/yr 1990-2010) → 2011-2026 -0.1%/yr; all 7 candidates 2011→ -2.0..+1.2% (t<1.4); real EUR factor ETFs vs EUNL -0.2..-4.0%/yr, mix +0.5% (t 0.6). Only Nasdaq-100 won big (+7.8%) = hindsight
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets

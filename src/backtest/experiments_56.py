@@ -203,7 +203,7 @@ def etf_table(prices: dict, bench: str) -> list:
         if st.get("n", 0) < 24:
             L.append(f"| {name} | too short | — | — | — | — | — |")
             continue
-        start = r.index[0]
+        start = max(r.index[0], b.index[0])   # common window with the benchmark
         L.append(f"| {name} | {start} | {_p(st['cagr'])} | {_p(st['mcagr'])} | **{_p(st['diff'])}** | "
                  f"{100*st['dd']:.0f}% | {100*st['years_won']:.0f}% |")
     L.append("")
