@@ -75,8 +75,8 @@ bot:
   run_experiment51_on_start: false  # Exp #51 done (2026-10-26): 13F copying 2013-2026: Berkshire clone -2.1%/yr vs SPY (t -1.0), best ideas -0.2%, consensus -0.2%, all holdings -0.9%; all Sharpe < SPY; conviction +0.7% (t 0.4). No edge
   run_experiment56_on_start: false  # Exp #56 done (2026-10-26): NO. Blind pick (small momentum, +6.7%/yr 1990-2010) → 2011-2026 -0.1%/yr; all 7 candidates 2011→ -2.0..+1.2% (t<1.4); real EUR factor ETFs vs EUNL -0.2..-4.0%/yr, mix +0.5% (t 0.6). Only Nasdaq-100 won big (+7.8%) = hindsight
   run_experiment57_on_start: false  # Exp #57 done (2026-10-27): 35/62 raw p<0.05 (14 expected), Bonferroni 10 = risk premia (VRP, carry, momentum, trend) + pre-publication calendar effects; buybacks only FDR; DSR depends on σ(SR); PBO trend grid 43%, dev factors 60%, US 19%, noise 56%
-  run_experiment58_on_start: true   # Exp #58: luck simulation (coin-flip gurus, skill-less managers, random stock pickers) + real stocks
-  run_experiment60_on_start: true   # Exp #60: minute data (Alpaca IEX/crypto) — short-term predictability and break-even costs
+  run_experiment58_on_start: false  # Exp #58 done (2026-10-27): luck alone: best of 68 coin gurus 62%; 123/10000 skill-less managers 'proven' t>2; simulated 1-stock 7.9% x10 but 62% lose; real survivors 4.2% x10, 33% lose, median x2.0 vs SPY x3.4
+  run_experiment60_on_start: false  # Exp #60 done (2026-10-27): IEX minute data 2020-07→ (not 70 days); 23/164 gross t>3.7 (reversal) but break-even 0.02-0.2 bp/side; best 1st half (ETH 1m reversal t 10.2) → 2nd half t -1.05; 0/164 net positive in both halves
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets
