@@ -340,3 +340,12 @@ Rund 40 % der Trendwechsel drehen innerhalb von 3 Monaten wieder. Keine Anlagebe
    Werte aus **verschiedenen** Berichten werden nie kombiniert.
 8. Sparplan-Rechner: 500/Monat, 30 Jahre, TER 0,2 % → Median 530 000–540 000; TER 2 % → Median ca. −29 %.
 9. Nirgends in der App erscheinen Wörter wie „Kaufsignal“, „Kursziel“, „sicher“ oder „schlägt den Markt“.
+
+---
+
+## 9. Persönliche Version „Mein Depot“ (Oktober 2026)
+Die App ist für eigene Entscheidungen gedacht. Der Lovable-Prompt dafür steht in
+`docs/finanzradar/LOVABLE_PROMPT_MEIN_DEPOT.md`: Yuh-CSV-Import, Verwässerung/Rückkauf für US-, Schweizer und
+europäische Aktien, Klumpen- und Gebühren-Warnung, regelbasierter Kauf-Check (🟢/🟡/🔴, keine Prognose),
+tägliche Prüfung mit Telegram-Meldungen nur bei Ereignissen. Sparplan-Rechner und Info-Seite (Abschnitt 5/6)
+sind dort bewusst weggelassen.
