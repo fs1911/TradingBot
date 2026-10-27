@@ -106,7 +106,8 @@ def empirical(prices: dict, years: int = 10, n: int = 50_000, seed: int = 58) ->
         s.index = idx.tz_localize(None) if idx.tz is not None else idx
         start = s.index[0]
         end_v = s[s.index <= start + pd.DateOffset(years=years)]
-        if len(end_v) and s.iloc[0] > 0:
+        # penny stocks / broken adjusted prices (e.g. ×1,000,000 artefacts) are excluded
+        if len(end_v) and s.iloc[0] >= 1.0 and 0 < end_v.iloc[-1] / s.iloc[0] <= 1000:
             mult[t] = float(end_v.iloc[-1] / s.iloc[0])
     if len(mult) < 50:
         return {"n_stocks": len(mult)}

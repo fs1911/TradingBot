@@ -32,16 +32,25 @@ COSTS_BP = {"stock": (1.0, 3.0), "crypto": (5.0, 25.0)}
 BARS = (1, 5, 15, 60)
 
 
+def _utc(x) -> pd.Timestamp:
+    t = pd.Timestamp(x)
+    return t.tz_localize("UTC") if t.tz is None else t.tz_convert("UTC")
+
+
+def month_edges(start, end) -> pd.DatetimeIndex:
+    """[start, first of each month …, end], all tz-aware UTC (inputs may be naive or aware)."""
+    a, b = _utc(start), _utc(end)
+    mid = pd.date_range(a, b, freq="MS")
+    return pd.DatetimeIndex([a]).append(mid[mid > a]).append(pd.DatetimeIndex([b]))
+
+
 def fetch_bars(data_client, crypto_client, symbol: str, start, end, minutes: int, log=None) -> pd.DataFrame:
     """Minute bars in monthly chunks (alpaca-py paginates within a request)."""
     from alpaca.data.requests import StockBarsRequest, CryptoBarsRequest
     from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
     tf = TimeFrame(minutes, TimeFrameUnit.Minute) if minutes < 60 else TimeFrame(1, TimeFrameUnit.Hour)
     parts = []
-    edges = pd.date_range(pd.Timestamp(start), pd.Timestamp(end), freq="MS", tz="UTC")
-    edges = edges.insert(0, pd.Timestamp(start).tz_localize("UTC") if pd.Timestamp(start).tz is None else pd.Timestamp(start))
-    edges = edges.append(pd.DatetimeIndex([pd.Timestamp(end).tz_localize("UTC") if pd.Timestamp(end).tz is None
-                                           else pd.Timestamp(end)]))
+    edges = month_edges(start, end)
     for a, b in zip(edges[:-1], edges[1:]):
         if b <= a:
             continue

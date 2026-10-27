@@ -33,3 +33,11 @@ def test_empirical_and_report():
     assert e["n_stocks"] == 80
     rep = run_experiment58_report(prices, prices["S0"])
     assert "Coin-flip" in rep and "Reality check" in rep and "random 5-stock" in rep
+
+
+def test_empirical_drops_artefacts():
+    idx = pd.bdate_range("2009-01-01", "2021-01-01")
+    base = {f"S{i}": pd.Series(np.linspace(10, 30, len(idx)), index=idx) for i in range(60)}
+    base["PENNY"] = pd.Series(np.linspace(0.01, 50, len(idx)), index=idx)
+    e = empirical(base, n=500)
+    assert e["n_stocks"] == 60 and e["best_multiple"] < 1000

@@ -50,3 +50,10 @@ def test_analyse_and_report_stock_and_crypto():
     rep = run_experiment60_report(res)
     assert "Coverage" in rep and "break-even" in rep and "Selection honesty" in rep and "Summary" in rep
     assert len(resample(_minutes(2), 5)) < len(_minutes(2))
+
+
+def test_month_edges_mixed_timezones():
+    from src.backtest.experiments_60 import month_edges
+    e = month_edges("2020-01-15", pd.Timestamp("2020-04-10", tz="UTC"))
+    assert str(e.tz) == "UTC" and len(e) == 5 and e[0] == pd.Timestamp("2020-01-15", tz="UTC")
+    assert e[-1] == pd.Timestamp("2020-04-10", tz="UTC")
