@@ -1,25 +1,231 @@
-# Experiment #60 — FAILED
+# Experiment #60 — minute data: is there a short-term edge after costs? (2026-10-27 18:58 UTC)
 
-```
-Traceback (most recent call last):
-  File "/home/ubuntu/TradingBot/.venv/lib/python3.10/site-packages/pandas/core/arrays/datetimes.py", line 2663, in _infer_tz_from_endpoints
-    inferred_tz = timezones.infer_tzinfo(start, end)
-  File "pandas/_libs/tslibs/timezones.pyx", line 369, in pandas._libs.tslibs.timezones.infer_tzinfo
-AssertionError: Inputs must both have the same timezone, None != UTC
+Data: Alpaca 1-minute bars (stocks: free IEX feed, regular session only; crypto: Alpaca), resampled to 5/15/60 minutes. Positions decided on the completed bar, held for the next; stocks flat overnight. 'Break-even' = gross gain per position change ÷ 2 sides — what a trader may pay per side (spread + fees + slippage) before the rule loses. Bonferroni α/300 → |t| ≳ 3.7.
 
-The above exception was the direct cause of the following exception:
+## Coverage
+| symbol | from | to | 1-min bars |
+|---|---|---|--:|
+| SPY | 2020-07-27 | 2026-10-27 | 617,832 |
+| QQQ | 2020-07-27 | 2026-10-27 | 592,712 |
+| IWM | 2020-07-27 | 2026-10-27 | 561,747 |
+| AAPL | 2020-07-27 | 2026-10-27 | 611,495 |
+| NVDA | 2020-07-27 | 2026-10-27 | 585,923 |
+| TSLA | 2020-07-27 | 2026-10-27 | 590,986 |
+| BTC/USD | 2023-01-01 | 2026-10-27 | 1,678,144 |
+| ETH/USD | 2023-01-01 | 2026-10-27 | 1,593,688 |
 
-Traceback (most recent call last):
-  File "/home/ubuntu/TradingBot/scripts/../src/bot.py", line 363, in _run_experiment60
-    df = fetch_bars(self.broker._data, self.broker._crypto_data, sym, start, end, 1,
-  File "/home/ubuntu/TradingBot/scripts/../src/backtest/experiments_60.py", line 41, in fetch_bars
-    edges = pd.date_range(pd.Timestamp(start), pd.Timestamp(end), freq="MS", tz="UTC")
-  File "/home/ubuntu/TradingBot/.venv/lib/python3.10/site-packages/pandas/core/indexes/datetimes.py", line 1008, in date_range
-    dtarr = DatetimeArray._generate_range(
-  File "/home/ubuntu/TradingBot/.venv/lib/python3.10/site-packages/pandas/core/arrays/datetimes.py", line 447, in _generate_range
-    tz = _infer_tz_from_endpoints(start, end, tz)
-  File "/home/ubuntu/TradingBot/.venv/lib/python3.10/site-packages/pandas/core/arrays/datetimes.py", line 2666, in _infer_tz_from_endpoints
-    raise TypeError(
-TypeError: Start and end cannot both be tz-aware with different timezones
+## A How predictable are minute returns? (autocorrelation lag 1 / variance ratio q=16)
+| symbol | bar | n | ρ(1) (t) | ρ(2) (t) | VR(2) (z) | VR(16) (z) |
+|---|--:|--:|--:|--:|--:|--:|
+| SPY | 1m | 599,933 | -0.004 (-2.7) | -0.007 (-5.2) | 0.996 (-2.7) | 0.964 (-6.3) |
+| SPY | 5m | 122,042 | -0.011 (-4.0) | -0.012 (-4.2) | 0.989 (-4.0) | 1.002 (+0.1) |
+| SPY | 15m | 40,692 | -0.002 (-0.4) | -0.013 (-2.6) | 0.998 (-0.4) | 1.053 (+2.4) |
+| SPY | 60m | 9,396 | +0.007 (+0.7) | +0.041 (+3.6) | 1.008 (+0.7) | 0.919 (-1.6) |
+| QQQ | 1m | 561,894 | -0.008 (-6.2) | -0.007 (-5.2) | 0.992 (-6.2) | 0.957 (-7.4) |
+| QQQ | 5m | 121,868 | -0.013 (-4.5) | -0.006 (-2.2) | 0.987 (-4.5) | 0.990 (-0.8) |
+| QQQ | 15m | 40,692 | +0.004 (+0.8) | -0.014 (-2.8) | 1.004 (+0.8) | 1.039 (+1.7) |
+| QQQ | 60m | 9,393 | +0.010 (+0.9) | +0.035 (+3.1) | 1.010 (+0.9) | 0.919 (-1.6) |
+| IWM | 1m | 552,580 | -0.004 (-3.1) | -0.001 (-0.8) | 0.996 (-3.1) | 0.972 (-4.7) |
+| IWM | 5m | 121,760 | -0.011 (-3.9) | -0.013 (-4.6) | 0.989 (-3.9) | 0.968 (-2.5) |
+| IWM | 15m | 40,683 | +0.006 (+1.2) | -0.024 (-4.7) | 1.006 (+1.2) | 0.982 (-0.8) |
+| IWM | 60m | 9,393 | -0.017 (-1.5) | +0.014 (+1.3) | 0.983 (-1.5) | 0.821 (-3.6) |
+| AAPL | 1m | 604,643 | -0.008 (-6.0) | -0.009 (-7.3) | 0.992 (-6.0) | 0.951 (-8.7) |
+| AAPL | 5m | 122,014 | -0.026 (-9.0) | -0.002 (-0.6) | 0.974 (-8.9) | 0.947 (-4.2) |
+| AAPL | 15m | 40,675 | -0.010 (-1.9) | -0.008 (-1.7) | 0.990 (-1.9) | 0.966 (-1.5) |
+| AAPL | 60m | 9,385 | -0.045 (-4.0) | +0.046 (+4.1) | 0.955 (-4.0) | 0.889 (-2.2) |
+| NVDA | 1m | 577,490 | -0.006 (-4.6) | -0.008 (-6.0) | 0.994 (-4.6) | 0.955 (-7.7) |
+| NVDA | 5m | 121,824 | -0.013 (-4.5) | -0.012 (-4.3) | 0.987 (-4.5) | 0.967 (-2.6) |
+| NVDA | 15m | 40,679 | +0.010 (+1.9) | -0.014 (-2.7) | 1.010 (+1.9) | 1.031 (+1.4) |
+| NVDA | 60m | 9,389 | +0.006 (+0.5) | +0.027 (+2.4) | 1.006 (+0.6) | 0.898 (-2.0) |
+| TSLA | 1m | 585,145 | -0.011 (-8.7) | -0.012 (-8.8) | 0.989 (-8.7) | 0.943 (-9.9) |
+| TSLA | 5m | 121,842 | -0.018 (-6.3) | -0.005 (-1.9) | 0.982 (-6.3) | 0.979 (-1.7) |
+| TSLA | 15m | 40,675 | +0.007 (+1.4) | -0.007 (-1.4) | 1.007 (+1.3) | 1.035 (+1.6) |
+| TSLA | 60m | 9,390 | -0.008 (-0.7) | +0.040 (+3.6) | 0.992 (-0.7) | 0.913 (-1.7) |
+| BTC/USD | 1m | 1,678,144 | -0.199 (-258.1) | +0.019 (+24.3) | 0.801 (-258.1) | 0.542 (-134.8) |
+| BTC/USD | 5m | 395,552 | -0.165 (-103.3) | -0.017 (-10.9) | 0.835 (-103.3) | 0.669 (-47.2) |
+| BTC/USD | 15m | 133,820 | -0.120 (-43.6) | -0.014 (-5.1) | 0.880 (-43.6) | 0.749 (-20.7) |
+| BTC/USD | 60m | 33,495 | -0.020 (-3.6) | +0.000 (+0.1) | 0.980 (-3.6) | 0.969 (-1.3) |
+| ETH/USD | 1m | 1,593,688 | -0.129 (-162.2) | +0.025 (+31.1) | 0.871 (-162.2) | 0.770 (-65.9) |
+| ETH/USD | 5m | 395,250 | -0.056 (-35.1) | -0.004 (-2.7) | 0.944 (-35.1) | 0.894 (-15.0) |
+| ETH/USD | 15m | 133,805 | -0.019 (-6.9) | -0.003 (-1.1) | 0.981 (-6.9) | 0.957 (-3.5) |
+| ETH/USD | 60m | 33,493 | +0.001 (+0.2) | -0.003 (-0.5) | 1.001 (+0.2) | 1.039 (+1.6) |
 
-```
+ρ = correlation of a bar's return with the previous bar's; ±0.01 means 1 % of the next move is 'explained'. VR < 1 = mean reversion, > 1 = trending.
+
+## B Six rules — gross edge and break-even cost per side
+| symbol | bar | rule | position changes | in market | gross p.a. | t (gross) | break-even bp/side | net p.a. @ low cost | net p.a. @ realistic cost |
+|---|--:|---|--:|--:|--:|--:|--:|--:|--:|
+| SPY | 1m | R1 momentum | 609,954 | 97% | -38.3% | -7.28 | -0.02 | -1017% (1 bp) | -2973% (3 bp) |
+| SPY | 1m | R2 reversal | 609,954 | 97% | +38.3% | +7.28 | +0.02 | -940% (1 bp) | -2897% (3 bp) |
+| SPY | 1m | R3 z-reversal | 66,264 | 10% | +10.3% | +5.81 | +0.05 | -96% (1 bp) | -309% (3 bp) |
+| SPY | 1m | R4 breakout | 43,982 | 34% | -9.5% | -3.17 | -0.07 | -80% (1 bp) | -221% (3 bp) |
+| SPY | 1m | R5 opening range | 3,138 | 88% | +2.6% | +0.55 | +0.26 | -2% (1 bp) | -12% (3 bp) |
+| SPY | 1m | R6 last 30 min | 3,114 | 8% | -2.0% | -1.28 | -0.21 | -7% (1 bp) | -17% (3 bp) |
+| SPY | 5m | R1 momentum | 122,972 | 96% | -27.3% | -5.41 | -0.07 | -225% (1 bp) | -619% (3 bp) |
+| SPY | 5m | R2 reversal | 122,972 | 96% | +27.3% | +5.41 | +0.07 | -170% (1 bp) | -564% (3 bp) |
+| SPY | 5m | R3 z-reversal | 13,010 | 10% | -0.2% | -0.10 | -0.00 | -21% (1 bp) | -63% (3 bp) |
+| SPY | 5m | R4 breakout | 9,550 | 35% | +6.6% | +2.08 | +0.22 | -9% (1 bp) | -39% (3 bp) |
+| SPY | 5m | R5 opening range | 3,138 | 88% | +6.1% | +1.28 | +0.60 | +1% (1 bp) | -9% (3 bp) |
+| SPY | 5m | R6 last 30 min | 3,114 | 6% | -2.3% | -1.52 | -0.23 | -7% (1 bp) | -17% (3 bp) |
+| SPY | 15m | R1 momentum | 38,898 | 92% | +2.9% | +0.64 | +0.02 | -59% (1 bp) | -184% (3 bp) |
+| SPY | 15m | R2 reversal | 38,898 | 92% | -2.9% | -0.64 | -0.02 | -65% (1 bp) | -190% (3 bp) |
+| SPY | 15m | R3 z-reversal | 4,348 | 11% | -4.5% | -2.14 | -0.32 | -11% (1 bp) | -25% (3 bp) |
+| SPY | 15m | R4 breakout | 3,796 | 36% | +2.6% | +0.86 | +0.21 | -4% (1 bp) | -16% (3 bp) |
+| SPY | 15m | R5 opening range | 3,142 | 86% | +2.0% | +0.41 | +0.19 | -3% (1 bp) | -13% (3 bp) |
+| SPY | 15m | R6 last 30 min | 3,114 | 4% | -0.9% | -0.71 | -0.09 | -6% (1 bp) | -16% (3 bp) |
+| SPY | 60m | R1 momentum | 7,744 | 66% | +3.0% | +0.78 | +0.12 | -9% (1 bp) | -34% (3 bp) |
+| SPY | 60m | R2 reversal | 7,744 | 66% | -3.0% | -0.78 | -0.12 | -15% (1 bp) | -40% (3 bp) |
+| SPY | 60m | R3 z-reversal | 908 | 9% | -1.7% | -1.23 | -0.58 | -3% (1 bp) | -6% (3 bp) |
+| SPY | 60m | R4 breakout | 1,668 | 34% | -3.1% | -1.08 | -0.59 | -6% (1 bp) | -11% (3 bp) |
+| QQQ | 1m | R1 momentum | 570,026 | 97% | -62.7% | -8.79 | -0.03 | -977% (1 bp) | -2806% (3 bp) |
+| QQQ | 1m | R2 reversal | 570,026 | 97% | +62.7% | +8.79 | +0.03 | -852% (1 bp) | -2680% (3 bp) |
+| QQQ | 1m | R3 z-reversal | 61,354 | 10% | +12.3% | +5.20 | +0.06 | -86% (1 bp) | -283% (3 bp) |
+| QQQ | 1m | R4 breakout | 40,396 | 34% | -13.0% | -3.24 | -0.10 | -78% (1 bp) | -207% (3 bp) |
+| QQQ | 1m | R5 opening range | 3,132 | 87% | +10.4% | +1.69 | +1.04 | +5% (1 bp) | -5% (3 bp) |
+| QQQ | 1m | R6 last 30 min | 3,114 | 8% | -1.6% | -0.84 | -0.16 | -7% (1 bp) | -17% (3 bp) |
+| QQQ | 5m | R1 momentum | 122,790 | 97% | -35.4% | -5.24 | -0.09 | -232% (1 bp) | -626% (3 bp) |
+| QQQ | 5m | R2 reversal | 122,790 | 97% | +35.4% | +5.24 | +0.09 | -162% (1 bp) | -556% (3 bp) |
+| QQQ | 5m | R3 z-reversal | 12,758 | 10% | +0.8% | +0.30 | +0.02 | -20% (1 bp) | -61% (3 bp) |
+| QQQ | 5m | R4 breakout | 9,396 | 35% | +3.0% | +0.67 | +0.10 | -12% (1 bp) | -42% (3 bp) |
+| QQQ | 5m | R5 opening range | 3,128 | 87% | +8.2% | +1.34 | +0.82 | +3% (1 bp) | -7% (3 bp) |
+| QQQ | 5m | R6 last 30 min | 3,114 | 6% | -2.0% | -1.11 | -0.20 | -7% (1 bp) | -17% (3 bp) |
+| QQQ | 15m | R1 momentum | 39,240 | 92% | +2.0% | +0.34 | +0.02 | -61% (1 bp) | -187% (3 bp) |
+| QQQ | 15m | R2 reversal | 39,240 | 92% | -2.0% | -0.34 | -0.02 | -65% (1 bp) | -191% (3 bp) |
+| QQQ | 15m | R3 z-reversal | 4,390 | 11% | -2.5% | -0.89 | -0.18 | -10% (1 bp) | -24% (3 bp) |
+| QQQ | 15m | R4 breakout | 3,726 | 36% | +6.7% | +1.57 | +0.56 | +1% (1 bp) | -11% (3 bp) |
+| QQQ | 15m | R5 opening range | 3,134 | 86% | +2.0% | +0.33 | +0.20 | -3% (1 bp) | -13% (3 bp) |
+| QQQ | 15m | R6 last 30 min | 3,114 | 4% | -0.1% | -0.09 | -0.01 | -5% (1 bp) | -15% (3 bp) |
+| QQQ | 60m | R1 momentum | 7,772 | 66% | +0.9% | +0.18 | +0.04 | -12% (1 bp) | -37% (3 bp) |
+| QQQ | 60m | R2 reversal | 7,772 | 66% | -0.9% | -0.18 | -0.04 | -13% (1 bp) | -38% (3 bp) |
+| QQQ | 60m | R3 z-reversal | 998 | 10% | -1.5% | -0.78 | -0.47 | -3% (1 bp) | -6% (3 bp) |
+| QQQ | 60m | R4 breakout | 1,602 | 35% | +0.7% | +0.19 | +0.14 | -2% (1 bp) | -7% (3 bp) |
+| IWM | 1m | R1 momentum | 554,284 | 96% | -61.4% | -7.65 | -0.03 | -951% (1 bp) | -2729% (3 bp) |
+| IWM | 1m | R2 reversal | 554,284 | 96% | +61.4% | +7.65 | +0.03 | -828% (1 bp) | -2606% (3 bp) |
+| IWM | 1m | R3 z-reversal | 58,862 | 10% | +10.9% | +4.03 | +0.06 | -84% (1 bp) | -272% (3 bp) |
+| IWM | 1m | R4 breakout | 39,018 | 34% | -10.8% | -2.50 | -0.09 | -73% (1 bp) | -199% (3 bp) |
+| IWM | 1m | R5 opening range | 3,128 | 86% | -0.5% | -0.09 | -0.05 | -6% (1 bp) | -16% (3 bp) |
+| IWM | 1m | R6 last 30 min | 3,114 | 8% | -2.7% | -1.48 | -0.27 | -8% (1 bp) | -18% (3 bp) |
+| IWM | 5m | R1 momentum | 121,248 | 96% | -32.8% | -4.45 | -0.08 | -227% (1 bp) | -616% (3 bp) |
+| IWM | 5m | R2 reversal | 121,248 | 96% | +32.8% | +4.45 | +0.08 | -162% (1 bp) | -551% (3 bp) |
+| IWM | 5m | R3 z-reversal | 12,720 | 10% | +0.6% | +0.22 | +0.01 | -20% (1 bp) | -61% (3 bp) |
+| IWM | 5m | R4 breakout | 9,276 | 34% | -3.4% | -0.75 | -0.12 | -18% (1 bp) | -48% (3 bp) |
+| IWM | 5m | R5 opening range | 3,136 | 87% | +1.4% | +0.22 | +0.14 | -4% (1 bp) | -14% (3 bp) |
+| IWM | 5m | R6 last 30 min | 3,114 | 6% | -2.7% | -1.59 | -0.27 | -8% (1 bp) | -18% (3 bp) |
+| IWM | 15m | R1 momentum | 39,202 | 92% | +5.0% | +0.78 | +0.04 | -58% (1 bp) | -184% (3 bp) |
+| IWM | 15m | R2 reversal | 39,202 | 92% | -5.0% | -0.78 | -0.04 | -68% (1 bp) | -194% (3 bp) |
+| IWM | 15m | R3 z-reversal | 4,490 | 12% | +0.9% | +0.28 | +0.06 | -6% (1 bp) | -21% (3 bp) |
+| IWM | 15m | R4 breakout | 3,524 | 33% | -0.9% | -0.22 | -0.08 | -7% (1 bp) | -18% (3 bp) |
+| IWM | 15m | R5 opening range | 3,140 | 86% | -2.7% | -0.43 | -0.27 | -8% (1 bp) | -18% (3 bp) |
+| IWM | 15m | R6 last 30 min | 3,114 | 4% | -1.0% | -0.68 | -0.10 | -6% (1 bp) | -16% (3 bp) |
+| IWM | 60m | R1 momentum | 7,790 | 66% | +2.1% | +0.44 | +0.09 | -10% (1 bp) | -35% (3 bp) |
+| IWM | 60m | R2 reversal | 7,790 | 66% | -2.1% | -0.44 | -0.09 | -15% (1 bp) | -40% (3 bp) |
+| IWM | 60m | R3 z-reversal | 944 | 9% | +2.8% | +1.65 | +0.92 | +1% (1 bp) | -2% (3 bp) |
+| IWM | 60m | R4 breakout | 1,486 | 31% | -9.1% | -2.36 | -1.90 | -11% (1 bp) | -16% (3 bp) |
+| AAPL | 1m | R1 momentum | 613,560 | 96% | -66.8% | -7.04 | -0.03 | -1051% (1 bp) | -3019% (3 bp) |
+| AAPL | 1m | R2 reversal | 613,560 | 96% | +66.8% | +7.04 | +0.03 | -917% (1 bp) | -2886% (3 bp) |
+| AAPL | 1m | R3 z-reversal | 66,466 | 10% | +22.0% | +6.37 | +0.10 | -85% (1 bp) | -298% (3 bp) |
+| AAPL | 1m | R4 breakout | 42,540 | 32% | -19.3% | -3.34 | -0.14 | -88% (1 bp) | -224% (3 bp) |
+| AAPL | 1m | R5 opening range | 3,094 | 83% | +13.1% | +1.82 | +1.32 | +8% (1 bp) | -2% (3 bp) |
+| AAPL | 1m | R6 last 30 min | 3,114 | 7% | -0.4% | -0.15 | -0.04 | -5% (1 bp) | -15% (3 bp) |
+| AAPL | 5m | R1 momentum | 122,898 | 96% | -54.5% | -6.77 | -0.14 | -252% (1 bp) | -646% (3 bp) |
+| AAPL | 5m | R2 reversal | 122,898 | 96% | +54.5% | +6.77 | +0.14 | -143% (1 bp) | -537% (3 bp) |
+| AAPL | 5m | R3 z-reversal | 13,450 | 11% | +6.1% | +1.62 | +0.14 | -15% (1 bp) | -59% (3 bp) |
+| AAPL | 5m | R4 breakout | 9,128 | 31% | +4.4% | +0.74 | +0.15 | -10% (1 bp) | -40% (3 bp) |
+| AAPL | 5m | R5 opening range | 3,118 | 85% | +12.1% | +1.65 | +1.21 | +7% (1 bp) | -3% (3 bp) |
+| AAPL | 5m | R6 last 30 min | 3,114 | 6% | -1.2% | -0.51 | -0.12 | -6% (1 bp) | -16% (3 bp) |
+| AAPL | 15m | R1 momentum | 39,288 | 92% | -6.7% | -0.89 | -0.05 | -70% (1 bp) | -196% (3 bp) |
+| AAPL | 15m | R2 reversal | 39,288 | 92% | +6.7% | +0.89 | +0.05 | -56% (1 bp) | -182% (3 bp) |
+| AAPL | 15m | R3 z-reversal | 4,388 | 11% | -2.2% | -0.58 | -0.16 | -9% (1 bp) | -23% (3 bp) |
+| AAPL | 15m | R4 breakout | 3,592 | 33% | +1.3% | +0.26 | +0.12 | -4% (1 bp) | -16% (3 bp) |
+| AAPL | 15m | R5 opening range | 3,138 | 86% | +14.4% | +1.99 | +1.44 | +9% (1 bp) | -1% (3 bp) |
+| AAPL | 15m | R6 last 30 min | 3,114 | 4% | -0.6% | -0.27 | -0.06 | -6% (1 bp) | -16% (3 bp) |
+| AAPL | 60m | R1 momentum | 7,884 | 66% | +1.1% | +0.20 | +0.04 | -12% (1 bp) | -37% (3 bp) |
+| AAPL | 60m | R2 reversal | 7,884 | 66% | -1.1% | -0.20 | -0.04 | -14% (1 bp) | -39% (3 bp) |
+| AAPL | 60m | R3 z-reversal | 990 | 10% | +0.9% | +0.36 | +0.27 | -1% (1 bp) | -4% (3 bp) |
+| AAPL | 60m | R4 breakout | 1,506 | 32% | -4.8% | -1.18 | -1.00 | -7% (1 bp) | -12% (3 bp) |
+| NVDA | 1m | R1 momentum | 584,906 | 98% | -80.6% | -5.10 | -0.04 | -1019% (1 bp) | -2895% (3 bp) |
+| NVDA | 1m | R2 reversal | 584,906 | 98% | +80.6% | +5.10 | +0.04 | -858% (1 bp) | -2734% (3 bp) |
+| NVDA | 1m | R3 z-reversal | 63,510 | 10% | +33.1% | +5.92 | +0.16 | -69% (1 bp) | -273% (3 bp) |
+| NVDA | 1m | R4 breakout | 39,458 | 32% | -17.9% | -1.99 | -0.14 | -81% (1 bp) | -208% (3 bp) |
+| NVDA | 1m | R5 opening range | 3,060 | 82% | +9.8% | +0.79 | +1.00 | +5% (1 bp) | -5% (3 bp) |
+| NVDA | 1m | R6 last 30 min | 3,114 | 8% | +0.3% | +0.07 | +0.03 | -5% (1 bp) | -15% (3 bp) |
+| NVDA | 5m | R1 momentum | 122,650 | 97% | -56.0% | -4.13 | -0.14 | -253% (1 bp) | -646% (3 bp) |
+| NVDA | 5m | R2 reversal | 122,650 | 97% | +56.0% | +4.13 | +0.14 | -141% (1 bp) | -534% (3 bp) |
+| NVDA | 5m | R3 z-reversal | 13,246 | 11% | +4.6% | +0.70 | +0.11 | -17% (1 bp) | -59% (3 bp) |
+| NVDA | 5m | R4 breakout | 8,840 | 31% | +22.4% | +2.21 | +0.79 | +8% (1 bp) | -20% (3 bp) |
+| NVDA | 5m | R5 opening range | 3,102 | 85% | +20.3% | +1.65 | +2.04 | +15% (1 bp) | +5% (3 bp) |
+| NVDA | 5m | R6 last 30 min | 3,114 | 6% | +0.8% | +0.24 | +0.08 | -4% (1 bp) | -14% (3 bp) |
+| NVDA | 15m | R1 momentum | 39,442 | 92% | +10.8% | +0.93 | +0.09 | -52% (1 bp) | -179% (3 bp) |
+| NVDA | 15m | R2 reversal | 39,442 | 92% | -10.8% | -0.93 | -0.09 | -74% (1 bp) | -201% (3 bp) |
+| NVDA | 15m | R3 z-reversal | 4,452 | 12% | -5.8% | -0.87 | -0.41 | -13% (1 bp) | -27% (3 bp) |
+| NVDA | 15m | R4 breakout | 3,406 | 32% | +12.4% | +1.38 | +1.14 | +7% (1 bp) | -4% (3 bp) |
+| NVDA | 15m | R5 opening range | 3,132 | 86% | +11.1% | +0.92 | +1.11 | +6% (1 bp) | -4% (3 bp) |
+| NVDA | 15m | R6 last 30 min | 3,114 | 4% | +5.5% | +1.84 | +0.55 | +1% (1 bp) | -9% (3 bp) |
+| NVDA | 60m | R1 momentum | 7,782 | 66% | +11.2% | +1.20 | +0.45 | -1% (1 bp) | -26% (3 bp) |
+| NVDA | 60m | R2 reversal | 7,782 | 66% | -11.2% | -1.20 | -0.45 | -24% (1 bp) | -49% (3 bp) |
+| NVDA | 60m | R3 z-reversal | 950 | 10% | +2.0% | +0.50 | +0.65 | +0% (1 bp) | -3% (3 bp) |
+| NVDA | 60m | R4 breakout | 1,458 | 31% | +4.8% | +0.70 | +1.02 | +2% (1 bp) | -2% (3 bp) |
+| TSLA | 1m | R1 momentum | 598,934 | 98% | -189.6% | -9.98 | -0.10 | -1150% (1 bp) | -3072% (3 bp) |
+| TSLA | 1m | R2 reversal | 598,934 | 98% | +189.6% | +9.98 | +0.10 | -771% (1 bp) | -2693% (3 bp) |
+| TSLA | 1m | R3 z-reversal | 64,558 | 10% | +30.1% | +4.45 | +0.15 | -73% (1 bp) | -281% (3 bp) |
+| TSLA | 1m | R4 breakout | 39,968 | 32% | -4.7% | -0.43 | -0.04 | -69% (1 bp) | -197% (3 bp) |
+| TSLA | 1m | R5 opening range | 3,082 | 84% | +31.6% | +2.20 | +3.19 | +27% (1 bp) | +17% (3 bp) |
+| TSLA | 1m | R6 last 30 min | 3,114 | 8% | +4.8% | +1.20 | +0.48 | -0% (1 bp) | -10% (3 bp) |
+| TSLA | 5m | R1 momentum | 122,740 | 97% | -75.7% | -4.86 | -0.19 | -273% (1 bp) | -666% (3 bp) |
+| TSLA | 5m | R2 reversal | 122,740 | 97% | +75.7% | +4.86 | +0.19 | -121% (1 bp) | -515% (3 bp) |
+| TSLA | 5m | R3 z-reversal | 13,224 | 11% | +3.6% | +0.47 | +0.09 | -18% (1 bp) | -60% (3 bp) |
+| TSLA | 5m | R4 breakout | 8,582 | 30% | +39.7% | +3.22 | +1.44 | +26% (1 bp) | -2% (3 bp) |
+| TSLA | 5m | R5 opening range | 3,102 | 86% | +18.9% | +1.29 | +1.89 | +14% (1 bp) | +4% (3 bp) |
+| TSLA | 5m | R6 last 30 min | 3,114 | 6% | +5.1% | +1.37 | +0.51 | +0% (1 bp) | -10% (3 bp) |
+| TSLA | 15m | R1 momentum | 39,596 | 92% | +15.8% | +1.11 | +0.12 | -48% (1 bp) | -175% (3 bp) |
+| TSLA | 15m | R2 reversal | 39,596 | 92% | -15.8% | -1.11 | -0.12 | -79% (1 bp) | -206% (3 bp) |
+| TSLA | 15m | R3 z-reversal | 4,472 | 12% | -20.6% | -2.58 | -1.43 | -28% (1 bp) | -42% (3 bp) |
+| TSLA | 15m | R4 breakout | 3,226 | 31% | +22.6% | +2.09 | +2.18 | +17% (1 bp) | +7% (3 bp) |
+| TSLA | 15m | R5 opening range | 3,130 | 86% | +6.1% | +0.42 | +0.61 | +1% (1 bp) | -9% (3 bp) |
+| TSLA | 15m | R6 last 30 min | 3,114 | 4% | +11.7% | +3.59 | +1.17 | +7% (1 bp) | -3% (3 bp) |
+| TSLA | 60m | R1 momentum | 7,846 | 66% | -5.1% | -0.47 | -0.20 | -18% (1 bp) | -43% (3 bp) |
+| TSLA | 60m | R2 reversal | 7,846 | 66% | +5.1% | +0.47 | +0.20 | -8% (1 bp) | -33% (3 bp) |
+| TSLA | 60m | R3 z-reversal | 990 | 11% | -4.3% | -0.91 | -1.37 | -6% (1 bp) | -9% (3 bp) |
+| TSLA | 60m | R4 breakout | 1,376 | 30% | +1.0% | +0.11 | +0.22 | -1% (1 bp) | -6% (3 bp) |
+| BTC/USD | 1m | R1 momentum | 1,753,163 | 100% | -512.1% | -10.04 | -0.06 | -16166% (5 bp) | -79415% (25 bp) |
+| BTC/USD | 1m | R2 reversal | 1,753,163 | 100% | +512.1% | +10.04 | +0.06 | -15459% (5 bp) | -78708% (25 bp) |
+| BTC/USD | 1m | R3 z-reversal | 187,596 | 10% | +195.6% | +9.79 | +0.20 | -1557% (5 bp) | -8325% (25 bp) |
+| BTC/USD | 1m | R4 breakout | 113,518 | 31% | -121.3% | -5.76 | -0.20 | -1108% (5 bp) | -5203% (25 bp) |
+| BTC/USD | 5m | R1 momentum | 408,935 | 100% | -126.9% | -4.77 | -0.06 | -3776% (5 bp) | -18529% (25 bp) |
+| BTC/USD | 5m | R2 reversal | 408,935 | 100% | +126.9% | +4.77 | +0.06 | -3601% (5 bp) | -18354% (25 bp) |
+| BTC/USD | 5m | R3 z-reversal | 44,256 | 10% | +51.0% | +3.43 | +0.22 | -364% (5 bp) | -1961% (25 bp) |
+| BTC/USD | 5m | R4 breakout | 25,770 | 29% | -20.3% | -1.16 | -0.15 | -246% (5 bp) | -1176% (25 bp) |
+| BTC/USD | 15m | R1 momentum | 139,403 | 99% | -48.5% | -1.96 | -0.07 | -1291% (5 bp) | -6320% (25 bp) |
+| BTC/USD | 15m | R2 reversal | 139,403 | 99% | +48.5% | +1.96 | +0.07 | -1224% (5 bp) | -6253% (25 bp) |
+| BTC/USD | 15m | R3 z-reversal | 15,460 | 11% | -1.5% | -0.11 | -0.02 | -140% (5 bp) | -698% (25 bp) |
+| BTC/USD | 15m | R4 breakout | 8,599 | 28% | +20.7% | +1.31 | +0.46 | -63% (5 bp) | -373% (25 bp) |
+| BTC/USD | 60m | R1 momentum | 35,135 | 96% | -33.9% | -1.59 | -0.18 | -340% (5 bp) | -1608% (25 bp) |
+| BTC/USD | 60m | R2 reversal | 35,135 | 96% | +33.9% | +1.59 | +0.18 | -293% (5 bp) | -1561% (25 bp) |
+| BTC/USD | 60m | R3 z-reversal | 3,958 | 12% | -14.7% | -1.37 | -0.71 | -46% (5 bp) | -189% (25 bp) |
+| BTC/USD | 60m | R4 breakout | 2,188 | 29% | +14.7% | +0.97 | +1.29 | -10% (5 bp) | -89% (25 bp) |
+| ETH/USD | 1m | R1 momentum | 1,644,157 | 100% | -313.2% | -6.54 | -0.04 | -15045% (5 bp) | -74362% (25 bp) |
+| ETH/USD | 1m | R2 reversal | 1,644,157 | 100% | +313.2% | +6.54 | +0.04 | -14613% (5 bp) | -73930% (25 bp) |
+| ETH/USD | 1m | R3 z-reversal | 179,276 | 10% | +185.0% | +8.75 | +0.20 | -1489% (5 bp) | -7957% (25 bp) |
+| ETH/USD | 1m | R4 breakout | 106,142 | 30% | -72.1% | -2.92 | -0.13 | -1007% (5 bp) | -4836% (25 bp) |
+| ETH/USD | 5m | R1 momentum | 408,081 | 100% | -73.0% | -2.22 | -0.03 | -3731% (5 bp) | -18453% (25 bp) |
+| ETH/USD | 5m | R2 reversal | 408,081 | 100% | +73.0% | +2.22 | +0.03 | -3630% (5 bp) | -18353% (25 bp) |
+| ETH/USD | 5m | R3 z-reversal | 44,924 | 11% | +46.4% | +2.60 | +0.20 | -373% (5 bp) | -1994% (25 bp) |
+| ETH/USD | 5m | R4 breakout | 25,694 | 28% | +6.8% | +0.32 | +0.05 | -227% (5 bp) | -1154% (25 bp) |
+| ETH/USD | 15m | R1 momentum | 139,701 | 99% | +6.6% | +0.22 | +0.01 | -1255% (5 bp) | -6295% (25 bp) |
+| ETH/USD | 15m | R2 reversal | 139,701 | 99% | -6.6% | -0.22 | -0.01 | -1265% (5 bp) | -6305% (25 bp) |
+| ETH/USD | 15m | R3 z-reversal | 15,488 | 11% | -10.5% | -0.70 | -0.13 | -147% (5 bp) | -706% (25 bp) |
+| ETH/USD | 15m | R4 breakout | 8,781 | 28% | +28.5% | +1.36 | +0.62 | -60% (5 bp) | -376% (25 bp) |
+| ETH/USD | 60m | R1 momentum | 35,277 | 96% | +14.3% | +0.47 | +0.08 | -308% (5 bp) | -1581% (25 bp) |
+| ETH/USD | 60m | R2 reversal | 35,277 | 96% | -14.3% | -0.47 | -0.08 | -328% (5 bp) | -1601% (25 bp) |
+| ETH/USD | 60m | R3 z-reversal | 3,906 | 12% | -17.4% | -1.27 | -0.85 | -47% (5 bp) | -188% (25 bp) |
+| ETH/USD | 60m | R4 breakout | 2,126 | 28% | +32.9% | +1.59 | +2.96 | +4% (5 bp) | -73% (25 bp) |
+
+Realistic costs per side: liquid US stocks/ETFs ~1–3 bp (spread + slippage, no commission); crypto 25 bp at Alpaca (measured in this project), ~5 bp at the cheapest large exchanges.
+
+## C Selection honesty: best rule in the first half → second half
+Best in the first half (of 164 rule × bar × symbol combinations): **ETH/USD 1m R2 reversal** (t +10.15). Second half: gross t **-1.05**, break-even -0.01 bp/side, net p.a. -13356% @ 5 bp, -66595% @ 25 bp.
+Placebo (same exposure and turnover, timing shifted; full sample, 100 shifts): p = 0.010.
+
+**Summary:** 23 of 164 combinations have a gross edge with t > 3.7; 0 are net positive at realistic costs in BOTH halves.
+
+What this test cannot see: the edge of high-frequency firms comes from microseconds, co-location, order-flow payments and exchange rebates — infrastructure, not data a retail trader can buy.
