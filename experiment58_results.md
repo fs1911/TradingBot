@@ -1,4 +1,4 @@
-# Experiment #58 — luck simulation: zero-skill investors (2026-10-27 17:37 UTC)
+# Experiment #58 — luck simulation: zero-skill investors (2026-10-27 18:39 UTC)
 
 Nobody simulated here has any skill. Every 'success' below is luck.
 
@@ -33,9 +33,9 @@ Sensitivity: idio 35 %: below T-bills 66%, top 16.1% create all net wealth; idio
 Reading: a 1-stock investor has the best chance of a spectacular story AND the highest chance of losing. Social media shows the winners; the many losers made the same 'analysis'.
 
 ## D Reality check with real US stocks (Yahoo, survivors only → biased upwards)
-768 stocks with ≥ 10 years of data: ×10 or more: **5.2%**, lost money: 34%, median ×2.0, best MBUMF ×5682310.
-- random 1-stock portfolio: ×10 5.3%, lost 34%, median ×2.0
-- random 5-stock portfolio: ×10 5.5%, lost 5%, median ×2.7
+695 stocks with ≥ 10 years of data: ×10 or more: **4.2%**, lost money: 33%, median ×2.0, best SHOP ×63.
+- random 1-stock portfolio: ×10 4.2%, lost 33%, median ×2.0
+- random 5-stock portfolio: ×10 2.7%, lost 5%, median ×2.6
 - SPY over the same kind of window (first 10 years of data): ×3.4
 
 Parameters in B and C are assumptions (stated above), chosen to be realistic, not favourable to any thesis.
