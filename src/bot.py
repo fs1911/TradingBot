@@ -289,6 +289,89 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiment57(self) -> None:
+        """Experiment #57: project-wide overfitting test (multiple testing, deflated Sharpe,
+        PBO on recomputed strategy families). → experiment57_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_43 import fetch_french, parse_french_monthly
+            from .backtest.experiments_45 import monthly_closes, monthly_cash
+            from .backtest.experiments_56 import FILES, legs, candidates
+            from .backtest.experiments_57 import trend_grid, run_experiment57_report
+            import pandas as _pd
+            families = {}
+            gspc = fetch_yahoo_daily("^GSPC", "1927-12-01", timeout=30)
+            irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=30)
+            if gspc is not None and len(gspc) > 5000:
+                px = monthly_closes(gspc)
+                families["S&P 500 trend-rule grid 1928→ (34 rules)"] = trend_grid(px, monthly_cash(irx, px.index))
+            for reg, label in (("dev", "Factor candidates #56, developed 1990→"), ("us", "Factor candidates #56, USA 1963→")):
+                fr = {}
+                for key in ("bm", "op", "mom", "ff"):
+                    for fname in FILES[f"{reg}_{key}"]:
+                        df = parse_french_monthly(fetch_french(fname, timeout=30))
+                        if df is not None and not df.empty:
+                            fr[key] = df
+                            break
+                if len(fr) == 4:
+                    c, mkt, _ = candidates(legs(fr["bm"], fr["op"], fr["mom"], fr["ff"]))
+                    c["Market"] = mkt
+                    families[label] = _pd.DataFrame(c).dropna()
+            report = run_experiment57_report(families)
+            self.heartbeat._put_file("experiment57_results.md", report.encode(),
+                                     "Experiment #57: project-wide overfitting test")
+            logger.info("Experiment #57: report pushed")
+        except Exception as e:
+            self._push_failure("57", e)
+
+    def _run_experiment58(self) -> None:
+        """Experiment #58: luck simulation + empirical random stock portfolios.
+        → experiment58_results.md."""
+        try:
+            import random as _random
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_49 import fetch_ticker_map
+            from .backtest.experiments_58 import run_experiment58_report
+            prices = {}
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if contact:
+                tickers = sorted(set(fetch_ticker_map(f"TradingBot-Research {contact}").values()))
+                _random.Random(58).shuffle(tickers)
+                for t in tickers[:1500]:
+                    sr = fetch_yahoo_daily(t.replace(".", "-"), "2009-01-01", timeout=15)
+                    if sr is not None and len(sr) > 2500:
+                        prices[t] = sr
+            spy = fetch_yahoo_daily("SPY", "2009-01-01", timeout=20)
+            report = run_experiment58_report(prices, spy)
+            self.heartbeat._put_file("experiment58_results.md", report.encode(),
+                                     "Experiment #58: luck simulation")
+            logger.info("Experiment #58: report pushed")
+        except Exception as e:
+            self._push_failure("58", e)
+
+    def _run_experiment60(self) -> None:
+        """Experiment #60: minute data (Alpaca) — short-term predictability after costs.
+        → experiment60_results.md."""
+        try:
+            from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+            from .backtest.experiments_60 import STOCKS, CRYPTO, fetch_bars, analyse_symbol, run_experiment60_report
+            cfg = self.bot_cfg.get("experiment60", {})
+            end = _dt.now(_tz.utc) - _td(minutes=30)
+            results = {}
+            for sym, start in [(s, cfg.get("stock_start", "2020-01-01")) for s in STOCKS] + \
+                              [(s, cfg.get("crypto_start", "2023-01-01")) for s in CRYPTO]:
+                df = fetch_bars(self.broker._data, self.broker._crypto_data, sym, start, end, 1,
+                                log=lambda m: logger.info(m))
+                logger.info(f"#60 {sym}: {len(df)} 1-min bars")
+                results[sym] = analyse_symbol(df, sym)
+                del df
+            report = run_experiment60_report(results)
+            self.heartbeat._put_file("experiment60_results.md", report.encode(),
+                                     "Experiment #60: minute data after costs")
+            logger.info("Experiment #60: report pushed")
+        except Exception as e:
+            self._push_failure("60", e)
+
     def _run_experiment56(self) -> None:
         """Experiment #56: can an implementable factor portfolio beat the MSCI World on return?
         French developed + US portfolios, real ETFs. → experiment56_results.md."""
@@ -1971,7 +2054,10 @@ class TradingBot:
                                   ("run_experiment52_on_start", self._run_experiment52),
                                   ("run_experiment53_on_start", self._run_experiments53_55),
                                   ("run_experiment51_on_start", self._run_experiment51),
-                                  ("run_experiment56_on_start", self._run_experiment56)) if _b.get(flag, False)]
+                                  ("run_experiment56_on_start", self._run_experiment56),
+                                  ("run_experiment57_on_start", self._run_experiment57),
+                                  ("run_experiment58_on_start", self._run_experiment58),
+                                  ("run_experiment60_on_start", self._run_experiment60)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
