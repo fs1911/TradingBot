@@ -289,6 +289,47 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiments67_74_83(self) -> None:
+        """Experiments #67/#68 (CHF hedging, home bias), #71/#74/#83 (mixes & rebalancing,
+        number of stocks, HMM regimes). → experiments67_68_results.md, experiments71_74_83_results.md."""
+        from .backtest.experiments_34 import fetch_shiller
+        from .backtest.experiments_35 import fetch_yahoo_daily
+        from .backtest.experiments_46 import _get
+        try:
+            from .backtest.experiments_67_68 import fetch_dbnomics, run_experiments67_68_report
+            macro, src = fetch_dbnomics(lambda u: _get(u, timeout=40), log=lambda m: logger.info(m))
+            fx = {"USDCHF": fetch_yahoo_daily("CHF=X", "2000-01-01", timeout=30),
+                  "EURCHF": fetch_yahoo_daily("EURCHF=X", "2000-01-01", timeout=30)}
+            report = run_experiments67_68_report(
+                macro, src, fetch_yahoo_daily("VFINX", "1980-01-01", timeout=30),
+                fetch_yahoo_daily("^GDAXI", "1988-01-01", timeout=30),
+                fetch_yahoo_daily("^SSHI", "1987-01-01", timeout=30), fx)
+            self.heartbeat._put_file("experiments67_68_results.md", report.encode(),
+                                     "Experiments #67/#68: CHF hedging, home bias")
+            logger.info("Experiments #67/#68: report pushed")
+        except Exception as e:
+            self._push_failure("s67_68", e)
+        try:
+            import random as _random
+            from .backtest.experiments_49 import fetch_ticker_map
+            from .backtest.experiments_71_74_83 import run_experiments71_74_83_report
+            shiller, _ = fetch_shiller(timeout=30)
+            prices = {}
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if contact:
+                tickers = sorted(set(fetch_ticker_map(f"TradingBot-Research {contact}").values()))
+                _random.Random(74).shuffle(tickers)
+                for t in tickers[:1500]:
+                    sr = fetch_yahoo_daily(t.replace(".", "-"), "2009-01-01", timeout=15)
+                    if sr is not None and len(sr) > 2520:
+                        prices[t] = sr
+            report = run_experiments71_74_83_report(shiller, prices)
+            self.heartbeat._put_file("experiments71_74_83_results.md", report.encode(),
+                                     "Experiments #71/#74/#83: mixes, number of stocks, regimes")
+            logger.info("Experiments #71/#74/#83: report pushed")
+        except Exception as e:
+            self._push_failure("s71_74_83", e)
+
     def _run_experiments69_82(self) -> None:
         """Experiments #69/#81 (leverage, Kelly), #70/#72 (lump sum, retirement), #82 (fat
         tails). → experiment69_results.md, experiments70_72_results.md, experiment82_results.md."""
@@ -2240,7 +2281,8 @@ class TradingBot:
                                   ("run_experiment62_on_start", self._run_experiment62),
                                   ("run_experiment64_on_start", self._run_experiment64),
                                   ("run_experiment65_on_start", self._run_experiment65),
-                                  ("run_experiment69_on_start", self._run_experiments69_82)) if _b.get(flag, False)]
+                                  ("run_experiment69_on_start", self._run_experiments69_82),
+                                  ("run_experiment67_on_start", self._run_experiments67_74_83)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
