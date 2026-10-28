@@ -80,6 +80,8 @@ bot:
   run_experiment63_on_start: false  # Exp #63 done (2026-10-28): SPF flagged 1/8 recession starts ≥50 % (2008 23 %, 2020 18 %); unemployment RMSE 1.18 vs naive 1.57; STOCK10 corr −0.32, miss 4.2 vs constant 4.0 pt; Livingston direction 73 % vs always-up 76 %; AAII 403
   run_experiment61_on_start: false  # Exp #61 done (2026-10-28): daily/weekly negative autocorr significant in 14/20, 8/20 cells but median OOS R² ≈ 0, none > 1 %; 1–12 m nothing; CAPE OOS R² +3/+7/+23 % (1/5/10 y), D/P negative
   run_experiment62_on_start: false  # Exp #62 done (2026-10-28): buybacks alone IC +0.049 (t 3.1), top +2.8 %/yr; ridge −0.002, boosted trees +0.021 (t 0.7, top ±0 %), human rule +0.027, placebo −0.001 → ML adds nothing
+  run_experiment64_on_start: true   # Exp #64: buyback/dilution signal for CH/DE/FR/NL stocks (Yahoo share counts, split-safe)
+  run_experiment65_on_start: true   # Exp #65: backtest of the app's buy check (dilution + market light), US 2010–2025
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets

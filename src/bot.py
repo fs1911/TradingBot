@@ -289,6 +289,79 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiment64(self) -> None:
+        """Experiment #64: buyback/dilution signal for CH/EU stocks (Yahoo share counts).
+        → experiment64_results.md."""
+        try:
+            import time as _t
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_64 import symbols, fetch_shares, share_changes, run_experiment64_report
+            country = symbols()
+            changes, prices = {}, {}
+            for sym in country:
+                ts, sp = fetch_shares(sym)
+                changes[sym] = share_changes(ts, sp)
+                sr = fetch_yahoo_daily(sym, "2005-01-01", timeout=20)
+                if sr is not None and len(sr) > 250:
+                    prices[sym] = sr
+                _t.sleep(0.3)
+            report = run_experiment64_report(changes, country, prices)
+            self.heartbeat._put_file("experiment64_results.md", report.encode(),
+                                     "Experiment #64: dilution signal CH/EU")
+            logger.info("Experiment #64: report pushed")
+        except Exception as e:
+            self._push_failure("64", e)
+
+    def _run_experiment65(self) -> None:
+        """Experiment #65: backtest of the app's buy check (dilution + market light).
+        → experiment65_results.md."""
+        try:
+            from datetime import datetime as _dt
+            import pandas as _pd
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_45 import monthly_closes, monthly_cash, trend_score
+            from .backtest.experiments_46 import fetch_macro, stress_series
+            from .backtest.experiments_49 import fetch_frames, fetch_ticker_map, components, monthly_returns
+            from .backtest.experiments_50b import fetch_concepts
+            from .backtest.experiments_65 import market_light, build_cohorts, run_experiment65_report
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file("experiment65_results.md",
+                                         b"# Experiment #65 - waiting\n\nSEC_CONTACT_EMAIL missing on server.\n",
+                                         "Experiment #65 waiting for SEC contact")
+                return
+            ua = f"TradingBot-Research {contact}"
+            min_assets = float(self.bot_cfg.get("experiment49", {}).get("min_assets", 1e9))
+            frames, _ = fetch_frames(range(2009, _dt.utcnow().year), ua, log=lambda m: logger.info(m))
+            tmap = fetch_ticker_map(ua)
+            ciks = set()
+            for df in frames.values():
+                if df is not None and not df.empty:
+                    c = components(df)
+                    ciks |= {int(k) for k in c.index[c["assets"] >= min_assets] if int(k) in tmap}
+            concepts, _ = fetch_concepts(sorted(ciks), ua, log=lambda m: logger.info(m))
+            prices = {}
+            for t in sorted({tmap[c] for c in concepts if c in tmap})[:3000]:
+                sr = fetch_yahoo_daily(t.replace(".", "-"), "2009-01-01", timeout=15)
+                if sr is not None and len(sr) > 250:
+                    prices[t] = sr
+            px, _ = monthly_returns(prices)
+            fy = lambda sym, start="1990-01-01": fetch_yahoo_daily(sym, start, timeout=20)
+            gspc, irx = fy("^GSPC", "1985-01-01"), fy("^IRX", "1985-01-01")
+            macro, _, _ = fetch_macro(fy, timeout=30)
+            ix = monthly_closes(gspc)
+            sc = trend_score(ix, monthly_cash(irx, ix.index)).dropna()
+            st = stress_series(macro, sc.index).get("F6 macro vote (≥2 of F1–F3)")
+            light = market_light(sc, st if st is not None else _pd.Series(False, index=sc.index))
+            months = _pd.period_range("2010-01", px.index[-1] - 12, freq="M")
+            d = build_cohorts(concepts, tmap, px, light, months)
+            report = run_experiment65_report(d, light)
+            self.heartbeat._put_file("experiment65_results.md", report.encode(),
+                                     "Experiment #65: buy check backtest")
+            logger.info("Experiment #65: report pushed")
+        except Exception as e:
+            self._push_failure("65", e)
+
     def _run_experiment61(self) -> None:
         """Experiment #61: predictability map (20 assets × 1d…12m, valuation 1–10 y).
         → experiment61_results.md."""
@@ -2137,7 +2210,9 @@ class TradingBot:
                                   ("run_experiment60_on_start", self._run_experiment60),
                                   ("run_experiment63_on_start", self._run_experiment63),
                                   ("run_experiment61_on_start", self._run_experiment61),
-                                  ("run_experiment62_on_start", self._run_experiment62)) if _b.get(flag, False)]
+                                  ("run_experiment62_on_start", self._run_experiment62),
+                                  ("run_experiment64_on_start", self._run_experiment64),
+                                  ("run_experiment65_on_start", self._run_experiment65)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
