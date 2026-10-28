@@ -17,33 +17,33 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 ## Block B — Fragen eines Schweizer Privatanlegers
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|
-| 67 | Währungsabsicherung: MSCI World in CHF gesichert vs ungesichert — lohnt Hedging? | Yahoo-Indizes, USD/CHF, EUR/CHF, Zinsdifferenzen | läuft |
-| 68 | Heimatmarkt: SMI/SPI vs Welt aus CHF-Sicht; optimaler CH-Anteil | Yahoo | läuft |
+| 67 | Währungsabsicherung: MSCI World in CHF gesichert vs ungesichert — lohnt Hedging? | Yahoo-Indizes, USD/CHF, EUR/CHF, Zinsdifferenzen | ✔ erledigt |
+| 68 | Heimatmarkt: SMI/SPI vs Welt aus CHF-Sicht; optimaler CH-Anteil | Yahoo | ✔ erledigt |
 | 69 | Hebel: 1,5×/2×/3× täglich gehebelt (wie Leveraged-ETFs) vs Index, Volatilitätsverlust, Finanzierungskosten, seit 1928 | Yahoo ^GSPC, ^IRX | ✔ erledigt |
 | 70 | Einmalanlage vs Sparplan (gestaffelt) bei gleichem Geld | Shiller, Yahoo | ✔ erledigt |
-| 71 | Aktien/Anleihen-Mischung und Umschichtungs-Bänder (60/40, 80/20, 100/0) für CHF-Anleger | Yahoo, Shiller | läuft |
+| 71 | Aktien/Anleihen-Mischung und Umschichtungs-Bänder (60/40, 80/20, 100/0) für CHF-Anleger | Yahoo, Shiller | ✔ erledigt |
 | 72 | Entnahme im Ruhestand: „4 %-Regel“, Reihenfolge-Risiko, international | Shiller, Yahoo | ✔ erledigt |
 | 73 | Kostenmathematik Yuh & Co.: Courtage, Devisenaufschlag, Stempelsteuer, Handelsfrequenz → Endvermögen | Annahmen (öffentliche Gebührenlisten) | ✔ erledigt |
-| 74 | Optimale Anzahl Einzelaktien: Risiko- und Ergebnis-Streuung bei 1–50 Titeln (Mathematik + echte Daten) | #58-Daten, Yahoo | läuft |
+| 74 | Optimale Anzahl Einzelaktien: Risiko- und Ergebnis-Streuung bei 1–50 Titeln (Mathematik + echte Daten) | #58-Daten, Yahoo | ✔ erledigt |
 
 ## Block C — weitere bekannte Anomalien (öffentliche Daten)
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|
-| 75 | Kursreaktion nach Gewinnüberraschung (Post-Earnings-Drift) | SEC 10-Q EPS (saisonaler Random Walk) + Yahoo | geplant |
-| 76 | Insider-VERKÄUFE als Warnsignal (Gegenstück zu #48) | SEC Form-4-Datensätze | geplant |
-| 77 | Leerverkaufs-Quote (Short Interest) als Warnsignal | FINRA Short-Interest-Dateien (öffentlich) | Datenzugang prüfen |
-| 78 | Börsengänge (IPOs) schneiden langfristig schlechter ab | SEC S-1/424B-Daten + Yahoo | Datenzugang prüfen |
-| 79 | Dividenden: Dividendenstarter/-erhöher, „Dividenden-Aristokraten“ vs Index | SEC/Yahoo-Dividenden | geplant |
-| 80 | Index-Aufnahme-Effekt (S&P 500 / SMI) | öffentliche Änderungslisten | Datenzugang prüfen |
+| 75 | Kursreaktion nach Gewinnüberraschung (Post-Earnings-Drift) | SEC 10-Q EPS (saisonaler Random Walk) + Yahoo | läuft |
+| 76 | Insider-VERKÄUFE als Warnsignal (Gegenstück zu #48) | SEC Form-4-Datensätze | läuft |
+| 77 | Leerverkaufs-Quote (Short Interest) als Warnsignal | FINRA Short-Interest-Dateien (öffentlich) | läuft |
+| 78 | Börsengänge (IPOs) schneiden langfristig schlechter ab | SEC S-1/424B-Daten + Yahoo | läuft |
+| 79 | Dividenden: Dividendenstarter/-erhöher, „Dividenden-Aristokraten“ vs Index | SEC/Yahoo-Dividenden | läuft |
+| 80 | Index-Aufnahme-Effekt (S&P 500 / SMI) | öffentliche Änderungslisten | läuft |
 
-| 85 | „Fairer Wert“ (Foliologic-Ansatz): kaufen, was gegen den Branchen-Median günstig bewertet ist (KGV, Cashflow, EV/EBITDA), verkaufen nach zwei teuren Checkpoints; dazu Health-Score-Nachbau (6 Dimensionen) | SEC-Abschlüsse + Yahoo, Firmen ≥ 1 Mrd, 2010–2025 | geplant |
+| 85 | „Fairer Wert“ (Foliologic-Ansatz): kaufen, was gegen den Branchen-Median günstig bewertet ist (KGV, Cashflow, EV/EBITDA), verkaufen nach zwei teuren Checkpoints; dazu Health-Score-Nachbau (6 Dimensionen) | SEC-Abschlüsse + Yahoo, Firmen ≥ 1 Mrd, 2010–2025 | läuft |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|
 | 81 | Positionsgrösse: Kelly-Kriterium, Ruin-Risiko, Volatilitätsverlust („Varianz-Drag“) | Mathematik + Simulation | ✔ erledigt |
 | 82 | Fat Tails: wie oft kommen Extremtage wirklich vor vs Normalverteilung; was heisst das für Stopps und Hebel? | Yahoo seit 1928 | ✔ erledigt |
-| 83 | Regime: gibt es stabile „Marktphasen“ (Hidden-Markov), und helfen sie out-of-sample? | Yahoo, Shiller | läuft |
+| 83 | Regime: gibt es stabile „Marktphasen“ (Hidden-Markov), und helfen sie out-of-sample? | Yahoo, Shiller | ✔ erledigt |
 
 ## Am Schluss
 | # | Was |

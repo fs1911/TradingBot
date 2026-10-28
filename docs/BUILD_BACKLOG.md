@@ -19,6 +19,9 @@ Nichts davon wird vorher gebaut oder an Lovable geschickt.
 | B11 | Warnung bei häufigem Handeln (Umschlag > 50 %/Jahr ≈ −16 % Endvermögen) und TER-Vergleich prominent; Devisen-Aufschlag beim Kauf zweitrangig | #73 | offen |
 | B12 | Keine Hebel-Produkte im Kauf-Check ohne deutliche Warnung (2×/3× bis −98/−100 % seit 1928) | #69 | offen |
 
+| B13 | Hinweis „hohe Zufalls-Streuung“ bei weniger als ~20 Einzelaktien (#74); Umschicht-Hinweis 1×/Jahr oder bei ±10 Pkt (#71) | #71, #74 | offen |
+| B14 | Währung: Info, dass Absicherung für USD-Anteile historisch Rendite kostete, für EUR-Anteile half (Rückschau, keine Regel) | #67 | offen |
+
 ## Was der Nutzer selbst einrichten muss (vor B1)
 | # | Was |
 |---|---|

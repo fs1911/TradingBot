@@ -289,6 +289,107 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_sec_batch2(self) -> None:
+        """Experiments #85 (fair value / health score), #79 (dividends), #75 (post-earnings
+        drift), #77/#78/#80 (short interest, IPOs, index changes), #76 (insider sales) —
+        one SEC/Yahoo download shared by all. Reports pushed one by one."""
+        import time as _t
+        from datetime import datetime as _dt
+        import pandas as _pd
+        contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+        if not contact:
+            self.heartbeat._put_file("experiment85_results.md",
+                                     b"# Experiment #85 - waiting\n\nSEC_CONTACT_EMAIL missing on server.\n",
+                                     "Experiment #85 waiting for SEC contact")
+            return
+        ua = f"TradingBot-Research {contact}"
+        log = lambda m: logger.info(m)
+        try:
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_49 import fetch_ticker_map, monthly_returns
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_77_78_80 import fetch_submissions, parse_sp500_changes
+            from .backtest.experiments_85 import fetch_year
+            def sec_get(url):
+                _t.sleep(0.12)
+                return _get(url, timeout=60, headers={"User-Agent": ua, "Accept-Encoding": "identity"})
+            tmap = fetch_ticker_map(ua)
+            years = {y: fetch_year(sec_get, y) for y in range(2008, _dt.utcnow().year)}
+            log(f"#85 frames: {len(years)} years")
+            uni = set()
+            for df in years.values():
+                if "Assets" in df:
+                    uni |= {int(c) for c in df.index[df["Assets"] >= 1e9] if int(c) in tmap}
+            subs = fetch_submissions(sorted(tmap), ua, log=log)
+            try:
+                sp_changes = parse_sp500_changes(_get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", timeout=40))
+            except Exception as e:
+                sp_changes = _pd.DataFrame()
+                log(f"#80 wikipedia: {repr(e)[:80]}")
+            want = {tmap[c] for c in uni}
+            if "ipo_prospectus" in subs:
+                ipo = subs["ipo_prospectus"].dropna()
+                want |= {tmap[int(c)] for c, d in ipo.items() if int(c) in tmap and d >= _pd.Timestamp("2005-01-01")}
+            if not sp_changes.empty:
+                want |= set(sp_changes["added"].dropna()) | set(sp_changes["removed"].dropna())
+            prices, divs = {}, {}
+            for t in sorted(want)[:5000]:
+                px, dv = fetch_px_divs(t.replace(".", "-"), "2005-01-01", timeout=15)
+                if len(px) > 60:
+                    prices[t] = px.astype("float32")
+                    divs[t] = dv
+            spy, _ = fetch_px_divs("SPY", "2005-01-01")
+            log(f"SEC batch 2: universe {len(uni)}, priced {len(prices)}")
+        except Exception as e:
+            self._push_failure("85", e)
+            return
+        px_m, rets_m = monthly_returns(prices)
+        try:
+            from .backtest.experiments_85 import run_experiment85_report
+            sector = subs["sic2"].dropna() if "sic2" in subs else _pd.Series(dtype=object)
+            sector.index = sector.index.astype(int)
+            rep = run_experiment85_report({y: d.loc[[c for c in d.index if int(c) in uni]] for y, d in years.items()},
+                                          sector, tmap, px_m, rets_m)
+            self.heartbeat._put_file("experiment85_results.md", rep.encode(), "Experiment #85: fair value & health score")
+        except Exception as e:
+            self._push_failure("85", e)
+        try:
+            from .backtest.experiments_75_79 import EPS_URL, parse_eps, run_experiments75_79_report
+            import json as _json
+            eps = {}
+            for c in sorted(uni):
+                try:
+                    d = parse_eps(_json.loads(sec_get(EPS_URL.format(cik=c))))
+                    if len(d) >= 8:
+                        eps[c] = d
+                except Exception:
+                    pass
+            uni_t = {tmap[c] for c in uni}
+            rep = run_experiments75_79_report(eps, tmap, {t: s for t, s in prices.items() if t in uni_t},
+                                              {t: d for t, d in divs.items() if t in uni_t}, spy)
+            self.heartbeat._put_file("experiments75_79_results.md", rep.encode(), "Experiments #75/#79: earnings drift, dividends")
+        except Exception as e:
+            self._push_failure("s75_79", e)
+        try:
+            from .backtest.experiments_77_78_80 import run_experiments77_78_80_report
+            try:
+                body = _get("https://api.finra.org/data/group/otcMarket/name/consolidatedShortInterest?limit=5",
+                            timeout=30, headers={"Accept": "application/json"})
+                finra = f"FINRA API reachable without key; sample: {body[:300]!r}. Full analysis needs paging over all dates — planned follow-up."
+            except Exception as e:
+                finra = f"FINRA short-interest API not usable without credentials from this server ({repr(e)[:120]}) → #77 not testable with free access."
+            rep = run_experiments77_78_80_report(subs, tmap, prices, spy, sp_changes, finra)
+            self.heartbeat._put_file("experiments77_78_80_results.md", rep.encode(), "Experiments #77/#78/#80")
+        except Exception as e:
+            self._push_failure("s77_78_80", e)
+        try:
+            from .backtest.experiments_76 import fetch_sales, run_experiment76_report
+            sales, fails = fetch_sales(range(2006, _dt.utcnow().year + 1), ua, log=log)
+            rep = run_experiment76_report(sales, fails, prices, spy)
+            self.heartbeat._put_file("experiment76_results.md", rep.encode(), "Experiment #76: insider sales")
+        except Exception as e:
+            self._push_failure("76", e)
+
     def _run_experiments67_74_83(self) -> None:
         """Experiments #67/#68 (CHF hedging, home bias), #71/#74/#83 (mixes & rebalancing,
         number of stocks, HMM regimes). → experiments67_68_results.md, experiments71_74_83_results.md."""
@@ -2282,7 +2383,8 @@ class TradingBot:
                                   ("run_experiment64_on_start", self._run_experiment64),
                                   ("run_experiment65_on_start", self._run_experiment65),
                                   ("run_experiment69_on_start", self._run_experiments69_82),
-                                  ("run_experiment67_on_start", self._run_experiments67_74_83)) if _b.get(flag, False)]
+                                  ("run_experiment67_on_start", self._run_experiments67_74_83),
+                                  ("run_experiment85_on_start", self._run_sec_batch2)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
