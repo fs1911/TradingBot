@@ -84,7 +84,10 @@ bot:
   run_experiment65_on_start: false  # Exp #65 done (2026-10-28): buy check: green +0.2 %, red −1.5 % vs universe (t −0.9); disasters ≤−40 %: green 4.9 %, red 9.0 % (dilution 10.2 %); market-light red at purchase +39 % (2020) → timing part not supported
   run_experiment69_on_start: false  # Exp #69/#81/#70/#72/#82 done (2026-10-28): 2× daily +11.6 % (DD −98 %), 3× +9.8 %; Kelly L* 2.3 hindsight, real-time −2…10; lump sum wins 62–66 %; 4 % rule 97 % (60/40); >5σ days 103 vs 0.01 expected
   run_experiment67_on_start: false  # Exp #67/#68 done (2026-10-28): S&P hedged into CHF 8.4 % vs unhedged 9.5 % (46 % of 10-y windows), DAX hedged 4.7 % vs 3.8 % (87 %); home bias 2013–2025: 0 % CH Sharpe 0.85 vs 100 % CH 0.65; #71/#74/#83 see results file
-  run_experiment85_on_start: true   # SEC batch 2: #85 fair value & health score, #79 dividends, #75 post-earnings drift, #77/#78/#80 short interest/IPOs/index changes, #76 insider sales
+  run_experiment85_on_start: false  # Exp #85 done (2026-10-28): fair-value Q5 +2.2 %/yr (t 1.7), Q5−Q1 +4.0 % (t 1.8), robust&undervalued −1.0 %, app rule +0.6 %; health score Q5 ±0.0 %, worst quintile +3.4 % (t 2.1) — score inverted
+  run_experiment75_on_start: true   # #75 post-earnings drift + #79 dividends (large caps, ≤2500 priced; split out of the SEC batch after the server stalled on memory)
+  run_experiment78_on_start: true   # #77 short-interest access, #78 IPOs, #80 S&P 500 changes
+  run_experiment76_on_start: true   # #76 insider sales
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets

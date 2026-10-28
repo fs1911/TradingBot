@@ -289,106 +289,139 @@ class TradingBot:
         except Exception:
             pass
 
-    def _run_sec_batch2(self) -> None:
-        """Experiments #85 (fair value / health score), #79 (dividends), #75 (post-earnings
-        drift), #77/#78/#80 (short interest, IPOs, index changes), #76 (insider sales) —
-        one SEC/Yahoo download shared by all. Reports pushed one by one."""
+    def _sec_ctx(self):
+        """(ua, sec_get, tmap) or None if no SEC contact."""
         import time as _t
-        from datetime import datetime as _dt
-        import pandas as _pd
+        from .backtest.experiments_46 import _get
+        from .backtest.experiments_49 import fetch_ticker_map
         contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
         if not contact:
-            self.heartbeat._put_file("experiment85_results.md",
-                                     b"# Experiment #85 - waiting\n\nSEC_CONTACT_EMAIL missing on server.\n",
-                                     "Experiment #85 waiting for SEC contact")
-            return
+            return None
         ua = f"TradingBot-Research {contact}"
-        log = lambda m: logger.info(m)
-        try:
-            from .backtest.experiments_46 import _get
-            from .backtest.experiments_49 import fetch_ticker_map, monthly_returns
-            from .backtest.experiments_75_79 import fetch_px_divs
-            from .backtest.experiments_77_78_80 import fetch_submissions, parse_sp500_changes
-            from .backtest.experiments_85 import fetch_year
-            def sec_get(url):
-                _t.sleep(0.12)
-                return _get(url, timeout=60, headers={"User-Agent": ua, "Accept-Encoding": "identity"})
-            tmap = fetch_ticker_map(ua)
-            years = {y: fetch_year(sec_get, y) for y in range(2008, _dt.utcnow().year)}
-            log(f"#85 frames: {len(years)} years")
-            uni = set()
-            for df in years.values():
-                if "Assets" in df:
-                    uni |= {int(c) for c in df.index[df["Assets"] >= 1e9] if int(c) in tmap}
-            subs = fetch_submissions(sorted(tmap), ua, log=log)
+        def sec_get(url):
+            _t.sleep(0.12)
+            return _get(url, timeout=60, headers={"User-Agent": ua, "Accept-Encoding": "identity"})
+        return ua, sec_get, fetch_ticker_map(ua)
+
+    def _large_cap_ciks(self, sec_get, tmap) -> set:
+        """CIKs with assets ≥ $1bn in any year 2008→ (SEC frames, one request per year)."""
+        import json as _json
+        from datetime import datetime as _dt
+        from .backtest.experiments_85 import FRAME, parse_frame
+        uni = set()
+        for y in range(2008, _dt.utcnow().year):
             try:
-                sp_changes = parse_sp500_changes(_get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", timeout=40))
-            except Exception as e:
-                sp_changes = _pd.DataFrame()
-                log(f"#80 wikipedia: {repr(e)[:80]}")
-            want = {tmap[c] for c in uni}
-            if "ipo_prospectus" in subs:
-                ipo = subs["ipo_prospectus"].dropna()
-                want |= {tmap[int(c)] for c, d in ipo.items() if int(c) in tmap and d >= _pd.Timestamp("2005-01-01")}
-            if not sp_changes.empty:
-                want |= set(sp_changes["added"].dropna()) | set(sp_changes["removed"].dropna())
+                a = parse_frame(_json.loads(sec_get(FRAME.format(tax="us-gaap", tag="Assets", unit="USD", period=f"CY{y}Q4I"))))
+                uni |= {int(c) for c in a.index[a >= 1e9] if int(c) in tmap}
+            except Exception:
+                pass
+        return uni
+
+    def _run_exp75_79(self) -> None:
+        """#75 post-earnings drift and #79 dividends (large caps). → experiments75_79_results.md."""
+        import gc
+        import json as _json
+        try:
+            from .backtest.experiments_75_79 import EPS_URL, parse_eps, fetch_px_divs, run_experiments75_79_report
+            ctx = self._sec_ctx()
+            if ctx is None:
+                return
+            ua, sec_get, tmap = ctx
+            uni = self._large_cap_ciks(sec_get, tmap)
             prices, divs = {}, {}
-            for t in sorted(want)[:5000]:
+            for t in sorted({tmap[c] for c in uni})[:2500]:
                 px, dv = fetch_px_divs(t.replace(".", "-"), "2005-01-01", timeout=15)
-                if len(px) > 60:
-                    prices[t] = px.astype("float32")
-                    divs[t] = dv
+                if len(px) > 250:
+                    prices[t], divs[t] = px.astype("float32"), dv
             spy, _ = fetch_px_divs("SPY", "2005-01-01")
-            log(f"SEC batch 2: universe {len(uni)}, priced {len(prices)}")
-        except Exception as e:
-            self._push_failure("85", e)
-            return
-        px_m, rets_m = monthly_returns(prices)
-        try:
-            from .backtest.experiments_85 import run_experiment85_report
-            sector = subs["sic2"].dropna() if "sic2" in subs else _pd.Series(dtype=object)
-            sector.index = sector.index.astype(int)
-            rep = run_experiment85_report({y: d.loc[[c for c in d.index if int(c) in uni]] for y, d in years.items()},
-                                          sector, tmap, px_m, rets_m)
-            self.heartbeat._put_file("experiment85_results.md", rep.encode(), "Experiment #85: fair value & health score")
-        except Exception as e:
-            self._push_failure("85", e)
-        try:
-            from .backtest.experiments_75_79 import EPS_URL, parse_eps, run_experiments75_79_report
-            import json as _json
             eps = {}
             for c in sorted(uni):
+                if tmap.get(c) not in prices:
+                    continue
                 try:
                     d = parse_eps(_json.loads(sec_get(EPS_URL.format(cik=c))))
                     if len(d) >= 8:
                         eps[c] = d
                 except Exception:
                     pass
-            uni_t = {tmap[c] for c in uni}
-            rep = run_experiments75_79_report(eps, tmap, {t: s for t, s in prices.items() if t in uni_t},
-                                              {t: d for t, d in divs.items() if t in uni_t}, spy)
+            rep = run_experiments75_79_report(eps, tmap, prices, divs, spy)
             self.heartbeat._put_file("experiments75_79_results.md", rep.encode(), "Experiments #75/#79: earnings drift, dividends")
+            logger.info("Experiments #75/#79: report pushed")
         except Exception as e:
             self._push_failure("s75_79", e)
+        gc.collect()
+
+    def _run_exp77_78_80(self) -> None:
+        """#77 short interest (access check), #78 IPOs, #80 S&P 500 index changes. → experiments77_78_80_results.md."""
+        import gc
         try:
-            from .backtest.experiments_77_78_80 import run_experiments77_78_80_report
+            import pandas as _pd
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_77_78_80 import fetch_submissions, parse_sp500_changes, run_experiments77_78_80_report
+            ctx = self._sec_ctx()
+            if ctx is None:
+                return
+            ua, sec_get, tmap = ctx
+            subs = fetch_submissions(sorted(tmap), ua, log=lambda m: logger.info(m))
+            subs = subs[["ipo_prospectus"]] if "ipo_prospectus" in subs else _pd.DataFrame()
+            try:
+                sp = parse_sp500_changes(_get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", timeout=40))
+            except Exception:
+                sp = _pd.DataFrame()
+            want = set()
+            if not subs.empty:
+                ipo = subs["ipo_prospectus"].dropna()
+                want |= {tmap[int(c)] for c, d in ipo.items() if int(c) in tmap and d >= _pd.Timestamp("2005-01-01")}
+            if not sp.empty:
+                want |= set(sp["added"].dropna()) | set(sp["removed"].dropna())
+            prices = {}
+            for t in sorted(want)[:3000]:
+                px, _ = fetch_px_divs(t.replace(".", "-"), "2005-01-01", timeout=15)
+                if len(px) > 30:
+                    prices[t] = px.astype("float32")
+            spy, _ = fetch_px_divs("SPY", "2004-01-01")
             try:
                 body = _get("https://api.finra.org/data/group/otcMarket/name/consolidatedShortInterest?limit=5",
                             timeout=30, headers={"Accept": "application/json"})
-                finra = f"FINRA API reachable without key; sample: {body[:300]!r}. Full analysis needs paging over all dates — planned follow-up."
+                finra = f"FINRA API reachable without key; sample: {body[:300]!r}."
             except Exception as e:
                 finra = f"FINRA short-interest API not usable without credentials from this server ({repr(e)[:120]}) → #77 not testable with free access."
-            rep = run_experiments77_78_80_report(subs, tmap, prices, spy, sp_changes, finra)
+            rep = run_experiments77_78_80_report(subs, tmap, prices, spy, sp, finra)
             self.heartbeat._put_file("experiments77_78_80_results.md", rep.encode(), "Experiments #77/#78/#80")
+            logger.info("Experiments #77/#78/#80: report pushed")
         except Exception as e:
             self._push_failure("s77_78_80", e)
+        gc.collect()
+
+    def _run_exp76(self) -> None:
+        """#76 insider sales (Form 4). → experiment76_results.md."""
+        import gc
         try:
-            from .backtest.experiments_76 import fetch_sales, run_experiment76_report
-            sales, fails = fetch_sales(range(2006, _dt.utcnow().year + 1), ua, log=log)
+            from datetime import datetime as _dt
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_76 import fetch_sales, sale_events, run_experiment76_report
+            ctx = self._sec_ctx()
+            if ctx is None:
+                return
+            ua, _, _ = ctx
+            sales, fails = fetch_sales(range(2006, _dt.utcnow().year + 1), ua, log=lambda m: logger.info(m))
+            ev = sale_events(sales)
+            want = set()
+            for e in ev.values():
+                want |= set(e["ticker"])
+            prices = {}
+            for t in sorted(want)[:2500]:
+                px, _ = fetch_px_divs(t.replace(".", "-"), "2005-01-01", timeout=15)
+                if len(px) > 250:
+                    prices[t] = px.astype("float32")
+            spy, _ = fetch_px_divs("SPY", "2005-01-01")
             rep = run_experiment76_report(sales, fails, prices, spy)
             self.heartbeat._put_file("experiment76_results.md", rep.encode(), "Experiment #76: insider sales")
+            logger.info("Experiment #76: report pushed")
         except Exception as e:
             self._push_failure("76", e)
+        gc.collect()
 
     def _run_experiments67_74_83(self) -> None:
         """Experiments #67/#68 (CHF hedging, home bias), #71/#74/#83 (mixes & rebalancing,
@@ -2384,7 +2417,9 @@ class TradingBot:
                                   ("run_experiment65_on_start", self._run_experiment65),
                                   ("run_experiment69_on_start", self._run_experiments69_82),
                                   ("run_experiment67_on_start", self._run_experiments67_74_83),
-                                  ("run_experiment85_on_start", self._run_sec_batch2)) if _b.get(flag, False)]
+                                  ("run_experiment75_on_start", self._run_exp75_79),
+                                  ("run_experiment78_on_start", self._run_exp77_78_80),
+                                  ("run_experiment76_on_start", self._run_exp76)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()

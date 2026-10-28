@@ -120,26 +120,35 @@ def pead_events(eps: dict, tmap: dict, prices: dict, spy: pd.Series) -> pd.DataF
 
 # ── #79 ──────────────────────────────────────────────────────────────────────
 
-def dividend_group(divs: pd.Series, form: pd.Timestamp) -> str:
+def div_years(divs: pd.Series, first_year: int, last_year: int) -> dict:
+    """{Y: dividends paid in the 12 months ending 30 June Y} — computed once per stock."""
     if divs is None or len(divs) == 0:
-        return "non-payer"
-    d = divs[divs.index <= form]
-    last12 = d[d.index > form - pd.DateOffset(years=1)].sum()
-    prev12 = d[(d.index > form - pd.DateOffset(years=2)) & (d.index <= form - pd.DateOffset(years=1))].sum()
-    before = d[d.index <= form - pd.DateOffset(years=1)]
+        return {y: 0.0 for y in range(first_year, last_year + 1)}
+    idx = pd.to_datetime(divs.index)
+    key = idx.year + (idx.month > 6).astype(int)          # July Y-1 … June Y → Y
+    sums = pd.Series(divs.to_numpy(), index=key).groupby(level=0).sum()
+    return {y: float(sums.get(y, 0.0)) for y in range(first_year, last_year + 1)}
+
+
+def group_from_years(yr: dict, y: int) -> str:
+    last12, prev12 = yr.get(y, 0.0), yr.get(y - 1, 0.0)
     if last12 == 0 and prev12 == 0:
         return "non-payer"
-    if last12 > 0 and before[before.index > form - pd.DateOffset(years=4)].sum() == 0:
+    if last12 > 0 and sum(yr.get(y - k, 0.0) for k in (1, 2, 3)) == 0:
         return "initiator"
     if prev12 > 0 and (last12 == 0 or last12 <= 0.8 * prev12):
         return "cutter"
-    yearly = [d[(d.index > form - pd.DateOffset(years=k + 1)) & (d.index <= form - pd.DateOffset(years=k))].sum()
-              for k in range(6)]
-    if all(yearly[k] > yearly[k + 1] * 1.0 > 0 for k in range(5)):
+    seq = [yr.get(y - k, 0.0) for k in range(6)]
+    if all(seq[k] > seq[k + 1] > 0 for k in range(5)):
         return "grower (5 y)"
     if last12 >= 1.05 * prev12:
         return "raiser"
     return "steady"
+
+
+def dividend_group(divs: pd.Series, form: pd.Timestamp) -> str:
+    """Group at the end of June `form.year` (kept for single-stock use and tests)."""
+    return group_from_years(div_years(divs, form.year - 6, form.year), form.year)
 
 
 def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict, spy: pd.Series) -> str:
@@ -167,7 +176,10 @@ def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict,
     L.append("## #79 Dividends (groups at the end of June, next 12 months vs equal-weight universe)")
     _, rets = monthly_returns(prices)
     rows = []
-    for y in range(2008, pd.Timestamp.today().year):
+    y_last = pd.Timestamp.today().year
+    dy = {t: div_years(dv, 2000, y_last) for t, dv in divs.items()}
+    first = {t: pd.Series(prices[t]).index[0] for t in divs if t in prices and len(prices[t])}
+    for y in range(2008, y_last):
         form = pd.Timestamp(f"{y}-06-30")
         m0 = pd.Period(f"{y}-06", "M")
         if m0 not in rets.index:
@@ -176,9 +188,9 @@ def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict,
         if len(fwd_m) < 12:
             continue
         fwd = (1 + rets.loc[fwd_m].fillna(0)).prod() - 1
-        for t, dv in divs.items():
-            if t in fwd.index and np.isfinite(fwd[t]) and t in prices and pd.Series(prices[t]).index[0] < form - pd.DateOffset(years=6):
-                rows.append((y, t, dividend_group(dv, form), float(fwd[t])))
+        for t, yr in dy.items():
+            if t in fwd.index and np.isfinite(fwd[t]) and t in first and first[t] < form - pd.DateOffset(years=6):
+                rows.append((y, t, group_from_years(yr, y), float(fwd[t])))
     d = pd.DataFrame(rows, columns=["year", "ticker", "group", "fwd"])
     if d.empty:
         L.append("No dividend data.")

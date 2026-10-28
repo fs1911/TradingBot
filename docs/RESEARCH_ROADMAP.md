@@ -36,7 +36,7 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 | 79 | Dividenden: Dividendenstarter/-erhöher, „Dividenden-Aristokraten“ vs Index | SEC/Yahoo-Dividenden | läuft |
 | 80 | Index-Aufnahme-Effekt (S&P 500 / SMI) | öffentliche Änderungslisten | läuft |
 
-| 85 | „Fairer Wert“ (Foliologic-Ansatz): kaufen, was gegen den Branchen-Median günstig bewertet ist (KGV, Cashflow, EV/EBITDA), verkaufen nach zwei teuren Checkpoints; dazu Health-Score-Nachbau (6 Dimensionen) | SEC-Abschlüsse + Yahoo, Firmen ≥ 1 Mrd, 2010–2025 | läuft |
+| 85 | „Fairer Wert“ (Foliologic-Ansatz): kaufen, was gegen den Branchen-Median günstig bewertet ist (KGV, Cashflow, EV/EBITDA), verkaufen nach zwei teuren Checkpoints; dazu Health-Score-Nachbau (6 Dimensionen) | SEC-Abschlüsse + Yahoo, Firmen ≥ 1 Mrd, 2010–2025 | ✔ erledigt |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
