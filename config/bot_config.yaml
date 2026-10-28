@@ -82,6 +82,7 @@ bot:
   run_experiment62_on_start: false  # Exp #62 done (2026-10-28): buybacks alone IC +0.049 (t 3.1), top +2.8 %/yr; ridge −0.002, boosted trees +0.021 (t 0.7, top ±0 %), human rule +0.027, placebo −0.001 → ML adds nothing
   run_experiment64_on_start: true   # Exp #64: buyback/dilution signal for CH/DE/FR/NL stocks (Yahoo share counts, split-safe)
   run_experiment65_on_start: true   # Exp #65: backtest of the app's buy check (dilution + market light), US 2010–2025
+  run_experiment69_on_start: true   # Exp #69/#81 leverage & Kelly, #70/#72 lump sum & retirement, #82 fat tails (S&P since 1928, Shiller since 1871)
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets

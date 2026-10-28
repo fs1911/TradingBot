@@ -289,6 +289,33 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiments69_82(self) -> None:
+        """Experiments #69/#81 (leverage, Kelly), #70/#72 (lump sum, retirement), #82 (fat
+        tails). → experiment69_results.md, experiments70_72_results.md, experiment82_results.md."""
+        try:
+            from .backtest.experiments_34 import fetch_shiller
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_69 import run_experiment69_report
+            from .backtest.experiments_70_72 import run_experiments70_72_report
+            from .backtest.experiments_82 import run_experiment82_report
+            gspc = fetch_yahoo_daily("^GSPC", "1927-12-01", timeout=30)
+            irx = fetch_yahoo_daily("^IRX", "1960-01-01", timeout=30)
+            btc = fetch_yahoo_daily("BTC-USD", "2014-09-17", timeout=30)
+            shiller, _ = fetch_shiller(timeout=30)
+        except Exception as e:
+            self._push_failure("69", e)
+            return
+        jobs = (("69", "Experiments #69/#81: leverage and Kelly", lambda: run_experiment69_report(gspc, irx, shiller)),
+                ("s70_72", "Experiments #70/#72: lump sum, retirement", lambda: run_experiments70_72_report(shiller)),
+                ("82", "Experiment #82: fat tails",
+                 lambda: run_experiment82_report({"S&P 500": gspc, "Bitcoin": btc})))
+        for fname, label, build in jobs:
+            try:
+                self.heartbeat._put_file(f"experiment{fname}_results.md", build().encode(), label)
+                logger.info(f"{label}: report pushed")
+            except Exception as e:
+                self._push_failure(fname, e)
+
     def _run_experiment64(self) -> None:
         """Experiment #64: buyback/dilution signal for CH/EU stocks (Yahoo share counts).
         → experiment64_results.md."""
@@ -2212,7 +2239,8 @@ class TradingBot:
                                   ("run_experiment61_on_start", self._run_experiment61),
                                   ("run_experiment62_on_start", self._run_experiment62),
                                   ("run_experiment64_on_start", self._run_experiment64),
-                                  ("run_experiment65_on_start", self._run_experiment65)) if _b.get(flag, False)]
+                                  ("run_experiment65_on_start", self._run_experiment65),
+                                  ("run_experiment69_on_start", self._run_experiments69_82)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()

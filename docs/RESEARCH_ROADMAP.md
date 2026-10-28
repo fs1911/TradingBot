@@ -19,10 +19,10 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 |---|---|---|---|
 | 67 | Währungsabsicherung: MSCI World in CHF gesichert vs ungesichert — lohnt Hedging? | Yahoo-Indizes, USD/CHF, EUR/CHF, Zinsdifferenzen | geplant |
 | 68 | Heimatmarkt: SMI/SPI vs Welt aus CHF-Sicht; optimaler CH-Anteil | Yahoo | geplant |
-| 69 | Hebel: 1,5×/2×/3× täglich gehebelt (wie Leveraged-ETFs) vs Index, Volatilitätsverlust, Finanzierungskosten, seit 1928 | Yahoo ^GSPC, ^IRX | geplant |
-| 70 | Einmalanlage vs Sparplan (gestaffelt) bei gleichem Geld | Shiller, Yahoo | geplant |
+| 69 | Hebel: 1,5×/2×/3× täglich gehebelt (wie Leveraged-ETFs) vs Index, Volatilitätsverlust, Finanzierungskosten, seit 1928 | Yahoo ^GSPC, ^IRX | läuft |
+| 70 | Einmalanlage vs Sparplan (gestaffelt) bei gleichem Geld | Shiller, Yahoo | läuft |
 | 71 | Aktien/Anleihen-Mischung und Umschichtungs-Bänder (60/40, 80/20, 100/0) für CHF-Anleger | Yahoo, Shiller | geplant |
-| 72 | Entnahme im Ruhestand: „4 %-Regel“, Reihenfolge-Risiko, international | Shiller, Yahoo | geplant |
+| 72 | Entnahme im Ruhestand: „4 %-Regel“, Reihenfolge-Risiko, international | Shiller, Yahoo | läuft |
 | 73 | Kostenmathematik Yuh & Co.: Courtage, Devisenaufschlag, Stempelsteuer, Handelsfrequenz → Endvermögen | Annahmen (öffentliche Gebührenlisten) | geplant |
 | 74 | Optimale Anzahl Einzelaktien: Risiko- und Ergebnis-Streuung bei 1–50 Titeln (Mathematik + echte Daten) | #58-Daten, Yahoo | geplant |
 
@@ -39,8 +39,8 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|
-| 81 | Positionsgrösse: Kelly-Kriterium, Ruin-Risiko, Volatilitätsverlust („Varianz-Drag“) | Mathematik + Simulation | geplant |
-| 82 | Fat Tails: wie oft kommen Extremtage wirklich vor vs Normalverteilung; was heisst das für Stopps und Hebel? | Yahoo seit 1928 | geplant |
+| 81 | Positionsgrösse: Kelly-Kriterium, Ruin-Risiko, Volatilitätsverlust („Varianz-Drag“) | Mathematik + Simulation | läuft |
+| 82 | Fat Tails: wie oft kommen Extremtage wirklich vor vs Normalverteilung; was heisst das für Stopps und Hebel? | Yahoo seit 1928 | läuft |
 | 83 | Regime: gibt es stabile „Marktphasen“ (Hidden-Markov), und helfen sie out-of-sample? | Yahoo, Shiller | geplant |
 
 ## Am Schluss
