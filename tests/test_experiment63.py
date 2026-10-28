@@ -101,3 +101,21 @@ def test_stock10_vs_reality():
     tr = pd.Series(100 * 1.08 ** (np.arange(len(m)) / 12), index=m)
     L = stock10_analysis(books, tr)
     assert any("expected avg 7.0 %" in l and "actual avg 8.0 %" in l for l in L)
+
+
+def test_parse_dates_formats():
+    from src.backtest.experiments_63 import parse_dates
+    d = parse_dates(pd.Series([195206, 19521201, 1953.06, 20000.0]))
+    assert d[0] == pd.Timestamp("1952-06-01") and d[1] == pd.Timestamp("1952-12-01")
+    assert d[2] == pd.Timestamp("1953-06-01") and d[3].year == 1954
+
+
+def test_livingston_stocks_months():
+    from src.backtest.experiments_63 import livingston_stocks
+    dates = [int(f"{y}{m:02d}") for y in range(1952, 1991) for m in (6, 12)]
+    df = pd.DataFrame({"Date": dates, "SPIF_BP": 100.0, "SPIF_ZM": 100.0, "SPIF_12M": 105.0})
+    books = {"https://x/medians.xlsx": {"SPIF": df}}
+    m = pd.period_range("1950-01", "1995-12", freq="M")
+    g = pd.Series(100 * 1.006 ** np.arange(len(m)), index=m)
+    L = livingston_stocks(books, g)
+    assert any("1952-06" in l and "1990-12" in l and "+5.0 %" in l for l in L)

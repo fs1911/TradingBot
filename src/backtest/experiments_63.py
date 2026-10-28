@@ -312,6 +312,26 @@ def stock10_analysis(books: dict, tr_m: pd.Series) -> list:
     return L
 
 
+def parse_dates(col: pd.Series) -> pd.Series:
+    """Survey dates given as text, Excel serials, YYYYMMDD, YYYYMM or year.fraction."""
+    num = pd.to_numeric(col, errors="coerce")
+    if num.notna().mean() < 0.5:
+        return pd.to_datetime(col, errors="coerce")
+    def one(x):
+        if not np.isfinite(x):
+            return pd.NaT
+        if x > 1e7:
+            return pd.to_datetime(str(int(x)), format="%Y%m%d", errors="coerce")
+        if x > 1e5:
+            return pd.to_datetime(str(int(x)), format="%Y%m", errors="coerce")
+        if 1800 < x < 2200:
+            y = int(x)
+            m = int(round((x - y) * 100)) or 1
+            return pd.Timestamp(year=y, month=min(max(m, 1), 12), day=1)
+        return pd.Timestamp("1899-12-30") + pd.Timedelta(days=float(x))
+    return pd.Series([one(x) for x in num], index=col.index)
+
+
 def livingston_stocks(books: dict, gspc_m: pd.Series) -> list:
     hits = find_columns(books, r"SPIF|S&P|SP500")
     if not hits:
@@ -320,12 +340,10 @@ def livingston_stocks(books: dict, gspc_m: pd.Series) -> list:
     cols = [c for c in df.columns if re.search(r"SPIF|S&P|SP500", str(c), re.I)]
     L = [f"Found in `{u.rsplit('/', 1)[-1]}` sheet `{sh}`: columns {', '.join(map(str, cols[:8]))}."]
     date_col = next((c for c in df.columns if re.search(r"date|survey", str(c), re.I)), df.columns[0])
-    dates = pd.to_datetime(df[date_col], errors="coerce")
-    if dates.isna().all():
-        num = pd.to_numeric(df[date_col], errors="coerce")
-        dates = pd.to_datetime("1899-12-30") + pd.to_timedelta(num, unit="D")
-    base = next((c for c in cols if re.search(r"BP|BASE|_?0$|ACT", str(c), re.I)), None)
-    f12 = next((c for c in cols if re.search(r"12", str(c))), None)
+    dates = parse_dates(df[date_col])
+    base = next((c for c in cols if str(c).upper().endswith("_ZM")), None) or \
+        next((c for c in cols if str(c).upper().endswith("_BP")), None)
+    f12 = next((c for c in cols if str(c).upper().endswith("_12M")), None)
     if base is None or f12 is None or gspc_m is None or gspc_m.empty:
         return L + ["Could not identify base/12-month columns — listed for manual mapping."]
     d = pd.DataFrame({"date": dates, "base": pd.to_numeric(df[base], errors="coerce"),
@@ -339,6 +357,7 @@ def livingston_stocks(books: dict, gspc_m: pd.Series) -> list:
         return L + ["Too few matched stock forecasts."]
     hit = ((d["exp"] > 0) == (d["act"] > 0)).mean()
     up_share = (d["act"] > 0).mean()
+    L.append("(Livingston asked for the S&P Industrials; the outcome uses the S&P 500 price index as a close proxy.)")
     L.append(f"{len(d)} half-yearly surveys {d['m'].iloc[0]}–{d['m'].iloc[-1]}: forecast 12-month change "
              f"avg {100*d['exp'].mean():+.1f} %, actual avg {100*d['act'].mean():+.1f} %; direction right "
              f"**{100*hit:.0f} %** (always guessing 'up' would have been right {100*up_share:.0f} %); "
