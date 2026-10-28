@@ -1,4 +1,4 @@
-# Experiment #63 — how good are professional forecasters? (2026-10-28 05:38 UTC)
+# Experiment #63 — how good are professional forecasters? (2026-10-28 06:21 UTC)
 
 ## A Did the professionals see recessions coming? (SPF anxious index)
 | recession starts | P(decline next quarter) said the quarter before | P(decline in 4 quarters) said a year before |
@@ -18,9 +18,40 @@ Surveys 1968Q4–2026Q3: average P(decline next quarter) before a recession quar
 222 forecasts 1968Q4–2025Q2: error (RMSE) SPF 1.18 pt vs naive 'no change' 1.57 pt. Big rises (≥ 1 pt within ~5 quarters): 43; of those the professionals forecast a rise of ≥ 0.5 pt: **23**.
 
 ## C Stocks
-### Livingston Survey S&P forecasts
-Found in `medianLevel.xlsx` sheet `STOCK10`: columns STOCK10.
-Could not identify base/12-month columns — listed for manual mapping.
+### Professionals' 10-year stock return expectations (SPF STOCK10) vs reality
+| survey | expected p.a. (next 10 y) | actual p.a. | error |
+|---|--:|--:|--:|
+| 1992Q1 | 10.0 % | +12.5 % | +2.5 pt |
+| 1993Q1 | 9.0 % | +8.6 % | -0.4 pt |
+| 1994Q1 | 10.0 % | +11.3 % | +1.3 pt |
+| 1995Q1 | 8.2 % | +11.2 % | +3.0 pt |
+| 1996Q1 | 9.0 % | +8.8 % | -0.2 pt |
+| 1997Q1 | 9.0 % | +7.5 % | -1.5 pt |
+| 1998Q1 | 9.0 % | +4.0 % | -5.0 pt |
+| 1999Q1 | 8.0 % | -3.5 % | -11.5 pt |
+| 2000Q1 | 8.0 % | -0.4 % | -8.4 pt |
+| 2001Q1 | 7.5 % | +2.5 % | -5.0 pt |
+| 2002Q1 | 7.0 % | +4.1 % | -2.9 pt |
+| 2003Q1 | 8.0 % | +8.1 % | +0.1 pt |
+| 2004Q1 | 7.8 % | +7.0 % | -0.7 pt |
+| 2005Q1 | 7.0 % | +7.9 % | +0.9 pt |
+| 2006Q1 | 7.0 % | +6.3 % | -0.7 pt |
+| 2007Q1 | 7.5 % | +7.5 % | -0.0 pt |
+| 2008Q1 | 6.5 % | +9.6 % | +3.1 pt |
+| 2009Q1 | 6.5 % | +16.5 % | +10.0 pt |
+| 2010Q1 | 7.0 % | +12.5 % | +5.5 pt |
+| 2011Q1 | 7.2 % | +13.3 % | +6.0 pt |
+| 2012Q1 | 6.8 % | +14.4 % | +7.6 pt |
+| 2013Q1 | 6.1 % | +12.1 % | +6.0 pt |
+| 2014Q1 | 6.0 % | +12.5 % | +6.5 pt |
+| 2015Q1 | 5.5 % | +12.8 % | +7.4 pt |
+| 2016Q1 | 5.4 % | +15.3 % | +10.0 pt |
+
+25 surveys: expected avg 7.6 %/yr, actual avg 8.9 %/yr; average miss 4.2 pt/yr (a constant guess would miss 4.0 pt); correlation expected → actual **-0.32** (overlapping windows, few independent decades).
+
+### Livingston Survey S&P forecasts (1952–1990)
+Found in `medians.xlsx` sheet `SPIF`: columns SPIF_BP, SPIF_ZM, SPIF_6M, SPIF_12M, SPIF_BY, SPIF_ZY, SPIF_1Y, SPIF_2Y.
+72 half-yearly surveys 1970-01–1970-01: forecast 12-month change avg +7.7 %, actual avg +12.8 %; direction right **99 %** (always guessing 'up' would have been right 100 %); correlation forecast → actual +nan.
 
 ### Professionals' recession worry as a stock signal
 | professionals' recession worry (quintile) | S&P next 12 months | n |
