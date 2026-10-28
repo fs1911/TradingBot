@@ -78,6 +78,8 @@ bot:
   run_experiment58_on_start: false  # Exp #58 done (2026-10-27): luck alone: best of 68 coin gurus 62%; 123/10000 skill-less managers 'proven' t>2; simulated 1-stock 7.9% x10 but 62% lose; real survivors 4.2% x10, 33% lose, median x2.0 vs SPY x3.4
   run_experiment60_on_start: false  # Exp #60 done (2026-10-27): IEX minute data 2020-07→ (not 70 days); 23/164 gross t>3.7 (reversal) but break-even 0.02-0.2 bp/side; best 1st half (ETH 1m reversal t 10.2) → 2nd half t -1.05; 0/164 net positive in both halves
   run_experiment63_on_start: false  # Exp #63 done (2026-10-28): SPF flagged 1/8 recession starts ≥50 % (2008 23 %, 2020 18 %); unemployment RMSE 1.18 vs naive 1.57; STOCK10 corr −0.32, miss 4.2 vs constant 4.0 pt; Livingston direction 73 % vs always-up 76 %; AAII 403
+  run_experiment61_on_start: true   # Exp #61: predictability map (20 assets × 1d/1w/1m/3m/12m, OOS R²; CAPE/D-P 1–10 y Welch–Goyal)
+  run_experiment62_on_start: true   # Exp #62: ML (ridge, boosted trees, numpy) vs buybacks/quality/human rule, walk-forward on SEC universe
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets

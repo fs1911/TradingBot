@@ -289,6 +289,67 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiment61(self) -> None:
+        """Experiment #61: predictability map (20 assets × 1d…12m, valuation 1–10 y).
+        → experiment61_results.md."""
+        try:
+            from .backtest.experiments_34 import fetch_shiller
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_61 import ASSETS, run_experiment61_report
+            prices = {n: fetch_yahoo_daily(sym, start, timeout=30) for n, (sym, start) in ASSETS.items()}
+            shiller, _ = fetch_shiller(timeout=30)
+            report = run_experiment61_report(prices, shiller)
+            self.heartbeat._put_file("experiment61_results.md", report.encode(),
+                                     "Experiment #61: predictability map")
+            logger.info("Experiment #61: report pushed")
+        except Exception as e:
+            self._push_failure("61", e)
+
+    def _run_experiment62(self) -> None:
+        """Experiment #62: machine learning (ridge, boosted trees) vs simple rules on the
+        #49/#50 SEC universe, walk-forward. → experiment62_results.md."""
+        try:
+            from datetime import datetime as _dt
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_49 import fetch_frames, fetch_ticker_map, components, monthly_returns
+            from .backtest.experiments_50 import fetch_issuance, issuance_scores
+            from .backtest.experiments_62 import build_panel, run_experiment62_report
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file("experiment62_results.md",
+                                         b"# Experiment #62 - waiting\n\nSEC_CONTACT_EMAIL missing on server.\n",
+                                         "Experiment #62 waiting for SEC contact")
+                return
+            ua = f"TradingBot-Research {contact}"
+            min_assets = float(self.bot_cfg.get("experiment49", {}).get("min_assets", 1e9))
+            frames, _ = fetch_frames(range(2009, _dt.utcnow().year), ua, log=lambda m: logger.info(m))
+            tmap = fetch_ticker_map(ua)
+            comp_by_year, ciks = {}, set()
+            for y, df in frames.items():
+                if df is None or df.empty:
+                    continue
+                c = components(df)
+                c = c[c["assets"] >= min_assets]
+                ciks |= {int(k) for k in c.index if int(k) in tmap}
+                c.index = [tmap.get(int(k)) for k in c.index]
+                c = c[c.index.notna()]
+                comp_by_year[y] = c[~c.index.duplicated()]
+            iss, _ = fetch_issuance(sorted(ciks), ua, log=lambda m: logger.info(m))
+            bb = issuance_scores(iss, tmap, sorted(comp_by_year))
+            prices = {}
+            for t in sorted({t for c in comp_by_year.values() for t in c.index})[:3000]:
+                sr = fetch_yahoo_daily(t.replace(".", "-"), "2009-01-01", timeout=15)
+                if sr is not None and len(sr) > 250:
+                    prices[t] = sr
+            px, rets = monthly_returns(prices)
+            panel = build_panel(comp_by_year, bb, px, rets)
+            report = run_experiment62_report(panel, px, rets)
+            self.heartbeat._put_file("experiment62_results.md", report.encode(),
+                                     "Experiment #62: machine learning vs simple rules")
+            logger.info("Experiment #62: report pushed")
+        except Exception as e:
+            self._push_failure("62", e)
+
     def _run_experiment63(self) -> None:
         """Experiment #63: professional forecasters (SPF recession/unemployment, Livingston
         stock forecasts, AAII) — data discovered at run time. → experiment63_results.md."""
@@ -2074,7 +2135,9 @@ class TradingBot:
                                   ("run_experiment57_on_start", self._run_experiment57),
                                   ("run_experiment58_on_start", self._run_experiment58),
                                   ("run_experiment60_on_start", self._run_experiment60),
-                                  ("run_experiment63_on_start", self._run_experiment63)) if _b.get(flag, False)]
+                                  ("run_experiment63_on_start", self._run_experiment63),
+                                  ("run_experiment61_on_start", self._run_experiment61),
+                                  ("run_experiment62_on_start", self._run_experiment62)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
