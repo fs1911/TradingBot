@@ -1,4 +1,4 @@
-# Experiment #63 — how good are professional forecasters? (2026-10-28 06:21 UTC)
+# Experiment #63 — how good are professional forecasters? (2026-10-28 06:47 UTC)
 
 ## A Did the professionals see recessions coming? (SPF anxious index)
 | recession starts | P(decline next quarter) said the quarter before | P(decline in 4 quarters) said a year before |
@@ -51,7 +51,8 @@ Surveys 1968Q4–2026Q3: average P(decline next quarter) before a recession quar
 
 ### Livingston Survey S&P forecasts (1952–1990)
 Found in `medians.xlsx` sheet `SPIF`: columns SPIF_BP, SPIF_ZM, SPIF_6M, SPIF_12M, SPIF_BY, SPIF_ZY, SPIF_1Y, SPIF_2Y.
-72 half-yearly surveys 1970-01–1970-01: forecast 12-month change avg +7.7 %, actual avg +12.8 %; direction right **99 %** (always guessing 'up' would have been right 100 %); correlation forecast → actual +nan.
+(Livingston asked for the S&P Industrials; the outcome uses the S&P 500 price index as a close proxy.)
+67 half-yearly surveys 1992-06–2025-06: forecast 12-month change avg +5.8 %, actual avg +10.1 %; direction right **73 %** (always guessing 'up' would have been right 76 %); correlation forecast → actual -0.11.
 
 ### Professionals' recession worry as a stock signal
 | professionals' recession worry (quintile) | S&P next 12 months | n |
