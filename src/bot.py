@@ -289,6 +289,21 @@ class TradingBot:
         except Exception:
             pass
 
+    def _run_experiment63(self) -> None:
+        """Experiment #63: professional forecasters (SPF recession/unemployment, Livingston
+        stock forecasts, AAII) — data discovered at run time. → experiment63_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_63 import discover, run_experiment63_report
+            books, diag = discover(log=lambda m: logger.info(m))
+            gspc = fetch_yahoo_daily("^GSPC", "1950-01-01", timeout=30)
+            report = run_experiment63_report(books, diag, gspc)
+            self.heartbeat._put_file("experiment63_results.md", report.encode(),
+                                     "Experiment #63: professional forecasters")
+            logger.info("Experiment #63: report pushed")
+        except Exception as e:
+            self._push_failure("63", e)
+
     def _run_experiment57(self) -> None:
         """Experiment #57: project-wide overfitting test (multiple testing, deflated Sharpe,
         PBO on recomputed strategy families). → experiment57_results.md."""
@@ -2057,7 +2072,8 @@ class TradingBot:
                                   ("run_experiment56_on_start", self._run_experiment56),
                                   ("run_experiment57_on_start", self._run_experiment57),
                                   ("run_experiment58_on_start", self._run_experiment58),
-                                  ("run_experiment60_on_start", self._run_experiment60)) if _b.get(flag, False)]
+                                  ("run_experiment60_on_start", self._run_experiment60),
+                                  ("run_experiment63_on_start", self._run_experiment63)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
