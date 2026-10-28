@@ -77,7 +77,7 @@ bot:
   run_experiment57_on_start: false  # Exp #57 done (2026-10-27): 35/62 raw p<0.05 (14 expected), Bonferroni 10 = risk premia (VRP, carry, momentum, trend) + pre-publication calendar effects; buybacks only FDR; DSR depends on σ(SR); PBO trend grid 43%, dev factors 60%, US 19%, noise 56%
   run_experiment58_on_start: false  # Exp #58 done (2026-10-27): luck alone: best of 68 coin gurus 62%; 123/10000 skill-less managers 'proven' t>2; simulated 1-stock 7.9% x10 but 62% lose; real survivors 4.2% x10, 33% lose, median x2.0 vs SPY x3.4
   run_experiment60_on_start: false  # Exp #60 done (2026-10-27): IEX minute data 2020-07→ (not 70 days); 23/164 gross t>3.7 (reversal) but break-even 0.02-0.2 bp/side; best 1st half (ETH 1m reversal t 10.2) → 2nd half t -1.05; 0/164 net positive in both halves
-  run_experiment63_on_start: true   # Exp #63: professional forecasters (SPF anxious index + unemployment, Livingston S&P, AAII) vs reality
+  run_experiment63_on_start: false  # Exp #63 done (2026-10-28): SPF flagged 1/8 recession starts ≥50 % (2008 23 %, 2020 18 %); unemployment RMSE 1.18 vs naive 1.57; STOCK10 corr −0.32, miss 4.2 vs constant 4.0 pt; Livingston direction 73 % vs always-up 76 %; AAII 403
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets
