@@ -1,4 +1,4 @@
-# Experiment #64 — buyback/dilution signal for Swiss & European stocks (2026-10-28 12:14 UTC)
+# Experiment #64 — buyback/dilution signal for Swiss & European stocks (2026-10-28 12:22 UTC)
 
 Symbols: 170; with usable share history: 165; with prices: 165. Same app rule as #50b (buyback ≤ −2 %, dilution ≥ +5 %), excess vs the equal-weight universe of the same country, pooled. Bonferroni α/300.
 Fiscal years with share changes: 2022–2026.
@@ -13,8 +13,8 @@ Fiscal years with share changes: 2022–2026.
 | group | months | excess vs country universe p.a. | t | years positive |
 |---|--:|--:|--:|--:|
 | buyback | 28 | +4.4 % | +1.20 | 3/3 |
-| dilution | 28 | +5.4 % | +0.37 | 2/3 |
+| dilution | 28 | +5.5 % | +0.37 | 2/3 |
 | neutral | 28 | -2.3 % | -1.32 | 1/3 |
-| buyback − dilution | 28 | -1.0 % | -0.07 | — |
+| buyback − dilution | 28 | -1.1 % | -0.07 | — |
 
 US reference (#50b, 2009–2025): buyback +2.1 %/yr (t 2.8), dilution −3.0 %/yr (t −2.5). Same sign here = consistent; with few years a non-significant result is expected even if the effect is real (#59: ~7–9 years needed at this tracking error).
