@@ -297,7 +297,8 @@ class TradingBot:
             from .backtest.experiments_63 import discover, run_experiment63_report
             books, diag = discover(log=lambda m: logger.info(m))
             gspc = fetch_yahoo_daily("^GSPC", "1950-01-01", timeout=30)
-            report = run_experiment63_report(books, diag, gspc)
+            tr = fetch_yahoo_daily("VFINX", "1980-01-01", timeout=30)
+            report = run_experiment63_report(books, diag, gspc, tr)
             self.heartbeat._put_file("experiment63_results.md", report.encode(),
                                      "Experiment #63: professional forecasters")
             logger.info("Experiment #63: report pushed")

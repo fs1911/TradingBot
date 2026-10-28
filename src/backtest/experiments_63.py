@@ -7,8 +7,8 @@ Experiment #63 — how good are professional forecasters? (public survey data)
     US recession (NBER dates)? Hit rate, false alarms, separation (AUC).
   B Unemployment: SPF median forecast 4 quarters ahead (UNEMP6) vs the naive forecast
     "stays where it is" (last known value) — error size, and did they see the big rises?
-  C Stocks: Livingston Survey S&P forecasts (6 / 12 months, 1952–1990, discontinued series)
-    vs what happened (Yahoo ^GSPC), if the series is in the published workbook; SPF
+  C Stocks: SPF STOCK10 (expected S&P return over the next 10 years, since 1992) vs the
+    realised 10-year total return; Livingston S&P forecasts (1952–1990) if readable; SPF
     anxious index as a stock signal (next-12-month S&P return by anxiety quintile).
   D Private investors: AAII bull–bear sentiment (if the legacy file is still reachable).
 Data are discovered at run time: the landing pages are scanned for workbook links and
@@ -281,12 +281,43 @@ def stock_anxiety(rec: pd.DataFrame, gspc_m: pd.Series) -> list:
     return L
 
 
+def stock10_analysis(books: dict, tr_m: pd.Series) -> list:
+    """SPF STOCK10 (median expected S&P 500 return p.a. over the next 10 years, asked in Q1
+    since 1992) vs the realised 10-year total return (VFINX adjusted, from the survey month)."""
+    hits = [h for h in find_columns(books, r"^STOCK10$") if "median" in h[0].lower()] or find_columns(books, r"^STOCK10$")
+    if not hits:
+        return ["STOCK10 not found."]
+    q = quarterly(hits[0][2])
+    if q.empty or tr_m is None or tr_m.empty:
+        return ["STOCK10 found but no total-return series."]
+    exp = pd.to_numeric(q["STOCK10"], errors="coerce").dropna() / 100
+    rows = []
+    for per, e in exp.items():
+        m0 = pd.Period(f"{per.year}-{(per.quarter - 1) * 3 + 2:02d}", "M")   # survey ~ mid-quarter
+        m1 = m0 + 120
+        if m0 in tr_m.index and m1 in tr_m.index:
+            rows.append((per, e, (tr_m[m1] / tr_m[m0]) ** 0.1 - 1))
+    if len(rows) < 8:
+        return [f"STOCK10: only {len(rows)} surveys with a full 10-year outcome."]
+    d = pd.DataFrame(rows, columns=["q", "exp", "act"]).set_index("q")
+    L = ["| survey | expected p.a. (next 10 y) | actual p.a. | error |", "|---|--:|--:|--:|"]
+    for qq, r in d.iterrows():
+        L.append(f"| {qq} | {100*r['exp']:.1f} % | {100*r['act']:+.1f} % | {100*(r['act']-r['exp']):+.1f} pt |")
+    mae = (d["act"] - d["exp"]).abs().mean()
+    naive = (d["act"] - d["exp"].mean()).abs().mean()
+    L.append("")
+    L.append(f"{len(d)} surveys: expected avg {100*d['exp'].mean():.1f} %/yr, actual avg {100*d['act'].mean():.1f} %/yr; "
+             f"average miss {100*mae:.1f} pt/yr (a constant guess would miss {100*naive:.1f} pt); correlation "
+             f"expected → actual **{d['exp'].corr(d['act']):+.2f}** (overlapping windows, few independent decades).")
+    return L
+
+
 def livingston_stocks(books: dict, gspc_m: pd.Series) -> list:
-    hits = find_columns(books, r"SPIF|STOCK|S&P|SP500")
+    hits = find_columns(books, r"SPIF|S&P|SP500")
     if not hits:
         return ["No stock-price series found in the Livingston workbooks (the Fed marks them discontinued)."]
     u, sh, df = hits[0]
-    cols = [c for c in df.columns if re.search(r"SPIF|STOCK|S&P|SP500", str(c), re.I)]
+    cols = [c for c in df.columns if re.search(r"SPIF|S&P|SP500", str(c), re.I)]
     L = [f"Found in `{u.rsplit('/', 1)[-1]}` sheet `{sh}`: columns {', '.join(map(str, cols[:8]))}."]
     date_col = next((c for c in df.columns if re.search(r"date|survey", str(c), re.I)), df.columns[0])
     dates = pd.to_datetime(df[date_col], errors="coerce")
@@ -340,7 +371,7 @@ def aaii_analysis(books: dict, gspc_m: pd.Series) -> list:
             + f" (Q1 = most bearish); correlation {x['s'].corr(x['r']):+.2f}."]
 
 
-def run_experiment63_report(books: dict, diag: list, gspc: pd.Series | None) -> str:
+def run_experiment63_report(books: dict, diag: list, gspc: pd.Series | None, tr: pd.Series | None = None) -> str:
     from datetime import datetime, timezone
     L = [f"# Experiment #63 — how good are professional forecasters? ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
     gspc_m = None
@@ -360,8 +391,21 @@ def run_experiment63_report(books: dict, diag: list, gspc: pd.Series | None) -> 
     L += unemployment_analysis(un) if not un.empty else ["UNEMP series not found."]
     L.append("")
     L.append("## C Stocks")
-    L.append("### Livingston Survey S&P forecasts")
-    L += livingston_stocks(books, gspc_m)
+    L.append("### Professionals' 10-year stock return expectations (SPF STOCK10) vs reality")
+    tr_m = None
+    if tr is not None and len(tr):
+        t = pd.Series(tr).dropna()
+        ti = pd.to_datetime(t.index)
+        t.index = (ti.tz_localize(None) if ti.tz is not None else ti).to_period("M")
+        tr_m = t.groupby(level=0).last()
+    L += stock10_analysis(books, tr_m)
+    L.append("")
+    L.append("### Livingston Survey S&P forecasts (1952–1990)")
+    if any("spi_" in u.lower() for u in books) and not find_columns(books, r"SPIF"):
+        L.append("Published only as legacy .xls (SPI_*.xls) — not readable on the server without an extra package; "
+                 "not evaluated.")
+    else:
+        L += livingston_stocks(books, gspc_m)
     L.append("")
     L.append("### Professionals' recession worry as a stock signal")
     L += stock_anxiety(rec, gspc_m) if not rec.empty and "RECESS2" in rec else ["RECESS2 series not found."]

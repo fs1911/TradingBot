@@ -89,3 +89,15 @@ def test_report_end_to_end():
     rep = run_experiment63_report(books, ["page → 2 links"], g)
     assert "Did the professionals see recessions" in rep and "RMSE" in rep and "Data discovery" in rep
     assert "AAII data not reachable" in rep and "No stock-price series" in rep
+
+
+def test_stock10_vs_reality():
+    from src.backtest.experiments_63 import stock10_analysis
+    q = pd.period_range("1992Q1", "2026Q1", freq="Q")
+    q1 = [p for p in q if p.quarter == 1]
+    df = pd.DataFrame({"YEAR": [p.year for p in q1], "QUARTER": 1, "STOCK10": 7.0})
+    books = {"https://x/medianLevel.xlsx": {"STOCK10": df}}
+    m = pd.period_range("1990-01", "2026-09", freq="M")
+    tr = pd.Series(100 * 1.08 ** (np.arange(len(m)) / 12), index=m)
+    L = stock10_analysis(books, tr)
+    assert any("expected avg 7.0 %" in l and "actual avg 8.0 %" in l for l in L)
