@@ -1,4 +1,4 @@
-# Experiments #75 / #79 — post-earnings drift, dividends (2026-10-29 05:10 UTC)
+# Experiments #75 / #79 — post-earnings drift, dividends (2026-10-29 06:31 UTC)
 
 ## #75 Post-earnings drift (SUE from 10-Q EPS, from the filing date, next 60 trading days vs SPY)
 64,095 quarterly events, 2,078 stocks, 2010Q3–2026Q3.
