@@ -1,17 +1,17 @@
-# Experiments #75 / #79 — post-earnings drift, dividends (2026-10-30 19:37 UTC)
+# Experiments #75 / #79 — post-earnings drift, dividends (2026-10-30 21:07 UTC)
 
 ## #75 Post-earnings drift (SUE from 10-Q EPS, from the filing date, next 60 trading days vs SPY)
-64,781 quarterly events, 2,092 stocks, 2010Q3–2026Q3.
+64,782 quarterly events, 2,092 stocks, 2010Q3–2026Q3.
 | SUE decile | events | 60-day return vs SPY |
 |---|--:|--:|
 | 1 (worst surprise) | 6,503 | +67.21 % |
 | 2 | 6,469 | +67.82 % |
-| 3 | 6,463 | +34.07 % |
-| 4 | 6,470 | +7.52 % |
-| 5 | 6,479 | +73.95 % |
+| 3 | 6,464 | +34.06 % |
+| 4 | 6,469 | +7.52 % |
+| 5 | 6,480 | +73.94 % |
 | 6 | 6,454 | +34.61 % |
-| 7 | 6,465 | +34.12 % |
-| 8 | 6,468 | +0.75 % |
+| 7 | 6,464 | +34.13 % |
+| 8 | 6,469 | +0.74 % |
 | 9 | 6,465 | +1.32 % |
 | 10 (best surprise) | 6,495 | +33.98 % |
 - top − bottom decile, all: -19.02 % per 60 days (63 quarters, t -0.60); ≈ -57.0 %/yr before costs if traded every quarter
