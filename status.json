@@ -1,28 +1,28 @@
 {
-  "updated_utc": "2026-10-30 12:19:58",
+  "updated_utc": "2026-10-30 13:20:41",
   "alive": true,
   "state": "active",
-  "uptime_hours": 0.0,
+  "uptime_hours": 1.0,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -7274.36,
-  "unrealized_pnl_usd": -738.41,
-  "total_pnl_usd": -8012.77,
-  "equity_usd": 60472.22,
+  "unrealized_pnl_usd": -642.03,
+  "total_pnl_usd": -7916.39,
+  "equity_usd": 60568.6,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": -71.13
+      "unrealized_usd": -74.14
     },
     {
       "symbol": "DBA",
       "side": "buy",
       "qty": 365.7659,
-      "unrealized_usd": -470.04
+      "unrealized_usd": -430.64
     },
     {
       "symbol": "DBC",
@@ -34,49 +34,49 @@
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": -476.92
+      "unrealized_usd": -472.71
     },
     {
       "symbol": "EFA",
       "side": "buy",
       "qty": 33.5997,
-      "unrealized_usd": -22.33
+      "unrealized_usd": -34.09
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -116.79
+      "unrealized_usd": -118.75
     },
     {
       "symbol": "FXY",
       "side": "buy",
       "qty": 73.0418,
-      "unrealized_usd": -73.19
+      "unrealized_usd": -1.61
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -73.02
+      "unrealized_usd": -79.96
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": 21.22
+      "unrealized_usd": 24.23
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": -95.49
+      "unrealized_usd": -88.03
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 331.89
+      "unrealized_usd": 326.29
     },
     {
       "symbol": "UUP",
