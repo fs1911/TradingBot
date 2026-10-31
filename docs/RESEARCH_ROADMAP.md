@@ -34,7 +34,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 | 77 | Leerverkaufs-Quote (Short Interest) als Warnsignal | FINRA Short-Interest-Dateien (öffentlich) | ✔ erledigt |
 | 78 | Börsengänge (IPOs) schneiden langfristig schlechter ab | SEC S-1/424B-Daten + Yahoo | ✔ erledigt |
 | 79 | Dividenden: Dividendenstarter/-erhöher, „Dividenden-Aristokraten“ vs Index | SEC/Yahoo-Dividenden | ✔ erledigt |
-| 80 | Index-Aufnahme-Effekt (S&P 500 / SMI) | öffentliche Änderungslisten | läuft |
+| 80 | Index-Aufnahme-Effekt (S&P 500 / SMI) | öffentliche Änderungslisten | ⛔ nicht auswertbar (Datum unlesbar) |
 
 | 85 | „Fairer Wert“ (Foliologic-Ansatz): kaufen, was gegen den Branchen-Median günstig bewertet ist (KGV, Cashflow, EV/EBITDA), verkaufen nach zwei teuren Checkpoints; dazu Health-Score-Nachbau (6 Dimensionen) | SEC-Abschlüsse + Yahoo, Firmen ≥ 1 Mrd, 2010–2025 | ✔ erledigt |
 
