@@ -1,22 +1,22 @@
-# Experiments #75 / #79 — post-earnings drift, dividends (2026-10-31 01:38 UTC)
+# Experiments #75 / #79 — post-earnings drift, dividends (2026-10-31 03:04 UTC)
 
 ## #75 Post-earnings drift (SUE from 10-Q EPS, from the filing date, next 60 trading days vs SPY)
-64,616 quarterly events, 2,091 stocks, 2010Q3–2026Q3.
+64,779 quarterly events, 2,091 stocks, 2010Q3–2026Q3.
 | SUE decile | events | 60-day return vs SPY |
 |---|--:|--:|
-| 1 (worst surprise) | 6,487 | +67.41 % |
-| 2 | 6,453 | +67.99 % |
-| 3 | 6,447 | +34.20 % |
-| 4 | 6,452 | +7.54 % |
-| 5 | 6,462 | +74.17 % |
-| 6 | 6,439 | +34.70 % |
-| 7 | 6,446 | +34.24 % |
-| 8 | 6,453 | +0.75 % |
-| 9 | 6,448 | +1.33 % |
-| 10 (best surprise) | 6,479 | +34.06 % |
-- top − bottom decile, all: -19.06 % per 60 days (63 quarters, t -0.60); ≈ -57.1 %/yr before costs if traded every quarter
+| 1 (worst surprise) | 6,503 | +67.21 % |
+| 2 | 6,469 | +67.82 % |
+| 3 | 6,464 | +34.06 % |
+| 4 | 6,468 | +7.52 % |
+| 5 | 6,479 | +73.95 % |
+| 6 | 6,455 | +34.61 % |
+| 7 | 6,462 | +34.14 % |
+| 8 | 6,470 | +0.74 % |
+| 9 | 6,464 | +1.32 % |
+| 10 (best surprise) | 6,495 | +33.98 % |
+- top − bottom decile, all: -19.02 % per 60 days (63 quarters, t -0.60); ≈ -57.0 %/yr before costs if traded every quarter
 - top − bottom decile, ≤ 2015: +1.23 % per 60 days (20 quarters, t +1.89); ≈ +5.0 %/yr before costs if traded every quarter
-- top − bottom decile, 2016 →: -28.50 % per 60 days (43 quarters, t -0.61); ≈ -73.9 %/yr before costs if traded every quarter
+- top − bottom decile, 2016 →: -28.44 % per 60 days (43 quarters, t -0.61); ≈ -73.8 %/yr before costs if traded every quarter
 
 ## #79 Dividends (groups at the end of June, next 12 months vs equal-weight universe)
 23,592 stock-years, 2011–2025 (stocks with ≥ 6 years of history).
