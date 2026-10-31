@@ -54,3 +54,12 @@ def test_changes_found_by_header():
             '<tr><td>June 22, 2020</td><td>NEW</td><td>New Co</td><td>OLD</td><td>Old Co</td><td>r</td></tr></table>')
     ch = parse_sp500_changes(page)
     assert list(ch["added"]) == ["NEW"]
+
+
+def test_wikitext_changes():
+    from src.backtest.experiments_77_78_80 import parse_sp500_wikitext
+    wt = ("== Selected changes ==\n{| class=\"wikitable\"\n! Date\n|-\n|{{dts|2025|07|09}}\n|[[Block, Inc.|XYZ]]\n|Block\n"
+          "|[[Hess Corporation|HES]]\n|Hess\n|Acquired.<ref>x</ref>\n|-\n|July 23, 2025\n"
+          "|{{NasdaqSymbol|DDOG}} || Datadog || {{NyseSymbol|JNPR}} || Juniper || r\n|}\n")
+    ch = parse_sp500_wikitext(wt)
+    assert list(ch["added"]) == ["XYZ", "DDOG"] and list(ch["removed"]) == ["HES", "JNPR"]

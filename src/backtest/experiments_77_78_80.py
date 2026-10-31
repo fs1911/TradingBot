@@ -130,6 +130,55 @@ def parse_sp500_changes(page: str) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=["date", "added", "removed"])
 
 
+def _wt_clean(c: str) -> str:
+    c = re.sub(r"<ref[^>]*?/>|<ref.*?</ref>", "", c, flags=re.S)
+    c = re.sub(r"\{\{(?:[^{}|]*\|)*([^{}|]*)\}\}", r"\1", c)          # {{Template|...|X}} → X
+    c = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", c)         # [[a|b]] → b
+    c = re.sub(r"^[^|]*?\|(?!.*\|)", "", c) if c.count("|") == 1 and "=" in c.split("|")[0] else c  # attr|value
+    return _html.unescape(re.sub(r"<[^>]+>", "", c)).strip()
+
+
+def _wt_date(c: str):
+    m = re.search(r"\{\{\s*dts\s*\|\s*(\d{4})\s*\|\s*(\d{1,2})\s*\|\s*(\d{1,2})", c, flags=re.I)
+    if m:
+        return pd.Timestamp(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+    t = _wt_clean(c)
+    return pd.to_datetime(t, errors="coerce") if re.search(r"\d{4}", t) else pd.NaT
+
+
+def parse_sp500_wikitext(wt: str) -> pd.DataFrame:
+    """Raw wikitext of 'List of S&P 500 companies' → [date, added, removed] (changes table)."""
+    i = wt.find("Selected changes")
+    if i < 0:
+        i = wt.lower().find("changes")
+    if i < 0:
+        return pd.DataFrame(columns=["date", "added", "removed"])
+    j = wt.find("{|", i)
+    k = wt.find("\n|}", j)
+    if j < 0:
+        return pd.DataFrame(columns=["date", "added", "removed"])
+    body = wt[j:k if k > 0 else None]
+    rows, last = [], None
+    for row in body.split("\n|-")[1:]:
+        lines = [l for l in row.split("\n") if l.startswith("|") and not l.startswith("|}")]
+        cells = []
+        for l in lines:
+            cells += [x for x in l[1:].split("||")]
+        if not cells:
+            continue
+        d = _wt_date(cells[0])
+        if pd.notna(d):
+            last, rest = d, cells[1:]
+        elif last is not None and "rowspan" not in cells[0]:
+            rest = cells
+        else:
+            continue
+        rest = [_wt_clean(x) for x in rest]
+        if len(rest) >= 4:
+            rows.append((last, rest[0] or None, rest[2] or None))
+    return pd.DataFrame(rows, columns=["date", "added", "removed"])
+
+
 def index_effect(changes: pd.DataFrame, prices: dict, spy: pd.Series) -> dict:
     out = {}
     for col in ("added", "removed"):
