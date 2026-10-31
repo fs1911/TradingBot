@@ -463,12 +463,19 @@ class TradingBot:
             sp = parse_sp500_changes(page)
             status = f"HTML {len(page):,} chars, {len(sp)} rows"
             if sp.empty:
-                wt = _get("https://en.wikipedia.org/w/index.php?title=List_of_S%26P_500_companies&action=raw",
-                          timeout=40, headers=hdr)
-                sp = parse_sp500_wikitext(wt)
-                i = wt.find("Selected changes")
+                wt = ""
+                for title in ("List_of_S%26P_500_companies", "Historical_components_of_the_S%26P_500"):
+                    try:
+                        wt = _get(f"https://en.wikipedia.org/w/index.php?title={title}&action=raw", timeout=40, headers=hdr)
+                    except Exception as e:
+                        status += f"; {title}: {repr(e)[:60]}"
+                        continue
+                    sp = parse_sp500_wikitext(wt)
+                    status += f"; {title} wikitext {len(wt):,} chars, {len(sp)} rows"
+                    if len(sp):
+                        break
+                i = wt.find("Removed")
                 snippet = wt[i:i + 900] if i >= 0 else wt[:300]
-                status += f"; wikitext {len(wt):,} chars, {len(sp)} rows"
                 if sp.empty:
                     status += "\n\n<pre>\n" + snippet.replace("<", "&lt;") + "\n</pre>"
             want = (set(sp["added"].dropna()) | set(sp["removed"].dropna())) if len(sp) else set()

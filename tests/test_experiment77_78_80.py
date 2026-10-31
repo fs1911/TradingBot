@@ -58,7 +58,7 @@ def test_changes_found_by_header():
 
 def test_wikitext_changes():
     from src.backtest.experiments_77_78_80 import parse_sp500_wikitext
-    wt = ("== Selected changes ==\n{| class=\"wikitable\"\n! Date\n|-\n|{{dts|2025|07|09}}\n|[[Block, Inc.|XYZ]]\n|Block\n"
+    wt = ("== Selected changes ==\n{| class=\"wikitable\"\n! Date !! Added !! Removed\n|-\n|{{dts|2025|07|09}}\n|[[Block, Inc.|XYZ]]\n|Block\n"
           "|[[Hess Corporation|HES]]\n|Hess\n|Acquired.<ref>x</ref>\n|-\n|July 23, 2025\n"
           "|{{NasdaqSymbol|DDOG}} || Datadog || {{NyseSymbol|JNPR}} || Juniper || r\n|}\n")
     ch = parse_sp500_wikitext(wt)

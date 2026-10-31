@@ -148,16 +148,16 @@ def _wt_date(c: str):
 
 def parse_sp500_wikitext(wt: str) -> pd.DataFrame:
     """Raw wikitext of 'List of S&P 500 companies' → [date, added, removed] (changes table)."""
-    i = wt.find("Selected changes")
-    if i < 0:
-        i = wt.lower().find("changes")
-    if i < 0:
+    body = None
+    for m in re.finditer(r"\{\|", wt):
+        k = wt.find("\n|}", m.start())
+        t = wt[m.start():k if k > 0 else None]
+        head = t[:1500]
+        if "Added" in head and "Removed" in head:
+            body = t
+            break
+    if body is None:
         return pd.DataFrame(columns=["date", "added", "removed"])
-    j = wt.find("{|", i)
-    k = wt.find("\n|}", j)
-    if j < 0:
-        return pd.DataFrame(columns=["date", "added", "removed"])
-    body = wt[j:k if k > 0 else None]
     rows, last = [], None
     for row in body.split("\n|-")[1:]:
         lines = [l for l in row.split("\n") if l.startswith("|") and not l.startswith("|}")]
