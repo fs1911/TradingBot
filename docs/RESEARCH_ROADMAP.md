@@ -31,7 +31,7 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 |---|---|---|---|
 | 75 | Kursreaktion nach Gewinnüberraschung (Post-Earnings-Drift) | SEC 10-Q EPS (saisonaler Random Walk) + Yahoo | ✔ erledigt |
 | 76 | Insider-VERKÄUFE als Warnsignal (Gegenstück zu #48) | SEC Form-4-Datensätze | ✔ erledigt |
-| 77 | Leerverkaufs-Quote (Short Interest) als Warnsignal | FINRA Short-Interest-Dateien (öffentlich) | läuft |
+| 77 | Leerverkaufs-Quote (Short Interest) als Warnsignal | FINRA Short-Interest-Dateien (öffentlich) | ✔ erledigt |
 | 78 | Börsengänge (IPOs) schneiden langfristig schlechter ab | SEC S-1/424B-Daten + Yahoo | läuft |
 | 79 | Dividenden: Dividendenstarter/-erhöher, „Dividenden-Aristokraten“ vs Index | SEC/Yahoo-Dividenden | ✔ erledigt |
 | 80 | Index-Aufnahme-Effekt (S&P 500 / SMI) | öffentliche Änderungslisten | läuft |
