@@ -5,7 +5,7 @@ Hypothesen). Jede Hypothese wird vorab festgelegt, mit Kosten, Out-of-sample und
 Mehrfachtest-Korrektur geprüft und in `RESEARCH.md` eingetragen. Gebaut wird erst danach
 (`docs/BUILD_BACKLOG.md`).
 
-Abgeschlossen: #1–#63 (siehe RESEARCH.md).
+Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.md).
 
 ## Block A — Prüfung der eigenen Werkzeuge
 | # | Hypothese / Frage | Daten | Status |
@@ -53,4 +53,4 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 ## Am Schluss
 | # | Was |
 |---|---|
-| 84 | Gesamtbilanz: alle Experimente in einem Register, Mehrfachtest-Korrektur über das ganze Projekt neu (Update von #57) |
+| 84 | Gesamtbilanz: alle Experimente in einem Register, Mehrfachtest-Korrektur über das ganze Projekt neu (Update von #57) — ✔ erledigt (experiment84_results.md) |
