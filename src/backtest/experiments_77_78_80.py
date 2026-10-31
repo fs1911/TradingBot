@@ -139,11 +139,21 @@ def _wt_clean(c: str) -> str:
 
 
 def _wt_date(c: str):
-    m = re.search(r"\{\{\s*dts\s*\|\s*(\d{4})\s*\|\s*(\d{1,2})\s*\|\s*(\d{1,2})", c, flags=re.I)
+    """Date from a wikitext cell: {{dts|2025|07|09}}, {{dts|2025|July|9}}, {{dts|July 9, 2025}},
+    'rowspan="2" | July 9, 2025', plain text. Requires an explicit 4-digit year."""
+    m = re.search(r"\{\{\s*dts\s*\|([^{}]*)\}\}", c, flags=re.I)
     if m:
-        return pd.Timestamp(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-    t = _wt_clean(c)
-    return pd.to_datetime(t, errors="coerce") if re.search(r"\d{4}", t) else pd.NaT
+        args = [a.strip() for a in m.group(1).split("|") if a.strip() and "=" not in a]
+        t = " ".join(args)
+    else:
+        t = c.split("|")[-1] if "=" in c.split("|")[0] else c
+        t = _wt_clean(t)
+    if not re.search(r"(18|19|20)\d{2}", t):
+        return pd.NaT
+    d = pd.to_datetime(t, errors="coerce")
+    if pd.isna(d) and m and len(args) >= 3:
+        d = pd.to_datetime(f"{args[0]} {args[1]} {args[2]}", errors="coerce")
+    return d
 
 
 def parse_sp500_wikitext(wt: str) -> pd.DataFrame:
@@ -173,7 +183,7 @@ def parse_sp500_wikitext(wt: str) -> pd.DataFrame:
             rest = cells
         else:
             continue
-        rest = [_wt_clean(x) for x in rest]
+        rest = [_wt_clean(x.split("|", 1)[1] if ("|" in x and "=" in x.split("|")[0] and "{{" not in x.split("|")[0] and "[[" not in x.split("|")[0]) else x) for x in rest]
         if len(rest) >= 4:
             rows.append((last, rest[0] or None, rest[2] or None))
     return pd.DataFrame(rows, columns=["date", "added", "removed"])

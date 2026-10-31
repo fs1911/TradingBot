@@ -63,3 +63,13 @@ def test_wikitext_changes():
           "|{{NasdaqSymbol|DDOG}} || Datadog || {{NyseSymbol|JNPR}} || Juniper || r\n|}\n")
     ch = parse_sp500_wikitext(wt)
     assert list(ch["added"]) == ["XYZ", "DDOG"] and list(ch["removed"]) == ["HES", "JNPR"]
+
+
+def test_wikitext_dates_variants():
+    from src.backtest.experiments_77_78_80 import _wt_date
+    import pandas as pd
+    assert _wt_date("{{dts|2025|July|9}}") == pd.Timestamp("2025-07-09")
+    assert _wt_date("{{dts|July 9, 2025}}") == pd.Timestamp("2025-07-09")
+    assert _wt_date('rowspan="2" |{{dts|2025|07|09}}') == pd.Timestamp("2025-07-09")
+    assert _wt_date('rowspan="2" | July 9, 2025') == pd.Timestamp("2025-07-09")
+    assert pd.isna(_wt_date("9"))
