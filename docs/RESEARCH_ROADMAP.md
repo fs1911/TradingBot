@@ -38,6 +38,11 @@ Abgeschlossen: #1–#63 (siehe RESEARCH.md).
 
 | 85 | „Fairer Wert“ (Foliologic-Ansatz): kaufen, was gegen den Branchen-Median günstig bewertet ist (KGV, Cashflow, EV/EBITDA), verkaufen nach zwei teuren Checkpoints; dazu Health-Score-Nachbau (6 Dimensionen) | SEC-Abschlüsse + Yahoo, Firmen ≥ 1 Mrd, 2010–2025 | ✔ erledigt |
 
+## Block E — Ereignis-Grundraten (Wunsch 31.10.)
+| # | Hypothese / Frage | Daten | Status |
+|---|---|---|---|
+| 86 | Grundraten nach Ereignissen: Was passierte danach mit S&P 500, MSCI World, SMI, Gold, Bitcoin nach 1 / 3 / 6 / 12 Monaten (Median, Trefferquote, Streuung, zwischenzeitlicher Tiefpunkt) — verglichen mit einem beliebigen Tag (Block-Bootstrap, Holm-Korrektur)? Vorab festgelegte Ereignisse: VIX erstmals > 30 / > 40; Rückgang −10 / −20 / −30 % vom Hoch; erste Zinssenkung bzw. -erhöhung der Fed nach ≥ 6 Monaten Pause; Zinskurve invertiert (10 J − 3 M < 0); US-Wahlen; feste Liste geopolitischer Schocks (Kriegsbeginne, Anschläge, Pandemie — vorab notiert, nicht nachträglich ergänzt); Bitcoin-Halvings (nur 4 Fälle → nur beschreibend). Ziel: realistische Erwartungen, keine Vorhersage | Yahoo (^GSPC, ^VIX, ^TNX, ^IRX, ^SSMI, GC=F, BTC-USD), DBnomics BIS Leitzins USA | offen |
+
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|
