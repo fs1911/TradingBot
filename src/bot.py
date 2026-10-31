@@ -388,10 +388,15 @@ class TradingBot:
             ua, sec_get, tmap = ctx
             subs = fetch_submissions(sorted(tmap), ua, log=lambda m: logger.info(m))
             subs = subs[["ipo_prospectus"]] if "ipo_prospectus" in subs else _pd.DataFrame()
+            sp_status = ""
             try:
-                sp = parse_sp500_changes(_get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", timeout=40))
-            except Exception:
-                sp = _pd.DataFrame()
+                page = _get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", timeout=40,
+                            headers={"User-Agent": "TradingBot-Research/1.0 (github.com/fs1911/TradingBot)"})
+                sp = parse_sp500_changes(page)
+                has = 'id="changes"' in page
+                sp_status = f"page {len(page):,} chars, changes table found: {has}"
+            except Exception as e:
+                sp, sp_status = _pd.DataFrame(), repr(e)[:120]
             want = set()
             if not subs.empty:
                 ipo = subs["ipo_prospectus"].dropna()
@@ -404,17 +409,44 @@ class TradingBot:
                 if len(px) > 30:
                     prices[t] = px.astype("float32")
             spy, _ = fetch_px_divs("SPY", "2004-01-01")
-            try:
-                body = _get("https://api.finra.org/data/group/otcMarket/name/consolidatedShortInterest?limit=5",
-                            timeout=30, headers={"Accept": "application/json"})
-                finra = f"FINRA API reachable without key; sample: {body[:300]!r}."
-            except Exception as e:
-                finra = f"FINRA short-interest API not usable without credentials from this server ({repr(e)[:120]}) → #77 not testable with free access."
-            rep = run_experiments77_78_80_report(subs, tmap, prices, spy, sp, finra)
+            rep = run_experiments77_78_80_report(subs, tmap, prices, spy, sp, "", sp_status)
             self.heartbeat._put_file("experiments77_78_80_results.md", rep.encode(), "Experiments #77/#78/#80")
             logger.info("Experiments #77/#78/#80: report pushed")
         except Exception as e:
             self._push_failure("s77_78_80", e)
+        gc.collect()
+
+    def _run_exp77(self) -> None:
+        """#77 short interest (FINRA, days to cover) for large caps. → experiment77_results.md."""
+        import gc
+        try:
+            import pandas as _pd
+            from datetime import datetime as _dt
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_77 import fetch_short_interest, run_experiment77_report
+            ctx = self._sec_ctx()
+            if ctx is None:
+                return
+            ua, sec_get, tmap = ctx
+            uni = sorted({tmap[c] for c in self._large_cap_ciks(sec_get, tmap)})[:2000]
+            prices = {}
+            for t in uni:
+                px, _ = fetch_px_divs(t.replace(".", "-"), "2009-06-01", timeout=15)
+                if len(px) > 250:
+                    prices[t] = px.astype("float32")
+            spy, _ = fetch_px_divs("SPY", "2009-01-01")
+            def post(url, body):
+                return _get(url, timeout=60, data=body,
+                            headers={"Content-Type": "application/json", "Accept": "application/json"})
+            months = _pd.period_range("2010-01", _pd.Period(_dt.utcnow(), "M") - 1, freq="M")
+            si, errors = fetch_short_interest(post, months, set(prices), log=lambda m: logger.info(m))
+            si = si[si["symbol"].isin(prices.keys())] if len(si) else si
+            rep = run_experiment77_report(si, errors, prices, spy)
+            self.heartbeat._put_file("experiment77_results.md", rep.encode(), "Experiment #77: short interest")
+            logger.info("Experiment #77: report pushed")
+        except Exception as e:
+            self._push_failure("77", e)
         gc.collect()
 
     def _run_exp76(self) -> None:
@@ -2474,6 +2506,7 @@ class TradingBot:
                                   ("run_experiment86_on_start", self._run_experiment86),
                                   ("run_experiment75_on_start", self._run_exp75_79),
                                   ("run_experiment76_on_start", self._run_exp76),
+                                  ("run_experiment77_on_start", self._run_exp77),
                                   ("run_experiment78_on_start", self._run_exp77_78_80)) if _b.get(flag, False)]
         if _seq:
             import threading

@@ -96,17 +96,28 @@ def ew_index(prices: dict, start: str = "2004-01-01") -> pd.Series:
 # ── #80 ──────────────────────────────────────────────────────────────────────
 
 def parse_sp500_changes(page: str) -> pd.DataFrame:
-    """Wikipedia 'List of S&P 500 companies' → [date, added, removed]."""
+    """Wikipedia 'List of S&P 500 companies' → [date, added, removed]. Handles <tr> with
+    attributes and dates spanning several rows (rowspan → carried forward)."""
     m = re.search(r'id="changes".*?</table>', page, flags=re.S)
     if not m:
         return pd.DataFrame(columns=["date", "added", "removed"])
-    rows = []
-    for tr in re.findall(r"<tr>(.*?)</tr>", m.group(0), flags=re.S):
-        cells = [_html.unescape(re.sub(r"<[^>]+>", "", c)).strip() for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, flags=re.S)]
-        if len(cells) >= 5:
-            d = pd.to_datetime(cells[0], errors="coerce")
-            if pd.notna(d):
-                rows.append((d, cells[1] or None, cells[3] or None))
+    rows, last = [], None
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", m.group(0), flags=re.S):
+        if "<td" not in tr:
+            continue
+        cells = [_html.unescape(re.sub(r"<[^>]+>", "", c)).strip()
+                 for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, flags=re.S)]
+        if not cells:
+            continue
+        d = pd.to_datetime(cells[0], errors="coerce") if re.search(r"\d{4}", cells[0]) else pd.NaT
+        if pd.notna(d):
+            last, rest = d, cells[1:]
+        elif last is not None:
+            rest = cells
+        else:
+            continue
+        if len(rest) >= 4:
+            rows.append((last, rest[0] or None, rest[2] or None))
     return pd.DataFrame(rows, columns=["date", "added", "removed"])
 
 
@@ -137,7 +148,7 @@ def index_effect(changes: pd.DataFrame, prices: dict, spy: pd.Series) -> dict:
 # ── report ───────────────────────────────────────────────────────────────────
 
 def run_experiments77_78_80_report(subs: pd.DataFrame, tmap: dict, prices: dict, spy: pd.Series,
-                                   sp_changes: pd.DataFrame, finra_status: str) -> str:
+                                   sp_changes: pd.DataFrame, finra_status: str, sp_status: str = "") -> str:
     from datetime import datetime, timezone
     L = [f"# Experiments #77 / #78 / #80 — short interest, IPOs, index changes ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
     L.append("## #78 IPOs (2005 →)")
@@ -153,6 +164,7 @@ def run_experiments77_78_80_report(subs: pd.DataFrame, tmap: dict, prices: dict,
                          horizon_excess(px, ew, d, 252), horizon_excess(px, ew, d, 756),
                          px.iloc[min(len(px) - 1, 756)] / px.iloc[0] - 1 if len(px) > 756 else np.nan))
         r = pd.DataFrame(rows, columns=["year", "y1_spy", "y3_spy", "y1_ew", "y3_ew", "abs3"])
+        r["spac_like"] = [9.5 <= float(pd.Series(prices[t]).dropna().iloc[0]) <= 10.5 for t in ev["ticker"]]
         L.append(f"{len(r):,} IPOs identified (S-1/F-1 + 424B4 + Yahoo history starting ≤ 30 days later), "
                  f"{r['year'].min()}–{r['year'].max()}.")
         L.append("| | 1 year vs SPY | 3 years vs SPY | 1 year vs EW market | 3 years vs EW market | share losing money after 3 y |")
@@ -165,11 +177,26 @@ def run_experiments77_78_80_report(subs: pd.DataFrame, tmap: dict, prices: dict,
         L.append("")
         L.append("3 years vs SPY by IPO period: " + "; ".join(f"{int(k)}–{int(k)+4}: mean {100*v['mean']:+.0f} %, median "
                                                           f"{100*v['median']:+.0f} % (n {int(v['count'])})" for k, v in by.iterrows()) + ".")
+        L.append("")
+        L.append("SPACs (blank-check shells) also file S-1 + 424B4 and list at ≈ $10. Split by first close:")
+        L.append("| group | n | 1 y vs SPY mean / median | 3 y vs SPY mean / median | losing money after 3 y |")
+        L.append("|---|--:|--:|--:|--:|")
+        for name, g in (("first close $9.50–10.50 (SPAC-like)", r[r["spac_like"]]), ("all other IPOs", r[~r["spac_like"]])):
+            if len(g):
+                L.append(f"| {name} | {len(g):,} | {100*g['y1_spy'].mean():+.1f} % / {100*g['y1_spy'].median():+.1f} % | "
+                         f"{100*g['y3_spy'].mean():+.1f} % / {100*g['y3_spy'].median():+.1f} % | {100*(g['abs3'].dropna() < 0).mean():.0f} % |")
+        g = r[~r["spac_like"]]
+        if len(g):
+            by2 = g.groupby(g["year"] // 5 * 5)["y3_spy"].agg(["mean", "median", "count"])
+            L.append("Other IPOs, 3 years vs SPY by period: " + "; ".join(
+                f"{int(k)}–{int(k)+4}: mean {100*v['mean']:+.0f} %, median {100*v['median']:+.0f} % (n {int(v['count'])})"
+                for k, v in by2.iterrows() if v["count"] > 0) + ".")
+        L.append("Excess = stock return minus benchmark return, in percentage points (−100 = e.g. stock −60 %, SPY +40 %).")
         L.append("Survivorship: delisted IPOs are missing — the true average is worse.")
     L.append("")
     L.append("## #80 S&P 500 additions and removals (effective date)")
     if sp_changes is None or sp_changes.empty:
-        L.append("Change list not reachable.")
+        L.append(f"Change list not reachable or not parsed ({sp_status}).")
     else:
         eff = index_effect(sp_changes, prices, spy)
         L.append(f"{len(sp_changes)} changes listed ({sp_changes['date'].min():%Y}–{sp_changes['date'].max():%Y}).")
@@ -179,6 +206,7 @@ def run_experiments77_78_80_report(subs: pd.DataFrame, tmap: dict, prices: dict,
             L.append(f"| {k} | {v['n']} | {100*v['pre20']:+.1f} % | {100*v['post20']:+.1f} % | {100*v['post250']:+.1f} % ({v['t_post250']:+.1f}) |")
         L.append("Removed stocks are often acquired or delisted (no prices) → the 'removed' row covers survivors only.")
     L.append("")
-    L.append("## #77 Short interest (FINRA)")
-    L.append(finra_status)
+    if finra_status:
+        L.append("## #77 Short interest (FINRA)")
+        L.append(finra_status)
     return "\n".join(L)

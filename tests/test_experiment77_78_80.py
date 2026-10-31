@@ -37,3 +37,12 @@ def test_report():
     spy = pd.Series(100 * np.exp(np.cumsum(rng.normal(0.0003, 0.01, len(d)))), index=d)
     rep = run_experiments77_78_80_report(pd.DataFrame(), {}, prices, spy, pd.DataFrame(), "FINRA: not reachable")
     assert "#78" in rep and "#80" in rep and "FINRA" in rep
+
+
+def test_changes_rowspan_and_attrs():
+    page = ('<table class="wikitable" id="changes"><tbody><tr><th>Date</th><th>Added</th></tr>'
+            '<tr style="x"><td rowspan="2">March 24, 2025</td><td>AAA</td><td>A Co</td><td>BBB</td><td>B Co</td><td>r</td></tr>'
+            '<tr><td>CCC</td><td>C Co</td><td>DDD</td><td>D Co</td><td>r</td></tr></tbody></table>')
+    ch = parse_sp500_changes(page)
+    assert list(ch["added"]) == ["AAA", "CCC"] and list(ch["removed"]) == ["BBB", "DDD"]
+    assert (ch["date"] == pd.Timestamp("2025-03-24")).all()
