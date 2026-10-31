@@ -95,10 +95,15 @@ def drift(px: pd.Series, spy: pd.Series, date: pd.Timestamp, start: int = 1, day
     if len(after) < start + days + 1:
         return float("nan")
     d0, d1 = after[start - 1], after[start - 1 + days]
+    if not px[d0] >= 5.0:                      # penny stocks / broken price histories excluded
+        return float("nan")
     s0, s1 = spy.asof(d0), spy.asof(d1)
     if not (np.isfinite(s0) and np.isfinite(s1)) or s0 <= 0:
         return float("nan")
-    return float(px[d1] / px[d0] - 1 - (s1 / s0 - 1))
+    r = float(px[d1] / px[d0] - 1)
+    if not -0.95 < r < 3.0:                    # implausible 60-day move → data error, not drift
+        return float("nan")
+    return r - float(s1 / s0 - 1)
 
 
 def pead_events(eps: dict, tmap: dict, prices: dict, spy: pd.Series) -> pd.DataFrame:
@@ -111,6 +116,9 @@ def pead_events(eps: dict, tmap: dict, prices: dict, spy: pd.Series) -> pd.DataF
         for _, r in sue(d).iterrows():
             rows.append((t, r["filed"], float(r["sue"]), drift(px, spy, r["filed"])))
     ev = pd.DataFrame(rows, columns=["ticker", "filed", "sue", "drift"]).dropna()
+    if len(ev):                                 # winsorise at 1 % / 99 % (pre-registered)
+        lo, hi = ev["drift"].quantile([0.01, 0.99])
+        ev["drift"] = ev["drift"].clip(lo, hi)
     if len(ev):
         ev["q"] = ev["filed"].dt.to_period("Q")
         ev["dec"] = ev.groupby("q")["sue"].transform(lambda x: pd.qcut(x.rank(method="first"), 10, labels=False) + 1
@@ -161,10 +169,11 @@ def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict,
         L.append("Too few events.")
     else:
         L.append(f"{len(ev):,} quarterly events, {ev['ticker'].nunique():,} stocks, {ev['q'].min()}–{ev['q'].max()}.")
-        L.append("| SUE decile | events | 60-day return vs SPY |")
-        L.append("|---|--:|--:|")
+        L.append("Prices ≥ $5 at the event, implausible moves (≤ −95 % / ≥ +300 % in 60 days) dropped, winsorised 1 %/99 %.")
+        L.append("| SUE decile | events | 60-day return vs SPY (mean) | median |")
+        L.append("|---|--:|--:|--:|")
         for dcl, g in ev.dropna(subset=["dec"]).groupby("dec"):
-            L.append(f"| {int(dcl)}{' (worst surprise)' if dcl == 1 else ' (best surprise)' if dcl == 10 else ''} | {len(g):,} | {100*g['drift'].mean():+.2f} % |")
+            L.append(f"| {int(dcl)}{' (worst surprise)' if dcl == 1 else ' (best surprise)' if dcl == 10 else ''} | {len(g):,} | {100*g['drift'].mean():+.2f} % | {100*g['drift'].median():+.2f} % |")
         qs = ev.dropna(subset=["dec"]).groupby(["q", "dec"])["drift"].mean().unstack()
         if 1 in qs and 10 in qs:
             spread = (qs[10] - qs[1]).dropna()
@@ -174,7 +183,7 @@ def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict,
                          f"≈ {100*((1+s.mean())**4-1):+.1f} %/yr before costs if traded every quarter")
     L.append("")
     L.append("## #79 Dividends (groups at the end of June, next 12 months vs equal-weight universe)")
-    _, rets = monthly_returns(prices)
+    pxm, rets = monthly_returns(prices)
     rows = []
     y_last = pd.Timestamp.today().year
     dy = {t: div_years(dv, 2000, y_last) for t, dv in divs.items()}
@@ -187,9 +196,11 @@ def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict,
         fwd_m = [m for m in pd.period_range(m0 + 1, m0 + 12, freq="M") if m in rets.index]
         if len(fwd_m) < 12:
             continue
-        fwd = (1 + rets.loc[fwd_m].fillna(0)).prod() - 1
+        fwd = ((1 + rets.loc[fwd_m].fillna(0)).prod() - 1).clip(-0.95, 3.0)
+        p0 = pxm.loc[m0]
         for t, yr in dy.items():
-            if t in fwd.index and np.isfinite(fwd[t]) and t in first and first[t] < form - pd.DateOffset(years=6):
+            if t in fwd.index and np.isfinite(fwd[t]) and t in first and first[t] < form - pd.DateOffset(years=6) \
+                    and p0.get(t, 0) >= 5.0:
                 rows.append((y, t, group_from_years(yr, y), float(fwd[t])))
     d = pd.DataFrame(rows, columns=["year", "ticker", "group", "fwd"])
     if d.empty:
@@ -197,6 +208,7 @@ def run_experiments75_79_report(eps: dict, tmap: dict, prices: dict, divs: dict,
         return "\n".join(L)
     d["excess"] = d["fwd"] - d.groupby("year")["fwd"].transform("mean")
     L.append(f"{len(d):,} stock-years, {d['year'].min()}–{d['year'].max()} (stocks with ≥ 6 years of history).")
+    L.append("Price ≥ $5 at formation; 12-month returns capped at −95 % / +300 % (data errors).")
     L.append("| group | stock-years | avg per year | excess vs universe p.a. | t (across years) | years positive |")
     L.append("|---|--:|--:|--:|--:|--:|")
     for g in ("grower (5 y)", "raiser", "steady", "initiator", "cutter", "non-payer"):

@@ -45,3 +45,15 @@ def test_report_runs():
     spy = pd.Series(100 * np.exp(np.cumsum(rng.normal(0.0003, 0.01, len(d)))), index=d)
     rep = run_experiments75_79_report({}, {}, prices, divs, spy)
     assert "#75" in rep and "#79" in rep and "steady" in rep
+
+
+def test_drift_rejects_pennies_and_glitches():
+    from src.backtest.experiments_75_79 import drift
+    d = pd.bdate_range("2020-01-01", periods=200)
+    spy = pd.Series(100.0, index=d)
+    penny = pd.Series(1.0, index=d)
+    assert np.isnan(drift(penny, spy, d[5]))
+    glitch = pd.Series(10.0, index=d); glitch.iloc[30:] = 500.0
+    assert np.isnan(drift(glitch, spy, d[5]))
+    ok = pd.Series(np.linspace(10, 11, 200), index=d)
+    assert 0 < drift(ok, spy, d[5]) < 0.5
