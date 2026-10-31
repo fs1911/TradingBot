@@ -289,6 +289,29 @@ class TradingBot:
         except Exception:
             pass
 
+    def _isolated(self, fn) -> None:
+        """Run one experiment in a forked child process: its memory is returned to the OS when
+        it ends, and if the kernel kills it for lack of memory, only the child dies — the trading
+        loop keeps running and the next experiment starts."""
+        import multiprocessing as _mp
+        name = getattr(fn, "__name__", "experiment")
+        try:
+            p = _mp.get_context("fork").Process(target=fn, name=name, daemon=True)
+            p.start()
+            p.join()
+        except Exception as e:
+            logger.error(f"{name}: could not run isolated ({e}); running inline")
+            fn()
+            return
+        if p.exitcode != 0:
+            logger.error(f"{name}: child exited with code {p.exitcode}")
+            try:
+                self.heartbeat._put_file(f"experiment_{name.lstrip('_')}_died_results.md",
+                                         f"# {name} — child process died (exit code {p.exitcode}; -9 = killed, usually out of memory)\n".encode(),
+                                         f"{name} died")
+            except Exception:
+                pass
+
     def _sec_ctx(self):
         """(ua, sec_get, tmap) or None if no SEC contact."""
         import time as _t
@@ -2448,13 +2471,13 @@ class TradingBot:
                                   ("run_experiment65_on_start", self._run_experiment65),
                                   ("run_experiment69_on_start", self._run_experiments69_82),
                                   ("run_experiment67_on_start", self._run_experiments67_74_83),
+                                  ("run_experiment86_on_start", self._run_experiment86),
                                   ("run_experiment75_on_start", self._run_exp75_79),
-                                  ("run_experiment78_on_start", self._run_exp77_78_80),
                                   ("run_experiment76_on_start", self._run_exp76),
-                                  ("run_experiment86_on_start", self._run_experiment86)) if _b.get(flag, False)]
+                                  ("run_experiment78_on_start", self._run_exp77_78_80)) if _b.get(flag, False)]
         if _seq:
             import threading
-            threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
+            threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
 
         while self._running:
             try:
