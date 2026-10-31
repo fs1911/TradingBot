@@ -46,3 +46,11 @@ def test_changes_rowspan_and_attrs():
     ch = parse_sp500_changes(page)
     assert list(ch["added"]) == ["AAA", "CCC"] and list(ch["removed"]) == ["BBB", "DDD"]
     assert (ch["date"] == pd.Timestamp("2025-03-24")).all()
+
+
+def test_changes_found_by_header():
+    page = ('<table class="wikitable"><tr><th>Symbol</th></tr></table>'
+            '<table class="wikitable sortable"><tr><th>Effective Date</th><th colspan="2">Added</th><th colspan="2">Removed</th></tr>'
+            '<tr><td>June 22, 2020</td><td>NEW</td><td>New Co</td><td>OLD</td><td>Old Co</td><td>r</td></tr></table>')
+    ch = parse_sp500_changes(page)
+    assert list(ch["added"]) == ["NEW"]

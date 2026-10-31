@@ -449,6 +449,33 @@ class TradingBot:
             self._push_failure("77", e)
         gc.collect()
 
+    def _run_exp80(self) -> None:
+        """#80 S&P 500 additions/removals only (lean). → experiment80_results.md."""
+        import gc
+        try:
+            import pandas as _pd
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_77_78_80 import parse_sp500_changes, run_experiments77_78_80_report
+            page = _get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", timeout=40,
+                        headers={"User-Agent": "TradingBot-Research/1.0 (github.com/fs1911/TradingBot)"})
+            sp = parse_sp500_changes(page)
+            status = f"page {len(page):,} chars, {len(sp)} rows parsed"
+            want = (set(sp["added"].dropna()) | set(sp["removed"].dropna())) if len(sp) else set()
+            prices = {}
+            for t in sorted(want)[:1500]:
+                px, _ = fetch_px_divs(t.replace(".", "-"), "2000-01-01", timeout=15)
+                if len(px) > 30:
+                    prices[t] = px.astype("float32")
+            spy, _ = fetch_px_divs("SPY", "1999-01-01")
+            rep = run_experiments77_78_80_report(_pd.DataFrame(), {}, prices, spy, sp, "", status)
+            rep = rep.replace("# Experiments #77 / #78 / #80 — short interest, IPOs, index changes", "# Experiment #80 — S&P 500 index changes")
+            self.heartbeat._put_file("experiment80_results.md", rep.encode(), "Experiment #80: index changes")
+            logger.info("Experiment #80: report pushed")
+        except Exception as e:
+            self._push_failure("80", e)
+        gc.collect()
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2507,7 +2534,8 @@ class TradingBot:
                                   ("run_experiment75_on_start", self._run_exp75_79),
                                   ("run_experiment76_on_start", self._run_exp76),
                                   ("run_experiment77_on_start", self._run_exp77),
-                                  ("run_experiment78_on_start", self._run_exp77_78_80)) if _b.get(flag, False)]
+                                  ("run_experiment78_on_start", self._run_exp77_78_80),
+                                  ("run_experiment80_on_start", self._run_exp80)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()

@@ -41,3 +41,8 @@ Nichts davon wird vorher gebaut oder an Lovable geschickt.
 
 ## Abgrenzung zu ähnlichen Apps (z. B. foliologic.app)
 Foliologic zeigt Qualitäts-Score, fairen Wert, ETF-Score und KI-Texte — ausdrücklich ohne Kursaussage. „Mein Depot“ soll sich auf das konzentrieren, was in unseren Tests nachweislich zählt: Rückkauf/Verwässerung, Marktampel, Klumpen- und Gebühren-Warnung. Qualitäts- oder Bewertungs-Scores höchstens als Info (#49, #62, #85).
+
+## Aus #76–#86 (31.10.2026)
+- **B15 Kauf-Check: Warnhinweis „Börsengang < 3 Jahre“** (#78: 73 % der IPOs nach 3 J. im Minus, Median −102 Pkt vs SPY). Hinweis, keine harte Sperre.
+- **B16 Info-Karte „Was passierte nach …“** (#86): Grundraten nach VIX > 40, −20 %, Kriegen, Zinskurve — gegen Panikverkäufe; ausdrücklich keine Prognose.
+- **B17 optionale Info-Felder** (#75/#76/#77): letzte Gewinnüberraschung, gehäufte Insider-Verkäufe, stark leerverkauft — nur Info, kein Einfluss auf die Ampel (alle nicht signifikant).

@@ -98,11 +98,20 @@ def ew_index(prices: dict, start: str = "2004-01-01") -> pd.Series:
 def parse_sp500_changes(page: str) -> pd.DataFrame:
     """Wikipedia 'List of S&P 500 companies' → [date, added, removed]. Handles <tr> with
     attributes and dates spanning several rows (rowspan → carried forward)."""
+    table = None
     m = re.search(r'id="changes".*?</table>', page, flags=re.S)
-    if not m:
+    if m:
+        table = m.group(0)
+    else:  # find the table whose header mentions Added and Removed
+        for t in re.findall(r"<table[^>]*>.*?</table>", page, flags=re.S):
+            head = t[:3000]
+            if "Added" in head and "Removed" in head:
+                table = t
+                break
+    if table is None:
         return pd.DataFrame(columns=["date", "added", "removed"])
     rows, last = [], None
-    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", m.group(0), flags=re.S):
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", table, flags=re.S):
         if "<td" not in tr:
             continue
         cells = [_html.unescape(re.sub(r"<[^>]+>", "", c)).strip()
