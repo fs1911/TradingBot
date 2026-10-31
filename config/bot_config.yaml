@@ -88,6 +88,7 @@ bot:
   run_experiment75_on_start: true   # #75 post-earnings drift + #79 dividends (large caps, ≤2500 priced; split out of the SEC batch after the server stalled on memory)
   run_experiment78_on_start: true   # #77 short-interest access, #78 IPOs, #80 S&P 500 changes
   run_experiment76_on_start: true   # #76 insider sales
+  run_experiment86_on_start: true   # #86 event base rates
 
 experiment49:
   min_assets: 1000000000   # universe: companies with ≥ $1bn total assets

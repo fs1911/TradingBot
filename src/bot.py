@@ -491,6 +491,37 @@ class TradingBot:
             except Exception as e:
                 self._push_failure(fname, e)
 
+    def _run_experiment86(self) -> None:
+        """Experiment #86: base rates after events (VIX, drawdowns, Fed, yield curve,
+        elections, shocks, halvings). → experiment86_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_86 import build_events, run_experiment86_report
+            from .backtest.experiments_67_68 import DBN
+            from .backtest.experiments_46 import parse_dbnomics_json
+            gspc = fetch_yahoo_daily("^GSPC", "1927-12-01", timeout=30)
+            us_rate = None
+            for sid in ("BIS/WS_CBPOL/M.US", "BIS/WS_CBPOL/D.US"):
+                try:
+                    r = parse_dbnomics_json(_get(DBN.format(sid), timeout=40))
+                    if len(r) > 100:
+                        us_rate = r.groupby(r.index.to_period("M")).last()
+                        break
+                except Exception as e:
+                    logger.info(f"#86 {sid}: {repr(e)[:80]}")
+            ev = build_events(gspc, vix=fetch_yahoo_daily("^VIX", "1990-01-01", timeout=30),
+                              tnx=fetch_yahoo_daily("^TNX", "1962-01-01", timeout=30),
+                              irx=fetch_yahoo_daily("^IRX", "1960-01-01", timeout=30), us_rate=us_rate)
+            assets = {"S&P 500": gspc, "SMI": fetch_yahoo_daily("^SSMI", "1988-01-01", timeout=30),
+                      "Gold": fetch_yahoo_daily("GC=F", "2000-01-01", timeout=30),
+                      "Bitcoin": fetch_yahoo_daily("BTC-USD", "2014-09-17", timeout=30)}
+            report = run_experiment86_report(assets, ev, btc=assets["Bitcoin"])
+            self.heartbeat._put_file("experiment86_results.md", report.encode(), "Experiment #86: event base rates")
+            logger.info("Experiment #86: report pushed")
+        except Exception as e:
+            self._push_failure("86", e)
+
     def _run_experiment64(self) -> None:
         """Experiment #64: buyback/dilution signal for CH/EU stocks (Yahoo share counts).
         → experiment64_results.md."""
@@ -2419,7 +2450,8 @@ class TradingBot:
                                   ("run_experiment67_on_start", self._run_experiments67_74_83),
                                   ("run_experiment75_on_start", self._run_exp75_79),
                                   ("run_experiment78_on_start", self._run_exp77_78_80),
-                                  ("run_experiment76_on_start", self._run_exp76)) if _b.get(flag, False)]
+                                  ("run_experiment76_on_start", self._run_exp76),
+                                  ("run_experiment86_on_start", self._run_experiment86)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [f() for f in _seq], daemon=True).start()
