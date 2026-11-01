@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-11-01 12:25:19",
+  "updated_utc": "2026-11-01 13:26:01",
   "alive": true,
   "state": "active",
-  "uptime_hours": 19.2,
+  "uptime_hours": 20.2,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -7274.36,
-  "unrealized_pnl_usd": -897.89,
-  "total_pnl_usd": -8172.25,
-  "equity_usd": 60312.74,
+  "unrealized_pnl_usd": -894.59,
+  "total_pnl_usd": -8168.95,
+  "equity_usd": 60316.04,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": -68.09
+      "unrealized_usd": -65.87
     },
     {
       "symbol": "DBA",
@@ -46,7 +46,7 @@
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -111.32
+      "unrealized_usd": -110.25
     },
     {
       "symbol": "FXY",
