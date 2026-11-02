@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-11-02 11:41:22",
+  "updated_utc": "2026-11-02 12:42:05",
   "alive": true,
   "state": "active",
-  "uptime_hours": 42.5,
+  "uptime_hours": 43.5,
   "open_positions": 12,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
   "realized_pnl_usd": -7274.36,
-  "unrealized_pnl_usd": -864.9,
-  "total_pnl_usd": -8139.26,
-  "equity_usd": 60345.73,
+  "unrealized_pnl_usd": -864.02,
+  "total_pnl_usd": -8138.38,
+  "equity_usd": 60346.61,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "BTC/USD",
       "side": "buy",
       "qty": 0.0115,
-      "unrealized_usd": -67.34
+      "unrealized_usd": -67.87
     },
     {
       "symbol": "DBA",
@@ -34,55 +34,55 @@
       "symbol": "EEM",
       "side": "buy",
       "qty": 84.2308,
-      "unrealized_usd": -407.85
+      "unrealized_usd": -401.11
     },
     {
       "symbol": "EFA",
       "side": "buy",
       "qty": 33.5997,
-      "unrealized_usd": -35.44
+      "unrealized_usd": -30.73
     },
     {
       "symbol": "ETH/USD",
       "side": "buy",
       "qty": 0.2631,
-      "unrealized_usd": -103.73
+      "unrealized_usd": -104.44
     },
     {
       "symbol": "FXY",
       "side": "buy",
       "qty": 73.0418,
-      "unrealized_usd": -19.87
+      "unrealized_usd": -17.12
     },
     {
       "symbol": "GLD",
       "side": "buy",
       "qty": 3.9037,
-      "unrealized_usd": -93.55
+      "unrealized_usd": -95.23
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 10.0317,
-      "unrealized_usd": 15.3
+      "unrealized_usd": 6.27
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 14.3376,
-      "unrealized_usd": -111.83
+      "unrealized_usd": -136.35
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 14.3676,
-      "unrealized_usd": 218.68
+      "unrealized_usd": 230.46
     },
     {
       "symbol": "UUP",
       "side": "buy",
       "qty": 389.6716,
-      "unrealized_usd": 89.62
+      "unrealized_usd": 101.0
     }
   ],
   "journal_pnl_usd": 267.19,
