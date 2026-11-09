@@ -64,6 +64,23 @@ UNIVERSE = [  # (GDELT query, Yahoo symbol)
 UNIVERSE = [(q, s) for q, s in UNIVERSE if s]
 
 
+def _interleave(items):
+    """Round-robin over US / CH / DE / crypto so that a run cut short by the time budget stays balanced."""
+    groups = {"us": [], "ch": [], "de": [], "cr": []}
+    for q, sym in items:
+        k = "cr" if sym.endswith("-USD") else "ch" if sym.endswith(".SW") else "de" if sym.endswith(".DE") else "us"
+        groups[k].append((q, sym))
+    out, i = [], 0
+    while any(groups.values()):
+        for k in ("us", "ch", "us", "de", "cr"):
+            if groups[k]:
+                out.append(groups[k].pop(0))
+    return out
+
+
+UNIVERSE = _interleave(UNIVERSE)
+
+
 def benchmark_for(sym: str) -> str | None:
     if sym.endswith("-USD"):
         return None
@@ -94,8 +111,8 @@ def parse_timeline(body: str) -> pd.Series:
     return s
 
 
-def fetch_series(get, query: str, mode: str, start: pd.Timestamp, end: pd.Timestamp, sleep: float = 8.0,
-                 log=None, stats: dict | None = None, backoff: float = 30.0) -> pd.Series:
+def fetch_series(get, query: str, mode: str, start: pd.Timestamp, end: pd.Timestamp, sleep: float = 15.0,
+                 log=None, stats: dict | None = None, backoff: float = 60.0) -> pd.Series:
     """Whole range in one call; if the API returns coarser than daily points, retry per year."""
     import time as _t
     q = urllib.parse.quote(query)
@@ -126,16 +143,18 @@ def fetch_series(get, query: str, mode: str, start: pd.Timestamp, end: pd.Timest
                     _t.sleep(backoff * (2 ** attempt))
                     continue
                 _t.sleep(sleep)
-                return pd.Series(dtype=float)
-        return pd.Series(dtype=float)
+                return None
+        return None
     s = one(start, end)
     span_days = (end - start).days
-    if len(s) < 0.5 * span_days:  # not daily → yearly chunks
+    if s is None:  # request failed even after retries → do not multiply the load with chunk requests
+        return pd.Series(dtype=float)
+    if 0 < len(s) < 0.5 * span_days:  # answered, but coarser than daily → yearly chunks
         parts = []
         for y in range(start.year, end.year + 1):
             a, b = max(start, pd.Timestamp(y, 1, 1)), min(end, pd.Timestamp(y, 12, 31, 23, 59, 59))
             parts.append(one(a, b))
-        parts = [p for p in parts if len(p)]
+        parts = [p for p in parts if p is not None and len(p)]
         s = pd.concat(parts) if parts else s
     if len(s) == 0:
         return s
