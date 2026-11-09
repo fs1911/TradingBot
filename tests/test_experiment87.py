@@ -25,7 +25,7 @@ def test_parse_and_fetch_daily_or_chunked():
         y = 2019 if "startdatetime=2019" in url else 2020
         dd = pd.date_range(f"{y}-01-01", f"{y}-12-31", freq="D")
         return _tl(dd, np.full(len(dd), 2.0), "Article Count")
-    out = fetch_series(get, '"X"', "timelinevolraw", pd.Timestamp("2019-01-01"), pd.Timestamp("2020-12-31"), sleep=0)
+    out = fetch_series(get, '"X"', "timelinevolraw", pd.Timestamp("2019-01-01"), pd.Timestamp("2020-12-31"), sleep=0, backoff=0)
     assert len(calls) == 3 and len(out) == 731 and (out == 2.0).all()
 
 
@@ -56,3 +56,18 @@ def test_report_runs():
     assert np.isnan(ex["1 d"][-1])
     rep = run_experiment87_report(sig, px, bench, ["probe: daily"])
     assert "E1 tone shock +" in rep and "Holm" in rep
+
+
+def test_retries_on_429():
+    n = {"c": 0}
+
+    def get(url):
+        n["c"] += 1
+        if n["c"] < 3:
+            raise RuntimeError("HTTPError 429: Too Many Requests")
+        d = pd.date_range("2020-01-01", "2020-12-31", freq="D")
+        return _tl(d, np.ones(len(d)))
+    st = {}
+    out = fetch_series(get, '"X"', "timelinetone", pd.Timestamp("2020-01-01"), pd.Timestamp("2020-12-31"),
+                       sleep=0, backoff=0, stats=st)
+    assert len(out) == 366 and st["retries"] == 2

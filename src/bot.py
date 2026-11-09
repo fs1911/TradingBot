@@ -517,7 +517,7 @@ class TradingBot:
                 el = (_time.time() - t0) / 60
                 txt = (f"# Experiment #87 — progress ({_pd.Timestamp.utcnow():%Y-%m-%d %H:%M} UTC)\n\n"
                        f"{i}/{len(UNIVERSE)} done after {el:.0f} min; usable {len(sig)}; skipped {len(empty)}.\n"
-                       f"GDELT calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}, empty {stats.get('empty', 0)}, "
+                       f"GDELT calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}, retries {stats.get('retries', 0)}, empty {stats.get('empty', 0)}, "
                        f"points {stats.get('points', 0)}.\nLast error: {stats.get('last_error', '-')}\n"
                        f"Empty sample: {stats.get('empty_sample', '-')!r}\n{note}\n")
                 try:

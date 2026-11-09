@@ -94,33 +94,40 @@ def parse_timeline(body: str) -> pd.Series:
     return s
 
 
-def fetch_series(get, query: str, mode: str, start: pd.Timestamp, end: pd.Timestamp, sleep: float = 5.5,
-                 log=None, stats: dict | None = None) -> pd.Series:
+def fetch_series(get, query: str, mode: str, start: pd.Timestamp, end: pd.Timestamp, sleep: float = 8.0,
+                 log=None, stats: dict | None = None, backoff: float = 30.0) -> pd.Series:
     """Whole range in one call; if the API returns coarser than daily points, retry per year."""
     import time as _t
     q = urllib.parse.quote(query)
     def one(a, b):
         url = GDELT.format(q=q, mode=mode, s=f"{a:%Y%m%d%H%M%S}", e=f"{b:%Y%m%d%H%M%S}")
-        if stats is not None:
-            stats["calls"] = stats.get("calls", 0) + 1
-        try:
-            body = get(url)
-            r = parse_timeline(body)
+        for attempt in range(4):  # GDELT answers 429 when called too often → back off and retry
             if stats is not None:
-                stats["points"] = stats.get("points", 0) + len(r)
-                if len(r) == 0:
-                    stats["empty"] = stats.get("empty", 0) + 1
-                    stats.setdefault("empty_sample", (body or "")[:160])
-            return r
-        except Exception as e:
-            if stats is not None:
-                stats["errors"] = stats.get("errors", 0) + 1
-                stats["last_error"] = repr(e)[:160]
-            if log:
-                log(f"#87 {query} {mode} {a:%Y}: {repr(e)[:80]}")
-            return pd.Series(dtype=float)
-        finally:
-            _t.sleep(sleep)
+                stats["calls"] = stats.get("calls", 0) + 1
+            try:
+                body = get(url)
+                r = parse_timeline(body)
+                if stats is not None:
+                    stats["points"] = stats.get("points", 0) + len(r)
+                    if len(r) == 0:
+                        stats["empty"] = stats.get("empty", 0) + 1
+                        stats.setdefault("empty_sample", (body or "")[:160])
+                _t.sleep(sleep)
+                return r
+            except Exception as e:
+                if stats is not None:
+                    stats["errors"] = stats.get("errors", 0) + 1
+                    stats["last_error"] = repr(e)[:160]
+                if log:
+                    log(f"#87 {query} {mode} {a:%Y}: {repr(e)[:80]}")
+                if "429" in repr(e) and attempt < 3:
+                    if stats is not None:
+                        stats["retries"] = stats.get("retries", 0) + 1
+                    _t.sleep(backoff * (2 ** attempt))
+                    continue
+                _t.sleep(sleep)
+                return pd.Series(dtype=float)
+        return pd.Series(dtype=float)
     s = one(start, end)
     span_days = (end - start).days
     if len(s) < 0.5 * span_days:  # not daily → yearly chunks
