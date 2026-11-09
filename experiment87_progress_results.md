@@ -1,4 +1,4 @@
-# Experiment #87 — progress (2026-11-09 17:48 UTC)
+# Experiment #87 — progress (2026-11-09 18:22 UTC)
 
-Alpaca news: 1/61 names after 6 min; usable 0; skipped 0. Calls 407, errors 0; last error: -
-Probe MSFT: 20312 articles, 2016-01-04–2026-11-08.
+Alpaca news: 10/61 names after 40 min; usable 10; skipped 0. Calls 2889, errors 0; last error: -
+
