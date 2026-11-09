@@ -25,9 +25,9 @@ Nichts davon wird vorher gebaut oder an Lovable geschickt.
 ## Was der Nutzer selbst einrichten muss (vor B1)
 | # | Was |
 |---|---|
-| U1 | Telegram-Bot via @BotFather, Chat-ID via @userinfobot → Secrets `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` in Supabase/Lovable |
-| U2 | Secret `SEC_CONTACT_EMAIL` in Supabase/Lovable (nie ins öffentliche Repo) |
-| U3 | Yuh-CSV „Account activity export“ anfordern; Kopfzeile (Beträge geschwärzt) schicken, damit die Spalten-Zuordnung fest eingebaut werden kann |
+| U1 | OPTIONAL (9.11.: App hat bereits Web-Push) — nur falls Meldungen lieber per Telegram: Bot via @BotFather, Chat-ID via @userinfobot → Secrets `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` in Lovable |
+| U2 | ENTFÄLLT (9.11.: App fragt SEC bereits mit eigenem User-Agent ab, `src/lib/sec.server.ts`) |
+| U3 | ENTFÄLLT (9.11.: Positionen inkl. Anzahl/Einstand sind in der App schon erfasst, `watchlist_items`; YUH-Universum vorhanden). Der Prompt „Mein Depot“ muss auf die bestehende App zugeschnitten werden (kein CSV-Import, keine neue `holdings`-Tabelle) |
 
 ## Bot (TradingBot, Alpaca Paper)
 | # | Was | Grundlage | Stand |
