@@ -501,30 +501,53 @@ class TradingBot:
             from .backtest.experiments_46 import _get
             from .backtest.experiments_75_79 import fetch_px_divs
             from .backtest.experiments_87 import UNIVERSE, fetch_series, signals, run_experiment87_report
+            import time as _time
             start, end = _pd.Timestamp("2017-01-01"), _pd.Timestamp.today().normalize()
-            get = lambda u: _get(u, timeout=90, headers={"User-Agent": "TradingBot-Research/1.0"})
+            get = lambda u: _get(u, timeout=30, headers={"User-Agent": "TradingBot-Research/1.0"})
             log = lambda m: logger.info(m)
+            t0, budget = _time.time(), 4 * 3600
+            stats = {}
             bench = {}
             for b in ("SPY", "^SSMI", "^GDAXI"):
                 px, _ = fetch_px_divs(b, "2016-10-01")
                 bench[b] = px
             px_all, sig, diag, empty = {}, {}, [], []
+
+            def progress(i, note=""):
+                el = (_time.time() - t0) / 60
+                txt = (f"# Experiment #87 — progress ({_pd.Timestamp.utcnow():%Y-%m-%d %H:%M} UTC)\n\n"
+                       f"{i}/{len(UNIVERSE)} done after {el:.0f} min; usable {len(sig)}; skipped {len(empty)}.\n"
+                       f"GDELT calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}, empty {stats.get('empty', 0)}, "
+                       f"points {stats.get('points', 0)}.\nLast error: {stats.get('last_error', '-')}\n"
+                       f"Empty sample: {stats.get('empty_sample', '-')!r}\n{note}\n")
+                try:
+                    self.heartbeat._put_file("experiment87_progress_results.md", txt.encode(), "Experiment #87 progress")
+                except Exception:
+                    pass
+
             for i, (q, sym) in enumerate(UNIVERSE):
+                if _time.time() - t0 > budget:
+                    diag.append(f"Time budget reached after {i} of {len(UNIVERSE)} names.")
+                    break
                 px, _ = fetch_px_divs(sym, "2016-10-01", timeout=20)
                 if len(px) < 250:
                     empty.append(f"{sym}(px)")
                     continue
-                tone = fetch_series(get, q, "timelinetone", start, end, log=log)
-                vol = fetch_series(get, q, "timelinevolraw", start, end, log=log)
+                tone = fetch_series(get, q, "timelinetone", start, end, log=log, stats=stats)
+                vol = fetch_series(get, q, "timelinevolraw", start, end, log=log, stats=stats)
                 if i == 0:
                     diag.append(f"Probe {sym}: tone {len(tone)} days, volume {len(vol)} days"
                                 + (f", {tone.index.min():%Y-%m-%d}–{tone.index.max():%Y-%m-%d}." if len(tone) else "."))
+                    progress(1, diag[-1])
                 if len(tone) < 200 or len(vol) < 200:
                     empty.append(f"{sym}(news {len(tone)}/{len(vol)})")
-                    continue
-                px_all[sym] = px.astype("float32")
-                sig[sym] = signals(tone, vol).astype("float32")
-                log(f"#87 {sym}: {len(tone)} tone days")
+                else:
+                    px_all[sym] = px.astype("float32")
+                    sig[sym] = signals(tone, vol).astype("float32")
+                if (i + 1) % 10 == 0:
+                    progress(i + 1)
+            diag.append(f"GDELT calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}, empty {stats.get('empty', 0)}; "
+                        f"last error: {stats.get('last_error', '-')}.")
             if empty:
                 diag.append(f"Skipped ({len(empty)}): " + ", ".join(empty[:30]) + ".")
             rep = run_experiment87_report(sig, px_all, bench, diag)

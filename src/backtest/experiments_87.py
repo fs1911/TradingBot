@@ -95,15 +95,27 @@ def parse_timeline(body: str) -> pd.Series:
 
 
 def fetch_series(get, query: str, mode: str, start: pd.Timestamp, end: pd.Timestamp, sleep: float = 5.5,
-                 log=None) -> pd.Series:
+                 log=None, stats: dict | None = None) -> pd.Series:
     """Whole range in one call; if the API returns coarser than daily points, retry per year."""
     import time as _t
     q = urllib.parse.quote(query)
     def one(a, b):
         url = GDELT.format(q=q, mode=mode, s=f"{a:%Y%m%d%H%M%S}", e=f"{b:%Y%m%d%H%M%S}")
+        if stats is not None:
+            stats["calls"] = stats.get("calls", 0) + 1
         try:
-            return parse_timeline(get(url))
+            body = get(url)
+            r = parse_timeline(body)
+            if stats is not None:
+                stats["points"] = stats.get("points", 0) + len(r)
+                if len(r) == 0:
+                    stats["empty"] = stats.get("empty", 0) + 1
+                    stats.setdefault("empty_sample", (body or "")[:160])
+            return r
         except Exception as e:
+            if stats is not None:
+                stats["errors"] = stats.get("errors", 0) + 1
+                stats["last_error"] = repr(e)[:160]
             if log:
                 log(f"#87 {query} {mode} {a:%Y}: {repr(e)[:80]}")
             return pd.Series(dtype=float)
