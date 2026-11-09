@@ -46,7 +46,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 ## Block F — Nachrichten (Wunsch 9.11.)
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|
-| 87 | Sagen Nachrichten Kurse voraus? Stimmung (Ton) und Aufmerksamkeit (Anzahl Artikel) je Firma/Krypto, Schock-Ereignisse (Ton z ≥ ±2, Aufmerksamkeit z ≥ 3, kombiniert), Einstieg am Handelstag NACH der Meldung, 1/5/20 Tage vs Index; Zufallstage-Bootstrap, Holm; Wochen-Long/Short nach Ton netto | GDELT DOC 2.0 (2017→, weltweit inkl. CH/DE-Medien), Yahoo; ~90 Firmen (USA, CH, DE) + 6 Kryptos | läuft |
+| 87 | Sagen Nachrichten Kurse voraus? Stimmung (Ton) und Aufmerksamkeit (Anzahl Artikel) je Firma/Krypto, Schock-Ereignisse (Ton z ≥ ±2, Aufmerksamkeit z ≥ 3, kombiniert), Einstieg am Handelstag NACH der Meldung, 1/5/20 Tage vs Index; Zufallstage-Bootstrap, Holm; Wochen-Long/Short nach Ton netto | GDELT DOC 2.0 (2017→, weltweit inkl. CH/DE-Medien), Yahoo; ~90 Firmen (USA, CH, DE) + 6 Kryptos | ✔ erledigt (mit Alpaca/Benzinga-News, US + Krypto; GDELT gedrosselt) |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |

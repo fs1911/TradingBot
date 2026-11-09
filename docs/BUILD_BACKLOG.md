@@ -46,3 +46,4 @@ Foliologic zeigt Qualitäts-Score, fairen Wert, ETF-Score und KI-Texte — ausdr
 - **B15 Kauf-Check: Warnhinweis „Börsengang < 3 Jahre“** (#78: 73 % der IPOs nach 3 J. im Minus, Median −102 Pkt vs SPY). Hinweis, keine harte Sperre.
 - **B16 Info-Karte „Was passierte nach …“** (#86): Grundraten nach VIX > 40, −20 %, Kriegen, Zinskurve — gegen Panikverkäufe; ausdrücklich keine Prognose.
 - **B17 optionale Info-Felder** (#75/#76/#77): letzte Gewinnüberraschung, gehäufte Insider-Verkäufe, stark leerverkauft — nur Info, kein Einfluss auf die Ampel (alle nicht signifikant).
+- **B18 Bot: ungetestetes News-Stimmungs-Filter entfernen** (src/data/news_sentiment.py + `_sentiment_filter`): #87 zeigt keinen Nutzen nach Veröffentlichung; derzeit mangels API-Schlüssel ohnehin wirkungslos.
