@@ -1,4 +1,4 @@
-# Experiment #87 — progress (2026-11-09 18:50 UTC)
+# Experiment #87 — progress (2026-11-09 19:03 UTC)
 
-Alpaca news: 30/61 names after 68 min; usable 30; skipped 0. Calls 4910, errors 0; last error: -
+Alpaca news: 40/61 names after 80 min; usable 40; skipped 0. Calls 5809, errors 0; last error: -
 
