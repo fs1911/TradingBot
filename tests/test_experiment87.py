@@ -71,3 +71,17 @@ def test_retries_on_429():
     out = fetch_series(get, '"X"', "timelinetone", pd.Timestamp("2020-01-01"), pd.Timestamp("2020-12-31"),
                        sleep=0, backoff=0, stats=st)
     assert len(out) == 366 and st["retries"] == 2
+
+
+def test_alpaca_news_pipeline():
+    from src.backtest.experiments_87 import fetch_alpaca_news, daily_from_articles, text_tone, alpaca_symbol
+    assert text_tone("Apple beats estimates, raises guidance") > 0 > text_tone("Boeing misses, cuts outlook amid probe")
+    assert alpaca_symbol("BTC-USD") == "BTCUSD"
+    pages = [{"news": [{"created_at": "2020-01-02T15:00:00Z", "headline": "X beats", "summary": ""}], "next_page_token": "a"},
+             {"news": [{"created_at": "2020-01-03T03:00:00Z", "headline": "X misses", "summary": ""}], "next_page_token": None}]
+    calls = []
+    df = fetch_alpaca_news(lambda u: (calls.append(u), pages[len(calls) - 1])[1], "X", "2020-01-01T00:00:00Z",
+                           "2020-01-10T00:00:00Z", sleep=0)
+    assert len(df) == 2 and "page_token=a" in calls[1]
+    tone, cnt = daily_from_articles(df, "2020-01-01", "2020-01-10")
+    assert cnt.loc["2020-01-02"] == 2 and cnt.sum() == 2  # 03:00 UTC on Jan 3 is still Jan 2 in New York

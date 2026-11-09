@@ -1,7 +1,8 @@
 """
 Experiment #87 — do news predict prices? (news tone and attention, GDELT 2017 →)
 
-Data: GDELT DOC 2.0 API (free, worldwide online news incl. Swiss/German media, machine-
+Data (first attempt): GDELT DOC 2.0 API — throttled to ~1 name/hour, so the run uses Alpaca/Benzinga
+(symbol-tagged, 2015 →, US stocks + crypto; tone from pre-registered word lists). GDELT: (free, worldwide, machine-
 translated, since 2017): per company query a daily timeline of article volume and average
 tone (−100 … +100, typically −5 … +5). Prices: Yahoo. Universe: ~90 well-known US, Swiss and
 German companies plus 6 cryptocurrencies (names chosen to be unambiguous).
@@ -275,7 +276,7 @@ def weekly_long_short(sig: dict, px: dict, bench: dict, cost_bp: float = 10.0) -
 
 def run_experiment87_report(sig: dict, px: dict, bench: dict, diag: list) -> str:
     from datetime import datetime, timezone
-    L = [f"# Experiment #87 — news tone and attention (GDELT) ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
+    L = [f"# Experiment #87 — news tone and attention ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
     L.append(f"Companies/coins with news + prices: {len(sig)}. " + (" ".join(diag[:6]) if diag else ""))
     L.append("Entry = close of the first trading day AFTER the news day. 'already' = move from two closes before "
              "entry to entry (what happened before a reader could act). p = random-date bootstrap; Holm over all cells.")
@@ -333,3 +334,76 @@ def run_experiment87_report(sig: dict, px: dict, bench: dict, diag: list) -> str
     L.append("Caveats: GDELT tone is machine-scored and translated; company-name queries catch some unrelated "
              "articles (noise lowers power); events cluster in market-wide news days.")
     return "\n".join(L)
+
+
+# ── Alpaca / Benzinga news (symbol-tagged, 2015 →) — used because GDELT throttles to ~0 ──────
+
+ALPACA_NEWS = "https://data.alpaca.markets/v1beta1/news"
+# Pre-registered finance word lists (in the spirit of Loughran–McDonald; fixed before the run).
+POS_WORDS = frozenset("""beat beats beating exceed exceeds exceeded exceeding record upgrade upgraded upgrades
+outperform outperforms raise raises raised raising boost boosts boosted surge surges surged soar soars soared
+rally rallies rallied jump jumps jumped gain gains gained strong stronger strongest growth grow grows grew
+profit profitable profits win wins won approval approved approves breakthrough expand expands expanded expansion
+buyback buybacks dividend hike hikes hiked optimistic bullish upbeat robust accelerate accelerates accelerated
+partnership launch launches launched tops topped""".split())
+NEG_WORDS = frozenset("""miss misses missed missing downgrade downgraded downgrades underperform underperforms
+cut cuts cutting lower lowers lowered plunge plunges plunged plummet plummets plummeted slump slumps slumped
+drop drops dropped fall falls fell tumble tumbles tumbled sink sinks sank weak weaker weakest loss losses lose
+loses lost decline declines declined lawsuit lawsuits sue sues sued probe probes investigation investigations
+recall recalls recalled fraud fine fined fines penalty layoff layoffs halt halts halted delay delays delayed
+warning warns warned bearish pessimistic concern concerns risk risks bankruptcy default defaults downturn
+resign resigns resigned scandal breach hack hacked""".split())
+
+
+def text_tone(text: str) -> float:
+    import re
+    w = re.findall(r"[a-z]+", (text or "").lower())
+    p = sum(1 for x in w if x in POS_WORDS)
+    n = sum(1 for x in w if x in NEG_WORDS)
+    return (p - n) / (p + n + 1.0)
+
+
+def alpaca_symbol(sym: str) -> str:
+    return sym.replace("-USD", "USD") if sym.endswith("-USD") else sym
+
+
+def fetch_alpaca_news(get_json, sym: str, start: str, end: str, max_pages: int = 600, sleep: float = 0.35,
+                      stats: dict | None = None) -> pd.DataFrame:
+    """All articles tagged with `sym` → DataFrame [ts (UTC), tone]. get_json(url) → dict."""
+    import time as _t
+    rows, token = [], None
+    for _ in range(max_pages):
+        url = (f"{ALPACA_NEWS}?symbols={urllib.parse.quote(alpaca_symbol(sym))}&start={start}&end={end}"
+               f"&limit=50&sort=asc" + (f"&page_token={urllib.parse.quote(token)}" if token else ""))
+        try:
+            js = get_json(url)
+        except Exception as e:
+            if stats is not None:
+                stats["errors"] = stats.get("errors", 0) + 1
+                stats["last_error"] = repr(e)[:160]
+            _t.sleep(5)
+            continue
+        if stats is not None:
+            stats["calls"] = stats.get("calls", 0) + 1
+        for a in js.get("news") or []:
+            rows.append((a.get("created_at"), text_tone(f"{a.get('headline', '')} {a.get('summary', '')}")))
+        token = js.get("next_page_token")
+        _t.sleep(sleep)
+        if not token:
+            break
+    if not rows:
+        return pd.DataFrame(columns=["ts", "tone"])
+    df = pd.DataFrame(rows, columns=["ts", "tone"])
+    df["ts"] = pd.to_datetime(df["ts"], utc=True, errors="coerce")
+    return df.dropna()
+
+
+def daily_from_articles(df: pd.DataFrame, start: str, end: str) -> tuple:
+    """Articles → (daily mean tone, daily article count) on a full calendar index; the news day is the
+    New York calendar date of publication."""
+    idx = pd.date_range(pd.Timestamp(start).tz_localize(None).normalize(), pd.Timestamp(end).tz_localize(None).normalize(), freq="D")
+    if df.empty:
+        return pd.Series(dtype=float), pd.Series(0.0, index=idx)
+    day = df["ts"].dt.tz_convert("America/New_York").dt.tz_localize(None).dt.normalize()
+    g = df.groupby(day)["tone"]
+    return g.mean().reindex(idx), g.size().astype(float).reindex(idx).fillna(0.0)

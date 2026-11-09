@@ -494,64 +494,74 @@ class TradingBot:
         gc.collect()
 
     def _run_exp87(self) -> None:
-        """#87 news tone/attention (GDELT) vs prices. → experiment87_results.md."""
+        """#87 news tone/attention vs prices — Alpaca/Benzinga news (symbol-tagged, US stocks + crypto).
+        GDELT was tried first and throttled to ~1 name per hour. → experiment87_results.md."""
         import gc
         try:
-            import pandas as _pd
-            from .backtest.experiments_46 import _get
-            from .backtest.experiments_75_79 import fetch_px_divs
-            from .backtest.experiments_87 import UNIVERSE, fetch_series, signals, run_experiment87_report
+            import json as _json
             import time as _time
-            start, end = _pd.Timestamp("2017-01-01"), _pd.Timestamp.today().normalize()
-            get = lambda u: _get(u, timeout=30, headers={"User-Agent": "TradingBot-Research/1.0"})
-            log = lambda m: logger.info(m)
-            t0, budget = _time.time(), 4 * 3600
-            stats = {}
-            bench = {}
-            for b in ("SPY", "^SSMI", "^GDAXI"):
-                px, _ = fetch_px_divs(b, "2016-10-01")
-                bench[b] = px
+            import urllib.request as _ur
+            import pandas as _pd
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_87 import (UNIVERSE, fetch_alpaca_news, daily_from_articles, signals,
+                                                  run_experiment87_report)
+            key, sec = os.environ.get("ALPACA_API_KEY", ""), os.environ.get("ALPACA_SECRET_KEY", "")
+            hdr = {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": sec, "Accept": "application/json"}
+
+            def get_json(url):
+                for attempt in range(4):
+                    try:
+                        with _ur.urlopen(_ur.Request(url, headers=hdr), timeout=30) as r:
+                            return _json.loads(r.read().decode("utf-8"))
+                    except Exception as e:
+                        if "429" in repr(e) and attempt < 3:
+                            _time.sleep(20 * (attempt + 1))
+                            continue
+                        raise
+            start, end = "2016-01-01T00:00:00Z", f"{_pd.Timestamp.today():%Y-%m-%d}T00:00:00Z"
+            t0, budget, stats = _time.time(), 4 * 3600, {}
+            bench = {"SPY": fetch_px_divs("SPY", "2015-10-01")[0]}
+            names = [(q, sym) for q, sym in UNIVERSE if not sym.endswith((".SW", ".DE"))]
             px_all, sig, diag, empty = {}, {}, [], []
 
             def progress(i, note=""):
-                el = (_time.time() - t0) / 60
                 txt = (f"# Experiment #87 — progress ({_pd.Timestamp.utcnow():%Y-%m-%d %H:%M} UTC)\n\n"
-                       f"{i}/{len(UNIVERSE)} done after {el:.0f} min; usable {len(sig)}; skipped {len(empty)}.\n"
-                       f"GDELT calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}, retries {stats.get('retries', 0)}, empty {stats.get('empty', 0)}, "
-                       f"points {stats.get('points', 0)}.\nLast error: {stats.get('last_error', '-')}\n"
-                       f"Empty sample: {stats.get('empty_sample', '-')!r}\n{note}\n")
+                       f"Alpaca news: {i}/{len(names)} names after {(_time.time() - t0) / 60:.0f} min; usable {len(sig)}; "
+                       f"skipped {len(empty)}. Calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}; "
+                       f"last error: {stats.get('last_error', '-')}\n{note}\n")
                 try:
                     self.heartbeat._put_file("experiment87_progress_results.md", txt.encode(), "Experiment #87 progress")
                 except Exception:
                     pass
 
-            for i, (q, sym) in enumerate(UNIVERSE):
+            for i, (q, sym) in enumerate(names):
                 if _time.time() - t0 > budget:
-                    diag.append(f"Time budget reached after {i} of {len(UNIVERSE)} names.")
+                    diag.append(f"Time budget reached after {i} of {len(names)} names.")
                     break
-                px, _ = fetch_px_divs(sym, "2016-10-01", timeout=20)
+                px, _ = fetch_px_divs(sym, "2015-10-01", timeout=20)
                 if len(px) < 250:
                     empty.append(f"{sym}(px)")
                     continue
-                tone = fetch_series(get, q, "timelinetone", start, end, log=log, stats=stats)
-                vol = fetch_series(get, q, "timelinevolraw", start, end, log=log, stats=stats)
+                arts = fetch_alpaca_news(get_json, sym, start, end, stats=stats)
+                tone, cnt = daily_from_articles(arts, start, end)
                 if i == 0:
-                    diag.append(f"Probe {sym}: tone {len(tone)} days, volume {len(vol)} days"
-                                + (f", {tone.index.min():%Y-%m-%d}–{tone.index.max():%Y-%m-%d}." if len(tone) else "."))
+                    diag.append(f"Probe {sym}: {len(arts)} articles"
+                                + (f", {arts['ts'].min():%Y-%m-%d}–{arts['ts'].max():%Y-%m-%d}." if len(arts) else "."))
                     progress(1, diag[-1])
-                if len(tone) < 200 or len(vol) < 200:
-                    empty.append(f"{sym}(news {len(tone)}/{len(vol)})")
+                if len(arts) < 300:
+                    empty.append(f"{sym}(news {len(arts)})")
                 else:
                     px_all[sym] = px.astype("float32")
-                    sig[sym] = signals(tone, vol).astype("float32")
+                    sig[sym] = signals(tone, cnt, min_articles=2).astype("float32")
+                del arts
                 if (i + 1) % 10 == 0:
                     progress(i + 1)
-            diag.append(f"GDELT calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}, empty {stats.get('empty', 0)}; "
-                        f"last error: {stats.get('last_error', '-')}.")
+            diag.append("Source: Alpaca/Benzinga news (headline + summary, word-list tone, pre-registered lists); "
+                        f"US stocks + crypto only. Calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}.")
             if empty:
                 diag.append(f"Skipped ({len(empty)}): " + ", ".join(empty[:30]) + ".")
             rep = run_experiment87_report(sig, px_all, bench, diag)
-            self.heartbeat._put_file("experiment87_results.md", rep.encode(), "Experiment #87: news tone (GDELT)")
+            self.heartbeat._put_file("experiment87_results.md", rep.encode(), "Experiment #87: news tone (Alpaca news)")
             logger.info("Experiment #87: report pushed")
         except Exception as e:
             self._push_failure("87", e)
