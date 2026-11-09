@@ -43,6 +43,11 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 |---|---|---|---|
 | 86 | Grundraten nach Ereignissen: Was passierte danach mit S&P 500, MSCI World, SMI, Gold, Bitcoin nach 1 / 3 / 6 / 12 Monaten (Median, Trefferquote, Streuung, zwischenzeitlicher Tiefpunkt) — verglichen mit einem beliebigen Tag (Block-Bootstrap, Holm-Korrektur)? Vorab festgelegte Ereignisse: VIX erstmals > 30 / > 40; Rückgang −10 / −20 / −30 % vom Hoch; erste Zinssenkung bzw. -erhöhung der Fed nach ≥ 6 Monaten Pause; Zinskurve invertiert (10 J − 3 M < 0); US-Wahlen; feste Liste geopolitischer Schocks (Kriegsbeginne, Anschläge, Pandemie — vorab notiert, nicht nachträglich ergänzt); Bitcoin-Halvings (nur 4 Fälle → nur beschreibend). Ziel: realistische Erwartungen, keine Vorhersage | Yahoo (^GSPC, ^VIX, ^TNX, ^IRX, ^SSMI, GC=F, BTC-USD), DBnomics BIS Leitzins USA | ✔ erledigt |
 
+## Block F — Nachrichten (Wunsch 9.11.)
+| # | Hypothese / Frage | Daten | Status |
+|---|---|---|---|
+| 87 | Sagen Nachrichten Kurse voraus? Stimmung (Ton) und Aufmerksamkeit (Anzahl Artikel) je Firma/Krypto, Schock-Ereignisse (Ton z ≥ ±2, Aufmerksamkeit z ≥ 3, kombiniert), Einstieg am Handelstag NACH der Meldung, 1/5/20 Tage vs Index; Zufallstage-Bootstrap, Holm; Wochen-Long/Short nach Ton netto | GDELT DOC 2.0 (2017→, weltweit inkl. CH/DE-Medien), Yahoo; ~90 Firmen (USA, CH, DE) + 6 Kryptos | läuft |
+
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
 |---|---|---|---|

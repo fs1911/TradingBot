@@ -493,6 +493,47 @@ class TradingBot:
             self._push_failure("80", e)
         gc.collect()
 
+    def _run_exp87(self) -> None:
+        """#87 news tone/attention (GDELT) vs prices. → experiment87_results.md."""
+        import gc
+        try:
+            import pandas as _pd
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_87 import UNIVERSE, fetch_series, signals, run_experiment87_report
+            start, end = _pd.Timestamp("2017-01-01"), _pd.Timestamp.today().normalize()
+            get = lambda u: _get(u, timeout=90, headers={"User-Agent": "TradingBot-Research/1.0"})
+            log = lambda m: logger.info(m)
+            bench = {}
+            for b in ("SPY", "^SSMI", "^GDAXI"):
+                px, _ = fetch_px_divs(b, "2016-10-01")
+                bench[b] = px
+            px_all, sig, diag, empty = {}, {}, [], []
+            for i, (q, sym) in enumerate(UNIVERSE):
+                px, _ = fetch_px_divs(sym, "2016-10-01", timeout=20)
+                if len(px) < 250:
+                    empty.append(f"{sym}(px)")
+                    continue
+                tone = fetch_series(get, q, "timelinetone", start, end, log=log)
+                vol = fetch_series(get, q, "timelinevolraw", start, end, log=log)
+                if i == 0:
+                    diag.append(f"Probe {sym}: tone {len(tone)} days, volume {len(vol)} days"
+                                + (f", {tone.index.min():%Y-%m-%d}–{tone.index.max():%Y-%m-%d}." if len(tone) else "."))
+                if len(tone) < 200 or len(vol) < 200:
+                    empty.append(f"{sym}(news {len(tone)}/{len(vol)})")
+                    continue
+                px_all[sym] = px.astype("float32")
+                sig[sym] = signals(tone, vol).astype("float32")
+                log(f"#87 {sym}: {len(tone)} tone days")
+            if empty:
+                diag.append(f"Skipped ({len(empty)}): " + ", ".join(empty[:30]) + ".")
+            rep = run_experiment87_report(sig, px_all, bench, diag)
+            self.heartbeat._put_file("experiment87_results.md", rep.encode(), "Experiment #87: news tone (GDELT)")
+            logger.info("Experiment #87: report pushed")
+        except Exception as e:
+            self._push_failure("87", e)
+        gc.collect()
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2552,7 +2593,8 @@ class TradingBot:
                                   ("run_experiment76_on_start", self._run_exp76),
                                   ("run_experiment77_on_start", self._run_exp77),
                                   ("run_experiment78_on_start", self._run_exp77_78_80),
-                                  ("run_experiment80_on_start", self._run_exp80)) if _b.get(flag, False)]
+                                  ("run_experiment80_on_start", self._run_exp80),
+                                  ("run_experiment87_on_start", self._run_exp87)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
