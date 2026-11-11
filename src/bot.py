@@ -567,6 +567,139 @@ class TradingBot:
             self._push_failure("87", e)
         gc.collect()
 
+    def _alpaca_get_json(self):
+        import json as _json
+        import time as _time
+        import urllib.request as _ur
+        hdr = {"APCA-API-KEY-ID": os.environ.get("ALPACA_API_KEY", ""),
+               "APCA-API-SECRET-KEY": os.environ.get("ALPACA_SECRET_KEY", ""), "Accept": "application/json"}
+
+        def get_json(url):
+            for attempt in range(4):
+                try:
+                    with _ur.urlopen(_ur.Request(url, headers=hdr), timeout=30) as r:
+                        return _json.loads(r.read().decode("utf-8"))
+                except Exception as e:
+                    if "429" in repr(e) and attempt < 3:
+                        _time.sleep(20 * (attempt + 1))
+                        continue
+                    raise
+        return get_json
+
+    def _run_exp88(self) -> None:
+        """#88 analyst rating changes from Benzinga headlines (Alpaca news). → experiment88_results.md."""
+        import gc
+        try:
+            import pandas as _pd
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_87 import UNIVERSE, fetch_alpaca_news
+            from .backtest.experiments_88_90 import classify_rating, run_experiment88_report
+            get_json, stats = self._alpaca_get_json(), {}
+            start, end = "2016-01-01T00:00:00Z", f"{_pd.Timestamp.today():%Y-%m-%d}T00:00:00Z"
+            spy = fetch_px_divs("SPY", "2015-10-01")[0]
+            ev, px = {}, {}
+            for q, sym in UNIVERSE:
+                if sym.endswith((".SW", ".DE", "-USD")):
+                    continue
+                p, _ = fetch_px_divs(sym, "2015-10-01", timeout=20)
+                if len(p) < 250:
+                    continue
+                e = fetch_alpaca_news(get_json, sym, start, end, stats=stats, classify=classify_rating)
+                px[sym], ev[sym] = p.astype("float32"), e
+            n = sum(len(e) for e in ev.values())
+            diag = [f"{len(ev)} US stocks, {n:,} rating headlines (Benzinga via Alpaca, 2016 →); "
+                    f"calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)}."]
+            rep = run_experiment88_report(ev, px, spy, diag)
+            self.heartbeat._put_file("experiment88_results.md", rep.encode(), "Experiment #88: analyst rating changes")
+            logger.info("Experiment #88: report pushed")
+        except Exception as e:
+            self._push_failure("88", e)
+        gc.collect()
+
+    def _run_exp89(self) -> None:
+        """#89 crypto fear & greed and on-chain (CoinMetrics community). → experiment89_results.md."""
+        import gc
+        try:
+            import pandas as _pd
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_88_90 import FNG_URL, parse_fng, fetch_coinmetrics, run_experiment89_report
+            get = lambda u: _get(u, timeout=60, headers={"User-Agent": "TradingBot-Research/1.0"})
+            diag = []
+            try:
+                fng = parse_fng(get(FNG_URL))
+                diag.append(f"Fear & Greed: {len(fng)} days.")
+            except Exception as e:
+                fng = _pd.Series(dtype=float); diag.append(f"Fear & Greed not reachable: {repr(e)[:100]}.")
+            px, oc = {}, {}
+            for coin, asset in (("BTC-USD", "btc"), ("ETH-USD", "eth"), ("XRP-USD", "xrp")):
+                px[coin] = fetch_px_divs(coin, "2014-09-01")[0]
+                df, errs = fetch_coinmetrics(get, asset)
+                oc[coin] = df
+                diag.append(f"{coin}: on-chain columns {list(df.columns)} ({len(df)} days)"
+                            + (f"; errors: {'; '.join(errs)[:200]}" if errs else "") + ".")
+            rep = run_experiment89_report(fng, oc, px, diag)
+            self.heartbeat._put_file("experiment89_results.md", rep.encode(), "Experiment #89: crypto fear & greed, on-chain")
+            logger.info("Experiment #89: report pushed")
+        except Exception as e:
+            self._push_failure("89", e)
+        gc.collect()
+
+    def _run_exp90(self) -> None:
+        """#90 Google search interest (weekly, 5 years). → experiment90_results.md."""
+        import gc
+        try:
+            import http.cookiejar as _cj
+            import time as _time
+            import urllib.request as _ur
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_87 import UNIVERSE
+            from .backtest.experiments_88_90 import fetch_trends, run_experiment90_report
+            jar = _cj.CookieJar()
+            opener = _ur.build_opener(_ur.HTTPCookieProcessor(jar))
+            ua = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+                  "Accept-Language": "en-US,en;q=0.9"}
+
+            def get(url):
+                for attempt in range(3):
+                    try:
+                        with opener.open(_ur.Request(url, headers=ua), timeout=30) as r:
+                            return r.read().decode("utf-8", "replace")
+                    except Exception as e:
+                        if "429" in repr(e) and attempt < 2:
+                            _time.sleep(90 * (attempt + 1))
+                            continue
+                        raise
+            try:
+                get("https://trends.google.com/trends/?geo=US")
+            except Exception:
+                pass
+            names = [(q.strip('"').split('" OR "')[0].strip('("'), sym) for q, sym in UNIVERSE
+                     if not sym.endswith((".SW", ".DE"))]
+            t0, svi, px, errs = _time.time(), {}, {}, []
+            for kw, sym in names:
+                if _time.time() - t0 > 2 * 3600:
+                    errs.append("time budget reached"); break
+                try:
+                    s = fetch_trends(get, kw)
+                except Exception as e:
+                    errs.append(f"{kw}: {repr(e)[:60]}"); s = None
+                _time.sleep(20)
+                if s is not None and len(s) > 50:
+                    svi[sym] = s
+                    px[sym] = fetch_px_divs(sym, "2021-01-01", timeout=20)[0]
+                if len(errs) >= 8 and not svi:
+                    errs.append("aborted: Google refuses automated requests from this server"); break
+            spy = fetch_px_divs("SPY", "2021-01-01")[0]
+            diag = [f"Google Trends series: {len(svi)} of {len(names)} names; errors {len(errs)}"
+                    + (f" (e.g. {errs[0]}; last: {errs[-1]})" if errs else "") + "."]
+            rep = run_experiment90_report(svi, px, spy, diag)
+            self.heartbeat._put_file("experiment90_results.md", rep.encode(), "Experiment #90: Google search interest")
+            logger.info("Experiment #90: report pushed")
+        except Exception as e:
+            self._push_failure("90", e)
+        gc.collect()
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2627,7 +2760,10 @@ class TradingBot:
                                   ("run_experiment77_on_start", self._run_exp77),
                                   ("run_experiment78_on_start", self._run_exp77_78_80),
                                   ("run_experiment80_on_start", self._run_exp80),
-                                  ("run_experiment87_on_start", self._run_exp87)) if _b.get(flag, False)]
+                                  ("run_experiment87_on_start", self._run_exp87),
+                                  ("run_experiment89_on_start", self._run_exp89),
+                                  ("run_experiment90_on_start", self._run_exp90),
+                                  ("run_experiment88_on_start", self._run_exp88)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()

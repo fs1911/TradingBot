@@ -368,7 +368,7 @@ def alpaca_symbol(sym: str) -> str:
 
 
 def fetch_alpaca_news(get_json, sym: str, start: str, end: str, max_pages: int = 600, sleep: float = 0.35,
-                      stats: dict | None = None) -> pd.DataFrame:
+                      stats: dict | None = None, classify=None) -> pd.DataFrame:
     """All articles tagged with `sym` → DataFrame [ts (UTC), tone]. get_json(url) → dict."""
     import time as _t
     rows, token = [], None
@@ -386,7 +386,12 @@ def fetch_alpaca_news(get_json, sym: str, start: str, end: str, max_pages: int =
         if stats is not None:
             stats["calls"] = stats.get("calls", 0) + 1
         for a in js.get("news") or []:
-            rows.append((a.get("created_at"), text_tone(f"{a.get('headline', '')} {a.get('summary', '')}")))
+            if classify is None:
+                rows.append((a.get("created_at"), text_tone(f"{a.get('headline', '')} {a.get('summary', '')}")))
+            else:
+                v = classify(a.get("headline", "") or "")
+                if v:
+                    rows.append((a.get("created_at"), v))
         token = js.get("next_page_token")
         _t.sleep(sleep)
         if not token:

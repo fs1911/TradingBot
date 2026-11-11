@@ -90,6 +90,9 @@ bot:
   run_experiment78_on_start: false  # Exp #78 done (2026-10-31): non-SPAC IPOs 3y vs SPY mean -56.5 %, median -101.5 pp, 73 % lose money
   run_experiment80_on_start: false  # Exp #80 closed (2026-10-31): change list found, dates not reliably parseable
   run_experiment76_on_start: false  # Exp #76 done (2026-10-31): vs SPY nothing (cal. portfolio t 1.0); vs own control dates 12M -9.4 % (t -6.9), likely confounded
+  run_experiment88_on_start: true   # #88 analyst rating changes (Benzinga headlines via Alpaca)
+  run_experiment89_on_start: true   # #89 crypto fear & greed + on-chain (BTC/ETH/XRP)
+  run_experiment90_on_start: true   # #90 Google search interest (weekly, 5 y)
   run_experiment87_on_start: false  # Exp #87 done (2026-11-09): news priced in before entry; 0/24 cells after Holm; weekly L/S net -23 %/yr
   run_experiment86_on_start: false  # Exp #86 done (2026-10-31): 0/75 cells significant after Holm; base rates only
 
