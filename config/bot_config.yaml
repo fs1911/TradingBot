@@ -90,7 +90,7 @@ bot:
   run_experiment78_on_start: false  # Exp #78 done (2026-10-31): non-SPAC IPOs 3y vs SPY mean -56.5 %, median -101.5 pp, 73 % lose money
   run_experiment80_on_start: false  # Exp #80 closed (2026-10-31): change list found, dates not reliably parseable
   run_experiment76_on_start: false  # Exp #76 done (2026-10-31): vs SPY nothing (cal. portfolio t 1.0); vs own control dates 12M -9.4 % (t -6.9), likely confounded
-  run_experiment91_on_start: true   # #91 case study Nvidia Oct/Nov 2026
+  run_experiment91_on_start: false  # Exp #91 done (2026-11-11): Nvidia case study
   run_experiment88_on_start: false  # Exp #88 done (2026-11-11): rating changes priced in before entry; 0/16 after Holm
   run_experiment89_on_start: false  # Exp #89 done (2026-11-11): 0/21 after Holm; extreme fear in crypto NOT a buy signal
   run_experiment90_on_start: false  # Exp #90 done (2026-11-11, rerun after look-ahead fix): 0/5 after Holm; L/S net negative
