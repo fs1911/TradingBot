@@ -21,6 +21,7 @@ Experiments #88 – #90 (requested 9.11.2026): data types never tested before.
     (Da, Engelberg & Gao 2011). Stocks: each week long the top 20 % ASVI, short the bottom 20 %,
     hold one week (and 4 weeks), excess vs SPY, gross and net of 10 bp per side. Events: ASVI ≥
     log 2 (search interest doubled) → next 1 / 4 weeks. Crypto: same per coin.
+Weekly values are labelled by the week's start; entry is LAG_DAYS later (look-ahead fix after the first run).
 Pure, injected for CI.
 """
 from __future__ import annotations
@@ -348,6 +349,26 @@ def asvi(svi: pd.Series) -> pd.Series:
     return x - x.shift(1).rolling(8, min_periods=6).median()
 
 
+LAG_DAYS = 8  # weekly value labelled Sunday covers Sun–Sat → usable at Monday's close
+
+
+def _rets(p: pd.Series, bench, d) -> tuple | None:
+    """(move during the labelled week, 1-week and 4-week return after entry), excess vs bench."""
+    e = d + pd.Timedelta(days=LAG_DAYS)
+    if e + pd.Timedelta(days=28) > p.index[-1]:
+        return None
+    a_d, a0, a1, a4 = p.asof(d), p.asof(e), p.asof(e + pd.Timedelta(days=7)), p.asof(e + pd.Timedelta(days=28))
+    if not all(np.isfinite([a_d, a0, a1, a4])) or a0 <= 0 or a_d <= 0:
+        return None
+    r0, r1, r4 = a0 / a_d - 1, a1 / a0 - 1, a4 / a0 - 1
+    if bench is not None:
+        c_d, c0 = bench.asof(d), bench.asof(e)
+        r0 -= c0 / c_d - 1
+        r1 -= bench.asof(e + pd.Timedelta(days=7)) / c0 - 1
+        r4 -= bench.asof(e + pd.Timedelta(days=28)) / c0 - 1
+    return r0, r1, r4
+
+
 def run_experiment90_report(svi: dict, px: dict, spy: pd.Series, diag: list, cost_bp: float = 10.0) -> str:
     from datetime import datetime, timezone
     L = [f"# Experiment #90 — Google search interest ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
@@ -356,10 +377,13 @@ def run_experiment90_report(svi: dict, px: dict, spy: pd.Series, diag: list, cos
     pv = {}
     # events
     L.append("## Search interest doubled (ASVI ≥ log 2) → next 1 / 4 weeks (stocks: vs SPY)")
-    L.append("| group | events | 1 week | 4 weeks | any week 1 / 4 |")
-    L.append("|---|--:|--:|--:|--:|")
+    L.append(f"Google dates each weekly value by the week's START (Sunday) but it covers the whole week, so the signal "
+             f"is usable only after the week ends: entry = close {LAG_DAYS} days after the label (Monday). "
+             f"'during the week' = move from the label date to entry (not tradable).")
+    L.append("| group | events | during the week | 1 week after entry | 4 weeks after entry | any week 1 / 4 |")
+    L.append("|---|--:|--:|--:|--:|--:|")
     for grp in ("stocks", "crypto"):
-        ev1, ev4, b1, b4 = [], [], [], []
+        ev0, ev1, ev4, b1, b4 = [], [], [], [], []
         for k, s in a.items():
             is_c = k.endswith("-USD")
             if (grp == "crypto") != is_c:
@@ -367,23 +391,19 @@ def run_experiment90_report(svi: dict, px: dict, spy: pd.Series, diag: list, cos
             p = px[k]
             bench = None if is_c else spy
             for d in s.index:
-                a0, a1, a4 = p.asof(d), p.asof(d + pd.Timedelta(days=7)), p.asof(d + pd.Timedelta(days=28))
-                if d + pd.Timedelta(days=28) > p.index[-1] or not (np.isfinite(a0) and a0 > 0):
+                r = _rets(p, bench, d)
+                if r is None:
                     continue
-                r1, r4 = a1 / a0 - 1, a4 / a0 - 1
-                if bench is not None:
-                    c0 = bench.asof(d)
-                    r1 -= bench.asof(d + pd.Timedelta(days=7)) / c0 - 1
-                    r4 -= bench.asof(d + pd.Timedelta(days=28)) / c0 - 1
+                r0, r1, r4 = r
                 b1.append(r1); b4.append(r4)
                 if s.get(d, np.nan) >= math.log(2):
-                    ev1.append(r1); ev4.append(r4)
+                    ev0.append(r0); ev1.append(r1); ev4.append(r4)
         if b1:
             for h, e, b in (("1 w", ev1, b1), ("4 w", ev4, b4)):
                 if len(e) >= 10:
                     pv[(grp, "doubled", h)] = boot_p(np.array(b), len(e), float(np.mean(e)))
-            L.append(f"| {grp} | {len(ev1)} | {100*np.mean(ev1):+.2f} % | {100*np.mean(ev4):+.2f} % | "
-                     f"{100*np.mean(b1):+.2f} % / {100*np.mean(b4):+.2f} % |" if ev1 else f"| {grp} | 0 | — | — | — |")
+            L.append(f"| {grp} | {len(ev1)} | {100*np.mean(ev0):+.2f} % | {100*np.mean(ev1):+.2f} % | {100*np.mean(ev4):+.2f} % | "
+                     f"{100*np.mean(b1):+.2f} % / {100*np.mean(b4):+.2f} % |" if ev1 else f"| {grp} | 0 | — | — | — | — |")
     # weekly long/short, stocks
     L.append("")
     stocks = [k for k in a if not k.endswith("-USD")]
@@ -395,14 +415,12 @@ def run_experiment90_report(svi: dict, px: dict, spy: pd.Series, diag: list, cos
             for k in stocks:
                 v = a[k].get(d, np.nan)
                 p = px[k]
-                if not np.isfinite(v) or d + pd.Timedelta(days=28) > p.index[-1]:
+                if not np.isfinite(v):
                     continue
-                a0 = p.asof(d)
-                if not (np.isfinite(a0) and a0 > 0):
+                r = _rets(p, spy, d)
+                if r is None:
                     continue
-                c0 = spy.asof(d)
-                r1 = p.asof(d + pd.Timedelta(days=7)) / a0 - 1 - (spy.asof(d + pd.Timedelta(days=7)) / c0 - 1)
-                r4 = p.asof(d + pd.Timedelta(days=28)) / a0 - 1 - (spy.asof(d + pd.Timedelta(days=28)) / c0 - 1)
+                _, r1, r4 = r
                 sc[k] = (v, r1, r4)
             if len(sc) < 15:
                 continue

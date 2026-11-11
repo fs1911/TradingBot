@@ -76,3 +76,13 @@ def test_trends_parse_and_report():
         svi[f"S{i}"] = pd.Series(np.random.default_rng(30 + i).integers(10, 100, 260) * 1.0, index=weeks)
     rep = run_experiment90_report(svi, px, spy, ["probe"])
     assert "Weekly long top-20 %" in rep and "doubled" in rep
+
+
+def test_trends_no_lookahead():
+    from src.backtest.experiments_88_90 import _rets
+    d = pd.Timestamp("2022-01-02")  # Sunday label
+    idx = pd.date_range("2021-12-01", "2022-03-31", freq="D")
+    p = pd.Series(100.0, index=idx)
+    p[p.index >= pd.Timestamp("2022-01-05")] = 150.0  # jump inside the labelled week
+    r0, r1, r4 = _rets(p, None, d)
+    assert abs(r0 - 0.5) < 1e-9 and r1 == 0 and r4 == 0
