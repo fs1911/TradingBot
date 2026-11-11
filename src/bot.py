@@ -700,6 +700,30 @@ class TradingBot:
             self._push_failure("90", e)
         gc.collect()
 
+    def _run_exp91(self) -> None:
+        """#91 case study Nvidia Oct/Nov 2026: news timeline, trend rules, history, position size."""
+        import gc
+        try:
+            import pandas as _pd
+            from .backtest.experiments_75_79 import fetch_px_divs
+            from .backtest.experiments_87 import fetch_alpaca_news
+            from .backtest.experiments_91 import run_experiment91_report
+            px = fetch_px_divs("NVDA", "2014-01-01", timeout=30)[0]
+            spy = fetch_px_divs("SPY", "2014-01-01", timeout=30)[0]
+            stats = {}
+            arts = fetch_alpaca_news(self._alpaca_get_json(), "NVDA", "2026-09-10T00:00:00Z",
+                                     f"{_pd.Timestamp.today() + _pd.Timedelta(days=1):%Y-%m-%d}T00:00:00Z",
+                                     stats=stats, classify=lambda h: h or None)
+            arts = arts.rename(columns={"tone": "headline"})
+            diag = [f"NVDA prices {px.index.min():%Y-%m-%d}–{px.index.max():%Y-%m-%d}; {len(arts)} NVDA articles since 10.09.2026 "
+                    f"(Alpaca calls {stats.get('calls', 0)}, errors {stats.get('errors', 0)})."]
+            rep = run_experiment91_report(px, spy, arts, diag=diag)
+            self.heartbeat._put_file("experiment91_results.md", rep.encode(), "Experiment #91: Nvidia case study")
+            logger.info("Experiment #91: report pushed")
+        except Exception as e:
+            self._push_failure("91", e)
+        gc.collect()
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2763,7 +2787,8 @@ class TradingBot:
                                   ("run_experiment87_on_start", self._run_exp87),
                                   ("run_experiment89_on_start", self._run_exp89),
                                   ("run_experiment90_on_start", self._run_exp90),
-                                  ("run_experiment88_on_start", self._run_exp88)) if _b.get(flag, False)]
+                                  ("run_experiment88_on_start", self._run_exp88),
+                                  ("run_experiment91_on_start", self._run_exp91)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()

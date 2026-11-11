@@ -50,6 +50,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 | 88 | Analysten-Hoch-/Herabstufungen und Kursziel-Änderungen (Schlagzeilen-Klassen vorab festgelegt) → 1/5/20/60 Tage vs SPY ab Handelstag nach Meldung | Benzinga via Alpaca, 55 US-Aktien, 2016→ | ✔ erledigt |
 | 89 | Krypto: Fear & Greed (Extreme, Niveau) und On-Chain (aktive Adressen, Transaktionen, MVRV) → nächste 7/30/90 Tage | alternative.me, CoinMetrics Community, Yahoo; BTC/ETH/XRP | ✔ erledigt |
 | 90 | Google-Suchinteresse: abnormales Interesse (ASVI) → nächste 1/4 Wochen, Wochen-Long/Short | Google Trends (wöchentlich, 5 J.) | ✔ erledigt (2. Lauf; 1. Lauf hatte Blick in die Zukunft) |
+| 91 | Fallstudie Nvidia Okt./Nov. 2026: News-Zeitachse, wann Trendregeln 🔴 wurden, Gegenprobe über alle NVDA-Einbrüche ≥ 25 % seit 2015, Positionsgrösse | Yahoo, Benzinga via Alpaca | läuft |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
