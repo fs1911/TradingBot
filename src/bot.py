@@ -724,6 +724,34 @@ class TradingBot:
             self._push_failure("91", e)
         gc.collect()
 
+    def _run_universe_probe(self) -> None:
+        """One-off: fetch public Yuh universe lists and dump their table structure. → experiment92_universe_results.md."""
+        import re as _re
+        import html as _html
+        from .backtest.experiments_46 import _get
+        out = ["# Yuh universe probe", ""]
+        for url in ("https://neo-banques.ch/en/yuh-stocks-list.htm", "https://neo-banques.ch/en/yuh-etf.htm",
+                    "https://neo-banques.ch/de/yuh-aktien-liste.htm", "https://liebefinanzen.ch/?p=15174",
+                    "https://liebefinanzen.ch/?p=35121"):
+            try:
+                page = _get(url, timeout=40, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) Chrome/120"})
+                tables = _re.findall(r"<table.*?</table>", page, flags=_re.S | _re.I)
+                out.append(f"## {url}\n{len(page):,} chars, {len(tables)} tables")
+                for ti, t in enumerate(tables[:4]):
+                    rows = _re.findall(r"<tr[^>]*>(.*?)</tr>", t, flags=_re.S | _re.I)
+                    cells = [[_html.unescape(_re.sub(r"<[^>]+>", "", c)).strip()
+                              for c in _re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", r, flags=_re.S | _re.I)] for r in rows]
+                    out.append(f"### table {ti}: {len(rows)} rows")
+                    for c in cells[:8] + (cells[-3:] if len(cells) > 11 else []):
+                        out.append("| " + " | ".join(x[:40] for x in c) + " |")
+            except Exception as e:
+                out.append(f"## {url}\nerror {repr(e)[:120]}")
+            out.append("")
+        try:
+            self.heartbeat._put_file("experiment92_universe_results.md", "\n".join(out).encode(), "Yuh universe probe")
+        except Exception as e:
+            logger.error(f"universe probe push failed: {e}")
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2788,7 +2816,8 @@ class TradingBot:
                                   ("run_experiment89_on_start", self._run_exp89),
                                   ("run_experiment90_on_start", self._run_exp90),
                                   ("run_experiment88_on_start", self._run_exp88),
-                                  ("run_experiment91_on_start", self._run_exp91)) if _b.get(flag, False)]
+                                  ("run_experiment91_on_start", self._run_exp91),
+                                  ("run_universe_probe_on_start", self._run_universe_probe)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
