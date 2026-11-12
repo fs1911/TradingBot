@@ -156,6 +156,7 @@ class TradingBot:
         self._open_trades: dict[str, dict] = {}   # symbol → trade info
         self._last_daily_report: str = ""
         self._last_morning_report: str = ""
+        self._last_scan: str = ""
         self._market_trend: str = "neutral"       # Updated each tick from SPY
         self._cooldown_path = Path(__file__).parent.parent / "logs" / "sl_cooldowns.json"
         self._open_trades_path = Path(__file__).parent.parent / "logs" / "open_trades.json"
@@ -751,6 +752,83 @@ class TradingBot:
             self.heartbeat._put_file("experiment92_universe_results.md", "\n".join(out).encode(), "Yuh universe probe")
         except Exception as e:
             logger.error(f"universe probe push failed: {e}")
+
+    def _run_scanner(self) -> None:
+        """Daily Yuh scanner: colours every Yuh asset with the tested rules, sends changes via Telegram."""
+        import gc
+        import json as _json
+        import time as _time
+        import urllib.request as _ur
+        from pathlib import Path as _P
+        import pandas as _pd
+        from .backtest.experiments_75_79 import fetch_px_divs
+        from .backtest.experiments_64 import fetch_shares, share_changes
+        from .scanner.yuh_scanner import (load_universe, scan, diff_states, format_changes, format_monthly,
+                                          summary_markdown)
+        try:
+            cfg = self.bot_cfg.get("scanner", {})
+            uni = load_universe(cfg.get("universe", "config/yuh_universe.csv"))
+            today = _pd.Timestamp.today().normalize()
+            state_p = _P("logs/scanner_state.json")
+            cache_p = _P("logs/scanner_cache.json")
+            try:
+                state = _json.loads(state_p.read_text())
+            except Exception:
+                state = {}
+            try:
+                cache = _json.loads(cache_p.read_text())
+            except Exception:
+                cache = {}
+            prices, shares, first = {}, {}, {}
+            for a in uni:
+                px, _ = fetch_px_divs(a.yahoo, f"{today.year - 2}-01-01", timeout=20)
+                if len(px):
+                    prices[a.yahoo] = px
+                c = cache.get(a.yahoo, {})
+                if a.kind == "stock" and (not c or c.get("at", "") < f"{today - _pd.Timedelta(days=7):%Y-%m-%d}"):
+                    try:
+                        ch = share_changes(*fetch_shares(a.yahoo))
+                        c["shares"] = {f"{d:%Y-%m-%d}": float(v) for d, v in ch.items()}
+                    except Exception:
+                        c.setdefault("shares", {})
+                    try:
+                        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{a.yahoo}?range=5d&interval=1d"
+                        with _ur.urlopen(_ur.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=15) as r:
+                            ftd = _json.loads(r.read())["chart"]["result"][0]["meta"].get("firstTradeDate")
+                        c["first"] = f"{_pd.to_datetime(int(ftd), unit='s'):%Y-%m-%d}" if ftd else None
+                    except Exception:
+                        c.setdefault("first", None)
+                    c["at"] = f"{today:%Y-%m-%d}"
+                    cache[a.yahoo] = c
+                    _time.sleep(0.3)
+                if c.get("shares"):
+                    shares[a.yahoo] = _pd.Series({_pd.Timestamp(k): v for k, v in c["shares"].items()}).sort_index()
+                if c.get("first"):
+                    first[a.yahoo] = _pd.Timestamp(c["first"])
+            idx = {s: fetch_px_divs(s, f"{today.year - 2}-01-01")[0] for s in ("SPY", "^SSMI", "^GDAXI")}
+            verdicts = scan(uni, prices, shares, first, idx, today)
+            names = {a.yahoo: a.name for a in uni}
+            kinds = {a.yahoo: a.kind for a in uni}
+            new = {k: v.colour for k, v in verdicts.items()}
+            prev = state.get("colours", {})
+            msg = format_changes(diff_states(prev, new), verdicts, names, today)
+            if msg:
+                self.telegram.send(msg)
+            month = f"{today:%Y-%m}"
+            if state.get("last_monthly") != month:
+                self.telegram.send(format_monthly(verdicts, names, kinds, today))
+                state["last_monthly"] = month
+            state["colours"] = new
+            state["at"] = f"{today:%Y-%m-%d}"
+            state_p.parent.mkdir(exist_ok=True)
+            state_p.write_text(_json.dumps(state))
+            cache_p.write_text(_json.dumps(cache))
+            self.heartbeat._put_file("scanner/latest.md", summary_markdown(verdicts, names, kinds, today).encode(),
+                                     f"Yuh scanner {today:%Y-%m-%d}")
+            logger.info(f"Yuh scanner: {len(verdicts)} assets, telegram={'on' if self.telegram.enabled else 'off'}")
+        except Exception as e:
+            logger.error(f"Yuh scanner failed: {e}", exc_info=True)
+        gc.collect()
 
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
@@ -2924,6 +3002,15 @@ class TradingBot:
                     self.journal_syncer.push()
                 except Exception as e:
                     logger.error(f"JournalSync failed: {e}")
+
+        # Yuh scanner once a day at 21:40 UTC (after the US close), in an isolated child process
+        sc = self.bot_cfg.get("scanner", {})
+        if sc.get("enabled", False) and now.hour == sc.get("hour_utc", 21) and now.minute >= sc.get("minute_utc", 40):
+            today = now.strftime("%Y-%m-%d")
+            if self._last_scan != today:
+                self._last_scan = today
+                import threading
+                threading.Thread(target=lambda: self._isolated(self._run_scanner), daemon=True).start()
 
         # Morning report at 03:30 UTC (05:30 Swiss time) — 4-minute window prevents misses
         if now.hour == 3 and 28 <= now.minute <= 31:

@@ -487,6 +487,12 @@ broker: "alpaca"
 # multi-asset trend following (#40/#41). Long-only version, monthly rebalance, no
 # leverage. Expectation (#40, 2006–2025): ~5%/yr, vol ~6.5%, maxDD ~−20% (S&P −55%),
 # weak since 2012 — crash insurance, not a money machine.
+scanner:
+  enabled: false   # switched on once config/yuh_universe.csv exists
+  universe: config/yuh_universe.csv
+  hour_utc: 21
+  minute_utc: 40
+
 portfolio:
   enabled: true                 # on since 2026-09-30 after Exp #44 checked this exact rule
   calendar: SPY                 # trading calendar for aligning ETFs and 24/7 crypto

@@ -12,6 +12,7 @@ on:
       # Experiment reports pushed by the bot must not redeploy it either: that
       # restarted the bot, re-ran the experiment and looped (killing long runs).
       - "experiment*_results.md"
+      - "scanner/**"
 
 jobs:
   # ── Gate 1: tests must pass before anything touches the server ──────────────
@@ -86,6 +87,19 @@ jobs:
               echo "SEC_CONTACT_EMAIL=$SEC_EMAIL" | sudo tee -a .env > /dev/null
               echo "SEC contact configured"
             fi
+
+            # Telegram for the Yuh scanner (repository secrets; never in this public repo)
+            for KEY in TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID; do
+              case "$KEY" in
+                TELEGRAM_BOT_TOKEN) VAL="$(printf '%s' "${{ secrets.TELEGRAM_BOT_TOKEN }}" | tr -d '\r\n ')" ;;
+                TELEGRAM_CHAT_ID)   VAL="$(printf '%s' "${{ secrets.TELEGRAM_CHAT_ID }}" | tr -d '\r\n ')" ;;
+              esac
+              if [ -n "$VAL" ]; then
+                sudo sed -i "/^$KEY=/d" .env || true
+                echo "$KEY=$VAL" | sudo tee -a .env > /dev/null
+                echo "$KEY configured"
+              fi
+            done
 
             sudo systemctl restart tradingbot
             echo "Deploy successful: $(date)"
