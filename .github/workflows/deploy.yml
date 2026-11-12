@@ -89,17 +89,18 @@ jobs:
             fi
 
             # Telegram for the Yuh scanner (repository secrets; never in this public repo)
-            for KEY in TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID; do
-              case "$KEY" in
-                TELEGRAM_BOT_TOKEN) VAL="$(printf '%s' "${{ secrets.TELEGRAM_BOT_TOKEN }}" | tr -d '\r\n ')" ;;
-                TELEGRAM_CHAT_ID)   VAL="$(printf '%s' "${{ secrets.TELEGRAM_CHAT_ID }}" | tr -d '\r\n ')" ;;
-              esac
-              if [ -n "$VAL" ]; then
-                sudo sed -i "/^$KEY=/d" .env || true
-                echo "$KEY=$VAL" | sudo tee -a .env > /dev/null
-                echo "$KEY configured"
-              fi
-            done
+            TG_TOKEN="$(printf '%s' "${{ secrets.TELEGRAM_BOT_TOKEN }}" | tr -d '\r\n ')"
+            if [ -n "$TG_TOKEN" ]; then
+              sudo sed -i '/^TELEGRAM_BOT_TOKEN=/d' .env || true
+              echo "TELEGRAM_BOT_TOKEN=$TG_TOKEN" | sudo tee -a .env > /dev/null
+              echo "Telegram token configured"
+            fi
+            TG_CHAT="$(printf '%s' "${{ secrets.TELEGRAM_CHAT_ID }}" | tr -d '\r\n ')"
+            if [ -n "$TG_CHAT" ]; then
+              sudo sed -i '/^TELEGRAM_CHAT_ID=/d' .env || true
+              echo "TELEGRAM_CHAT_ID=$TG_CHAT" | sudo tee -a .env > /dev/null
+              echo "Telegram chat configured"
+            fi
 
             sudo systemctl restart tradingbot
             echo "Deploy successful: $(date)"
