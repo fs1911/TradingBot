@@ -770,6 +770,11 @@ class TradingBot:
             from .scanner.yuh_scanner import STOCKS_URL, ETF_URL, build_universe, write_universe
             cfg = self.bot_cfg.get("scanner", {})
             today = _pd.Timestamp.today().normalize()
+            try:
+                self.heartbeat._put_file("scanner/status.md", f"scanner started {_pd.Timestamp.utcnow():%Y-%m-%d %H:%M} UTC\n".encode(),
+                                         "Yuh scanner started")
+            except Exception:
+                pass
             upath = _P(cfg.get("universe", "logs/yuh_universe.csv"))
             fresh = upath.exists() and (_time.time() - upath.stat().st_mtime) < 30 * 86400
             if not fresh:
@@ -848,7 +853,13 @@ class TradingBot:
                                      f"Yuh scanner {today:%Y-%m-%d}")
             logger.info(f"Yuh scanner: {len(verdicts)} assets, telegram={'on' if self.telegram.enabled else 'off'}")
         except Exception as e:
+            import traceback as _tb
             logger.error(f"Yuh scanner failed: {e}", exc_info=True)
+            try:
+                self.heartbeat._put_file("scanner/error.md", f"# Yuh scanner failed\n\n```\n{_tb.format_exc()}\n```\n".encode(),
+                                         "Yuh scanner error")
+            except Exception:
+                pass
         gc.collect()
 
     def _run_exp76(self) -> None:
