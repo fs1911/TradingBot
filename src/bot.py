@@ -766,9 +766,30 @@ class TradingBot:
         from .scanner.yuh_scanner import (load_universe, scan, diff_states, format_changes, format_monthly,
                                           summary_markdown)
         try:
+            from .backtest.experiments_46 import _get
+            from .scanner.yuh_scanner import STOCKS_URL, ETF_URL, build_universe, write_universe
             cfg = self.bot_cfg.get("scanner", {})
-            uni = load_universe(cfg.get("universe", "config/yuh_universe.csv"))
             today = _pd.Timestamp.today().normalize()
+            upath = _P(cfg.get("universe", "logs/yuh_universe.csv"))
+            fresh = upath.exists() and (_time.time() - upath.stat().st_mtime) < 30 * 86400
+            if not fresh:
+                ua = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) Chrome/120"}
+
+                def valid(sym):
+                    px, _ = fetch_px_divs(sym, f"{today - _pd.Timedelta(days=40):%Y-%m-%d}", timeout=15)
+                    return len(px) >= 5 and (today - px.index[-1]).days <= 10
+                rows, skipped = build_universe(_get(STOCKS_URL, timeout=40, headers=ua), _get(ETF_URL, timeout=40, headers=ua), valid)
+                if len(rows) >= 50:
+                    upath.parent.mkdir(exist_ok=True)
+                    write_universe(str(upath), rows)
+                    self.heartbeat._put_file("scanner/universe.md", (
+                        f"# Yuh universe ({today:%Y-%m-%d})\n\n{len(rows)} assets with Yahoo prices "
+                        f"({sum(r[2] == 'stock' for r in rows)} stocks, {sum(r[2] == 'etf' for r in rows)} ETFs, "
+                        f"{sum(r[2] == 'crypto' for r in rows)} crypto). Source: neo-banques.ch lists (stocks, ETFs); "
+                        f"crypto = selection of large coins.\n\nNot found on Yahoo ({len(skipped)}): "
+                        + ", ".join(skipped) + "\n\n| name | yahoo | type |\n|---|---|---|\n"
+                        + "\n".join(f"| {n} | {y} | {k} |" for n, y, k in rows)).encode(), "Yuh scanner universe")
+            uni = load_universe(str(upath))
             state_p = _P("logs/scanner_state.json")
             cache_p = _P("logs/scanner_cache.json")
             try:
@@ -816,8 +837,8 @@ class TradingBot:
                 self.telegram.send(msg)
             month = f"{today:%Y-%m}"
             if state.get("last_monthly") != month:
-                self.telegram.send(format_monthly(verdicts, names, kinds, today))
-                state["last_monthly"] = month
+                if self.telegram.send(format_monthly(verdicts, names, kinds, today)):
+                    state["last_monthly"] = month
             state["colours"] = new
             state["at"] = f"{today:%Y-%m-%d}"
             state_p.parent.mkdir(exist_ok=True)
@@ -2895,7 +2916,8 @@ class TradingBot:
                                   ("run_experiment90_on_start", self._run_exp90),
                                   ("run_experiment88_on_start", self._run_exp88),
                                   ("run_experiment91_on_start", self._run_exp91),
-                                  ("run_universe_probe_on_start", self._run_universe_probe)) if _b.get(flag, False)]
+                                  ("run_universe_probe_on_start", self._run_universe_probe),
+                                  ("run_scanner_on_start", self._run_scanner)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()

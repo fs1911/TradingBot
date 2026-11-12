@@ -44,3 +44,23 @@ def test_scan_diff_and_messages(tmp_path):
     kinds = {a.yahoo: a.kind for a in uni}
     assert "Monatsliste" in format_monthly(v, names, kinds, TODAY)
     assert "| 🔴 | Beta |" in summary_markdown(v, names, kinds, TODAY)
+
+
+def test_universe_from_public_lists(tmp_path):
+    from src.scanner.yuh_scanner import build_universe, write_universe, load_universe
+    stocks = ("<table><tr><th></th><th>Company Name</th><th>Stock Market</th><th>Symbol</th><th>Currency</th></tr>"
+              "<tr><td></td><td>3M</td><td>NYSE</td><td>MMM</td><td>USD</td></tr>"
+              "<tr><td></td><td>ABB</td><td>SIX</td><td>ABBN</td><td>CHF</td></tr>"
+              "<tr><td></td><td>Accor</td><td>EURONEXT</td><td>AC</td><td>EUR</td></tr>"
+              "<tr><td></td><td>Berkshire</td><td>NYSE</td><td>BRK.B</td><td>USD</td></tr>"
+              "<tr><td></td><td>Ghost</td><td>SIX</td><td>XXX</td><td>CHF</td></tr></table>")
+    etfs = ("<table><tr><th></th><th>Yuh Designation</th><th>ETF Name</th><th>Ticker</th><th>ISIN</th><th>TER</th></tr>"
+            "<tr><td></td><td>Benchmark: Nasdaq-100</td><td>Invesco EQQQ Nasdaq-100</td><td>EQQQ.USD</td><td>IE0032077012</td><td>0.30%</td></tr></table>")
+    ok = {"MMM", "ABBN.SW", "AC.PA", "BRK-B", "EQQQ.SW", "BTC-USD", "XRP-USD"}
+    rows, skipped = build_universe(stocks, etfs, lambda s: s in ok)
+    ys = [r[1] for r in rows]
+    assert ys[:5] == ["MMM", "ABBN.SW", "AC.PA", "BRK-B", "EQQQ.SW"] and "XRP-USD" in ys
+    assert skipped == ["Ghost (SIX:XXX)"]
+    p = tmp_path / "u.csv"
+    write_universe(str(p), rows)
+    assert len(load_universe(str(p))) == len(rows)

@@ -198,3 +198,104 @@ def summary_markdown(verdicts: dict, names: dict, kinds: dict, day: pd.Timestamp
     for y, v in rows:
         L.append(f"| {v.colour} | {names.get(y, y)} | {y} | {kinds.get(y, '')} | {'; '.join(v.reasons)} |")
     return "\n".join(L)
+
+
+# ── universe from the public Yuh lists (neo-banques.ch, checked on the server) ─────────────
+
+STOCKS_URL = "https://neo-banques.ch/en/yuh-stocks-list.htm"
+ETF_URL = "https://neo-banques.ch/en/yuh-etf.htm"
+EXCHANGE_SUFFIX = {"SIX": [".SW"], "XETR": [".DE"], "XETRA": [".DE"], "NYSE": [""], "NASDAQ": [""], "AMEX": [""],
+                   "EURONEXT": [".PA", ".AS", ".BR", ".LS"], "LSE": [".L"], "MIL": [".MI"], "BME": [".MC"],
+                   "VIE": [".VI"], "OMX": [".ST", ".CO", ".HE"]}
+# Crypto: a selection of large coins; Yuh's own list is in the app (not public as a table).
+CRYPTO = [("Bitcoin", "BTC-USD"), ("Ethereum", "ETH-USD"), ("XRP", "XRP-USD"), ("Solana", "SOL-USD"),
+          ("Cardano", "ADA-USD"), ("Polkadot", "DOT-USD"), ("Chainlink", "LINK-USD"), ("Avalanche", "AVAX-USD"),
+          ("Dogecoin", "DOGE-USD"), ("Litecoin", "LTC-USD"), ("Bitcoin Cash", "BCH-USD"), ("Stellar", "XLM-USD"),
+          ("Uniswap", "UNI7083-USD"), ("Aave", "AAVE-USD"), ("Algorand", "ALGO-USD")]
+
+
+def _cells(table_html: str) -> list:
+    import html as _h
+    import re as _re
+    rows = _re.findall(r"<tr[^>]*>(.*?)</tr>", table_html, flags=_re.S | _re.I)
+    return [[_h.unescape(_re.sub(r"<[^>]+>", "", c)).strip()
+             for c in _re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", r, flags=_re.S | _re.I)] for r in rows]
+
+
+def _first_table(page: str) -> list:
+    import re as _re
+    m = _re.search(r"<table.*?</table>", page, flags=_re.S | _re.I)
+    return _cells(m.group(0)) if m else []
+
+
+def parse_stock_list(page: str) -> list:
+    """→ [(name, exchange, symbol, currency)] from the stock table (header: Company Name / Stock Market / Symbol / Currency)."""
+    rows = _first_table(page)
+    if not rows:
+        return []
+    head = [h.lower() for h in rows[0]]
+    try:
+        i_n = next(i for i, h in enumerate(head) if "company" in h or "firma" in h)
+        i_x = next(i for i, h in enumerate(head) if "market" in h or "börse" in h)
+        i_s = next(i for i, h in enumerate(head) if "symbol" in h)
+        i_c = next(i for i, h in enumerate(head) if "currency" in h or "währung" in h)
+    except StopIteration:
+        return []
+    out = []
+    for r in rows[1:]:
+        if len(r) > max(i_n, i_x, i_s, i_c) and r[i_s]:
+            out.append((r[i_n], r[i_x].upper(), r[i_s].upper(), r[i_c].upper()))
+    return out
+
+
+def parse_etf_list(page: str) -> list:
+    """→ [(name, ticker, isin)] from the ETF table (header: … ETF Name / Ticker / ISIN / TER)."""
+    rows = _first_table(page)
+    if not rows:
+        return []
+    head = [h.lower() for h in rows[0]]
+    try:
+        i_n = next(i for i, h in enumerate(head) if "etf name" in h or h == "name")
+        i_t = next(i for i, h in enumerate(head) if "ticker" in h)
+        i_i = next(i for i, h in enumerate(head) if "isin" in h)
+    except StopIteration:
+        return []
+    return [(r[i_n], r[i_t].upper(), r[i_i].upper()) for r in rows[1:] if len(r) > max(i_n, i_t, i_i) and r[i_t]]
+
+
+def stock_candidates(exchange: str, symbol: str) -> list:
+    base = symbol.replace(".", "-").replace("/", "-").replace(" ", "-")
+    return [base + s for s in EXCHANGE_SUFFIX.get(exchange, ["", ".SW", ".DE", ".PA", ".AS"])]
+
+
+def etf_candidates(ticker: str) -> list:
+    base = ticker.split(".")[0]
+    return [base + ".SW", base, base + ".DE", base + ".L"]
+
+
+def build_universe(stock_page: str, etf_page: str, valid) -> tuple:
+    """valid(symbol) → bool (has recent prices). → (rows [name, yahoo, type], skipped [name])."""
+    rows, skipped, seen = [], [], set()
+    for name, ex, sym, _ in parse_stock_list(stock_page):
+        hit = next((c for c in stock_candidates(ex, sym) if valid(c)), None)
+        if hit and hit not in seen:
+            rows.append((name, hit, "stock")); seen.add(hit)
+        elif not hit:
+            skipped.append(f"{name} ({ex}:{sym})")
+    for name, t, _ in parse_etf_list(etf_page):
+        hit = next((c for c in etf_candidates(t) if valid(c)), None)
+        if hit and hit not in seen:
+            rows.append((name, hit, "etf")); seen.add(hit)
+        elif not hit:
+            skipped.append(f"{name} ({t})")
+    for name, y in CRYPTO:
+        if y not in seen and valid(y):
+            rows.append((name, y, "crypto")); seen.add(y)
+    return rows, skipped
+
+
+def write_universe(path: str, rows: list) -> None:
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["name", "yahoo", "type"])
+        w.writerows(rows)
