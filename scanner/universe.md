@@ -1,8 +1,8 @@
 # Yuh universe (2026-11-12)
 
-343 assets with Yahoo prices (278 stocks, 50 ETFs, 15 crypto). Source: neo-banques.ch lists (stocks, ETFs); crypto = selection of large coins.
+355 assets with Yahoo prices (290 stocks, 50 ETFs, 15 crypto). Source: neo-banques.ch lists (stocks, ETFs); crypto = selection of large coins.
 
-Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYSE:SQ), British Petroleum (NYSE:BP.), Burberry (NASDAQ:BRBY), Curevac (XETR:5CV), Deutsche Post (XETR:DPW), Dufry (SIX:DUFN), Electronic Arts (NASDAQ:EA), Foot Locker (NYSE:FL), GAP (NYSE:GPS), Helvetia (SIX:HELN), Juventus Football Club (BIT:JUVE), Kellanova (NYSE:K), Moncler (BIT:MONC), Nikola (NASDAQ:NKLA), Roche (SIX:ROG), Roku (NASDAQ:ROKU), Samsung (SIX:SMSN), Santander (BME:SANT), Swissquote (SIX:SQ), Warner Bros Discovery (NYSE:WBD), Wish (NASDAQ:WISH), SPDR S&P U.S. Div Aristocrats (AUDVD), iShares FTSE MIB (CSMIB)
+Not found on Yahoo (12): Curevac (XETR:5CV), Electronic Arts (NASDAQ:EA), Foot Locker (NYSE:FL), Kellanova (NYSE:K), Nikola (NASDAQ:NKLA), Roche (SIX:ROG), Roku (NASDAQ:ROKU), Samsung (SIX:SMSN), Warner Bros Discovery (NYSE:WBD), Wish (NASDAQ:WISH), SPDR S&P U.S. Div Aristocrats (AUDVD), iShares FTSE MIB (CSMIB)
 
 | name | yahoo | type |
 |---|---|---|
@@ -35,9 +35,11 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Arm | ARM | stock |
 | Aryzta | ARYN.SW | stock |
 | ASML | ASML.AS | stock |
+| Aston Martin | AML.L | stock |
 | AstraZeneca | AZN | stock |
 | AT&T | T | stock |
 | AXA | CS.PA | stock |
+| Baloise | HBAN.SW | stock |
 | Bank Of America | BAC | stock |
 | Banque Cantonale de Genève | BCGE.SW | stock |
 | Banque Cantonale Vaudoise | BCVN.SW | stock |
@@ -53,6 +55,7 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Birkenstock | BIRK | stock |
 | BKW Energie | BKW.SW | stock |
 | Blackrock | BLK | stock |
+| Block | XYZ | stock |
 | BMW | BMW.DE | stock |
 | BNP Paribas | BNP.PA | stock |
 | Boeing | BA | stock |
@@ -60,7 +63,9 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Borussia Dortmund | BVB.DE | stock |
 | Bossard | BOSN.SW | stock |
 | British American Tobacco | BATS.L | stock |
+| British Petroleum | BP | stock |
 | Bumble | BMBL | stock |
+| Burberry | BRBY.L | stock |
 | Calida | CALN.SW | stock |
 | Carnival | CCL | stock |
 | Caterpillar | CAT | stock |
@@ -86,18 +91,20 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Dell | DELL | stock |
 | Delta Air Lines | DAL | stock |
 | Deutsche Bank | DBK.DE | stock |
+| Deutsche Post | DHL.DE | stock |
 | Deutsche Telekom | DTE.DE | stock |
 | DocMorris | DOCM.SW | stock |
 | Dominos Pizza | DPZ | stock |
+| Dufry | AVOL.SW | stock |
 | E.ON | EOAN.DE | stock |
 | Easyjet | EZJ.L | stock |
 | Ebay | EBAY | stock |
 | Eli Lilly | LLY | stock |
 | Emmi | EMMN.SW | stock |
 | EMS-Chemie | EMSN.SW | stock |
-| Enel | ENEL.SW | stock |
+| Enel | ENEL.MI | stock |
 | Engie | ENGI.PA | stock |
-| Eni | ENI.SW | stock |
+| Eni | ENI.MI | stock |
 | Enphase Energy | ENPH | stock |
 | Estee Lauder | EL | stock |
 | Etsy | ETSY | stock |
@@ -109,6 +116,7 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Flughafen Zurich | FHZN.SW | stock |
 | Ford | F | stock |
 | Fortinet | FTNT | stock |
+| GAP | GAP | stock |
 | Garmin | GRMN | stock |
 | Geberit | GEBN.SW | stock |
 | General Electric | GE | stock |
@@ -144,6 +152,7 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Johnson & Johnson | JNJ | stock |
 | JP Morgan Chase | JPM | stock |
 | Julius Baer | BAER.SW | stock |
+| Juventus Football Club | JUVE.MI | stock |
 | Kering | KER.PA | stock |
 | Kimberly-Clark | KMB | stock |
 | Kraft Heinz | KHC | stock |
@@ -173,6 +182,7 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Micron Technology | MU | stock |
 | Microsoft | MSFT | stock |
 | Moderna | MRNA | stock |
+| Moncler | MONC.MI | stock |
 | Mondelez | MDLZ | stock |
 | Monster | MNST | stock |
 | Moodys | MCO | stock |
@@ -217,6 +227,7 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Salesforce | CRM | stock |
 | Sandoz | SDZ.SW | stock |
 | Sanofi | SAN.PA | stock |
+| Santander | SAN.MC | stock |
 | SAP | SAP.DE | stock |
 | Schindler | SCHN.SW | stock |
 | ServiceNow | NOW | stock |
@@ -242,6 +253,7 @@ Not found on Yahoo (25): Aston Martin (NYSE:AML), Baloise (SIX:BALN), Block (NYS
 | Swiss Prime Site | SPSN.SW | stock |
 | Swiss Re | SREN.SW | stock |
 | Swisscom | SCMN.SW | stock |
+| Swissquote | SQN.SW | stock |
 | Take Two | TTWO | stock |
 | Target | TGT | stock |
 | TeamViewer | TMV.DE | stock |
