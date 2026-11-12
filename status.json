@@ -1,56 +1,56 @@
 {
-  "updated_utc": "2026-11-12 17:42:38",
+  "updated_utc": "2026-11-12 18:43:24",
   "alive": true,
   "state": "active",
-  "uptime_hours": 9.1,
+  "uptime_hours": 10.1,
   "open_positions": 6,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -8437.97,
-  "unrealized_pnl_usd": -972.06,
-  "total_pnl_usd": -9410.03,
-  "equity_usd": 59074.96,
+  "realized_pnl_usd": -8437.45,
+  "unrealized_pnl_usd": -938.92,
+  "total_pnl_usd": -9376.37,
+  "equity_usd": 59108.62,
   "market_trend": "neutral",
   "positions": [
     {
       "symbol": "DBC",
       "side": "buy",
       "qty": 412.2313,
-      "unrealized_usd": -783.33
+      "unrealized_usd": -744.17
     },
     {
       "symbol": "EFA",
       "side": "buy",
       "qty": 72.2277,
-      "unrealized_usd": 0.82
+      "unrealized_usd": -12.19
     },
     {
       "symbol": "IWM",
       "side": "buy",
       "qty": 21.3611,
-      "unrealized_usd": -13.12
+      "unrealized_usd": -28.07
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 17.8681,
-      "unrealized_usd": -88.34
+      "unrealized_usd": -107.54
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 37.8381,
-      "unrealized_usd": -404.77
+      "unrealized_usd": -358.99
     },
     {
       "symbol": "UUP",
       "side": "buy",
       "qty": 469.7986,
-      "unrealized_usd": 316.68
+      "unrealized_usd": 312.03
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -8705.16,
+  "journal_gap_usd": -8704.64,
   "broker_fees_usd": 6299.82,
   "broker_fee_entries": 9595
 }
