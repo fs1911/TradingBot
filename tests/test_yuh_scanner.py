@@ -64,3 +64,10 @@ def test_universe_from_public_lists(tmp_path):
     p = tmp_path / "u.csv"
     write_universe(str(p), rows)
     assert len(load_universe(str(p))) == len(rows)
+
+
+def test_aliases_and_bit():
+    from src.scanner.yuh_scanner import stock_candidates
+    assert stock_candidates("NYSE", "SQ")[0] == "XYZ"
+    assert stock_candidates("BIT", "MONC") == ["MONC.MI"]
+    assert stock_candidates("NYSE", "BP.")[0] == "BP"

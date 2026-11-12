@@ -206,7 +206,11 @@ STOCKS_URL = "https://neo-banques.ch/en/yuh-stocks-list.htm"
 ETF_URL = "https://neo-banques.ch/en/yuh-etf.htm"
 EXCHANGE_SUFFIX = {"SIX": [".SW"], "XETR": [".DE"], "XETRA": [".DE"], "NYSE": [""], "NASDAQ": [""], "AMEX": [""],
                    "EURONEXT": [".PA", ".AS", ".BR", ".LS"], "LSE": [".L"], "MIL": [".MI"], "BME": [".MC"],
-                   "VIE": [".VI"], "OMX": [".ST", ".CO", ".HE"]}
+                   "VIE": [".VI"], "OMX": [".ST", ".CO", ".HE"], "BIT": [".MI"]}
+# Renamed / moved listings (list symbol → Yahoo symbols to try first)
+ALIASES = {("NYSE", "SQ"): ["XYZ"], ("SIX", "SQ"): ["SQN.SW"], ("BME", "SANT"): ["SAN.MC"], ("XETR", "DPW"): ["DHL.DE"],
+           ("SIX", "DUFN"): ["AVOL.SW"], ("NYSE", "BP."): ["BP"], ("SIX", "BALN"): ["HBAN.SW"], ("SIX", "HELN"): ["HBAN.SW"],
+           ("NYSE", "GPS"): ["GAP"], ("NASDAQ", "BRBY"): ["BRBY.L"], ("NYSE", "AML"): ["AML.L"]}
 # Crypto: a selection of large coins; Yuh's own list is in the app (not public as a table).
 CRYPTO = [("Bitcoin", "BTC-USD"), ("Ethereum", "ETH-USD"), ("XRP", "XRP-USD"), ("Solana", "SOL-USD"),
           ("Cardano", "ADA-USD"), ("Polkadot", "DOT-USD"), ("Chainlink", "LINK-USD"), ("Avalanche", "AVAX-USD"),
@@ -264,8 +268,8 @@ def parse_etf_list(page: str) -> list:
 
 
 def stock_candidates(exchange: str, symbol: str) -> list:
-    base = symbol.replace(".", "-").replace("/", "-").replace(" ", "-")
-    return [base + s for s in EXCHANGE_SUFFIX.get(exchange, ["", ".SW", ".DE", ".PA", ".AS"])]
+    base = symbol.rstrip(".").replace(".", "-").replace("/", "-").replace(" ", "-")
+    return ALIASES.get((exchange, symbol), []) + [base + s for s in EXCHANGE_SUFFIX.get(exchange, ["", ".SW", ".DE", ".PA", ".AS"])]
 
 
 def etf_candidates(ticker: str) -> list:

@@ -781,8 +781,12 @@ class TradingBot:
                 ua = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) Chrome/120"}
 
                 def valid(sym):
-                    px, _ = fetch_px_divs(sym, f"{today - _pd.Timedelta(days=40):%Y-%m-%d}", timeout=15)
-                    return len(px) >= 5 and (today - px.index[-1]).days <= 10
+                    for attempt in range(2):  # one retry: transient Yahoo errors dropped e.g. Roche in the first run
+                        px, _ = fetch_px_divs(sym, f"{today - _pd.Timedelta(days=40):%Y-%m-%d}", timeout=15)
+                        if len(px) >= 5:
+                            return (today - px.index[-1]).days <= 10
+                        _time.sleep(1.0)
+                    return False
                 rows, skipped = build_universe(_get(STOCKS_URL, timeout=40, headers=ua), _get(ETF_URL, timeout=40, headers=ua), valid)
                 if len(rows) >= 50:
                     upath.parent.mkdir(exist_ok=True)
