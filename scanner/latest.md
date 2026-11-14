@@ -1,17 +1,15 @@
-# Yuh-Scanner 2026-11-13
+# Yuh-Scanner 2026-11-14
 
-98 🟢 · 115 🟡 · 142 🔴 of 355
+96 🟢 · 115 🟡 · 144 🔴 of 355
 
 | | name | symbol | type | reasons |
 |---|---|---|---|---|
 | 🟢 | AB InBev | ABI.BR | stock | Trend intakt (+13 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 84 % der gescannten Aktien |
 | 🟢 | AMD | AMD | stock | Trend intakt (+26 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 98 % der gescannten Aktien |
-| 🟢 | Aave | AAVE-USD | crypto | Trend intakt (+2 % zur 200-Tage-Linie) |
 | 🟢 | Airbnb | ABNB | stock | Trend intakt (+25 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.4 % Aktien in 12 M 👍; Momentum: stärker als 85 % der gescannten Aktien |
 | 🟢 | Altria | MO | stock | Trend intakt (+15 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -2.0 % Aktien in 12 M 👍; Momentum: stärker als 80 % der gescannten Aktien |
 | 🟢 | Amgen | AMGN | stock | Trend intakt (+23 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 77 % der gescannten Aktien |
 | 🟢 | Apple | AAPL | stock | Trend intakt (+18 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 71 % der gescannten Aktien |
-| 🟢 | Avalanche | AVAX-USD | crypto | Trend intakt (+3 % zur 200-Tage-Linie) |
 | 🟢 | BASF | BAS.DE | stock | Trend intakt (+8 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 72 % der gescannten Aktien |
 | 🟢 | BNP Paribas | BNP.PA | stock | Trend intakt (+4 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 85 % der gescannten Aktien |
 | 🟢 | Banque Cantonale Vaudoise | BCVN.SW | stock | Trend intakt (+15 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 83 % der gescannten Aktien |
@@ -20,7 +18,7 @@
 | 🟢 | Bayer | BAYN.DE | stock | Trend intakt (+28 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 92 % der gescannten Aktien |
 | 🟢 | Berner Kantonalbank | BEKN.SW | stock | Trend intakt (+21 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 92 % der gescannten Aktien |
 | 🟢 | Bossard | BOSN.SW | stock | Trend intakt (+34 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 94 % der gescannten Aktien |
-| 🟢 | British Petroleum | BP | stock | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -5.4 % Aktien in 12 M 👍; Momentum: stärker als 81 % der gescannten Aktien |
+| 🟢 | British Petroleum | BP | stock | Trend intakt (+8 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -5.4 % Aktien in 12 M 👍; Momentum: stärker als 81 % der gescannten Aktien |
 | 🟢 | Bumble | BMBL | stock | Trend intakt (+72 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -8.9 % Aktien in 12 M 👍; Momentum: stärker als 90 % der gescannten Aktien |
 | 🟢 | Chevron | CVX | stock | Trend intakt (+13 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 88 % der gescannten Aktien |
 | 🟢 | Clariant | CLN.SW | stock | Trend intakt (+28 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 93 % der gescannten Aktien |
@@ -44,9 +42,9 @@
 | 🟢 | Hasbro | HAS | stock | Trend intakt (+29 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 73 % der gescannten Aktien |
 | 🟢 | ING | INGA.AS | stock | Trend intakt (+12 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -7.4 % Aktien in 12 M 👍; Momentum: stärker als 86 % der gescannten Aktien |
 | 🟢 | Invesco MSCI USA ESG | ESGU.SW | etf | Trend intakt (+3 % zur 200-Tage-Linie); Marktlage ok |
-| 🟢 | Invesco MSCI World ESG | ESGW.SW | etf | Trend intakt (+4 % zur 200-Tage-Linie); Marktlage ok |
+| 🟢 | Invesco MSCI World ESG | ESGW.SW | etf | Trend intakt (+2 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | Invesco S&P US Financials | XLFS.SW | etf | Trend intakt (+9 % zur 200-Tage-Linie); Marktlage ok |
-| 🟢 | Invesco S&P US Materials | XLBS.SW | etf | Trend intakt (+4 % zur 200-Tage-Linie); Marktlage ok |
+| 🟢 | Invesco S&P US Materials | XLBS.SW | etf | Trend intakt (+3 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | John Deere | DE | stock | Trend intakt (+10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 81 % der gescannten Aktien |
 | 🟢 | Johnson & Johnson | JNJ | stock | Trend intakt (+15 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 78 % der gescannten Aktien |
 | 🟢 | Julius Baer | BAER.SW | stock | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 72 % der gescannten Aktien |
@@ -82,8 +80,8 @@
 | 🟢 | Total Energies | TTE.PA | stock | Trend intakt (+11 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.9 % Aktien in 12 M 👍; Momentum: stärker als 90 % der gescannten Aktien |
 | 🟢 | UBS | UBSG.SW | stock | Trend intakt (+7 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 76 % der gescannten Aktien |
 | 🟢 | UBS ETF CH SMIM | SMMCHA.SW | etf | Trend intakt (+7 % zur 200-Tage-Linie); Marktlage ok |
-| 🟢 | UBS MSCI Canada | CANCDA.SW | etf | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok |
-| 🟢 | Uniswap | UNI7083-USD | crypto | Trend intakt (+16 % zur 200-Tage-Linie) |
+| 🟢 | UBS MSCI Canada | CANCDA.SW | etf | Trend intakt (+5 % zur 200-Tage-Linie); Marktlage ok |
+| 🟢 | USA | XDGU.SW | etf | Trend intakt (+1 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | Vanguard FTSE 100 | VUKE.SW | etf | Trend intakt (+7 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | Vanguard FTSE All-World | VWRD.L | etf | Trend intakt (+1 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | Vanguard FTSE All-World CHF | VWRL.SW | etf | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok |
@@ -93,7 +91,7 @@
 | 🟢 | Vontobel | VONN.SW | stock | Trend intakt (+22 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 91 % der gescannten Aktien |
 | 🟢 | X DAX | DBXD.DE | etf | Trend intakt (+7 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | X MSCI Nordic | XDN0.SW | etf | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok |
-| 🟢 | X Spain 1C | XESP | etf | Trend intakt (+149 % zur 200-Tage-Linie); Marktlage ok |
+| 🟢 | X Spain 1C | XESP | etf | Trend intakt (+146 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | iShares Global Infra | INFR.SW | etf | Trend intakt (+3 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | iShares MSCI Australia | SAUS.SW | etf | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok |
 | 🟢 | iShares MSCI PACIF X-JP | CSPXJ.SW | etf | Trend intakt (+1 % zur 200-Tage-Linie); Marktlage ok |
@@ -223,9 +221,10 @@
 | 🔴 | ABB | ABBN.SW | stock | Trend gebrochen (-9 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 79 % der gescannten Aktien |
 | 🔴 | ASML | ASML.AS | stock | Trend gebrochen (-4 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 95 % der gescannten Aktien |
 | 🔴 | AT&T | T | stock | Trend gebrochen (-9 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 30 % der gescannten Aktien |
+| 🔴 | Aave | AAVE-USD | crypto | Trend gebrochen (-9 % zur 200-Tage-Linie) |
 | 🔴 | Accelleron | ACLN.SW | stock | Trend gebrochen (-10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 51 % der gescannten Aktien |
 | 🔴 | Adobe | ADBE | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -5.1 % Aktien in 12 M 👍; Momentum: stärker als 13 % der gescannten Aktien |
-| 🔴 | Algorand | ALGO-USD | crypto | Trend gebrochen (-14 % zur 200-Tage-Linie) |
+| 🔴 | Algorand | ALGO-USD | crypto | Trend gebrochen (-22 % zur 200-Tage-Linie) |
 | 🔴 | Alphabet (Google) | GOOG | stock | Trend gebrochen (-13 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 66 % der gescannten Aktien |
 | 🔴 | Alstom | ALO.PA | stock | Trend gebrochen (-45 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 10 % der gescannten Aktien |
 | 🔴 | American Airlines | AAL | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -8.5 % Aktien in 12 M 👍; Momentum: stärker als 26 % der gescannten Aktien |
@@ -235,6 +234,7 @@
 | 🔴 | Arm | ARM | stock | Trend gebrochen (-18 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 94 % der gescannten Aktien |
 | 🔴 | Aryzta | ARYN.SW | stock | Trend gebrochen (-17 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 16 % der gescannten Aktien |
 | 🔴 | Aston Martin | AML.L | stock | Trend gebrochen (-18 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +18.0 % Aktien in 12 M; Momentum: stärker als 5 % der gescannten Aktien |
+| 🔴 | Avalanche | AVAX-USD | crypto | Trend gebrochen (-11 % zur 200-Tage-Linie) |
 | 🔴 | BHP | BHP.L | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 87 % der gescannten Aktien |
 | 🔴 | BKW Energie | BKW.SW | stock | Trend gebrochen (-6 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 12 % der gescannten Aktien |
 | 🔴 | BMW | BMW.DE | stock | Trend gebrochen (-14 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -2.2 % Aktien in 12 M 👍; Momentum: stärker als 7 % der gescannten Aktien |
@@ -242,17 +242,17 @@
 | 🔴 | Beyond Meat | BYND | stock | Trend gebrochen (-70 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 1 % der gescannten Aktien |
 | 🔴 | Biontech | BNTX | stock | Trend gebrochen (-11 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 17 % der gescannten Aktien |
 | 🔴 | Birkenstock | BIRK | stock | Trend gebrochen (-5 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 22 % der gescannten Aktien |
-| 🔴 | Bitcoin | BTC-USD | crypto | Trend gebrochen (-7 % zur 200-Tage-Linie) |
-| 🔴 | Bitcoin Cash | BCH-USD | crypto | Trend gebrochen (-18 % zur 200-Tage-Linie) |
+| 🔴 | Bitcoin | BTC-USD | crypto | Trend gebrochen (-11 % zur 200-Tage-Linie) |
+| 🔴 | Bitcoin Cash | BCH-USD | crypto | Trend gebrochen (-25 % zur 200-Tage-Linie) |
 | 🔴 | Blackrock | BLK | stock | Trend intakt (+15 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +6.1 % Aktien in 12 M; Momentum: stärker als 42 % der gescannten Aktien |
 | 🔴 | Boeing | BA | stock | Trend gebrochen (-20 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +17.8 % Aktien in 12 M; Momentum: stärker als 31 % der gescannten Aktien |
 | 🔴 | Booking | BKNG | stock | Trend gebrochen (-8 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -4.2 % Aktien in 12 M 👍; Momentum: stärker als 17 % der gescannten Aktien |
 | 🔴 | CSI300 | XCHA.SW | etf | Trend gebrochen (-4 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | Calida | CALN.SW | stock | Trend gebrochen (-7 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -13.2 % Aktien in 12 M 👍; Momentum: stärker als 55 % der gescannten Aktien |
-| 🔴 | Cardano | ADA-USD | crypto | Trend gebrochen (-18 % zur 200-Tage-Linie) |
+| 🔴 | Cardano | ADA-USD | crypto | Trend gebrochen (-27 % zur 200-Tage-Linie) |
 | 🔴 | Caterpillar | CAT | stock | Trend gebrochen (-25 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.5 % Aktien in 12 M 👍; Momentum: stärker als 74 % der gescannten Aktien |
 | 🔴 | Cembra | CMBN.SW | stock | Trend gebrochen (-6 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 36 % der gescannten Aktien |
-| 🔴 | Chainlink | LINK-USD | crypto | Trend gebrochen (-2 % zur 200-Tage-Linie) |
+| 🔴 | Chainlink | LINK-USD | crypto | Trend gebrochen (-12 % zur 200-Tage-Linie) |
 | 🔴 | Christian Dior | CDI.PA | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 15 % der gescannten Aktien |
 | 🔴 | Cisco | CSCO | stock | Trend gebrochen (-6 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 89 % der gescannten Aktien |
 | 🔴 | Citigroup | C | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.5 % Aktien in 12 M 👍; Momentum: stärker als 68 % der gescannten Aktien |
@@ -260,11 +260,11 @@
 | 🔴 | Comcast | CMCSA | stock | Trend gebrochen (-0 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -5.1 % Aktien in 12 M 👍; Momentum: stärker als 24 % der gescannten Aktien |
 | 🔴 | Crédit Agricole | ACA.PA | stock | Trend gebrochen (-4 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 50 % der gescannten Aktien |
 | 🔴 | Deutsche Telekom | DTE.DE | stock | Trend gebrochen (-6 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 32 % der gescannten Aktien |
-| 🔴 | Dogecoin | DOGE-USD | crypto | Trend gebrochen (-24 % zur 200-Tage-Linie) |
+| 🔴 | Dogecoin | DOGE-USD | crypto | Trend gebrochen (-32 % zur 200-Tage-Linie) |
 | 🔴 | Emerging Markets | VDEA.L | etf | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | Engie | ENGI.PA | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 52 % der gescannten Aktien |
 | 🔴 | Enphase Energy | ENPH | stock | Trend gebrochen (-36 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.7 % Aktien in 12 M 👍; Momentum: stärker als 37 % der gescannten Aktien |
-| 🔴 | Ethereum | ETH-USD | crypto | Trend gebrochen (-10 % zur 200-Tage-Linie) |
+| 🔴 | Ethereum | ETH-USD | crypto | Trend gebrochen (-16 % zur 200-Tage-Linie) |
 | 🔴 | Europe | EUN5.DE | etf | Trend gebrochen (-0 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | Eurozone | VGEA.DE | etf | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | Expedia | EXPE | stock | Trend gebrochen (-0 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -4.3 % Aktien in 12 M 👍; Momentum: stärker als 46 % der gescannten Aktien |
@@ -293,7 +293,7 @@
 | 🔴 | Kering | KER.PA | stock | Trend gebrochen (-24 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 9 % der gescannten Aktien |
 | 🔴 | LVMH | MC.PA | stock | Trend gebrochen (-12 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 7 % der gescannten Aktien |
 | 🔴 | Lindt | LISN.SW | stock | Trend gebrochen (-10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 8 % der gescannten Aktien |
-| 🔴 | Litecoin | LTC-USD | crypto | Trend gebrochen (-5 % zur 200-Tage-Linie) |
+| 🔴 | Litecoin | LTC-USD | crypto | Trend gebrochen (-14 % zur 200-Tage-Linie) |
 | 🔴 | Lloyds Banking | LLOY.L | stock | Trend gebrochen (-5 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.6 % Aktien in 12 M 👍; Momentum: stärker als 58 % der gescannten Aktien |
 | 🔴 | Lucid motors | LCID | stock | Trend gebrochen (-54 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +28.2 % Aktien in 12 M; Momentum: stärker als 0 % der gescannten Aktien |
 | 🔴 | Lululemon | LULU | stock | Trend gebrochen (-19 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.9 % Aktien in 12 M 👍; Momentum: stärker als 4 % der gescannten Aktien |
@@ -316,7 +316,7 @@
 | 🔴 | Partners Group | PGHN.SW | stock | Trend gebrochen (-11 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 6 % der gescannten Aktien |
 | 🔴 | Pinterest | PINS | stock | Trend gebrochen (-6 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 19 % der gescannten Aktien |
 | 🔴 | Plug Power | PLUG | stock | Trend gebrochen (-53 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +46.1 % Aktien in 12 M; Momentum: stärker als 3 % der gescannten Aktien |
-| 🔴 | Polkadot | DOT-USD | crypto | Trend gebrochen (-19 % zur 200-Tage-Linie) |
+| 🔴 | Polkadot | DOT-USD | crypto | Trend gebrochen (-29 % zur 200-Tage-Linie) |
 | 🔴 | Realty Income | O | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +5.2 % Aktien in 12 M; Momentum: stärker als 39 % der gescannten Aktien |
 | 🔴 | Reddit | RDDT | stock | Trend gebrochen (-36 % zur 200-Tage-Linie); Marktlage ok; Börsengang vor < 3 Jahren (03.2024) — 73 % lagen nach 3 J. im Minus (#78); Verwässerung +38.9 % Aktien in 12 M; Momentum: stärker als 15 % der gescannten Aktien |
 | 🔴 | Rio Tinto | RIO | stock | Trend gebrochen (-12 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 78 % der gescannten Aktien |
@@ -326,9 +326,9 @@
 | 🔴 | ServiceNow | NOW | stock | Trend gebrochen (-10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 22 % der gescannten Aktien |
 | 🔴 | Siemens Energy | ENR.DE | stock | Trend gebrochen (-14 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -2.0 % Aktien in 12 M 👍; Momentum: stärker als 66 % der gescannten Aktien |
 | 🔴 | Snapchat | SNAP | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 10 % der gescannten Aktien |
-| 🔴 | Solana | SOL-USD | crypto | Trend gebrochen (-11 % zur 200-Tage-Linie) |
+| 🔴 | Solana | SOL-USD | crypto | Trend gebrochen (-21 % zur 200-Tage-Linie) |
 | 🔴 | Stellantis | STLA | stock | Trend gebrochen (-39 % zur 200-Tage-Linie); Marktlage ok; Rückkauf -3.0 % Aktien in 12 M 👍; Momentum: stärker als 1 % der gescannten Aktien |
-| 🔴 | Stellar | XLM-USD | crypto | Trend gebrochen (-19 % zur 200-Tage-Linie) |
+| 🔴 | Stellar | XLM-USD | crypto | Trend gebrochen (-26 % zur 200-Tage-Linie) |
 | 🔴 | Swatch Group | UHR.SW | stock | Trend intakt (+4 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +16.3 % Aktien in 12 M; Momentum: stärker als 45 % der gescannten Aktien |
 | 🔴 | Swissquote | SQN.SW | stock | Trend gebrochen (-10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 12 % der gescannten Aktien |
 | 🔴 | Switzerland | CHCORP.SW | etf | Trend gebrochen (-0 % zur 200-Tage-Linie); Marktlage ok |
@@ -339,10 +339,10 @@
 | 🔴 | Tesla | TSLA | stock | Trend intakt (+2 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +16.6 % Aktien in 12 M; Momentum: stärker als 20 % der gescannten Aktien |
 | 🔴 | Tui | TUI1.DE | stock | Trend intakt (+6 % zur 200-Tage-Linie); Marktlage ok; Verwässerung +8.0 % Aktien in 12 M; Momentum: stärker als 24 % der gescannten Aktien |
 | 🔴 | UBS SXI RE Funds | SRECHA.SW | etf | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok |
-| 🔴 | USA | XDGU.SW | etf | Trend gebrochen (-19 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | Uber | UBER | stock | Trend gebrochen (-4 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 14 % der gescannten Aktien |
 | 🔴 | Ubisoft | UBI.PA | stock | Trend gebrochen (-11 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 12 % der gescannten Aktien |
 | 🔴 | Under Armour | UAA | stock | Trend gebrochen (-17 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 38 % der gescannten Aktien |
+| 🔴 | Uniswap | UNI7083-USD | crypto | Trend gebrochen (-3 % zur 200-Tage-Linie) |
 | 🔴 | VAT Group | VACN.SW | stock | Trend gebrochen (-10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 97 % der gescannten Aktien |
 | 🔴 | Vale | VALE | stock | Trend gebrochen (-24 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 54 % der gescannten Aktien |
 | 🔴 | Valiant | VATN.SW | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 51 % der gescannten Aktien |
@@ -352,8 +352,8 @@
 | 🔴 | WW (Weight Watchers) | WW | stock | Trend gebrochen (-33 % zur 200-Tage-Linie); Marktlage ok; Börsengang vor < 3 Jahren (06.2025) — 73 % lagen nach 3 J. im Minus (#78); Momentum: stärker als 2 % der gescannten Aktien |
 | 🔴 | Wise | WISE | stock | Trend gebrochen (-20 % zur 200-Tage-Linie); Marktlage ok; Börsengang vor < 3 Jahren (12.2023) — 73 % lagen nach 3 J. im Minus (#78); Momentum: stärker als 16 % der gescannten Aktien |
 | 🔴 | World | VAGX.SW | etf | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok |
-| 🔴 | X NIKKEI225 | XNJP.SW | etf | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage ok |
-| 🔴 | XRP | XRP-USD | crypto | Trend gebrochen (-20 % zur 200-Tage-Linie) |
+| 🔴 | X NIKKEI225 | XNJP.SW | etf | Trend gebrochen (-3 % zur 200-Tage-Linie); Marktlage ok |
+| 🔴 | XRP | XRP-USD | crypto | Trend gebrochen (-27 % zur 200-Tage-Linie) |
 | 🔴 | ZKB Gold | ZGLD.SW | etf | Trend gebrochen (-9 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | ZKB Silver | ZSIL.SW | etf | Trend gebrochen (-24 % zur 200-Tage-Linie); Marktlage ok |
 | 🔴 | ams Osram | AMS.SW | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 97 % der gescannten Aktien |
