@@ -155,7 +155,8 @@ def format_changes(changes: list, verdicts: dict, names: dict, day: pd.Timestamp
     if len(changes) > limit:
         lines.append(f"… und {len(changes) - limit} weitere")
     lines.append("")
-    lines.append("<i>Regeln aus der Forschung, keine Prognose. Im Einzelfall oft falsch; Vorteil nur über viele Fälle.</i>")
+    lines.append("<i>Backtest 2010–2026 (#92): 🔴-Aktien stürzten etwa doppelt so oft ab (12 M ≤ −40 %: 8,2 % vs 4,3 % bei 🟢). "
+                 "🟢 ist aber KEIN Kaufsignal — eine reine 🟢-Auswahl brachte weniger als der Gesamtmarkt. Warnung, keine Prognose.</i>")
     return "\n".join(lines)
 
 
@@ -164,7 +165,7 @@ def format_monthly(verdicts: dict, names: dict, kinds: dict, day: pd.Timestamp, 
     g.sort(key=lambda x: -(x[1].info.get("mom_pct") or 0))
     reds = sum(1 for v in verdicts.values() if v.colour == RED)
     lines = [f"📅 <b>Monatsliste {day:%m.%Y}</b> — {sum(1 for v in verdicts.values() if v.colour == GREEN)} 🟢, "
-             f"{reds} 🔴 von {len(verdicts)} Titeln", "", "Stärkste 🟢-Aktien (Kandidaten, kein Kaufbefehl):"]
+             f"{reds} 🔴 von {len(verdicts)} Titeln", "", "Stärkste 🟢-Aktien (nur zur Info — im Backtest #92 schlug eine 🟢-Auswahl den Markt NICHT):"]
     for y, v in g[:top]:
         sc = v.info.get("share_ch")
         extra = f", Aktien {100*sc:+.1f} %" if sc is not None and np.isfinite(sc) else ""
@@ -172,7 +173,8 @@ def format_monthly(verdicts: dict, names: dict, kinds: dict, day: pd.Timestamp, 
     if not g:
         lines.append("• keine — Marktlage oder Trends erlauben derzeit keine Kauf-Kandidaten")
     lines.append("")
-    lines.append("<i>Streuen (max. 5–10 % pro Titel), Kosten beachten, nicht alles auf einmal.</i>")
+    lines.append("<i>Belastbar ist nur die Warnfunktion: vor dem Kauf eines 🔴-Titels zweimal überlegen. "
+                 "Für Rendite bleibt ein breiter Welt-ETF der Massstab. Max. 5–10 % pro Einzeltitel.</i>")
     return "\n".join(lines)
 
 
