@@ -53,6 +53,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 | 91 | Fallstudie Nvidia Okt./Nov. 2026: News-Zeitachse, wann Trendregeln 🔴 wurden, Gegenprobe über alle NVDA-Einbrüche ≥ 25 % seit 2015, Positionsgrösse | Yahoo, Benzinga via Alpaca | ✔ erledigt |
 | 92 | Backtest der Scanner-Ampel als Ganzes (exakt die Live-Regel): 🟢/🟡/🔴 → 1/3/12 M vs SPY, Absturzquote, Monatsportfolios brutto/netto (0,1 % und 0,5 % pro Seite), 🟢−🔴 mit t, Hälften ≤2017/2018→ | SEC + Yahoo, US Large Caps 2010→ | ✔ erledigt |
 | 93 | „Dem Staatsgeld folgen“: Themen-ETFs/-Aktien nach grossen Politik-Ankündigungen (Chips, IRA, Infrastruktur, Rüstung, Cannabis, KI, Nuklear, Seltene Erden, Bitcoin-Reserve, Drohnen) — Vorlauf 6 M, +1 M/+1 J/+3 J vs SPY, grösster Rückschlag | Yahoo, 13 vorab festgelegte Ereignisse | ✔ erledigt |
+| 94 | Zweite-Ordnung-Ketten (KI→Strom/Netz/Uran u. a.): folgt das nächste Glied verzögert? Lead-lag, Placebo, Regel nach Kosten | Yahoo, 12 vorab festgelegte Ketten | ✔ erledigt |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |

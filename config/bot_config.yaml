@@ -92,7 +92,7 @@ bot:
   run_experiment76_on_start: false  # Exp #76 done (2026-10-31): vs SPY nothing (cal. portfolio t 1.0); vs own control dates 12M -9.4 % (t -6.9), likely confounded
   run_universe_probe_on_start: false  # done 12.11.2026
   run_experiment93_on_start: false  # Exp #93 done (2026-11-15): 1y 7/12 beat SPY but 3y median -66 pp
-  run_experiment94_on_start: true   # Exp #94 second-order chains (lead-lag), requested 2026-11-15
+  run_experiment94_on_start: false  # Exp #94 done (2026-11-15): link is same-month, lag gone since 2018
   run_experiment92_on_start: false  # Exp #92 done (2026-11-15): red = 2x crash rate; green portfolio < market
   run_scanner_on_start: false  # first run done 12.11.2026 (343 assets)
   run_experiment91_on_start: false  # Exp #91 done (2026-11-11): Nvidia case study
