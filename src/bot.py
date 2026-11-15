@@ -936,6 +936,26 @@ class TradingBot:
         except Exception as e:
             self._push_failure("93", e)
 
+    def _run_exp94(self) -> None:
+        """#94 second-order chains (lead-lag). → experiment94_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_94 import all_symbols, monthly_returns, run_experiment94_report
+            px, miss = {}, []
+            for s in all_symbols():
+                sr = fetch_yahoo_daily(s, "2009-01-01", timeout=20)
+                if sr is not None and len(sr):
+                    px[s] = sr
+                else:
+                    miss.append(s)
+            mret = monthly_returns(px)
+            diag = [f"{len(px)} symbols loaded, missing: {', '.join(miss) or 'none'}."]
+            rep = run_experiment94_report(mret, diag)
+            self.heartbeat._put_file("experiment94_results.md", rep.encode(), "Experiment #94: second-order chains")
+            logger.info("Experiment #94: report pushed")
+        except Exception as e:
+            self._push_failure("94", e)
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -3004,7 +3024,8 @@ class TradingBot:
                                   ("run_universe_probe_on_start", self._run_universe_probe),
                                   ("run_scanner_on_start", self._run_scanner),
                                   ("run_experiment92_on_start", self._run_exp92),
-                                  ("run_experiment93_on_start", self._run_exp93)) if _b.get(flag, False)]
+                                  ("run_experiment93_on_start", self._run_exp93),
+                                  ("run_experiment94_on_start", self._run_exp94)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
