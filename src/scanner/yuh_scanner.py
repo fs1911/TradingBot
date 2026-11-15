@@ -113,12 +113,17 @@ def judge(a: Asset, px: pd.Series, market_ok, mom_pct: float, share_ch: float, f
             reasons.append(f"Rückkauf {100*share_ch:+.1f} % Aktien in 12 M 👍")
     if np.isfinite(mom_pct):
         reasons.append(f"Momentum: stärker als {100*mom_pct:.0f} % der gescannten Aktien")
+    return Verdict(stock_colour(t_ok, market_ok, mom_pct, share_ch, young), reasons, info)
+
+
+def stock_colour(t_ok: bool, market_ok, mom_pct: float, share_ch: float, young: bool) -> str:
+    """The stock rule — shared by the live scanner and its backtest (#92)."""
     dil = np.isfinite(share_ch) and share_ch >= 0.05
     if not t_ok or dil:
-        return Verdict(RED, reasons, info)
+        return RED
     if market_ok and np.isfinite(mom_pct) and mom_pct >= 0.70 and not young:
-        return Verdict(GREEN, reasons, info)
-    return Verdict(YELLOW, reasons, info)
+        return GREEN
+    return YELLOW
 
 
 def percentiles(values: dict) -> dict:

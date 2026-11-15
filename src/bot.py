@@ -866,6 +866,56 @@ class TradingBot:
                 pass
         gc.collect()
 
+    def _run_exp92(self) -> None:
+        """#92 backtest of the live scanner's stock colour (US large caps 2010 →). → experiment92_results.md."""
+        import gc
+        try:
+            from datetime import datetime as _dt
+            import pandas as _pd
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_49 import fetch_frames, fetch_ticker_map, components
+            from .backtest.experiments_50b import fetch_concepts
+            from .backtest.experiments_65 import latest_change
+            from .backtest.experiments_92 import monthly_features, build_panel, run_experiment92_report
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file("experiment92_results.md", b"# Experiment #92 - waiting\n\nSEC_CONTACT_EMAIL missing.\n",
+                                         "Experiment #92 waiting")
+                return
+            ua = f"TradingBot-Research {contact}"
+            frames, _ = fetch_frames(range(2009, _dt.utcnow().year), ua, log=lambda m: logger.info(m))
+            tmap = fetch_ticker_map(ua)
+            ciks = set()
+            for df in frames.values():
+                if df is not None and not df.empty:
+                    c = components(df)
+                    ciks |= {int(k) for k in c.index[c["assets"] >= 1e9] if int(k) in tmap}
+            del frames
+            gc.collect()
+            concepts, _ = fetch_concepts(sorted(ciks), ua, log=lambda m: logger.info(m))
+            t2c = {tmap[c]: c for c in concepts if c in tmap}
+            feats = {}
+            for t in sorted(t2c)[:2500]:
+                sr = fetch_yahoo_daily(t.replace(".", "-"), "2005-01-01", timeout=15)
+                if sr is not None and len(sr) > 250:
+                    f = monthly_features(sr)
+                    if not f.empty:
+                        feats[t] = f
+                del sr
+            spy_d = fetch_yahoo_daily("SPY", "2005-01-01", timeout=30)
+            spy = monthly_features(spy_d)
+            last = spy.index[-1]
+            months = _pd.period_range("2010-01", last - 1, freq="M")
+            share = lambda t, m: latest_change(concepts[t2c[t]], m) if t in t2c else float("nan")
+            d = build_panel(feats, share, spy, months)
+            diag = [f"Universe: {len(ciks):,} SEC large caps, {len(concepts):,} with share data, {len(feats):,} with Yahoo prices."]
+            rep = run_experiment92_report(d, spy["close"].pct_change(), diag)
+            self.heartbeat._put_file("experiment92_results.md", rep.encode(), "Experiment #92: scanner backtest")
+            logger.info("Experiment #92: report pushed")
+        except Exception as e:
+            self._push_failure("92", e)
+        gc.collect()
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2932,7 +2982,8 @@ class TradingBot:
                                   ("run_experiment88_on_start", self._run_exp88),
                                   ("run_experiment91_on_start", self._run_exp91),
                                   ("run_universe_probe_on_start", self._run_universe_probe),
-                                  ("run_scanner_on_start", self._run_scanner)) if _b.get(flag, False)]
+                                  ("run_scanner_on_start", self._run_scanner),
+                                  ("run_experiment92_on_start", self._run_exp92)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
