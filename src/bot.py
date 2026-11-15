@@ -916,6 +916,26 @@ class TradingBot:
             self._push_failure("92", e)
         gc.collect()
 
+    def _run_exp93(self) -> None:
+        """#93 theme stocks after big policy announcements. → experiment93_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_93 import EVENTS, run_experiment93_report
+            syms = sorted({s for _, _, ss in EVENTS for s in ss})
+            px = {}
+            for s in syms:
+                sr = fetch_yahoo_daily(s, "2019-01-01", timeout=20)
+                if sr is not None and len(sr):
+                    sr.index = sr.index.tz_localize(None) if getattr(sr.index, "tz", None) is not None else sr.index
+                    px[s] = sr
+            spy = fetch_yahoo_daily("SPY", "2019-01-01", timeout=30)
+            spy.index = spy.index.tz_localize(None) if getattr(spy.index, "tz", None) is not None else spy.index
+            rep = run_experiment93_report(px, spy)
+            self.heartbeat._put_file("experiment93_results.md", rep.encode(), "Experiment #93: follow the government money")
+            logger.info("Experiment #93: report pushed")
+        except Exception as e:
+            self._push_failure("93", e)
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -2983,7 +3003,8 @@ class TradingBot:
                                   ("run_experiment91_on_start", self._run_exp91),
                                   ("run_universe_probe_on_start", self._run_universe_probe),
                                   ("run_scanner_on_start", self._run_scanner),
-                                  ("run_experiment92_on_start", self._run_exp92)) if _b.get(flag, False)]
+                                  ("run_experiment92_on_start", self._run_exp92),
+                                  ("run_experiment93_on_start", self._run_exp93)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
