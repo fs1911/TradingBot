@@ -307,8 +307,13 @@ class TradingBot:
         if p.exitcode != 0:
             logger.error(f"{name}: child exited with code {p.exitcode}")
             try:
+                try:
+                    mem = "".join(l for l in open("/proc/meminfo") if l.split(":")[0] in ("MemTotal", "MemAvailable", "SwapTotal", "SwapFree"))
+                except Exception:
+                    mem = "n/a"
                 self.heartbeat._put_file(f"experiment_{name.lstrip('_')}_died_results.md",
-                                         f"# {name} — child process died (exit code {p.exitcode}; -9 = killed, usually out of memory)\n".encode(),
+                                         (f"# {name} — child process died (exit code {p.exitcode}; -9 = killed, usually out of memory)\n\n"
+                                          f"Memory now:\n```\n{mem}```\n").encode(),
                                          f"{name} died")
             except Exception:
                 pass
@@ -1002,7 +1007,20 @@ class TradingBot:
             with urllib.request.urlopen(req, timeout=60) as r:
                 zips = list_13f_zips(r.read().decode("utf-8", "replace"))
             fails = []
+
+            def progress(msg):
+                try:
+                    mem = "".join(l for l in open("/proc/meminfo") if l.split(":")[0] in ("MemTotal", "MemAvailable"))
+                    import resource as _res
+                    peak = _res.getrusage(_res.RUSAGE_SELF).ru_maxrss // 1024
+                    self.heartbeat._put_file("experiment96_progress_results.md",
+                                             f"# #96 progress\n\n{msg}\n\nchild peak {peak} MB\n```\n{mem}```\n".encode(), "#96 progress")
+                except Exception:
+                    pass
+            progress(f"{len(zips)} data sets listed; starting")
             for i, url in enumerate(zips):
+                if i % 10 == 9:
+                    progress(f"data set {i + 1}/{len(zips)}; failures {len(fails)}")
                 done = os.path.join(cache, f"z{i:03d}.done")
                 if os.path.exists(done):
                     continue
@@ -1018,7 +1036,7 @@ class TradingBot:
                         tmp.seek(0)
                         df = parse_all_zip(tmp)
                     for pe, g in df.groupby("period"):
-                        with gzip.open(os.path.join(cache, f"p{pd.Timestamp(pe):%Y%m%d}_z{i:03d}.pkl.gz"), "wb") as fh:
+                        with gzip.open(os.path.join(cache, f"p{int(pe)}_z{i:03d}.pkl.gz"), "wb") as fh:
                             pickle.dump(g, fh)
                     open(done, "w").write(str(len(df)))
                     logger.info(f"#96 {url.rsplit('/', 1)[-1]}: {len(df)} rows")
@@ -1048,6 +1066,7 @@ class TradingBot:
                 gc.collect()
             sig = pd.concat(sigs, ignore_index=True)
             del prev, sigs
+            progress(f"signals built for {sig['period'].nunique()} quarters; mapping CUSIPs and fetching prices")
             gc.collect()
             from .backtest.experiments_96 import int_to_cusip
             want_i = sorted(set(sig.loc[sig["in_uni"] | (sig["conv_new"] >= 3), "cusip"]))

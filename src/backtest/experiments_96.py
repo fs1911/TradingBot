@@ -6,7 +6,8 @@ number of institutions holding a stock predicted higher returns (1979–1998).
 
 Pre-registered:
   Data     every SEC 13F data set (2013 →), original 13F-HR only (no amendments), options excluded,
-           filings counted only if filed ≤ 50 days after quarter end (no late-filer look-ahead).
+           filings counted only if filed ≤ 50 days after quarter end (no late-filer look-ahead);
+           positions below $1m ignored.
            Value in $1000 before 2023 filings, in $ after (SEC change of 3 Jan 2023).
   Managers A 'hedge-fund proxy': total ≥ $1bn and ≤ 150 positions (concentrated portfolios; index
            funds, banks and pensions hold thousands). B all filers ≥ $1bn (secondary).
@@ -37,6 +38,7 @@ MAX_POS = 150
 MIN_HOLDERS = 5
 CONV_W, CONV_N = 0.01, 3
 FILED_MAX_DAYS = 50
+MIN_POSITION = 1e6   # positions below $1m are ignored (pre-registered; saves memory, irrelevant for breadth)
 
 
 _B36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -64,95 +66,138 @@ def int_to_cusip(v: int) -> str:
     return "".join(reversed(out))
 
 
-def parse_all_zip(fileobj, min_total: float = MIN_TOTAL) -> pd.DataFrame:
-    """13F data-set zip → [cik, period, filed, cusip, value($)] for every 13F-HR filer ≥ min_total."""
-    with zipfile.ZipFile(fileobj) as z:
-        sub = _read(z, "SUBMISSION.tsv", ["ACCESSION_NUMBER", "FILING_DATE", "SUBMISSIONTYPE", "PERIODOFREPORT", "CIK"])
-        cov = _read(z, "COVERPAGE.tsv", ["ACCESSION_NUMBER", "ISAMENDMENT"])
-        if sub is None:
-            return pd.DataFrame()
-        sub.columns = [c.upper() for c in sub.columns]
-        sub = sub[sub["SUBMISSIONTYPE"].fillna("").str.strip().str.upper() == "13F-HR"]
-        if cov is not None:
-            cov.columns = [c.upper() for c in cov.columns]
-            am = set(cov.loc[cov["ISAMENDMENT"].fillna("N").str.upper().str[:1] == "Y", "ACCESSION_NUMBER"])
-            sub = sub[~sub["ACCESSION_NUMBER"].isin(am)]
-        if sub.empty:
-            return pd.DataFrame()
-        accs = set(sub["ACCESSION_NUMBER"])
-        reader = _read(z, "INFOTABLE.tsv", ["ACCESSION_NUMBER", "CUSIP", "VALUE", "PUTCALL"], chunksize=300_000)
-        if reader is None:
-            return pd.DataFrame()
-        parts, acc_id, cus = [], {a: i for i, a in enumerate(sorted(accs))}, {}
-        for ch in reader:
-            ch.columns = [c.upper() for c in ch.columns]
-            ch = ch[ch["ACCESSION_NUMBER"].isin(accs)]
-            if "PUTCALL" in ch:
-                ch = ch[ch["PUTCALL"].isna() | (ch["PUTCALL"].str.strip() == "")]
-            if not len(ch):
-                continue
-            v = pd.to_numeric(ch["VALUE"], errors="coerce")
-            cc = np.fromiter((cus[x] if x in cus else cus.setdefault(x, cusip_to_int(x)) for x in ch["CUSIP"].astype(str)),
-                             dtype=np.int64, count=len(ch))
-            g = pd.DataFrame({"a": ch["ACCESSION_NUMBER"].map(acc_id).to_numpy(dtype=np.int32), "c": cc,
-                              "v": v.to_numpy()}).dropna()
-            g = g[g["c"] >= 0]
-            parts.append(g.groupby(["a", "c"], sort=False)["v"].sum())
-    if not parts:
+def _meta(z) -> pd.DataFrame:
+    """Original 13F-HR filings of the zip → [acc, cik, filed, period, scale]."""
+    sub = _read(z, "SUBMISSION.tsv", ["ACCESSION_NUMBER", "FILING_DATE", "SUBMISSIONTYPE", "PERIODOFREPORT", "CIK"])
+    cov = _read(z, "COVERPAGE.tsv", ["ACCESSION_NUMBER", "ISAMENDMENT"])
+    if sub is None:
         return pd.DataFrame()
-    h = pd.concat(parts).groupby(level=[0, 1]).sum().reset_index()
-    h.columns = ["acc", "cusip", "value"]
-    meta = pd.DataFrame({"acc": sub["ACCESSION_NUMBER"].map(acc_id).to_numpy(),
-                         "cik": pd.to_numeric(sub["CIK"], errors="coerce").to_numpy(),
-                         "filed": _date(sub["FILING_DATE"]).to_numpy(),
-                         "period": _date(sub["PERIODOFREPORT"]).to_numpy()}).dropna()
-    meta["scale"] = np.where(meta["filed"] >= pd.Timestamp("2023-01-01"), 1.0, 1000.0)
-    h = h.merge(meta, on="acc")
-    h["value"] = (h["value"] * h["scale"]).astype("float64")
-    tot = h.groupby("acc")["value"].transform("sum")
-    h = h[tot >= min_total]
-    out = pd.DataFrame({"cik": h["cik"].astype("int64").to_numpy(), "period": h["period"].to_numpy(),
-                        "filed": h["filed"].to_numpy(), "cusip": h["cusip"].astype("int64").to_numpy(),
-                        "value": h["value"].astype("float32").to_numpy()})
+    sub.columns = [c.upper() for c in sub.columns]
+    sub = sub[sub["SUBMISSIONTYPE"].fillna("").str.strip().str.upper() == "13F-HR"]
+    if cov is not None:
+        cov.columns = [c.upper() for c in cov.columns]
+        am = set(cov.loc[cov["ISAMENDMENT"].fillna("N").str.upper().str[:1] == "Y", "ACCESSION_NUMBER"])
+        sub = sub[~sub["ACCESSION_NUMBER"].isin(am)]
+    m = pd.DataFrame({"acc": sub["ACCESSION_NUMBER"].to_numpy(),
+                      "cik": pd.to_numeric(sub["CIK"], errors="coerce").to_numpy(),
+                      "filed": _date(sub["FILING_DATE"]).to_numpy(),
+                      "period": _date(sub["PERIODOFREPORT"]).to_numpy()}).dropna()
+    m = m[m["filed"] <= m["period"] + pd.Timedelta(days=FILED_MAX_DAYS)].reset_index(drop=True)
+    m = m.sort_values("filed").drop_duplicates(["cik", "period"], keep="last").reset_index(drop=True)
+    m["scale"] = np.where(m["filed"] >= pd.Timestamp("2023-01-01"), 1.0, 1000.0)
+    return m
+
+
+def parse_all_zip(fileobj, min_total: float = MIN_TOTAL, chunksize: int = 100_000) -> pd.DataFrame:
+    """13F data-set zip → [cik, period, filed, cusip(int), value($)] for every in-time 13F-HR filer
+    ≥ min_total. Two passes over INFOTABLE with plain numpy arrays (the server has little RAM):
+    pass 1 sums each filing's value, pass 2 keeps the rows of filings ≥ min_total."""
+    with zipfile.ZipFile(fileobj) as z:
+        meta = _meta(z)
+        if meta.empty:
+            return pd.DataFrame()
+        acc_id = pd.Series(np.arange(len(meta), dtype=np.int64), index=meta["acc"].to_numpy())
+        scale = meta["scale"].to_numpy()
+
+        def chunks(cols):
+            rd = _read(z, "INFOTABLE.tsv", cols, chunksize=chunksize)
+            for ch in (rd if rd is not None else []):
+                ch.columns = [c.upper() for c in ch.columns]
+                a = ch["ACCESSION_NUMBER"].map(acc_id)
+                keep = np.array(a.notna().to_numpy(), dtype=bool)
+                if "PUTCALL" in ch:
+                    pcv = ch["PUTCALL"]
+                    keep &= (pcv.isna() | (pcv.astype(str).str.strip() == "")).to_numpy()
+                v = pd.to_numeric(ch["VALUE"], errors="coerce").to_numpy(dtype=float)
+                keep &= np.isfinite(v)
+                yield ch, a.to_numpy()[keep].astype(np.int64), v[keep], keep
+
+        tot = np.zeros(len(meta))
+        for _, ai, v, _ in chunks(["ACCESSION_NUMBER", "VALUE", "PUTCALL"]):
+            tot += np.bincount(ai, weights=v * scale[ai], minlength=len(meta))
+        ok = tot >= min_total
+        if not ok.any():
+            return pd.DataFrame()
+        A, C, V, cus = [], [], [], {}
+        for ch, ai, v, keep in chunks(["ACCESSION_NUMBER", "CUSIP", "VALUE", "PUTCALL"]):
+            sel = ok[ai] & (v * scale[ai] >= MIN_POSITION)
+            if not sel.any():
+                continue
+            raw = ch["CUSIP"].astype(str).to_numpy()[keep][sel]
+            cc = np.fromiter((cus[x] if x in cus else cus.setdefault(x, cusip_to_int(x)) for x in raw),
+                             dtype=np.int64, count=len(raw))
+            good = cc >= 0
+            A.append(ai[sel][good].astype(np.int32))
+            C.append(cc[good])
+            V.append((v[sel] * scale[ai[sel]])[good].astype(np.float32))
+    if not A:
+        return pd.DataFrame()
+    A, C, V = np.concatenate(A), np.concatenate(C), np.concatenate(V)
+    ymd = lambda col: (meta[col].dt.year * 10000 + meta[col].dt.month * 100 + meta[col].dt.day).to_numpy(dtype=np.int32)
+    out = pd.DataFrame({"cik": meta["cik"].to_numpy(dtype=np.int32)[A]})
+    out["period"] = ymd("period")[A]
+    out["filed"] = ymd("filed")[A]
+    out["cusip"] = C
+    out["value"] = V
     return out
 
 
+def _ymd(ts) -> int:
+    ts = pd.Timestamp(ts)
+    return ts.year * 10000 + ts.month * 100 + ts.day
+
+
 def clean_period(df: pd.DataFrame, period_end: pd.Timestamp) -> pd.DataFrame:
-    """Filings in time (≤ 50 days), latest filing per manager → [cik, cusip, value]."""
-    df = df[(df["period"] == period_end) & (df["filed"] <= period_end + pd.Timedelta(days=FILED_MAX_DAYS))]
-    if df.empty:
-        return df[["cik", "cusip", "value"]]
-    last = df.groupby("cik")["filed"].transform("max")
-    df = df[df["filed"] == last]
-    return df.groupby(["cik", "cusip"], as_index=False)["value"].sum()
+    """Rows of one quarter (possibly from several zips) → latest in-time filing per manager,
+    one row per (cik, cusip): [cik, cusip, value]. period/filed may be Timestamps or yyyymmdd ints."""
+    per, fil = df["period"].to_numpy(), df["filed"].to_numpy()
+    if np.issubdtype(per.dtype, np.datetime64):
+        pe, lim = np.datetime64(pd.Timestamp(period_end)), np.datetime64(pd.Timestamp(period_end) + pd.Timedelta(days=FILED_MAX_DAYS))
+    else:
+        pe, lim = _ymd(period_end), _ymd(pd.Timestamp(period_end) + pd.Timedelta(days=FILED_MAX_DAYS))
+    m = (per == pe) & (fil <= lim)
+    cik, cus, val, fil = df["cik"].to_numpy()[m], df["cusip"].to_numpy()[m], df["value"].to_numpy()[m], fil[m]
+    if len(cik) == 0:
+        return pd.DataFrame({"cik": cik, "cusip": cus, "value": val})
+    ck, cik_u = pd.factorize(cik)
+    last = np.full(len(cik_u), fil.min())
+    np.maximum.at(last, ck, fil)
+    keep = fil == last[ck]
+    ck, cus, val = ck[keep], cus[keep], val[keep].astype(np.float64)
+    cc, cus_u = pd.factorize(cus)
+    key = ck.astype(np.int64) * len(cus_u) + cc
+    uk, inv = np.unique(key, return_inverse=True)
+    sv = np.bincount(inv, weights=val)
+    return pd.DataFrame({"cik": cik_u[uk // len(cus_u)], "cusip": cus_u[uk % len(cus_u)], "value": sv.astype(np.float32)})
 
 
 def period_signals(cur: pd.DataFrame, prev: pd.DataFrame, min_holders: int = MIN_HOLDERS) -> pd.DataFrame:
-    """cur/prev [cik, cusip, value] of two consecutive quarters → rows per (group, cusip)."""
-    both = set(cur["cik"]) & set(prev["cik"])
-    c = cur[cur["cik"].isin(both)].copy()
-    p = prev[prev["cik"].isin(both)]
-    npos = c.groupby("cik").size()
-    conc = set(npos[npos <= MAX_POS].index)
-    c["w"] = c["value"] / c.groupby("cik")["value"].transform("sum")
-    prev_keys = pd.MultiIndex.from_frame(p[["cik", "cusip"]])
-    c["is_new"] = ~pd.MultiIndex.from_frame(c[["cik", "cusip"]]).isin(prev_keys)
+    """cur/prev [cik, cusip, value] (one row per pair) of two consecutive quarters → rows per (group, cusip)."""
+    both = np.intersect1d(cur["cik"].to_numpy(), prev["cik"].to_numpy())
+    cmask, pmask = np.isin(cur["cik"].to_numpy(), both), np.isin(prev["cik"].to_numpy(), both)
+    c_cik, c_cus, c_val = cur["cik"].to_numpy()[cmask], cur["cusip"].to_numpy()[cmask], cur["value"].to_numpy()[cmask].astype(np.float64)
+    p_cik, p_cus = prev["cik"].to_numpy()[pmask], prev["cusip"].to_numpy()[pmask]
+    cus_u, inv = np.unique(np.concatenate([c_cus, p_cus]), return_inverse=True)
+    c_cc, p_cc = inv[:len(c_cus)], inv[len(c_cus):]
+    c_ck, p_ck = np.searchsorted(both, c_cik), np.searchsorted(both, p_cik)
+    nb, nc = len(both), len(cus_u)
+    npos = np.bincount(c_ck, minlength=nb)
+    tot = np.bincount(c_ck, weights=c_val, minlength=nb)
+    w = c_val / np.where(tot[c_ck] > 0, tot[c_ck], np.nan)
+    is_new = ~np.isin(c_ck.astype(np.int64) * nc + c_cc, p_ck.astype(np.int64) * nc + p_cc)
     out = []
-    for grp, mset in zip(GROUPS, (conc, both)):
-        if len(mset) < 10:
+    for grp, gm in zip(GROUPS, (npos <= MAX_POS, np.ones(nb, dtype=bool))):
+        n_mgr = int(gm.sum())
+        if n_mgr < 10:
             continue
-        cc, pp = c[c["cik"].isin(mset)], p[p["cik"].isin(mset)]
-        hc, hp = cc.groupby("cusip")["cik"].nunique(), pp.groupby("cusip")["cik"].nunique()
-        uni = hp[hp >= min_holders].index
-        conv = cc[cc["is_new"] & (cc["w"] >= CONV_W)].groupby("cusip")["cik"].nunique()
-        idx = uni.union(conv[conv >= 1].index)
-        df = pd.DataFrame(index=idx)
-        df["in_uni"] = df.index.isin(uni)
-        df["dbreadth"] = (hc.reindex(idx).fillna(0) - hp.reindex(idx).fillna(0)) / len(mset)
-        df["hold_prev"] = hp.reindex(idx).fillna(0).astype(int)
-        df["conv_new"] = conv.reindex(idx).fillna(0).astype(int)
-        df["group"], df["n_mgr"] = grp, len(mset)
-        out.append(df.reset_index().rename(columns={"index": "cusip"}))
+        cm, pm = gm[c_ck], gm[p_ck]
+        hc = np.bincount(c_cc[cm], minlength=nc)
+        hp = np.bincount(p_cc[pm], minlength=nc)
+        conv = np.bincount(c_cc[cm & is_new & (w >= CONV_W)], minlength=nc)
+        uni = hp >= min_holders
+        idx = np.flatnonzero(uni | (conv >= 1))
+        out.append(pd.DataFrame({"cusip": cus_u[idx], "in_uni": uni[idx], "dbreadth": (hc[idx] - hp[idx]) / n_mgr,
+                                 "hold_prev": hp[idx], "conv_new": conv[idx], "group": grp, "n_mgr": n_mgr}))
     return pd.concat(out, ignore_index=True) if out else pd.DataFrame()
 
 
