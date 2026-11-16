@@ -55,7 +55,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 | 93 | „Dem Staatsgeld folgen“: Themen-ETFs/-Aktien nach grossen Politik-Ankündigungen (Chips, IRA, Infrastruktur, Rüstung, Cannabis, KI, Nuklear, Seltene Erden, Bitcoin-Reserve, Drohnen) — Vorlauf 6 M, +1 M/+1 J/+3 J vs SPY, grösster Rückschlag | Yahoo, 13 vorab festgelegte Ereignisse | ✔ erledigt |
 | 94 | Zweite-Ordnung-Ketten (KI→Strom/Netz/Uran u. a.): folgt das nächste Glied verzögert? Lead-lag, Placebo, Regel nach Kosten | Yahoo, 12 vorab festgelegte Ketten | ✔ erledigt |
 | 95 | Rohstoff → Produzent (neue Rohstoffe + Wiederholung mit neuen Aktien), börsentag-ausgerichtet | Yahoo, 12 Ketten | ✔ erledigt |
-| 96 | Alle 13F-Filer ≥ 1 Mrd: Breiten-Änderung (neu gekauft vs verkauft), Überzeugungskäufe; Hedgefonds-Ersatz ≤ 150 Positionen | SEC 13F alle Datensätze, OpenFIGI, Yahoo | ⏳ läuft |
+| 96 | Alle 13F-Filer ≥ 1 Mrd: Breiten-Änderung (neu gekauft vs verkauft), Überzeugungskäufe; Hedgefonds-Ersatz ≤ 150 Positionen | SEC 13F alle Datensätze, OpenFIGI, Yahoo | ✔ erledigt |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
