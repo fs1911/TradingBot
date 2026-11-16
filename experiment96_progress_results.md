@@ -1,9 +1,9 @@
 # #96 progress
 
-54 data sets listed; starting
+data set 10/54; failures 0
 
-child peak 70 MB
+child peak 400 MB
 ```
 MemTotal:         979592 kB
-MemAvailable:     406592 kB
+MemAvailable:      82508 kB
 ```
