@@ -956,6 +956,123 @@ class TradingBot:
         except Exception as e:
             self._push_failure("94", e)
 
+    def _run_exp95(self) -> None:
+        """#95 commodity → producer lead-lag. → experiment95_results.md."""
+        try:
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_95 import all_symbols, aligned_daily, monthly_frames, run_experiment95_report
+            px, miss = {}, []
+            for s in all_symbols():
+                sr = fetch_yahoo_daily(s, "2009-01-01", timeout=20)
+                if sr is not None and len(sr):
+                    px[s] = sr
+                else:
+                    miss.append(s)
+            mret, skip = monthly_frames(aligned_daily(px))
+            diag = [f"{len(px)} symbols loaded, missing: {', '.join(miss) or 'none'}."]
+            rep = run_experiment95_report(mret, skip, diag)
+            self.heartbeat._put_file("experiment95_results.md", rep.encode(), "Experiment #95: commodity to producer")
+            logger.info("Experiment #95: report pushed")
+        except Exception as e:
+            self._push_failure("95", e)
+
+    def _run_exp96(self) -> None:
+        """#96 all 13F filers >= $1bn: breadth changes. Disk cache in logs/exp96. → experiment96_results.md."""
+        import gc
+        import glob
+        import pickle
+        import gzip
+        import tempfile
+        import urllib.request
+        try:
+            import pandas as pd
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_51 import LISTING, list_13f_zips, map_cusips
+            from .backtest.experiments_96 import (parse_all_zip, clean_period, period_signals, evaluate,
+                                                  run_experiment96_report)
+            contact = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+            if not contact:
+                self.heartbeat._put_file("experiment96_results.md", b"# Experiment #96 - waiting\n\nSEC_CONTACT_EMAIL missing.\n",
+                                         "Experiment #96 waiting")
+                return
+            ua = f"TradingBot-Research {contact}"
+            cache = os.path.join("logs", "exp96")
+            os.makedirs(cache, exist_ok=True)
+            req = urllib.request.Request(LISTING, headers={"User-Agent": ua})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                zips = list_13f_zips(r.read().decode("utf-8", "replace"))
+            fails = []
+            for i, url in enumerate(zips):
+                done = os.path.join(cache, f"z{i:03d}.done")
+                if os.path.exists(done):
+                    continue
+                try:
+                    with tempfile.TemporaryFile() as tmp:
+                        rq = urllib.request.Request(url, headers={"User-Agent": ua, "Accept-Encoding": "identity"})
+                        with urllib.request.urlopen(rq, timeout=180) as r:
+                            while True:
+                                b = r.read(1 << 20)
+                                if not b:
+                                    break
+                                tmp.write(b)
+                        tmp.seek(0)
+                        df = parse_all_zip(tmp)
+                    for pe, g in df.groupby("period"):
+                        with gzip.open(os.path.join(cache, f"p{pd.Timestamp(pe):%Y%m%d}_z{i:03d}.pkl.gz"), "wb") as fh:
+                            pickle.dump(g, fh)
+                    open(done, "w").write(str(len(df)))
+                    logger.info(f"#96 {url.rsplit('/', 1)[-1]}: {len(df)} rows")
+                    del df
+                    gc.collect()
+                except Exception as e:
+                    fails.append(f"{url.rsplit('/', 1)[-1]}: {repr(e)[:80]}")
+            # pass 2: consecutive quarters
+            periods = sorted({os.path.basename(f)[1:9] for f in glob.glob(os.path.join(cache, "p*_z*.pkl.gz"))})
+            qends = [pd.Timestamp(p) for p in periods if pd.Timestamp(p).is_quarter_end]
+
+            def load(pe):
+                parts = []
+                for f in glob.glob(os.path.join(cache, f"p{pe:%Y%m%d}_z*.pkl.gz")):
+                    with gzip.open(f, "rb") as fh:
+                        parts.append(pickle.load(fh))
+                return clean_period(pd.concat(parts, ignore_index=True), pe) if parts else None
+
+            sigs, prev, prev_pe = [], None, None
+            for pe in qends:
+                cur = load(pe)
+                if cur is not None and prev is not None and prev_pe == (pe - pd.offsets.QuarterEnd(1)).normalize():
+                    sg = period_signals(cur, prev)
+                    if len(sg):
+                        sigs.append(sg.assign(period=pe))
+                prev, prev_pe = cur, pe
+                gc.collect()
+            sig = pd.concat(sigs, ignore_index=True)
+            del prev, sigs
+            gc.collect()
+            from .backtest.experiments_96 import int_to_cusip
+            want_i = sorted(set(sig.loc[sig["in_uni"] | (sig["conv_new"] >= 3), "cusip"]))
+            want = [int_to_cusip(x) for x in want_i]
+            tick_s = map_cusips(want, log=lambda m: logger.info(m))
+            tick = {i: tick_s[c] for i, c in zip(want_i, want) if c in tick_s}
+            closes = {}
+            for t in sorted(set(tick.values())):
+                sr = fetch_yahoo_daily(str(t).replace(".", "-").replace("/", "-"), "2013-01-01", timeout=15)
+                if sr is not None and len(sr) > 60:
+                    sr.index = sr.index.tz_localize(None) if getattr(sr.index, "tz", None) is not None else sr.index
+                    closes[t] = sr.groupby(sr.index.to_period("M")).last().astype("float32")
+            closes = pd.DataFrame(closes)
+            spy = fetch_yahoo_daily("SPY", "2013-01-01", timeout=30)
+            spy.index = spy.index.tz_localize(None) if getattr(spy.index, "tz", None) is not None else spy.index
+            spy = spy.groupby(spy.index.to_period("M")).last()
+            res = evaluate(sig, closes, spy, tick)
+            diag = [f"{len(zips)} 13F data sets, {len(fails)} failed{': ' + '; '.join(fails[:3]) if fails else ''};",
+                    f"{len(qends)} quarters; {len(want):,} CUSIPs needed, {len(tick):,} mapped to tickers, {closes.shape[1]:,} with prices."]
+            rep = run_experiment96_report(res, diag)
+            self.heartbeat._put_file("experiment96_results.md", rep.encode(), "Experiment #96: all 13F filers")
+            logger.info("Experiment #96: report pushed")
+        except Exception as e:
+            self._push_failure("96", e)
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -3025,7 +3142,9 @@ class TradingBot:
                                   ("run_scanner_on_start", self._run_scanner),
                                   ("run_experiment92_on_start", self._run_exp92),
                                   ("run_experiment93_on_start", self._run_exp93),
-                                  ("run_experiment94_on_start", self._run_exp94)) if _b.get(flag, False)]
+                                  ("run_experiment94_on_start", self._run_exp94),
+                                  ("run_experiment95_on_start", self._run_exp95),
+                                  ("run_experiment96_on_start", self._run_exp96)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
