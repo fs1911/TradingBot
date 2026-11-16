@@ -1,9 +1,9 @@
 # #96 progress
 
-data set 50/54; failures 0
+signals built for 52 quarters; mapping CUSIPs and fetching prices
 
-child peak 401 MB
+child peak 461 MB
 ```
 MemTotal:         979592 kB
-MemAvailable:      91640 kB
+MemAvailable:      24296 kB
 ```
