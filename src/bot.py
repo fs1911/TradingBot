@@ -1092,6 +1092,36 @@ class TradingBot:
         except Exception as e:
             self._push_failure("96", e)
 
+    def _run_exp97(self) -> None:
+        """#97 stock-market Fear & Greed index rebuilt from free data. → experiment97_results.md."""
+        try:
+            import json
+            import urllib.request
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_97 import SYMBOLS, parse_cnn, run_experiment97_report
+            px, miss = {}, []
+            for s in SYMBOLS:
+                sr = fetch_yahoo_daily(s, "2000-01-01", timeout=20)
+                if sr is not None and len(sr):
+                    px[s] = sr
+                else:
+                    miss.append(s)
+            cnn = None
+            try:
+                rq = urllib.request.Request("https://production.dataviz.cnn.io/index/fearandgreed/graphdata/2020-01-01",
+                                            headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
+                with urllib.request.urlopen(rq, timeout=30) as r:
+                    cnn = parse_cnn(json.loads(r.read().decode("utf-8", "replace")))
+            except Exception as e:
+                miss.append(f"CNN ({repr(e)[:60]})")
+            diag = [f"{len(px)} Yahoo series loaded, missing: {', '.join(miss) or 'none'};",
+                    f"CNN history: {len(cnn) if cnn is not None else 0} days."]
+            rep = run_experiment97_report(px, cnn, diag)
+            self.heartbeat._put_file("experiment97_results.md", rep.encode(), "Experiment #97: Fear & Greed")
+            logger.info("Experiment #97: report pushed")
+        except Exception as e:
+            self._push_failure("97", e)
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -3163,7 +3193,8 @@ class TradingBot:
                                   ("run_experiment93_on_start", self._run_exp93),
                                   ("run_experiment94_on_start", self._run_exp94),
                                   ("run_experiment95_on_start", self._run_exp95),
-                                  ("run_experiment96_on_start", self._run_exp96)) if _b.get(flag, False)]
+                                  ("run_experiment96_on_start", self._run_exp96),
+                                  ("run_experiment97_on_start", self._run_exp97)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
