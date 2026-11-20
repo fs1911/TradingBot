@@ -56,6 +56,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 | 94 | Zweite-Ordnung-Ketten (KI→Strom/Netz/Uran u. a.): folgt das nächste Glied verzögert? Lead-lag, Placebo, Regel nach Kosten | Yahoo, 12 vorab festgelegte Ketten | ✔ erledigt |
 | 95 | Rohstoff → Produzent (neue Rohstoffe + Wiederholung mit neuen Aktien), börsentag-ausgerichtet | Yahoo, 12 Ketten | ✔ erledigt |
 | 96 | Alle 13F-Filer ≥ 1 Mrd: Breiten-Änderung (neu gekauft vs verkauft), Überzeugungskäufe; Hedgefonds-Ersatz ≤ 150 Positionen | SEC 13F alle Datensätze, OpenFIGI, Yahoo | ✔ erledigt |
+| 97 | Aktien-Angst-&-Gier-Index (CNN-Art, nachgebaut): extreme Angst/Gier → 1/3/12 M, Quintile, Regeln nach Kosten | Yahoo (SPY, VIX, VIX3M, Sektor-ETFs, RSP, IEF, HYG, BIL) | ✔ erledigt |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |

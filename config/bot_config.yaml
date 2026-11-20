@@ -95,7 +95,7 @@ bot:
   run_experiment94_on_start: false  # Exp #94 done (2026-11-15): link is same-month, lag gone since 2018
   run_experiment95_on_start: false  # Exp #95 done (2026-11-16): new commodities no lag; only bitcoin->crypto stocks hint
   run_experiment96_on_start: false  # Exp #96 done (2026-11-16): no edge from all 13F filers (Q5-Q1 t 1.1)
-  run_experiment97_on_start: true   # Exp #97 Fear & Greed index (stocks), requested 2026-11-20
+  run_experiment97_on_start: false  # Exp #97 done (2026-11-20): fear/greed no predictive value
   run_experiment92_on_start: false  # Exp #92 done (2026-11-15): red = 2x crash rate; green portfolio < market
   run_scanner_on_start: false  # first run done 12.11.2026 (343 assets)
   run_experiment91_on_start: false  # Exp #91 done (2026-11-11): Nvidia case study
