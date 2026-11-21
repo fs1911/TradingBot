@@ -36,9 +36,13 @@ def buffett_monthly(equities: pd.Series, gdp: pd.Series, lag: int = LAG_MONTHS) 
     """Quarterly equities ($ mn) and GDP ($ bn) → monthly BI (%) available from quarter end + lag months."""
     e = equities.dropna().astype(float)
     g = gdp.dropna().astype(float)
+    if e.empty or g.empty:
+        return pd.Series(dtype=float)
     e.index = pd.PeriodIndex(pd.DatetimeIndex(e.index), freq="Q")
     g.index = pd.PeriodIndex(pd.DatetimeIndex(g.index), freq="Q")
     bi = (e / (g * 1000.0) * 100.0).dropna()
+    if bi.empty:
+        return pd.Series(dtype=float)
     avail = {q.asfreq("M", how="end") + lag: v for q, v in bi.items()}
     s = pd.Series(avail).sort_index()
     full = pd.period_range(s.index.min(), s.index.max() + 2, freq="M")
@@ -137,3 +141,36 @@ def run_experiment99_report(shiller: pd.DataFrame, equities: pd.Series, gdp: pd.
     L.append("Caveats: few independent 10-year windows (≈ 7 since 1951); latest-vintage Fed/GDP data (revised, not as "
              "known then); nonfinancial corporate equities only; Shiller returns may end before today.")
     return "\n".join(L)
+
+
+EQUITY_SOURCES = (
+    ("FRED NCBEILQ027S", "fred", "NCBEILQ027S"),
+    ("DBnomics FED Z1 LM103164103.Q", "dbn", "FED/Z1/LM103164103.Q"),
+    ("DBnomics FED Z1 FL103164103.Q", "dbn", "FED/Z1/FL103164103.Q"),
+)
+GDP_SOURCES = (
+    ("FRED GDP", "fred", "GDP"),
+    ("DBnomics BEA NIPA-T10105 A191RC-Q", "dbn", "BEA/NIPA-T10105/A191RC-Q"),
+)
+
+
+def fetch_first(sources, log: list, timeout: int = 90) -> pd.Series:
+    """Try each source in turn; returns the first non-empty quarterly Series and logs every attempt."""
+    from .experiments_46 import fetch_fred, parse_dbnomics_json, _get
+    for name, kind, sid in sources:
+        try:
+            if kind == "fred":
+                errs = {}
+                s = fetch_fred(sid, timeout=timeout, errors=errs)
+                if errs:
+                    raise RuntimeError(list(errs.values())[0])
+            else:
+                s = parse_dbnomics_json(_get(f"https://api.db.nomics.world/v22/series/{sid}?observations=1", timeout=timeout))
+            s = s.dropna()
+            if len(s) > 100:
+                log.append(f"{name}: {len(s)} values {s.index[0]:%Y}–{s.index[-1]:%Y}")
+                return s
+            log.append(f"{name}: only {len(s)} values")
+        except Exception as e:
+            log.append(f"{name}: {repr(e)[:80]}")
+    return pd.Series(dtype=float)

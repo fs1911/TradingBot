@@ -1148,14 +1148,12 @@ class TradingBot:
         """#99 Buffett indicator (market value / GDP). → experiment99_results.md."""
         try:
             from .backtest.experiments_34 import fetch_shiller
-            from .backtest.experiments_46 import fetch_fred
-            from .backtest.experiments_99 import run_experiment99_report
-            errs = {}
+            from .backtest.experiments_99 import run_experiment99_report, fetch_first, EQUITY_SOURCES, GDP_SOURCES
+            log = []
             sh, src = fetch_shiller()
-            eq = fetch_fred("NCBEILQ027S", timeout=30, errors=errs)
-            gdp = fetch_fred("GDP", timeout=30, errors=errs)
-            diag = [f"Shiller rows {len(sh)} ({src}); FRED equities {len(eq)} quarters, GDP {len(gdp)} quarters;",
-                    f"errors: {errs or 'none'}."]
+            eq = fetch_first(EQUITY_SOURCES, log)
+            gdp = fetch_first(GDP_SOURCES, log)
+            diag = [f"Shiller rows {len(sh)} ({src}); sources: " + "; ".join(log) + "."]
             rep = run_experiment99_report(sh, eq, gdp, diag)
             self.heartbeat._put_file("experiment99_results.md", rep.encode(), "Experiment #99: Buffett indicator")
             logger.info("Experiment #99: report pushed")

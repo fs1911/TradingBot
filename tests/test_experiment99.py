@@ -43,3 +43,10 @@ def test_report_runs():
     rep = run_experiment99_report(_shiller(), eq, gdp)
     assert "Latest" in rep and "T1 Buffett indicator" in rep and "CAPE" in rep
     assert relative(pd.Series(np.ones(300))).dropna().eq(1).all()
+
+
+def test_empty_inputs_do_not_crash():
+    from src.backtest.experiments_99 import buffett_monthly
+    assert buffett_monthly(pd.Series(dtype=float), pd.Series(dtype=float)).empty
+    rep = run_experiment99_report(_shiller(), pd.Series(dtype=float), pd.Series(dtype=float), ["src log"])
+    assert "No Buffett-indicator data" in rep and "src log" in rep
