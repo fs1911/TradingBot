@@ -38,6 +38,8 @@ def buffett_monthly(equities: pd.Series, gdp: pd.Series, lag: int = LAG_MONTHS) 
     g = gdp.dropna().astype(float)
     if e.empty or g.empty:
         return pd.Series(dtype=float)
+    if g.median() > 1e5:   # BEA tables (DBnomics) are in $ millions, FRED GDP in $ billions
+        g = g / 1000.0
     e.index = pd.PeriodIndex(pd.DatetimeIndex(e.index), freq="Q")
     g.index = pd.PeriodIndex(pd.DatetimeIndex(g.index), freq="Q")
     bi = (e / (g * 1000.0) * 100.0).dropna()
