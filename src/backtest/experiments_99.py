@@ -145,8 +145,9 @@ def run_experiment99_report(shiller: pd.DataFrame, equities: pd.Series, gdp: pd.
 
 EQUITY_SOURCES = (
     ("FRED NCBEILQ027S", "fred", "NCBEILQ027S"),
-    ("DBnomics FED Z1 LM103164103.Q", "dbn", "FED/Z1/LM103164103.Q"),
-    ("DBnomics FED Z1 FL103164103.Q", "dbn", "FED/Z1/FL103164103.Q"),
+    ("DBnomics FED search 103164103", "dbnsearch", "FED?q=103164103"),
+    ("DBnomics search 'nonfinancial corporate equities'", "dbnsearch", "FED?q=nonfinancial%20corporate%20business%20corporate%20equities%20liability"),
+    ("Yahoo ^W5000 (Wilshire 5000 points ≈ $bn, proxy)", "w5000", "^W5000"),
 )
 GDP_SOURCES = (
     ("FRED GDP", "fred", "GDP"),
@@ -164,8 +165,29 @@ def fetch_first(sources, log: list, timeout: int = 90) -> pd.Series:
                 s = fetch_fred(sid, timeout=timeout, errors=errs)
                 if errs:
                     raise RuntimeError(list(errs.values())[0])
-            else:
+            elif kind == "dbn":
                 s = parse_dbnomics_json(_get(f"https://api.db.nomics.world/v22/series/{sid}?observations=1", timeout=timeout))
+            elif kind == "dbnsearch":
+                import json
+                docs = json.loads(_get(f"https://api.db.nomics.world/v22/series/{sid}&observations=1&limit=20", timeout=timeout))["series"]["docs"]
+                # keep quarterly level series whose name mentions corporate equities (market value)
+                docs = [d for d in docs if str(d.get("series_code", "")).endswith(".Q")
+                        and "equit" in str(d.get("series_name", "")).lower() and "nonfinancial corporate" in str(d.get("series_name", "")).lower()
+                        and "transaction" not in str(d.get("series_name", "")).lower()]
+                if not docs:
+                    raise RuntimeError("no matching series")
+                d = docs[0]
+                name = f"{name} → {d.get('dataset_code')}/{d.get('series_code')} ({str(d.get('series_name'))[:70]})"
+                s = parse_dbnomics_json(json.dumps({"series": {"docs": [d]}}))
+            else:   # Wilshire 5000 full-cap index: points ≈ total US market value in $ bn → $ mn
+                from .experiments_35 import fetch_yahoo_daily
+                px = fetch_yahoo_daily(sid, "1970-01-01", timeout=timeout)
+                if px is None or not len(px):
+                    raise RuntimeError("no Yahoo data")
+                idx = px.index.tz_localize(None) if getattr(px.index, "tz", None) is not None else px.index
+                px = pd.Series(px.to_numpy(dtype=float), index=idx)
+                q = px.groupby(px.index.to_period("Q")).last()
+                s = pd.Series(q.to_numpy() * 1000.0, index=q.index.to_timestamp(how="start"))
             s = s.dropna()
             if len(s) > 100:
                 log.append(f"{name}: {len(s)} values {s.index[0]:%Y}–{s.index[-1]:%Y}")
