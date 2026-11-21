@@ -1144,6 +1144,24 @@ class TradingBot:
         except Exception as e:
             self._push_failure("98", e)
 
+    def _run_exp99(self) -> None:
+        """#99 Buffett indicator (market value / GDP). → experiment99_results.md."""
+        try:
+            from .backtest.experiments_34 import fetch_shiller
+            from .backtest.experiments_46 import fetch_fred
+            from .backtest.experiments_99 import run_experiment99_report
+            errs = {}
+            sh, src = fetch_shiller()
+            eq = fetch_fred("NCBEILQ027S", timeout=30, errors=errs)
+            gdp = fetch_fred("GDP", timeout=30, errors=errs)
+            diag = [f"Shiller rows {len(sh)} ({src}); FRED equities {len(eq)} quarters, GDP {len(gdp)} quarters;",
+                    f"errors: {errs or 'none'}."]
+            rep = run_experiment99_report(sh, eq, gdp, diag)
+            self.heartbeat._put_file("experiment99_results.md", rep.encode(), "Experiment #99: Buffett indicator")
+            logger.info("Experiment #99: report pushed")
+        except Exception as e:
+            self._push_failure("99", e)
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -3217,7 +3235,8 @@ class TradingBot:
                                   ("run_experiment95_on_start", self._run_exp95),
                                   ("run_experiment96_on_start", self._run_exp96),
                                   ("run_experiment97_on_start", self._run_exp97),
-                                  ("run_experiment98_on_start", self._run_exp98)) if _b.get(flag, False)]
+                                  ("run_experiment98_on_start", self._run_exp98),
+                                  ("run_experiment99_on_start", self._run_exp99)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()

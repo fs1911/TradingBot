@@ -1,0 +1,139 @@
+"""
+Experiment #99 — the Buffett indicator (stock-market value / GDP): does it predict returns, and can
+one time the market with it? (requested 21.11.2026 after an article quoting it; companion to the
+CAPE test #34.)
+
+Data (pre-registered):
+  Market value  FRED NCBEILQ027S — nonfinancial corporate business, corporate equities (Fed Z.1,
+                quarterly, $ millions, 1945 →). The usual long-history Buffett proxy.
+  GDP           FRED GDP (quarterly, $ billions SAAR, 1947 →).
+  Returns       Shiller S&P 500 real total return (monthly) and a 10-year bond proxy (#34 helpers).
+  Buffett indicator BI = equities / (GDP × 1000) × 100 (%). Point-in-time: a quarter's value is used
+  only from the 3rd month after the quarter end (Z.1 appears ≈ 10 weeks later). Latest data vintage
+  (revisions not removed — caveat).
+Tests:
+  1 Quintiles of BI → next 1 / 3 / 10-year real annualised S&P return; correlation and t on
+    NON-overlapping windows (1 y, 10 y). Same for CAPE over the same months (head-to-head).
+  2 Variant 'relative BI' = BI / its own trailing 20-year average (removes the structural rise
+    from globalisation, margins and lower rates).
+  3 Timing rules (monthly, real, no costs — costs only make timing worse):
+      T1 100 % stocks while BI's causal percentile (vs all PAST months) < 80 %, else 50 % stocks / 50 % bonds
+      T2 same with relative BI
+    vs 100 % stocks and vs a static mix with the same average stock share.
+  4 Share of months with BI > 100 % ('overvalued' by the usual rule) before / after 1995; latest value.
+Pure, injected for CI.
+"""
+from __future__ import annotations
+import numpy as np
+import pandas as pd
+
+from .experiments_34 import real_stock_returns, real_bond_returns, forward_annualised, expanding_pct_rank, corr_t, mstats
+
+LAG_MONTHS = 3
+
+
+def buffett_monthly(equities: pd.Series, gdp: pd.Series, lag: int = LAG_MONTHS) -> pd.Series:
+    """Quarterly equities ($ mn) and GDP ($ bn) → monthly BI (%) available from quarter end + lag months."""
+    e = equities.dropna().astype(float)
+    g = gdp.dropna().astype(float)
+    e.index = pd.PeriodIndex(pd.DatetimeIndex(e.index), freq="Q")
+    g.index = pd.PeriodIndex(pd.DatetimeIndex(g.index), freq="Q")
+    bi = (e / (g * 1000.0) * 100.0).dropna()
+    avail = {q.asfreq("M", how="end") + lag: v for q, v in bi.items()}
+    s = pd.Series(avail).sort_index()
+    full = pd.period_range(s.index.min(), s.index.max() + 2, freq="M")
+    return s.reindex(full).ffill()
+
+
+def relative(x: pd.Series, months: int = 240) -> pd.Series:
+    return x / x.rolling(months, min_periods=months // 2).mean()
+
+
+def _monthly(df: pd.DataFrame) -> pd.DataFrame:
+    d = df.copy()
+    d.index = pd.DatetimeIndex(d.index).to_period("M")
+    return d.groupby(level=0).last()
+
+
+def quintile_table(sig: pd.Series, fwd: dict) -> list:
+    d = pd.concat([sig.rename("s")] + [v.rename(k) for k, v in fwd.items()], axis=1).dropna(subset=["s"])
+    d = d[d[list(fwd)].notna().any(axis=1)]
+    if len(d) < 50:
+        return []
+    d["q"] = pd.qcut(d["s"].rank(method="first"), 5, labels=False) + 1
+    rows = []
+    for q, g in d.groupby("q"):
+        rows.append((int(q), g["s"].min(), g["s"].max(), len(g), *[g[k].mean() for k in fwd]))
+    return rows
+
+
+def nonoverlap_corr(sig: pd.Series, fwd: pd.Series, step: int) -> tuple:
+    d = pd.concat([sig, fwd], axis=1).dropna()
+    d = d.iloc[::step]
+    return corr_t(d.iloc[:, 0], d.iloc[:, 1])
+
+
+def timing(stock: pd.Series, bond: pd.Series, sig: pd.Series, cut: float = 0.8) -> tuple:
+    """Stock weight 1.0 when causal percentile of sig < cut, else 0.5; decided on last month's value."""
+    pct = expanding_pct_rank(sig, min_hist=120)
+    w = pd.Series(np.where(pct.to_numpy() < cut, 1.0, 0.5), index=pct.index).where(pct.notna()).shift(1)
+    d = pd.concat([stock.rename("s"), bond.rename("b"), w.rename("w")], axis=1).dropna()
+    return d["w"] * d["s"] + (1 - d["w"]) * d["b"], d
+
+
+def run_experiment99_report(shiller: pd.DataFrame, equities: pd.Series, gdp: pd.Series, diag: list | None = None) -> str:
+    from datetime import datetime, timezone
+    L = [f"# Experiment #99 — Buffett indicator (market value / GDP) ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)", ""]
+    if diag:
+        L += [" ".join(diag), ""]
+    pc = lambda x: f"{100*x:+.1f} %" if np.isfinite(x) else "—"
+    f = lambda x, d=2: f"{x:+.{d}f}" if np.isfinite(x) else "—"
+    bi = buffett_monthly(equities, gdp)
+    if bi.empty:
+        return "\n".join(L + ["No Buffett-indicator data."])
+    sh = _monthly(shiller)
+    stock = real_stock_returns(sh)
+    bond = real_bond_returns(sh)
+    cape = sh["cape"]
+    fwd = {"1 y": forward_annualised(stock, 12), "3 y": forward_annualised(stock, 36), "10 y": forward_annualised(stock, 120)}
+    rel = relative(bi)
+    last = bi.dropna()
+    L.append(f"Buffett indicator {last.index[0]}–{last.index[-1]} (monthly, available 3 months after each quarter). "
+             f"**Latest: {last.iloc[-1]:.0f} %** (quarter ending ≈ {last.index[-1] - LAG_MONTHS}); "
+             f"its 20-year average {bi.rolling(240).mean().dropna().iloc[-1]:.0f} %, highest ever {last.max():.0f} % ({last.idxmax()}).")
+    pre = last[last.index < pd.Period("1995-01", "M")]
+    post = last[last.index >= pd.Period("1995-01", "M")]
+    L.append(f"Months above 100 % ('overvalued' by the usual rule): before 1995 {100*(pre > 100).mean():.0f} %, "
+             f"since 1995 {100*(post > 100).mean():.0f} %. Shiller returns end {sh.index[-1]}.")
+    L.append("")
+    for name, sig in (("Buffett indicator (BI)", bi), ("relative BI (vs own 20-year average)", rel), ("CAPE (same months, for comparison)", cape.where(bi.reindex(cape.index).notna()))):
+        L.append(f"## {name}: quintile → next real S&P return per year")
+        L.append("| quintile | range | months | next 1 y | next 3 y | next 10 y |")
+        L.append("|---|---|--:|--:|--:|--:|")
+        for q, lo, hi, n, a, b, c in quintile_table(sig, fwd):
+            L.append(f"| Q{q}{' (cheapest)' if q == 1 else ' (dearest)' if q == 5 else ''} | {lo:.2f}–{hi:.2f} | {n} | {pc(a)} | {pc(b)} | {pc(c)} |")
+        r1 = nonoverlap_corr(sig, fwd["1 y"], 12)
+        r10 = nonoverlap_corr(sig, fwd["10 y"], 120)
+        r10b = nonoverlap_corr(sig, fwd["10 y"], 60)
+        L.append(f"- correlation, non-overlapping: 1 y {f(r1[0])} (t {f(r1[1])}, n {r1[2]}); 10 y {f(r10[0])} (t {f(r10[1])}, n {r10[2]}); "
+                 f"10 y every 5 y {f(r10b[0])} (t {f(r10b[1])}, n {r10b[2]}, half-overlapping)")
+        L.append("")
+    L.append("## Timing rules (real, monthly, no costs): 100 % stocks, or 50/50 stocks/bonds when the signal's causal percentile ≥ 80 %")
+    L.append("| rule | months | real CAGR | max drawdown | Sharpe | avg stock share |")
+    L.append("|---|--:|--:|--:|--:|--:|")
+    for nm, sig in (("T1 Buffett indicator", bi), ("T2 relative BI", rel)):
+        r, d = timing(stock, bond, sig)
+        m = mstats(r)
+        L.append(f"| {nm} | {len(r)} | {pc(m['cagr'])} | {100*m['maxdd']:.0f} % | {f(m['sharpe'])} | {100*d['w'].mean():.0f} % |")
+        st = d["w"].mean()
+        mix = st * d["s"] + (1 - st) * d["b"]
+        mm = mstats(mix)
+        L.append(f"| static mix with the same {100*st:.0f} % stock share | {len(mix)} | {pc(mm['cagr'])} | {100*mm['maxdd']:.0f} % | {f(mm['sharpe'])} | {100*st:.0f} % |")
+        ms = mstats(d["s"])
+        L.append(f"| 100 % stocks (same months) | {len(d)} | {pc(ms['cagr'])} | {100*ms['maxdd']:.0f} % | {f(ms['sharpe'])} | 100 % |")
+    L.append("")
+    L.append("Reading: a valuation measure can be right about the next 10 years and still useless for timing — the "
+             "question is whether rules based on it beat simply holding, or a fixed mix with the same risk.")
+    L.append("Caveats: few independent 10-year windows (≈ 7 since 1951); latest-vintage Fed/GDP data (revised, not as "
+             "known then); nonfinancial corporate equities only; Shiller returns may end before today.")
+    return "\n".join(L)

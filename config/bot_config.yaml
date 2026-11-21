@@ -97,6 +97,7 @@ bot:
   run_experiment96_on_start: false  # Exp #96 done (2026-11-16): no edge from all 13F filers (Q5-Q1 t 1.1)
   run_experiment97_on_start: false  # Exp #97 done (2026-11-20): fear/greed no predictive value
   run_experiment98_on_start: false  # Exp #98 done (2026-11-20): bitcoin lead not confirmed with new stocks
+  run_experiment99_on_start: true   # Exp #99 Buffett indicator, requested 2026-11-21
   run_experiment92_on_start: false  # Exp #92 done (2026-11-15): red = 2x crash rate; green portfolio < market
   run_scanner_on_start: false  # first run done 12.11.2026 (343 assets)
   run_experiment91_on_start: false  # Exp #91 done (2026-11-11): Nvidia case study
