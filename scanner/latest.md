@@ -1,4 +1,4 @@
-# Yuh-Scanner 2026-11-21
+# Yuh-Scanner 2026-11-22
 
 29 🟢 · 127 🟡 · 199 🔴 of 355
 
@@ -167,10 +167,10 @@
 | 🔴 | AMD | AMD | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 98 % der gescannten Aktien |
 | 🔴 | ASML | ASML.AS | stock | Trend gebrochen (-16 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 93 % der gescannten Aktien |
 | 🔴 | AT&T | T | stock | Trend gebrochen (-8 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 23 % der gescannten Aktien |
-| 🔴 | Aave | AAVE-USD | crypto | Trend gebrochen (-12 % zur 200-Tage-Linie) |
+| 🔴 | Aave | AAVE-USD | crypto | Trend gebrochen (-11 % zur 200-Tage-Linie) |
 | 🔴 | Accelleron | ACLN.SW | stock | Trend gebrochen (-14 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 37 % der gescannten Aktien |
 | 🔴 | Adobe | ADBE | stock | Trend gebrochen (-12 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -5.1 % Aktien in 12 M 👍; Momentum: stärker als 17 % der gescannten Aktien |
-| 🔴 | Algorand | ALGO-USD | crypto | Trend gebrochen (-24 % zur 200-Tage-Linie) |
+| 🔴 | Algorand | ALGO-USD | crypto | Trend gebrochen (-23 % zur 200-Tage-Linie) |
 | 🔴 | Alphabet (Google) | GOOG | stock | Trend gebrochen (-21 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 44 % der gescannten Aktien |
 | 🔴 | Alstom | ALO.PA | stock | Trend gebrochen (-53 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 8 % der gescannten Aktien |
 | 🔴 | American Airlines | AAL | stock | Trend gebrochen (-11 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -8.5 % Aktien in 12 M 👍; Momentum: stärker als 33 % der gescannten Aktien |
@@ -181,7 +181,7 @@
 | 🔴 | Aryzta | ARYN.SW | stock | Trend gebrochen (-20 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 17 % der gescannten Aktien |
 | 🔴 | Aston Martin | AML.L | stock | Trend gebrochen (-24 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Verwässerung +18.0 % Aktien in 12 M; Momentum: stärker als 3 % der gescannten Aktien |
 | 🔴 | AstraZeneca | AZN | stock | Trend gebrochen (-3 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 27 % der gescannten Aktien |
-| 🔴 | Avalanche | AVAX-USD | crypto | Trend gebrochen (-17 % zur 200-Tage-Linie) |
+| 🔴 | Avalanche | AVAX-USD | crypto | Trend gebrochen (-16 % zur 200-Tage-Linie) |
 | 🔴 | BASF | BAS.DE | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 65 % der gescannten Aktien |
 | 🔴 | BHP | BHP.L | stock | Trend gebrochen (-15 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 82 % der gescannten Aktien |
 | 🔴 | BKW Energie | BKW.SW | stock | Trend gebrochen (-10 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 10 % der gescannten Aktien |
@@ -191,7 +191,7 @@
 | 🔴 | Beyond Meat | BYND | stock | Trend gebrochen (-78 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 0 % der gescannten Aktien |
 | 🔴 | Biontech | BNTX | stock | Trend gebrochen (-15 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 19 % der gescannten Aktien |
 | 🔴 | Birkenstock | BIRK | stock | Trend gebrochen (-12 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 16 % der gescannten Aktien |
-| 🔴 | Bitcoin | BTC-USD | crypto | Trend gebrochen (-17 % zur 200-Tage-Linie) |
+| 🔴 | Bitcoin | BTC-USD | crypto | Trend gebrochen (-16 % zur 200-Tage-Linie) |
 | 🔴 | Bitcoin Cash | BCH-USD | crypto | Trend gebrochen (-24 % zur 200-Tage-Linie) |
 | 🔴 | Blackrock | BLK | stock | Trend intakt (+4 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Verwässerung +6.1 % Aktien in 12 M; Momentum: stärker als 50 % der gescannten Aktien |
 | 🔴 | Block | XYZ | stock | Trend gebrochen (-4 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -2.1 % Aktien in 12 M 👍; Momentum: stärker als 69 % der gescannten Aktien |
@@ -205,7 +205,7 @@
 | 🔴 | Carnival | CCL | stock | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 36 % der gescannten Aktien |
 | 🔴 | Caterpillar | CAT | stock | Trend gebrochen (-36 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -3.5 % Aktien in 12 M 👍; Momentum: stärker als 70 % der gescannten Aktien |
 | 🔴 | Cembra | CMBN.SW | stock | Trend gebrochen (-9 % zur 200-Tage-Linie); Marktlage ok; Momentum: stärker als 35 % der gescannten Aktien |
-| 🔴 | Chainlink | LINK-USD | crypto | Trend gebrochen (-15 % zur 200-Tage-Linie) |
+| 🔴 | Chainlink | LINK-USD | crypto | Trend gebrochen (-13 % zur 200-Tage-Linie) |
 | 🔴 | Christian Dior | CDI.PA | stock | Trend gebrochen (-5 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 10 % der gescannten Aktien |
 | 🔴 | Cisco | CSCO | stock | Trend gebrochen (-11 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 78 % der gescannten Aktien |
 | 🔴 | Citigroup | C | stock | Trend gebrochen (-12 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -3.5 % Aktien in 12 M 👍; Momentum: stärker als 64 % der gescannten Aktien |
@@ -222,7 +222,7 @@
 | 🔴 | Enel | ENEL.MI | stock | Trend gebrochen (-0 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -3.4 % Aktien in 12 M 👍; Momentum: stärker als 44 % der gescannten Aktien |
 | 🔴 | Engie | ENGI.PA | stock | Trend gebrochen (-6 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 48 % der gescannten Aktien |
 | 🔴 | Enphase Energy | ENPH | stock | Trend gebrochen (-51 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -3.7 % Aktien in 12 M 👍; Momentum: stärker als 56 % der gescannten Aktien |
-| 🔴 | Ethereum | ETH-USD | crypto | Trend gebrochen (-21 % zur 200-Tage-Linie) |
+| 🔴 | Ethereum | ETH-USD | crypto | Trend gebrochen (-19 % zur 200-Tage-Linie) |
 | 🔴 | Europe | EUN5.DE | etf | Trend gebrochen (-0 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie) |
 | 🔴 | Eurozone | VGEA.DE | etf | Trend gebrochen (-1 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie) |
 | 🔴 | Expedia | EXPE | stock | Trend gebrochen (-9 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -4.3 % Aktien in 12 M 👍; Momentum: stärker als 66 % der gescannten Aktien |
@@ -291,7 +291,7 @@
 | 🔴 | Pepsico | PEP | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 28 % der gescannten Aktien |
 | 🔴 | Pinterest | PINS | stock | Trend gebrochen (-20 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 20 % der gescannten Aktien |
 | 🔴 | Plug Power | PLUG | stock | Trend gebrochen (-59 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Verwässerung +46.1 % Aktien in 12 M; Momentum: stärker als 9 % der gescannten Aktien |
-| 🔴 | Polkadot | DOT-USD | crypto | Trend gebrochen (-35 % zur 200-Tage-Linie) |
+| 🔴 | Polkadot | DOT-USD | crypto | Trend gebrochen (-33 % zur 200-Tage-Linie) |
 | 🔴 | Puma | PUM.DE | stock | Trend gebrochen (-7 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Momentum: stärker als 91 % der gescannten Aktien |
 | 🔴 | Qualcomm | QCOM | stock | Trend gebrochen (-12 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -2.9 % Aktien in 12 M 👍; Momentum: stärker als 38 % der gescannten Aktien |
 | 🔴 | RWE | RWE.DE | stock | Trend gebrochen (-2 % zur 200-Tage-Linie); Marktlage schwach (Index unter 200-Tage-Linie); Rückkauf -2.1 % Aktien in 12 M 👍; Momentum: stärker als 74 % der gescannten Aktien |
