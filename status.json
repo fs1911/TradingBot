@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-11-24 08:10:22",
+  "updated_utc": "2026-11-24 09:11:05",
   "alive": true,
   "state": "active",
-  "uptime_hours": 69.8,
+  "uptime_hours": 70.8,
   "open_positions": 6,
   "trades_today": 0,
   "daily_pnl_usd": 0.0,
-  "realized_pnl_usd": -8437.39,
-  "unrealized_pnl_usd": -3292.35,
-  "total_pnl_usd": -11729.74,
-  "equity_usd": 56755.25,
+  "realized_pnl_usd": -8438.01,
+  "unrealized_pnl_usd": -3425.87,
+  "total_pnl_usd": -11863.88,
+  "equity_usd": 56621.11,
   "market_trend": "neutral",
   "positions": [
     {
@@ -28,19 +28,19 @@
       "symbol": "IWM",
       "side": "buy",
       "qty": 21.3611,
-      "unrealized_usd": -327.77
+      "unrealized_usd": -348.92
     },
     {
       "symbol": "SPY",
       "side": "buy",
       "qty": 17.8681,
-      "unrealized_usd": -766.42
+      "unrealized_usd": -842.09
     },
     {
       "symbol": "USO",
       "side": "buy",
       "qty": 37.8381,
-      "unrealized_usd": -811.53
+      "unrealized_usd": -848.23
     },
     {
       "symbol": "UUP",
@@ -50,7 +50,7 @@
     }
   ],
   "journal_pnl_usd": 267.19,
-  "journal_gap_usd": -8704.58,
+  "journal_gap_usd": -8705.2,
   "broker_fees_usd": 6299.82,
   "broker_fee_entries": 9595
 }
