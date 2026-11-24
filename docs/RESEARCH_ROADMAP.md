@@ -59,6 +59,7 @@ Abgeschlossen: #1–#86 ausser #66 (siehe RESEARCH.md und experiment84_results.m
 | 97 | Aktien-Angst-&-Gier-Index (CNN-Art, nachgebaut): extreme Angst/Gier → 1/3/12 M, Quintile, Regeln nach Kosten | Yahoo (SPY, VIX, VIX3M, Sektor-ETFs, RSP, IEF, HYG, BIL) | ✔ erledigt |
 | 98 | Bitcoin-Spur wöchentlich mit neuen Krypto-Aktien + Ethereum-Gegenprobe, nach Yuh-Kosten | Yahoo | ✔ erledigt |
 | 99 | Buffett-Indikator (Börsenwert/BIP): 10-J-Prognose vs CAPE, Timing vs fester Mix | Yahoo ^W5000, DBnomics BEA-BIP, Shiller (FRED blockiert) | ✔ erledigt |
+| 100 | Anonyme öffentliche Konten: Robinhood-Herden (Robintrack, nicht mehr verfügbar) + Krypto-Börsenströme | Internet Archive, CoinMetrics community | ✔ erledigt |
 
 ## Block D — Mathematik / Risiko
 | # | Hypothese / Frage | Daten | Status |
