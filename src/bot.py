@@ -1160,6 +1160,86 @@ class TradingBot:
         except Exception as e:
             self._push_failure("99", e)
 
+    def _run_exp100(self) -> None:
+        """#100 anonymous public accounts: Robinhood herding (Robintrack via Internet Archive) and
+        crypto exchange flows (CoinMetrics community). → experiment100_results.md."""
+        import gc
+        import json
+        import tempfile
+        import urllib.request
+        try:
+            import pandas as pd
+            from .backtest.experiments_35 import fetch_yahoo_daily
+            from .backtest.experiments_46 import _get
+            from .backtest.experiments_88_90 import parse_coinmetrics
+            from .backtest.experiments_100 import (parse_robintrack_tar, herd_events, CM_FLOW_METRICS,
+                                                   run_experiment100_report)
+            diag = []
+            users = None
+            try:
+                cdx = json.loads(_get("https://web.archive.org/cdx/search/cdx?url=robintrack.net&matchType=domain"
+                                      "&output=json&fl=timestamp,original,length&filter=statuscode:200&collapse=urlkey&limit=50000",
+                                      timeout=180))
+                rows = cdx[1:] if cdx else []
+                cands = [r for r in rows if r[1].lower().split("?")[0].endswith((".tar.gz", ".tgz"))]
+                cands.sort(key=lambda r: -int(r[2]) if str(r[2]).isdigit() else 0)
+                diag.append(f"Internet Archive: {len(rows)} robintrack URLs, archive candidates: "
+                            + (", ".join(f"{r[1]} ({r[0][:8]}, {r[2]} B)" for r in cands[:5]) or "none") + ";")
+                for ts, orig, _ in cands[:3]:
+                    try:
+                        with tempfile.TemporaryFile() as tmp:
+                            rq = urllib.request.Request(f"https://web.archive.org/web/{ts}id_/{orig}", headers={"User-Agent": "Mozilla/5.0 (research)"})
+                            with urllib.request.urlopen(rq, timeout=300) as r:
+                                while True:
+                                    b = r.read(1 << 20)
+                                    if not b:
+                                        break
+                                    tmp.write(b)
+                            tmp.seek(0)
+                            users = parse_robintrack_tar(tmp)
+                        if users is not None and not users.empty:
+                            diag.append(f"used {orig} ({users.shape[1]} stocks);")
+                            break
+                    except Exception as e:
+                        diag.append(f"{orig}: {repr(e)[:80]};")
+            except Exception as e:
+                diag.append(f"Internet Archive search failed: {repr(e)[:100]};")
+            px, spy = {}, None
+            if users is not None and not users.empty:
+                ev = herd_events(users)
+                want = ev["ticker"].value_counts().index[:2000]
+                for t in want:
+                    sr = fetch_yahoo_daily(str(t).replace(".", "-"), "2018-01-01", timeout=15)
+                    if sr is not None and len(sr) > 60:
+                        sr.index = sr.index.tz_localize(None) if getattr(sr.index, "tz", None) is not None else sr.index
+                        sr = sr[sr.index < "2021-06-01"].astype("float32")
+                        if len(sr) > 60:
+                            px[t] = sr
+                spy = fetch_yahoo_daily("SPY", "2018-01-01", timeout=30)
+                spy.index = spy.index.tz_localize(None) if getattr(spy.index, "tz", None) is not None else spy.index
+                diag.append(f"Yahoo prices for {len(px)} of {len(want)} herd tickers;")
+            gc.collect()
+            flows = {}
+            for asset in ("btc", "eth"):
+                parts = []
+                for m in CM_FLOW_METRICS:
+                    try:
+                        u = (f"https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets={asset}&metrics={m}"
+                             "&frequency=1d&start_time=2013-01-01&page_size=10000")
+                        d = parse_coinmetrics(_get(u, timeout=60, headers={"User-Agent": "TradingBot-Research/1.0"}))
+                        if not d.empty:
+                            parts.append(d)
+                    except Exception as e:
+                        diag.append(f"CoinMetrics {asset} {m}: {repr(e)[:70]};")
+                if parts:
+                    flows[asset] = pd.concat(parts, axis=1)
+            diag.append("CoinMetrics columns: " + "; ".join(f"{a}: {', '.join(map(str, d.columns))}" for a, d in flows.items()) + ".")
+            rep = run_experiment100_report(users, px, spy, flows, diag)
+            self.heartbeat._put_file("experiment100_results.md", rep.encode(), "Experiment #100: anonymous accounts")
+            logger.info("Experiment #100: report pushed")
+        except Exception as e:
+            self._push_failure("100", e)
+
     def _run_exp76(self) -> None:
         """#76 insider sales (Form 4). → experiment76_results.md."""
         import gc
@@ -3234,7 +3314,8 @@ class TradingBot:
                                   ("run_experiment96_on_start", self._run_exp96),
                                   ("run_experiment97_on_start", self._run_exp97),
                                   ("run_experiment98_on_start", self._run_exp98),
-                                  ("run_experiment99_on_start", self._run_exp99)) if _b.get(flag, False)]
+                                  ("run_experiment99_on_start", self._run_exp99),
+                                  ("run_experiment100_on_start", self._run_exp100)) if _b.get(flag, False)]
         if _seq:
             import threading
             threading.Thread(target=lambda: [self._isolated(f) for f in _seq], daemon=True).start()
